@@ -107,7 +107,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center space-x-3 text-sm">
                   <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">hello@indigenousai.ca</span>
+                  <span className="text-muted-foreground">hello@indigenousrising.ai</span>
                 </div>
               </div>
 

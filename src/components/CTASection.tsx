@@ -89,7 +89,7 @@ const CTASection = () => {
               size="lg"
               className="border-2 border-white/50 text-white hover:bg-white/20 backdrop-blur-sm px-8 py-6 text-lg font-bold shadow-xl bg-white/10"
               onClick={() => {
-                window.open('mailto:hello@indigenousai.ca?subject=Demo Request&body=I would like to schedule a demo of the Indigenous AI Business Support Platform.', '_blank');
+                window.open('mailto:hello@indigenousrising.ai?subject=Demo Request&body=I would like to schedule a demo of the Indigenous AI Business Support Platform.', '_blank');
               }}
             >
               Schedule Demo

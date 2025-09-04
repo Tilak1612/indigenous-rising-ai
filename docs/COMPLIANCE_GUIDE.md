@@ -290,17 +290,17 @@ This document outlines how the Indigenous AI Business Support Platform complies 
 ### Compliance Officers
 
 **Privacy Officer**
-- Email: privacy@indigenousai.ca
+- Email: privacy@indigenousrising.ai
 - Phone: 1-800-XXX-XXXX
 - Response time: 2 business days
 
 **Accessibility Coordinator**
-- Email: accessibility@indigenousai.ca
+- Email: accessibility@indigenousrising.ai
 - Phone: 1-800-XXX-XXXX (TTY available)
 - Response time: 2 business days
 
 **Legal Compliance**
-- Email: legal@indigenousai.ca
+- Email: legal@indigenousrising.ai
 - Phone: 1-800-XXX-XXXX
 
 ### External Resources

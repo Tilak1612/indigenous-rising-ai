@@ -273,7 +273,7 @@ const TermsOfService: React.FC = () => {
             <div className="p-4 bg-muted rounded-lg">
               <p className="text-muted-foreground">
                 Indigenous AI Business Support Platform<br />
-                Email: legal@indigenousai.ca<br />
+                Email: legal@indigenousrising.ai<br />
                 Phone: 1-800-XXX-XXXX<br />
                 Address: [Physical Address]<br />
                 Canada
