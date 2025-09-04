@@ -11,9 +11,9 @@
 
 @layer base {
   :root {
-    /* Base colors - Warm, natural palette */
-    --background: 28 15% 97%;
-    --foreground: 25 15% 15%;
+    /* Base colors - Warm, natural palette with improved contrast */
+    --background: 30 20% 98%;
+    --foreground: 25 20% 12%;
 
     /* Card system - Subtle earth tones */
     --card: 30 20% 98%;
@@ -32,9 +32,9 @@
     --secondary-foreground: 25 15% 15%;
     --secondary-hover: 15 50% 55%;
 
-    /* Muted - Soft stone gray */
-    --muted: 25 10% 92%;
-    --muted-foreground: 25 8% 45%;
+    /* Muted - Soft stone gray with better readability */
+    --muted: 25 10% 94%;
+    --muted-foreground: 25 15% 40%;
 
     /* Accent - Sky blue representing vision and clarity */
     --accent: 200 45% 55%;

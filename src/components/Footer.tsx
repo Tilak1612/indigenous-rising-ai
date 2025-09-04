@@ -58,10 +58,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#" },
-    { name: "Twitter", icon: Twitter, href: "#" },
-    { name: "LinkedIn", icon: Linkedin, href: "#" },
-    { name: "YouTube", icon: Youtube, href: "#" }
+    { name: "Facebook", icon: Facebook, href: "https://facebook.com/indigenousai", color: "#1877F2" },
+    { name: "Twitter", icon: Twitter, href: "https://twitter.com/indigenous_ai", color: "#1DA1F2" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/indigenous-ai", color: "#0A66C2" },
+    { name: "YouTube", icon: Youtube, href: "https://youtube.com/@indigenousai", color: "#FF0000" }
   ];
 
   const languages = [
@@ -164,10 +164,16 @@ const Footer = () => {
                       <a
                         key={social.name}
                         href={social.href}
-                        className="w-10 h-10 bg-muted/50 hover:bg-primary/10 rounded-lg flex items-center justify-center transition-smooth group"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 bg-muted/50 hover:bg-muted/70 rounded-lg flex items-center justify-center transition-smooth group"
                         aria-label={social.name}
+                        style={{ '--icon-color': social.color } as any}
                       >
-                        <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-smooth" />
+                        <Icon 
+                          className="w-5 h-5 transition-smooth group-hover:scale-110" 
+                          style={{ color: social.color }}
+                        />
                       </a>
                     );
                   })}
@@ -189,12 +195,19 @@ const Footer = () => {
                 <ul className="space-y-3">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                      <a
-                        href={link.href}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-smooth"
-                      >
-                        {link.name}
-                      </a>
+                    <a
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-smooth cursor-pointer"
+                      onClick={(e) => {
+                        if (link.href.startsWith('#')) {
+                          e.preventDefault();
+                          const element = document.querySelector(link.href);
+                          element?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {link.name}
+                    </a>
                     </li>
                   ))}
                 </ul>

@@ -61,6 +61,10 @@ const HeroSection = () => {
               variant="hero"
               size="lg" 
               className="group px-8 py-6 text-lg font-semibold"
+              onClick={() => {
+                const element = document.querySelector('#pricing');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Start Your Journey
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -69,6 +73,10 @@ const HeroSection = () => {
               variant="outline" 
               size="lg" 
               className="border-2 hover:bg-muted/50 transition-smooth px-8 py-6 text-lg font-semibold"
+              onClick={() => {
+                const element = document.querySelector('#features');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Explore Platform
             </Button>

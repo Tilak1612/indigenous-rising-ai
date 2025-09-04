@@ -73,6 +73,10 @@ const CTASection = () => {
             <Button 
               size="lg"
               className="group bg-white text-primary hover:bg-white/90 shadow-elevated px-8 py-6 text-lg font-semibold"
+              onClick={() => {
+                const element = document.querySelector('#pricing');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Start Free Account
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -82,6 +86,9 @@ const CTASection = () => {
               variant="outline"
               size="lg"
               className="border-2 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm px-8 py-6 text-lg font-semibold"
+              onClick={() => {
+                window.open('mailto:hello@indigenousai.ca?subject=Demo Request&body=I would like to schedule a demo of the Indigenous AI Business Support Platform.', '_blank');
+              }}
             >
               Schedule Demo
             </Button>
