@@ -59,7 +59,7 @@ const AccessibilityStatement: React.FC = () => {
             
             <div className="space-y-4">
               <p className="text-muted-foreground">
-                The Indigenous AI Business Support Platform is committed to ensuring digital accessibility 
+                The Indigenous Rising AI Business Support Platform is committed to ensuring digital accessibility 
                 for people with disabilities. We continually improve the user experience for everyone and 
                 apply relevant accessibility standards to achieve these goals.
               </p>

@@ -83,7 +83,7 @@ const Footer = () => {
                   <Users className="w-7 h-7 text-primary-foreground" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-display font-bold text-2xl text-primary">Indigenous AI</span>
+                  <span className="font-display font-bold text-2xl text-primary">Indigenous Rising AI</span>
                   <span className="text-sm text-muted-foreground font-medium">Business Support Platform</span>
                 </div>
               </div>
@@ -247,7 +247,7 @@ const Footer = () => {
         <div className="py-8 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
           <div className="text-center lg:text-left">
             <p className="text-sm text-muted-foreground">
-              © 2024 Indigenous AI Business Support Platform. All rights reserved.
+              © 2024 Indigenous Rising AI Business Support Platform. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground/70 mt-1">
               Built with respect on the traditional territories of Indigenous peoples across Turtle Island.

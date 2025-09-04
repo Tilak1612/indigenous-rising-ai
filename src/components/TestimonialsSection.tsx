@@ -8,7 +8,7 @@ const TestimonialsSection = () => {
       name: "Maria Crow Feather",
       title: "Founder, Traditional Medicines Co-op",
       location: "Alberta",
-      content: "Indigenous AI helped us connect with $50K in funding within our first month. The cultural competency and respect for our data sovereignty made all the difference.",
+      content: "Indigenous Rising AI helped us connect with $50K in funding within our first month. The cultural competency and respect for our data sovereignty made all the difference.",
       rating: 5,
       metric: "$50K",
       metricLabel: "Funding Secured"

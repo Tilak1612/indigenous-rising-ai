@@ -25,7 +25,7 @@ const Navigation = () => {
               <Users className="w-6 h-6 text-primary-foreground" />
             </div>
             <div className="flex flex-col">
-              <span className="font-display font-semibold text-lg text-primary">Indigenous AI</span>
+              <span className="font-display font-semibold text-lg text-primary">Indigenous Rising AI</span>
               <span className="text-xs text-muted-foreground font-medium">Business Support</span>
             </div>
           </div>

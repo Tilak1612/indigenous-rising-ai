@@ -19,7 +19,7 @@ const TermsOfService: React.FC = () => {
             Terms of Service
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Legal terms governing your use of the Indigenous AI Business Support Platform
+            Legal terms governing your use of the Indigenous Rising AI Business Support Platform
           </p>
           <p className="text-sm text-muted-foreground mt-4">
             Last updated: {new Date().toLocaleDateString('en-CA')}
@@ -51,7 +51,7 @@ const TermsOfService: React.FC = () => {
             
             <div className="space-y-4">
               <p className="text-muted-foreground">
-                By accessing or using the Indigenous AI Business Support Platform ("Service"), you agree 
+                By accessing or using the Indigenous Rising AI Business Support Platform ("Service"), you agree 
                 to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, 
                 you may not access the Service.
               </p>
@@ -146,7 +146,7 @@ const TermsOfService: React.FC = () => {
                 <h3 className="text-lg font-semibold text-foreground mb-2">Platform Content</h3>
                 <p className="text-muted-foreground">
                   The Service and its original content, features, and functionality are owned by 
-                  Indigenous AI Business Support Platform and are protected by Canadian and international 
+                  Indigenous Rising AI Business Support Platform and are protected by Canadian and international 
                   copyright, trademark, patent, trade secret, and other intellectual property laws.
                 </p>
               </div>
@@ -272,7 +272,7 @@ const TermsOfService: React.FC = () => {
             
             <div className="p-4 bg-muted rounded-lg">
               <p className="text-muted-foreground">
-                Indigenous AI Business Support Platform<br />
+                Indigenous Rising AI Business Support Platform<br />
                 Email: legal@indigenousrising.ai<br />
                 Phone: 1-800-XXX-XXXX<br />
                 Address: [Physical Address]<br />

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines how the Indigenous AI Business Support Platform complies with Canadian federal and provincial laws, including accessibility, privacy, and consumer protection requirements.
+This document outlines how the Indigenous Rising AI Business Support Platform complies with Canadian federal and provincial laws, including accessibility, privacy, and consumer protection requirements.
 
 ## Table of Contents
 
@@ -323,4 +323,4 @@ This document outlines how the Indigenous AI Business Support Platform complies 
 
 ---
 
-*This document is maintained by the Indigenous AI Business Support Platform legal compliance team and is updated regularly to reflect changes in Canadian law and best practices.*
+*This document is maintained by the Indigenous Rising AI Business Support Platform legal compliance team and is updated regularly to reflect changes in Canadian law and best practices.*
