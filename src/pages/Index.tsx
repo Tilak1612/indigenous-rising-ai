@@ -12,8 +12,12 @@ import ScrollToTop from '../components/ScrollToTop';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      {/* Skip to main content link for accessibility */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <Navigation />
-      <main>
+      <main id="main-content" role="main">
         <HeroSection />
         <FeaturesSection />
         <TestimonialsSection />
