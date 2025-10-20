@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import LanguageSelector from './LanguageSelector';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,12 +47,12 @@ const Navigation = () => {
                   }}
                 >
                   <Icon className="w-4 h-4 group-hover:text-primary transition-smooth" />
-                  <span className="hidden xl:block">{item.name.split('(')[0].trim()}</span>
-                  <span className="xl:hidden">{item.name.split('(')[1]?.replace(')', '') || item.name}</span>
+                  <span>{item.name}</span>
                 </a>
               );
             })}
-            <Button size="sm" variant="hero" className="ml-4">
+            <LanguageSelector />
+            <Button size="sm" variant="hero" className="ml-2">
               Get Started
             </Button>
           </div>

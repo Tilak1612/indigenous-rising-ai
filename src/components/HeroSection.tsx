@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
+import VideoModal from './VideoModal';
+import CountUpStats from './CountUpStats';
 import HeroImage from '@/assets/hero-image.jpg';
 
 const HeroSection = () => {
@@ -69,17 +71,12 @@ const HeroSection = () => {
               Start Your Journey
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-2 bg-card/80 backdrop-blur-sm hover:bg-primary/10 hover:border-primary transition-smooth px-8 py-6 text-lg font-bold border-primary/30 text-foreground"
-              onClick={() => {
-                const element = document.querySelector('#features');
-                element?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Watch How It Works
-            </Button>
+            <VideoModal 
+              triggerText="Watch How It Works"
+              triggerVariant="outline"
+              triggerSize="lg"
+              triggerClassName="border-2 bg-card/80 backdrop-blur-sm hover:bg-primary/10 hover:border-primary transition-smooth px-8 py-6 text-lg font-bold border-primary/30 text-foreground"
+            />
           </div>
 
           {/* Interactive Quiz */}
@@ -88,17 +85,23 @@ const HeroSection = () => {
           </div>
 
           {/* Statistics */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 border-t border-border bg-card/30 backdrop-blur-sm rounded-2xl p-8 shadow-natural">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 border-t border-border bg-card/50 backdrop-blur-sm rounded-2xl p-8 shadow-natural">
             <div className="text-center space-y-2 animate-gentle-float">
-              <div className="font-display text-4xl font-black text-primary drop-shadow-sm">500+</div>
+              <div className="font-display text-5xl font-black text-primary drop-shadow-sm">
+                <CountUpStats end={500} suffix="+" />
+              </div>
               <div className="text-sm font-bold text-foreground">Indigenous Businesses Supported</div>
             </div>
             <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '0.5s' }}>
-              <div className="font-display text-4xl font-black text-secondary drop-shadow-sm">$2.5M</div>
+              <div className="font-display text-5xl font-black text-secondary drop-shadow-sm">
+                $<CountUpStats end={2.5} decimals={1} />M
+              </div>
               <div className="text-sm font-bold text-foreground">Funding Connected</div>
             </div>
             <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '1s' }}>
-              <div className="font-display text-4xl font-black text-accent drop-shadow-sm">50+</div>
+              <div className="font-display text-5xl font-black text-accent drop-shadow-sm">
+                <CountUpStats end={50} suffix="+" />
+              </div>
               <div className="text-sm font-bold text-foreground">Community Partnerships</div>
             </div>
           </div>

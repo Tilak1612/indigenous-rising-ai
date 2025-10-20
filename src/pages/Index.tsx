@@ -11,10 +11,13 @@ import TrainingSection from '../components/TrainingSection';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
+import StickyCTA from '../components/StickyCTA';
+import ProgressBar from '../components/ProgressBar';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <ProgressBar />
       {/* Skip to main content link for accessibility */}
       <a href="#main-content" className="skip-link">
         Skip to main content
@@ -34,6 +37,7 @@ const Index = () => {
       </main>
       <Footer />
       <ScrollToTop />
+      <StickyCTA />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import NewsletterSignup from './NewsletterSignup';
 import { 
   Users, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
   Youtube, Globe, Shield, Heart, BookOpen, Building 
@@ -143,16 +144,7 @@ const Footer = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-smooth"
-                />
-                <Button variant="hero" className="px-6">
-                  Subscribe
-                </Button>
-              </div>
+              <NewsletterSignup />
 
               {/* Social links */}
               <div className="space-y-3">
