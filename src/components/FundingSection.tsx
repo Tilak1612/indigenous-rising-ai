@@ -82,9 +82,9 @@ const FundingSection = () => {
             <h2 className="font-display text-4xl md:text-5xl font-black text-foreground mb-4">
               Current Funding Opportunities
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore funding opportunities tailored for Indigenous entrepreneurs
-            </p>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Explore funding opportunities tailored for Indigenous entrepreneurs. All opportunities are vetted for cultural appropriateness and compliance with OCAP™ principles.
+          </p>
           </div>
 
           {/* Search and Filters */}
