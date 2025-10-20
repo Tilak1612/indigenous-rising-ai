@@ -1,7 +1,10 @@
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
-import FeaturesSection from '../components/FeaturesSection';
+import EnhancedFeatures from '../components/EnhancedFeatures';
+import FundingSection from '../components/FundingSection';
 import TestimonialsSection from '../components/TestimonialsSection';
+import ImpactCalculator from '../components/ImpactCalculator';
+import ElderWisdom from '../components/ElderWisdom';
 import PricingSection from '../components/PricingSection';
 import PartnershipsSection from '../components/PartnershipsSection';
 import TrainingSection from '../components/TrainingSection';
@@ -19,8 +22,11 @@ const Index = () => {
       <Navigation />
       <main id="main-content" role="main">
         <HeroSection />
-        <FeaturesSection />
+        <EnhancedFeatures />
+        <FundingSection />
         <TestimonialsSection />
+        <ImpactCalculator />
+        <ElderWisdom />
         <TrainingSection />
         <PartnershipsSection />
         <PricingSection />

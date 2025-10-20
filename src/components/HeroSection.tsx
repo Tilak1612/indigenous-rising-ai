@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Shield, Globe } from 'lucide-react';
-
+import InteractiveQuiz from './InteractiveQuiz';
 import HeroImage from '@/assets/hero-image.jpg';
 
 const HeroSection = () => {
@@ -60,7 +60,7 @@ const HeroSection = () => {
             <Button 
               variant="hero"
               size="lg" 
-              className="group px-8 py-6 text-lg font-bold shadow-elevated"
+              className="group px-8 py-6 text-lg font-bold shadow-elevated hover:shadow-glow"
               onClick={() => {
                 const element = document.querySelector('#pricing');
                 element?.scrollIntoView({ behavior: 'smooth' });
@@ -72,14 +72,19 @@ const HeroSection = () => {
             <Button 
               variant="outline" 
               size="lg" 
-              className="border-2 bg-card/80 backdrop-blur-sm hover:bg-muted/70 transition-smooth px-8 py-6 text-lg font-bold border-primary/30 text-foreground hover:text-primary"
+              className="border-2 bg-card/80 backdrop-blur-sm hover:bg-primary/10 hover:border-primary transition-smooth px-8 py-6 text-lg font-bold border-primary/30 text-foreground"
               onClick={() => {
                 const element = document.querySelector('#features');
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              Explore Platform
+              Watch How It Works
             </Button>
+          </div>
+
+          {/* Interactive Quiz */}
+          <div className="mt-8">
+            <InteractiveQuiz />
           </div>
 
           {/* Statistics */}

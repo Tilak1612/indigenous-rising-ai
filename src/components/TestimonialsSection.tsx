@@ -43,7 +43,7 @@ const TestimonialsSection = () => {
   ];
 
   return (
-    <section className="py-20 bg-gradient-subtle">
+    <section className="py-20 bg-gradient-subtle" id="testimonials">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 space-y-6 animate-fade-in-up">
           <div className="inline-flex items-center space-x-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-natural">
@@ -69,40 +69,43 @@ const TestimonialsSection = () => {
           {testimonials.map((testimonial, index) => (
             <Card 
               key={testimonial.name}
-              className="group hover:shadow-elevated transition-spring bg-card/80 backdrop-blur-sm border-border/50 animate-fade-in-up"
+              className="group hover:shadow-elevated transition-spring bg-card/95 backdrop-blur-sm border-border/50 animate-fade-in-up overflow-hidden"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <CardContent className="p-8 space-y-6">
                 {/* Rating */}
                 <div className="flex items-center space-x-1">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    <Star key={i} className="w-5 h-5 fill-goldenrod text-goldenrod" style={{ color: 'hsl(45, 75%, 62%)', fill: 'hsl(45, 75%, 62%)' }} />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <blockquote className="text-foreground leading-relaxed">
+                <blockquote className="text-foreground/90 leading-relaxed text-lg">
                   "{testimonial.content}"
                 </blockquote>
 
                 {/* Author info */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <Avatar className="w-12 h-12 gradient-earth">
-                      <AvatarFallback className="text-primary-foreground font-semibold">
+                <div className="flex items-start justify-between pt-4 border-t border-border/50">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+                      <span className="text-primary font-bold text-lg">
                         {testimonial.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
+                      </span>
+                    </div>
                     <div>
-                      <div className="font-semibold text-foreground">{testimonial.name}</div>
+                      <div className="font-bold text-foreground text-lg">{testimonial.name}</div>
                       <div className="text-sm text-muted-foreground">{testimonial.title}</div>
-                      <div className="text-xs text-primary font-medium">{testimonial.location}</div>
+                      <div className="text-xs text-primary font-semibold mt-1 flex items-center gap-1">
+                        <Users className="w-3 h-3" />
+                        {testimonial.location}
+                      </div>
                     </div>
                   </div>
                   
-                  <div className="text-right">
-                    <div className="font-display text-2xl font-bold text-primary">{testimonial.metric}</div>
-                    <div className="text-xs text-muted-foreground">{testimonial.metricLabel}</div>
+                  <div className="text-right bg-primary/5 rounded-xl p-3 border border-primary/10">
+                    <div className="font-display text-3xl font-black text-primary">{testimonial.metric}</div>
+                    <div className="text-xs text-muted-foreground font-medium">{testimonial.metricLabel}</div>
                   </div>
                 </div>
               </CardContent>

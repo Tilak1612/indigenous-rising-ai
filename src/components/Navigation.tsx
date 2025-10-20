@@ -7,12 +7,12 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: 'Oshki-Kijiganan (Business Tools)', href: '#business-tools', icon: TrendingUp },
-    { name: 'Tebwewin (Funding)', href: '#funding', icon: Target },
-    { name: 'Biidaasige (Community Impact)', href: '#community', icon: Users },
-    { name: 'Gikinoo\'amaage (Learning)', href: '#training', icon: BookOpen },
-    { name: 'Wiidookodaadwin (Partnerships)', href: '#partnerships', icon: Building },
-    { name: 'Ozhichigan (Pricing)', href: '#pricing', icon: Award }
+    { name: 'Features', href: '#features', icon: TrendingUp },
+    { name: 'Funding', href: '#funding', icon: Target },
+    { name: 'Testimonials', href: '#testimonials', icon: Users },
+    { name: 'Training', href: '#training', icon: BookOpen },
+    { name: 'Partnerships', href: '#partnerships', icon: Building },
+    { name: 'Pricing', href: '#pricing', icon: Award }
   ];
 
   return (
