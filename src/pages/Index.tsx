@@ -13,6 +13,7 @@ import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
 import StickyCTA from '../components/StickyCTA';
 import ProgressBar from '../components/ProgressBar';
+import CanadianComplianceBadge from '../components/CanadianComplianceBadge';
 
 const Index = () => {
   return (
@@ -33,6 +34,9 @@ const Index = () => {
         <TrainingSection />
         <PartnershipsSection />
         <PricingSection />
+        <div className="container mx-auto px-4 py-12">
+          <CanadianComplianceBadge />
+        </div>
         <CTASection />
       </main>
       <Footer />

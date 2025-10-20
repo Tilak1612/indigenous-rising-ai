@@ -8,8 +8,10 @@ import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import AccessibilityStatement from "./pages/AccessibilityStatement";
+import CanadianCompliance from "./pages/CanadianCompliance";
 import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import CookieConsent from "./components/CookieConsent";
+import ComplianceBanner from "./components/ComplianceBanner";
 
 const queryClient = new QueryClient();
 
@@ -24,11 +26,13 @@ const App = () => (
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/accessibility" element={<AccessibilityStatement />} />
+          <Route path="/compliance" element={<CanadianCompliance />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <AccessibilityToolbar />
         <CookieConsent />
+        <ComplianceBanner />
       </TooltipProvider>
     </BrowserRouter>
   </QueryClientProvider>
