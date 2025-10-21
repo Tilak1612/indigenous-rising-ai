@@ -22,12 +22,20 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center space-x-3 group">
+          <a href="/" className="flex items-center space-x-4 group">
             <img 
               src={logoFull} 
               alt="Indigenous Rising AI Logo" 
-              className="h-10 w-auto transition-smooth group-hover:scale-105"
+              className="h-12 w-auto transition-smooth group-hover:scale-105"
             />
+            <div className="hidden md:flex flex-col">
+              <span className="font-display font-bold text-xl text-primary tracking-tight">
+                Indigenous Rising AI
+              </span>
+              <span className="text-xs text-muted-foreground font-medium tracking-wide">
+                Business Support Platform
+              </span>
+            </div>
           </a>
 
           {/* Desktop Navigation */}
