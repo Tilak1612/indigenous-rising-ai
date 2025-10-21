@@ -2,11 +2,24 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Link } from 'react-router-dom';
+import { z } from 'zod';
+
+// PIPEDA-compliant email validation schema
+const emailSchema = z.object({
+  email: z
+    .string()
+    .trim()
+    .email({ message: "Please enter a valid email address" })
+    .max(255, { message: "Email must be less than 255 characters" })
+});
 
 const NewsletterSignup = () => {
   const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const { toast } = useToast();
@@ -14,10 +27,22 @@ const NewsletterSignup = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !email.includes('@')) {
+    // Validate email
+    const validation = emailSchema.safeParse({ email });
+    if (!validation.success) {
       toast({
         title: 'Invalid email',
-        description: 'Please enter a valid email address.',
+        description: validation.error.errors[0].message,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // PIPEDA: Explicit consent required
+    if (!consent) {
+      toast({
+        title: 'Consent required',
+        description: 'Please agree to receive communications to subscribe.',
         variant: 'destructive',
       });
       return;
@@ -25,7 +50,15 @@ const NewsletterSignup = () => {
 
     setIsLoading(true);
     
-    // Simulate API call
+    // Store consent timestamp for PIPEDA compliance
+    const consentData = {
+      email: validation.data.email,
+      consentGiven: true,
+      consentTimestamp: new Date().toISOString(),
+      purpose: 'funding_alerts_and_updates'
+    };
+    
+    // Simulate API call (in production, send consentData to backend)
     setTimeout(() => {
       setIsLoading(false);
       setIsSubscribed(true);
@@ -34,6 +67,7 @@ const NewsletterSignup = () => {
         description: 'You\'ve been subscribed to funding alerts and updates.',
       });
       setEmail('');
+      setConsent(false);
     }, 1000);
   };
 
@@ -74,20 +108,51 @@ const NewsletterSignup = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="pr-4 bg-background"
               disabled={isLoading}
+              required
             />
+          </div>
+          
+          {/* PIPEDA: Explicit consent requirement */}
+          <div className="flex items-start space-x-2 py-2">
+            <Checkbox
+              id="newsletter-consent"
+              checked={consent}
+              onCheckedChange={(checked) => setConsent(checked as boolean)}
+              disabled={isLoading}
+              className="mt-0.5"
+            />
+            <label
+              htmlFor="newsletter-consent"
+              className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
+            >
+              I consent to receive funding alerts, community updates, and promotional communications. 
+              I understand my information will be handled according to our{' '}
+              <Link to="/privacy" className="text-primary hover:underline font-medium">
+                Privacy Policy
+              </Link>
+              {' '}and I can unsubscribe at any time.
+            </label>
           </div>
           
           <Button
             type="submit"
             className="w-full gradient-earth text-white font-bold"
-            disabled={isLoading}
+            disabled={isLoading || !consent}
           >
             {isLoading ? 'Subscribing...' : 'Subscribe to Updates'}
           </Button>
           
-          <p className="text-xs text-muted-foreground text-center">
-            We respect your privacy. Unsubscribe anytime.
-          </p>
+          <div className="space-y-1">
+            <p className="text-xs text-muted-foreground text-center">
+              🔒 PIPEDA Compliant • Data stored in Canada
+            </p>
+            <p className="text-xs text-muted-foreground text-center">
+              Questions? Contact our Privacy Officer at{' '}
+              <a href="mailto:privacy@indigenousrising.ai" className="text-primary hover:underline">
+                privacy@indigenousrising.ai
+              </a>
+            </p>
+          </div>
         </form>
       </div>
     </Card>

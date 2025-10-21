@@ -50,6 +50,7 @@ const Footer = () => {
       links: [
         { name: "Privacy Policy", href: "/privacy" },
         { name: "Terms of Service", href: "/terms" },
+        { name: "Your Data Rights", href: "/data-rights" },
         { name: "Canadian Compliance", href: "/compliance" },
         { name: "OCAP™ Principles", href: "/compliance#ocap" },
         { name: "Data Security", href: "/compliance#data-residency" },

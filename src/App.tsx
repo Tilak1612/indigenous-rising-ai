@@ -10,6 +10,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import AccessibilityStatement from "./pages/AccessibilityStatement";
 import CanadianCompliance from "./pages/CanadianCompliance";
+import DataRights from "./pages/DataRights";
 import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/terms" element={<TermsOfService />} />
             <Route path="/accessibility" element={<AccessibilityStatement />} />
             <Route path="/compliance" element={<CanadianCompliance />} />
+            <Route path="/data-rights" element={<DataRights />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
