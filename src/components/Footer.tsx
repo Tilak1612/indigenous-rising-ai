@@ -5,6 +5,7 @@ import {
   Users, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
   Youtube, Globe, Shield, Heart, BookOpen, Building 
 } from 'lucide-react';
+import logoFull from '@/assets/logo-full.png';
 
 const Footer = () => {
   const footerSections = [
@@ -80,14 +81,12 @@ const Footer = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <div className="space-y-6">
               {/* Logo and tagline */}
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 gradient-earth rounded-xl flex items-center justify-center shadow-natural">
-                  <Users className="w-7 h-7 text-primary-foreground" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-display font-bold text-2xl text-primary">Indigenous Rising AI</span>
-                  <span className="text-sm text-muted-foreground font-medium">Business Support Platform</span>
-                </div>
+              <div className="space-y-2">
+                <img 
+                  src={logoFull} 
+                  alt="Indigenous Rising AI Business Support Platform" 
+                  className="h-16 w-auto"
+                />
               </div>
 
               <p className="text-muted-foreground leading-relaxed max-w-md">
