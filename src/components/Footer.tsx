@@ -244,6 +244,9 @@ const Footer = () => {
             <p className="text-xs text-muted-foreground/70 mt-1">
               Built with respect on the traditional territories of Indigenous peoples across Turtle Island.
             </p>
+            <p className="text-xs text-muted-foreground/70 mt-1">
+              Powered by Brainfy AI Inc
+            </p>
           </div>
 
           <div className="flex items-center space-x-6 text-xs text-muted-foreground">
