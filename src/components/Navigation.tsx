@@ -32,7 +32,7 @@ const Navigation = () => {
               <span className="font-display font-bold text-base md:text-xl text-primary tracking-tight">
                 Indigenous Rising AI
               </span>
-              <span className="hidden sm:block text-xs text-muted-foreground font-medium tracking-wide">
+              <span className="text-xs text-muted-foreground font-medium tracking-wide">
                 Business Support Platform
               </span>
             </div>
