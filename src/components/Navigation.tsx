@@ -28,11 +28,11 @@ const Navigation = () => {
               alt="Indigenous Rising AI Logo" 
               className="h-12 w-auto transition-smooth group-hover:scale-105"
             />
-            <div className="hidden md:flex flex-col">
-              <span className="font-display font-bold text-xl text-primary tracking-tight">
+            <div className="flex flex-col">
+              <span className="font-display font-bold text-base md:text-xl text-primary tracking-tight">
                 Indigenous Rising AI
               </span>
-              <span className="text-xs text-muted-foreground font-medium tracking-wide">
+              <span className="hidden sm:block text-xs text-muted-foreground font-medium tracking-wide">
                 Business Support Platform
               </span>
             </div>
