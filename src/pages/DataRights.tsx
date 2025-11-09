@@ -1,9 +1,11 @@
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import DataRequestForm from '../components/DataRequestForm';
-import { Shield, CheckCircle, Clock, FileText, Lock, Scale } from 'lucide-react';
+import { Shield, CheckCircle, Clock, FileText, Lock, Scale, Search } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 const DataRights = () => {
   const rights = [
@@ -64,10 +66,16 @@ const DataRights = () => {
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-4 text-foreground">
             Your Data Rights Under PIPEDA
           </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-6">
             As a Canadian organization, we respect your rights under the Personal Information Protection 
             and Electronic Documents Act (PIPEDA). You have control over your personal information.
           </p>
+          <Link to="/track-request">
+            <Button variant="outline" className="gap-2">
+              <Search className="w-4 h-4" />
+              Track Your Request
+            </Button>
+          </Link>
         </div>
 
         {/* Rights Grid */}

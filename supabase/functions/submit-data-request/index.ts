@@ -1,0 +1,227 @@
+import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
+interface DataRequestPayload {
+  fullName: string;
+  email: string;
+  requestType: string;
+  details: string;
+  phone?: string;
+  verificationMethod?: string;
+  ipAddress?: string;
+  userAgent?: string;
+}
+
+interface TrackingRequest {
+  trackingNumber: string;
+}
+
+const handler = async (req: Request): Promise<Response> => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const hubspotApiKey = Deno.env.get('HUBSPOT_API_KEY')!;
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const url = new URL(req.url);
+    const action = url.searchParams.get('action') || 'submit';
+
+    // Handle request tracking
+    if (action === 'track' || req.method === 'POST') {
+      const body = await req.json();
+      
+      // Check if this is a tracking request
+      if ('trackingNumber' in body) {
+        const { trackingNumber } = body as TrackingRequest;
+        
+        console.log('Tracking request:', trackingNumber);
+
+        if (!trackingNumber || trackingNumber.length !== 12) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid tracking number' }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const { data: request, error } = await supabase
+          .from('data_requests')
+          .select('*')
+          .eq('tracking_number', trackingNumber)
+          .single();
+
+        if (error || !request) {
+          return new Response(
+            JSON.stringify({ error: 'Request not found' }),
+            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        // Return sanitized request info (exclude sensitive fields)
+        const sanitizedRequest = {
+          tracking_number: request.tracking_number,
+          request_type: request.request_type,
+          status: request.status,
+          submitted_at: request.submitted_at,
+          completed_at: request.completed_at,
+        };
+
+        return new Response(
+          JSON.stringify({ request: sanitizedRequest }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Otherwise, handle new data request submission
+      const payload = body as DataRequestPayload;
+
+      // Validate required fields
+      if (!payload.fullName || !payload.email || !payload.requestType || !payload.details) {
+        return new Response(
+          JSON.stringify({ error: 'Missing required fields' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(payload.email)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid email address' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Validate request type
+      const validRequestTypes = ['access', 'correction', 'deletion', 'portability', 'consent_withdrawal', 'objection'];
+      if (!validRequestTypes.includes(payload.requestType)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid request type' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      console.log('Creating data request for:', payload.email);
+
+      // Create data request in database
+      const { data: dataRequest, error: insertError } = await supabase
+        .from('data_requests')
+        .insert({
+          full_name: payload.fullName,
+          email: payload.email.toLowerCase().trim(),
+          request_type: payload.requestType,
+          description: payload.details,
+          phone: payload.phone,
+          verification_method: payload.verificationMethod,
+          ip_address: payload.ipAddress,
+          user_agent: payload.userAgent,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('Error creating data request:', insertError);
+        throw insertError;
+      }
+
+      console.log('Data request created:', dataRequest.id, 'Tracking:', dataRequest.tracking_number);
+
+      // Send confirmation email to user
+      try {
+        const userEmailResponse = await fetch('https://api.hubapi.com/marketing/v3/transactional/single-email/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${hubspotApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            emailId: 'data-request-confirmation', // Create this template in HubSpot
+            message: {
+              to: payload.email,
+              from: 'privacy@indigenousrising.ai',
+            },
+            customProperties: {
+              tracking_number: dataRequest.tracking_number,
+              request_type: payload.requestType,
+              full_name: payload.fullName,
+            },
+          }),
+        });
+
+        if (!userEmailResponse.ok) {
+          const errorText = await userEmailResponse.text();
+          console.error('HubSpot user email error:', errorText);
+        } else {
+          console.log('Confirmation email sent to user');
+        }
+      } catch (emailError) {
+        console.error('Error sending user confirmation email:', emailError);
+        // Continue anyway
+      }
+
+      // Send notification email to Privacy Officer
+      try {
+        const officerEmailResponse = await fetch('https://api.hubapi.com/marketing/v3/transactional/single-email/send', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${hubspotApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            emailId: 'data-request-notification', // Create this template in HubSpot
+            message: {
+              to: 'privacy@indigenousrising.ai',
+              from: 'system@indigenousrising.ai',
+            },
+            customProperties: {
+              tracking_number: dataRequest.tracking_number,
+              request_type: payload.requestType,
+              full_name: payload.fullName,
+              email: payload.email,
+              details: payload.details,
+              submitted_at: dataRequest.submitted_at,
+            },
+          }),
+        });
+
+        if (!officerEmailResponse.ok) {
+          const errorText = await officerEmailResponse.text();
+          console.error('HubSpot officer email error:', errorText);
+        } else {
+          console.log('Notification email sent to Privacy Officer');
+        }
+      } catch (emailError) {
+        console.error('Error sending officer notification email:', emailError);
+        // Continue anyway
+      }
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          tracking_number: dataRequest.tracking_number,
+          message: 'Your data request has been submitted successfully. Please save your tracking number.',
+        }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+  } catch (error: any) {
+    console.error('Error in submit-data-request function:', error);
+    return new Response(
+      JSON.stringify({ error: error.message || 'An unexpected error occurred' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+  }
+};
+
+serve(handler);

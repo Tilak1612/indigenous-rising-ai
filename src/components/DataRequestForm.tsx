@@ -6,8 +6,10 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
-import { Shield, CheckCircle } from 'lucide-react';
+import { Shield, CheckCircle, Upload, FileText, X } from 'lucide-react';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
+import { Link } from 'react-router-dom';
 
 // PIPEDA-compliant validation schema
 const dataRequestSchema = z.object({
@@ -34,11 +36,48 @@ const DataRequestForm = () => {
     fullName: '',
     email: '',
     requestType: 'access' as 'access' | 'correction' | 'deletion' | 'portability' | 'withdraw-consent',
-    details: ''
+    details: '',
+    phone: ''
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [trackingNumber, setTrackingNumber] = useState('');
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const { toast } = useToast();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: 'File too large',
+        description: 'Please select a file smaller than 5MB',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: 'Invalid file type',
+        description: 'Please upload a JPEG, PNG, or PDF file',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setUploadedFile(file);
+  };
+
+  const removeFile = () => {
+    setUploadedFile(null);
+    setUploadProgress(0);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,23 +95,70 @@ const DataRequestForm = () => {
 
     setIsLoading(true);
     
-    // In production, this would send to backend
-    const requestData = {
-      ...validation.data,
-      submittedAt: new Date().toISOString(),
-      status: 'pending',
-      pipedaCompliance: true
-    };
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSubmitted(true);
-      toast({
-        title: 'Request Submitted',
-        description: 'We will respond within 30 days as required by PIPEDA.',
+    try {
+      let fileUrl = null;
+
+      // Upload file if present
+      if (uploadedFile) {
+        const fileExt = uploadedFile.name.split('.').pop();
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
+        const filePath = `verification/${fileName}`;
+
+        setUploadProgress(50);
+
+        const { error: uploadError } = await supabase.storage
+          .from('data-request-documents')
+          .upload(filePath, uploadedFile);
+
+        if (uploadError) {
+          console.error('File upload error:', uploadError);
+          throw new Error('Failed to upload verification document');
+        }
+
+        fileUrl = filePath;
+        setUploadProgress(100);
+      }
+
+      // Get client info for PIPEDA compliance
+      const userAgent = navigator.userAgent;
+
+      // Submit data request
+      const { data, error } = await supabase.functions.invoke('submit-data-request', {
+        body: {
+          fullName: validation.data.fullName,
+          email: validation.data.email,
+          requestType: validation.data.requestType.replace('-', '_'),
+          details: validation.data.details,
+          phone: formData.phone,
+          verificationMethod: uploadedFile ? 'document_upload' : 'email_only',
+          userAgent,
+        },
       });
-    }, 1000);
+
+      if (error) throw error;
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      setTrackingNumber(data.tracking_number);
+      setIsSubmitted(true);
+      
+      toast({
+        title: 'Request Submitted Successfully',
+        description: `Your tracking number is ${data.tracking_number}. Please save it.`,
+      });
+    } catch (error: any) {
+      console.error('Submission error:', error);
+      toast({
+        title: 'Submission Failed',
+        description: error.message || 'Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+      setUploadProgress(0);
+    }
   };
 
   if (isSubmitted) {
@@ -83,24 +169,43 @@ const DataRequestForm = () => {
           <h3 className="font-display text-2xl font-bold text-foreground">
             Request Received
           </h3>
+          <div className="bg-background border-2 border-primary rounded-lg p-4 my-4">
+            <p className="text-xs text-muted-foreground mb-2">Your Tracking Number</p>
+            <p className="font-mono text-2xl font-bold text-primary tracking-wider">
+              {trackingNumber}
+            </p>
+          </div>
           <p className="text-muted-foreground max-w-md">
             Your PIPEDA data request has been submitted. We will respond within 30 days 
-            as required by Canadian privacy law. You will receive a confirmation email shortly.
+            as required by Canadian privacy law. A confirmation email has been sent to your inbox.
           </p>
-          <Button
-            variant="outline"
-            onClick={() => {
-              setIsSubmitted(false);
-              setFormData({
-                fullName: '',
-                email: '',
-                requestType: 'access',
-                details: ''
-              });
-            }}
-          >
-            Submit Another Request
-          </Button>
+          <p className="text-sm text-foreground font-semibold">
+            Please save your tracking number to check the status of your request.
+          </p>
+          <div className="flex gap-3 pt-4">
+            <Link to="/track-request">
+              <Button className="gradient-earth text-white">
+                Track My Request
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsSubmitted(false);
+                setTrackingNumber('');
+                setUploadedFile(null);
+                setFormData({
+                  fullName: '',
+                  email: '',
+                  requestType: 'access',
+                  details: '',
+                  phone: ''
+                });
+              }}
+            >
+              Submit Another Request
+            </Button>
+          </div>
         </div>
       </Card>
     );
@@ -215,6 +320,23 @@ const DataRequestForm = () => {
             </RadioGroup>
           </div>
 
+          {/* Phone (Optional) */}
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone Number (Optional)</Label>
+            <Input
+              id="phone"
+              type="tel"
+              placeholder="+1 (555) 123-4567"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              disabled={isLoading}
+              maxLength={20}
+            />
+            <p className="text-xs text-muted-foreground">
+              May be used for identity verification
+            </p>
+          </div>
+
           {/* Details */}
           <div className="space-y-2">
             <Label htmlFor="details">Request Details *</Label>
@@ -232,6 +354,68 @@ const DataRequestForm = () => {
             <p className="text-xs text-muted-foreground">
               {formData.details.length}/2000 characters
             </p>
+          </div>
+
+          {/* File Upload */}
+          <div className="space-y-2">
+            <Label htmlFor="verification-doc">Identity Verification Document (Optional)</Label>
+            <div className="border-2 border-dashed border-border rounded-lg p-6">
+              {!uploadedFile ? (
+                <div className="text-center space-y-2">
+                  <Upload className="w-8 h-8 text-muted-foreground mx-auto" />
+                  <div>
+                    <label htmlFor="verification-doc" className="cursor-pointer">
+                      <span className="text-primary hover:underline font-medium">
+                        Click to upload
+                      </span>
+                      <span className="text-muted-foreground"> or drag and drop</span>
+                    </label>
+                    <Input
+                      id="verification-doc"
+                      type="file"
+                      accept="image/jpeg,image/png,image/jpg,application/pdf"
+                      onChange={handleFileChange}
+                      disabled={isLoading}
+                      className="hidden"
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    PDF, JPEG, or PNG (max 5MB) • Encrypted at rest • Auto-deleted after 90 days
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{uploadedFile.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={removeFile}
+                    disabled={isLoading}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              )}
+              {uploadProgress > 0 && uploadProgress < 100 && (
+                <div className="mt-3">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-primary transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Identity Verification Notice */}

@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      data_requests: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          description: string | null
+          email: string
+          full_name: string
+          id: string
+          ip_address: string | null
+          phone: string | null
+          request_type: Database["public"]["Enums"]["data_request_type"]
+          status: Database["public"]["Enums"]["data_request_status"]
+          submitted_at: string
+          tracking_number: string
+          user_agent: string | null
+          verification_method: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          description?: string | null
+          email: string
+          full_name: string
+          id?: string
+          ip_address?: string | null
+          phone?: string | null
+          request_type: Database["public"]["Enums"]["data_request_type"]
+          status?: Database["public"]["Enums"]["data_request_status"]
+          submitted_at?: string
+          tracking_number?: string
+          user_agent?: string | null
+          verification_method?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          description?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          ip_address?: string | null
+          phone?: string | null
+          request_type?: Database["public"]["Enums"]["data_request_type"]
+          status?: Database["public"]["Enums"]["data_request_status"]
+          submitted_at?: string
+          tracking_number?: string
+          user_agent?: string | null
+          verification_method?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscriptions: {
         Row: {
           confirmation_token: string | null
@@ -58,10 +109,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_old_verification_documents: { Args: never; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      data_request_status: "pending" | "in_progress" | "completed" | "rejected"
+      data_request_type:
+        | "access"
+        | "correction"
+        | "deletion"
+        | "portability"
+        | "consent_withdrawal"
+        | "objection"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -188,6 +246,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      data_request_status: ["pending", "in_progress", "completed", "rejected"],
+      data_request_type: [
+        "access",
+        "correction",
+        "deletion",
+        "portability",
+        "consent_withdrawal",
+        "objection",
+      ],
+    },
   },
 } as const
