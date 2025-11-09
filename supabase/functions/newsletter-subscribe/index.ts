@@ -6,6 +6,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const securityHeaders = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+};
+
 interface SubscribeRequest {
   email: string;
   ipAddress?: string;
@@ -19,7 +25,7 @@ interface ConfirmRequest {
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: { ...corsHeaders, ...securityHeaders } });
   }
 
   try {
@@ -49,14 +55,14 @@ const handler = async (req: Request): Promise<Response> => {
         console.error('Subscription not found:', fetchError);
         return new Response(
           JSON.stringify({ error: 'Invalid confirmation token' }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 404, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
       if (subscription.confirmed_at) {
         return new Response(
           JSON.stringify({ message: 'Email already confirmed' }),
-          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
@@ -127,7 +133,7 @@ const handler = async (req: Request): Promise<Response> => {
 
       return new Response(
         JSON.stringify({ message: 'Email confirmed successfully!' }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -152,7 +158,7 @@ const handler = async (req: Request): Promise<Response> => {
       console.warn('Rate limit exceeded (per minute):', clientIp);
       return new Response(
         JSON.stringify({ error: 'Too many requests. Please try again in a minute.' }),
-        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -168,7 +174,7 @@ const handler = async (req: Request): Promise<Response> => {
       console.warn('Rate limit exceeded (per hour):', clientIp);
       return new Response(
         JSON.stringify({ error: 'Too many requests. Please try again later.' }),
-        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -177,7 +183,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (!email || !emailRegex.test(email) || email.length > 255) {
       return new Response(
         JSON.stringify({ error: 'Invalid email address' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -194,7 +200,7 @@ const handler = async (req: Request): Promise<Response> => {
       if (existing.is_active && existing.confirmed_at) {
         return new Response(
           JSON.stringify({ error: 'This email is already subscribed' }),
-          { status: 409, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 409, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
       
@@ -228,7 +234,7 @@ const handler = async (req: Request): Promise<Response> => {
           JSON.stringify({ 
             message: 'Confirmation email resent! Please check your inbox.' 
           }),
-          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
     }
@@ -300,14 +306,14 @@ const handler = async (req: Request): Promise<Response> => {
         message: 'Please check your email to confirm your subscription!',
         requiresConfirmation: true 
       }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error: any) {
     console.error('Error in newsletter-subscribe function:', error);
     return new Response(
       JSON.stringify({ error: error.message || 'An unexpected error occurred' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 500, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
     );
   }
 };

@@ -6,6 +6,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const securityHeaders = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+};
+
 interface DataRequestPayload {
   fullName: string;
   email: string;
@@ -24,7 +30,7 @@ interface TrackingRequest {
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: { ...corsHeaders, ...securityHeaders } });
   }
 
   try {
@@ -50,7 +56,7 @@ const handler = async (req: Request): Promise<Response> => {
         if (!trackingNumber || trackingNumber.length !== 12) {
           return new Response(
             JSON.stringify({ error: 'Invalid tracking number' }),
-            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
           );
         }
 
@@ -63,7 +69,7 @@ const handler = async (req: Request): Promise<Response> => {
         if (error || !request) {
           return new Response(
             JSON.stringify({ error: 'Request not found' }),
-            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+            { status: 404, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
           );
         }
 
@@ -78,7 +84,7 @@ const handler = async (req: Request): Promise<Response> => {
 
         return new Response(
           JSON.stringify({ request: sanitizedRequest }),
-          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
@@ -103,7 +109,7 @@ const handler = async (req: Request): Promise<Response> => {
         console.warn('Rate limit exceeded (per minute):', clientIp);
         return new Response(
           JSON.stringify({ error: 'Too many requests. Please try again in a minute.' }),
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
@@ -119,7 +125,7 @@ const handler = async (req: Request): Promise<Response> => {
         console.warn('Rate limit exceeded (per hour):', clientIp);
         return new Response(
           JSON.stringify({ error: 'Too many requests. Please try again later.' }),
-          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
@@ -127,7 +133,7 @@ const handler = async (req: Request): Promise<Response> => {
       if (!payload.fullName || !payload.email || !payload.requestType || !payload.details) {
         return new Response(
           JSON.stringify({ error: 'Missing required fields' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
@@ -136,7 +142,7 @@ const handler = async (req: Request): Promise<Response> => {
       if (!emailRegex.test(payload.email)) {
         return new Response(
           JSON.stringify({ error: 'Invalid email address' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
@@ -145,7 +151,7 @@ const handler = async (req: Request): Promise<Response> => {
       if (!validRequestTypes.includes(payload.requestType)) {
         return new Response(
           JSON.stringify({ error: 'Invalid request type' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
 
@@ -249,7 +255,7 @@ const handler = async (req: Request): Promise<Response> => {
           tracking_number: dataRequest.tracking_number,
           message: 'Your data request has been submitted successfully. Please save your tracking number.',
         }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -257,7 +263,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.error('Error in submit-data-request function:', error);
     return new Response(
       JSON.stringify({ error: error.message || 'An unexpected error occurred' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { status: 500, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
     );
   }
 };
