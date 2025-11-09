@@ -134,6 +134,44 @@ const handler = async (req: Request): Promise<Response> => {
     // Handle new subscription
     const { email, ipAddress, userAgent }: SubscribeRequest = await req.json();
 
+    // Get client IP
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || 
+                     req.headers.get('x-real-ip') || 
+                     ipAddress || 
+                     'unknown';
+
+    // Rate limiting: Check submissions per minute (3 per minute)
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
+    const { data: recentMinute } = await supabase
+      .from('newsletter_subscriptions')
+      .select('id')
+      .eq('ip_address', clientIp)
+      .gte('created_at', oneMinuteAgo);
+
+    if (recentMinute && recentMinute.length >= 3) {
+      console.warn('Rate limit exceeded (per minute):', clientIp);
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again in a minute.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Rate limiting: Check submissions per hour (10 per hour)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recentHour } = await supabase
+      .from('newsletter_subscriptions')
+      .select('id')
+      .eq('ip_address', clientIp)
+      .gte('created_at', oneHourAgo);
+
+    if (recentHour && recentHour.length >= 10) {
+      console.warn('Rate limit exceeded (per hour):', clientIp);
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email) || email.length > 255) {
@@ -202,7 +240,7 @@ const handler = async (req: Request): Promise<Response> => {
       .from('newsletter_subscriptions')
       .insert({
         email: email.toLowerCase().trim(),
-        ip_address: ipAddress,
+        ip_address: clientIp,
         user_agent: userAgent,
         confirmation_token: confirmationToken,
         is_active: false, // Will be activated after confirmation

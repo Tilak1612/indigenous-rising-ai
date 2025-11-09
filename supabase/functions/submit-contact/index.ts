@@ -40,19 +40,48 @@ serve(async (req: Request) => {
                        'unknown';
     const user_agent = req.headers.get('user-agent') || 'unknown';
 
-    // Check rate limit
+    // Rate limiting: Check submissions per minute (3 per minute)
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
+    const { data: recentMinute } = await supabase
+      .from('contact_submissions')
+      .select('id')
+      .eq('ip_address', ip_address)
+      .gte('submitted_at', oneMinuteAgo);
+
+    if (recentMinute && recentMinute.length >= 3) {
+      console.warn('Rate limit exceeded (per minute):', ip_address);
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again in a minute.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Rate limiting: Check submissions per hour (10 per hour)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recentHour } = await supabase
+      .from('contact_submissions')
+      .select('id')
+      .eq('ip_address', ip_address)
+      .gte('submitted_at', oneHourAgo);
+
+    if (recentHour && recentHour.length >= 10) {
+      console.warn('Rate limit exceeded (per hour):', ip_address);
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Legacy check using database function for backwards compatibility
     const { data: rateLimitCheck, error: rateLimitError } = await supabase
       .rpc('check_contact_rate_limit', { _ip_address: ip_address });
 
     if (rateLimitError) {
       console.error('Rate limit check error:', rateLimitError);
-      return new Response(
-        JSON.stringify({ error: 'Failed to verify rate limit' }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      // Continue anyway - we have inline checks above
     }
 
-    if (!rateLimitCheck) {
+    if (rateLimitCheck === false) {
       return new Response(
         JSON.stringify({ error: 'Rate limit exceeded. Please try again later.' }),
         { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

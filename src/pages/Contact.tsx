@@ -13,6 +13,12 @@ import { contactSchema, type ContactFormData } from '@/lib/validation-schemas';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { 
+  checkRateLimit, 
+  recordSubmission, 
+  getTimeUntilReset,
+  formatTimeRemaining 
+} from '@/lib/rate-limiter';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -34,12 +40,32 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: ContactFormData) => {
+    // Client-side rate limiting: 3 submissions per hour
+    const rateLimitConfig = {
+      key: 'contact',
+      maxAttempts: 3,
+      windowMs: 60 * 60 * 1000, // 1 hour
+    };
+
+    if (!checkRateLimit(rateLimitConfig)) {
+      const timeRemaining = getTimeUntilReset(rateLimitConfig);
+      toast({
+        title: 'Too many attempts',
+        description: `Please wait ${formatTimeRemaining(timeRemaining)} before trying again.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     try {
       const { error } = await supabase.functions.invoke('submit-contact', {
         body: data,
       });
 
       if (error) throw error;
+
+      // Record successful submission for rate limiting
+      recordSubmission('contact');
 
       toast({
         title: 'Message sent!',

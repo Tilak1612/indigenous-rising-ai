@@ -13,6 +13,12 @@ import { dataRequestSchema, type DataRequestFormData } from '@/lib/validation-sc
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { 
+  checkRateLimit, 
+  recordSubmission, 
+  getTimeUntilReset,
+  formatTimeRemaining 
+} from '@/lib/rate-limiter';
 
 const DataRequestForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -74,6 +80,23 @@ const DataRequestForm = () => {
   };
 
   const onSubmit = async (data: DataRequestFormData) => {
+    // Client-side rate limiting: 3 submissions per hour
+    const rateLimitConfig = {
+      key: 'data-request',
+      maxAttempts: 3,
+      windowMs: 60 * 60 * 1000, // 1 hour
+    };
+
+    if (!checkRateLimit(rateLimitConfig)) {
+      const timeRemaining = getTimeUntilReset(rateLimitConfig);
+      toast({
+        title: 'Too many attempts',
+        description: `Please wait ${formatTimeRemaining(timeRemaining)} before trying again.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     try {
       let fileUrl = null;
 
@@ -113,6 +136,9 @@ const DataRequestForm = () => {
 
       if (error) throw error;
       if (response.error) throw new Error(response.error);
+
+      // Record successful submission for rate limiting
+      recordSubmission('data-request');
 
       setTrackingNumber(response.tracking_number);
       setIsSubmitted(true);

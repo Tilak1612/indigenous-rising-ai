@@ -85,6 +85,44 @@ const handler = async (req: Request): Promise<Response> => {
       // Otherwise, handle new data request submission
       const payload = body as DataRequestPayload;
 
+      // Get client IP
+      const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || 
+                       req.headers.get('x-real-ip') || 
+                       payload.ipAddress || 
+                       'unknown';
+
+      // Rate limiting: Check submissions per minute (3 per minute)
+      const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
+      const { data: recentMinute } = await supabase
+        .from('data_requests')
+        .select('id')
+        .eq('ip_address', clientIp)
+        .gte('submitted_at', oneMinuteAgo);
+
+      if (recentMinute && recentMinute.length >= 3) {
+        console.warn('Rate limit exceeded (per minute):', clientIp);
+        return new Response(
+          JSON.stringify({ error: 'Too many requests. Please try again in a minute.' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Rate limiting: Check submissions per hour (10 per hour)
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+      const { data: recentHour } = await supabase
+        .from('data_requests')
+        .select('id')
+        .eq('ip_address', clientIp)
+        .gte('submitted_at', oneHourAgo);
+
+      if (recentHour && recentHour.length >= 10) {
+        console.warn('Rate limit exceeded (per hour):', clientIp);
+        return new Response(
+          JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       // Validate required fields
       if (!payload.fullName || !payload.email || !payload.requestType || !payload.details) {
         return new Response(
@@ -123,8 +161,8 @@ const handler = async (req: Request): Promise<Response> => {
           description: payload.details,
           phone: payload.phone,
           verification_method: payload.verificationMethod,
-          ip_address: payload.ipAddress,
-          user_agent: payload.userAgent,
+          ip_address: clientIp,
+          user_agent: payload.userAgent || req.headers.get('user-agent') || 'unknown',
         })
         .select()
         .single();

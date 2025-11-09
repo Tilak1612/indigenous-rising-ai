@@ -11,6 +11,12 @@ import { Link } from 'react-router-dom';
 import { newsletterSchema, type NewsletterFormData } from '@/lib/validation-schemas';
 import { Label } from '@/components/ui/label';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { 
+  checkRateLimit, 
+  recordSubmission, 
+  getTimeUntilReset,
+  formatTimeRemaining 
+} from '@/lib/rate-limiter';
 
 const NewsletterSignup = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -34,6 +40,23 @@ const NewsletterSignup = () => {
   const consent = watch('consent');
 
   const onSubmit = async (data: NewsletterFormData) => {
+    // Client-side rate limiting: 3 submissions per hour
+    const rateLimitConfig = {
+      key: 'newsletter',
+      maxAttempts: 3,
+      windowMs: 60 * 60 * 1000, // 1 hour
+    };
+
+    if (!checkRateLimit(rateLimitConfig)) {
+      const timeRemaining = getTimeUntilReset(rateLimitConfig);
+      toast({
+        title: 'Too many attempts',
+        description: `Please wait ${formatTimeRemaining(timeRemaining)} before trying again.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     try {
       const userAgent = navigator.userAgent;
       const { supabase } = await import('@/integrations/supabase/client');
@@ -46,6 +69,9 @@ const NewsletterSignup = () => {
       });
 
       if (error) throw error;
+
+      // Record successful submission for rate limiting
+      recordSubmission('newsletter');
 
       setIsSubmitted(true);
       
