@@ -50,25 +50,44 @@ const NewsletterSignup = () => {
 
     setIsLoading(true);
     
-    // Store consent timestamp for PIPEDA compliance
-    const consentData = {
-      email: validation.data.email,
-      consentGiven: true,
-      consentTimestamp: new Date().toISOString(),
-      purpose: 'funding_alerts_and_updates'
-    };
-    
-    // Simulate API call (in production, send consentData to backend)
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      // Get client IP and user agent for CASL compliance
+      const userAgent = navigator.userAgent;
+      
+      const { supabase } = await import('@/integrations/supabase/client');
+      
+      const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
+        body: {
+          email: validation.data.email,
+          userAgent,
+        },
+      });
+
+      if (error) throw error;
+
       setIsSubscribed(true);
+      
+      const requiresConfirmation = data?.requiresConfirmation;
+      
       toast({
         title: 'Miigwech! Thank you!',
-        description: 'You\'ve been subscribed to funding alerts and updates.',
+        description: requiresConfirmation 
+          ? 'Please check your email to confirm your subscription.'
+          : 'You\'ve been subscribed to funding alerts and updates.',
       });
+      
       setEmail('');
       setConsent(false);
-    }, 1000);
+    } catch (error: any) {
+      console.error('Newsletter subscription error:', error);
+      toast({
+        title: 'Subscription failed',
+        description: error.message || 'Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSubscribed) {
