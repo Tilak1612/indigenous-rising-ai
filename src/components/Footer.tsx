@@ -84,8 +84,11 @@ const Footer = () => {
               <div className="space-y-2">
                 <img 
                   src={logoFull} 
-                  alt="Indigenous Rising AI Business Support Platform" 
+                  alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
                   className="h-16 w-auto"
+                  loading="lazy"
+                  width="200"
+                  height="64"
                 />
               </div>
 

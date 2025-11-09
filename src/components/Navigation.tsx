@@ -25,8 +25,11 @@ const Navigation = () => {
           <a href="/" className="flex items-center space-x-4 group">
             <img 
               src={logoFull} 
-              alt="Indigenous Rising AI Logo" 
+              alt="Indigenous Rising AI - Business Support Platform for Indigenous Entrepreneurs" 
               className="h-12 w-auto transition-smooth group-hover:scale-105"
+              width="150"
+              height="48"
+              fetchPriority="high"
             />
             <div className="flex flex-col">
               <span className="font-display font-bold text-base md:text-xl text-primary tracking-tight">
