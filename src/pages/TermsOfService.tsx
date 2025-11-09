@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Card } from '@/components/ui/card';
@@ -7,6 +8,30 @@ import { Scale, FileText, AlertTriangle, Shield, Users, Gavel } from 'lucide-rea
 const TermsOfService: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Terms of Service - Indigenous Rising AI</title>
+        <meta name="description" content="Legal terms governing your use of the Indigenous Rising AI Business Support Platform. Read our terms and conditions, user responsibilities, and service guidelines." />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://indigenousrising.ai/terms" />
+        <meta property="og:title" content="Terms of Service - Indigenous Rising AI" />
+        <meta property="og:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
+        <meta property="og:image" content="https://indigenousrising.ai/og-terms.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://indigenousrising.ai/terms" />
+        <meta name="twitter:title" content="Terms of Service - Indigenous Rising AI" />
+        <meta name="twitter:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
+        <meta name="twitter:image" content="https://indigenousrising.ai/og-terms.jpg" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://indigenousrising.ai/terms" />
+      </Helmet>
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">

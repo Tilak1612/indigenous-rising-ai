@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Card } from '@/components/ui/card';
@@ -18,6 +19,30 @@ import {
 const AccessibilityStatement: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Accessibility Statement - Indigenous Rising AI</title>
+        <meta name="description" content="Our commitment to digital accessibility for Indigenous entrepreneurs. WCAG 2.1 Level AA compliance, assistive technology support, and inclusive design." />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://indigenousrising.ai/accessibility" />
+        <meta property="og:title" content="Accessibility Statement - Indigenous Rising AI" />
+        <meta property="og:description" content="WCAG 2.1 compliant platform for Indigenous entrepreneurs across Canada." />
+        <meta property="og:image" content="https://indigenousrising.ai/og-home.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://indigenousrising.ai/accessibility" />
+        <meta name="twitter:title" content="Accessibility Statement - Indigenous Rising AI" />
+        <meta name="twitter:description" content="WCAG 2.1 compliant platform for Indigenous entrepreneurs." />
+        <meta name="twitter:image" content="https://indigenousrising.ai/og-home.jpg" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://indigenousrising.ai/accessibility" />
+      </Helmet>
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">

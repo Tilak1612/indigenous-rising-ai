@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { contactSchema, type ContactFormData } from '@/lib/validation-schemas';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -55,8 +58,35 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <>
+      <Helmet>
+        <title>Contact Us - Indigenous Rising AI</title>
+        <meta name="description" content="Get in touch with Indigenous Rising AI. We're here to help Indigenous entrepreneurs succeed. Email, phone, and contact form available." />
+        <meta name="robots" content="index, follow" />
+        
+        {/* Open Graph */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://indigenousrising.ai/contact" />
+        <meta property="og:title" content="Contact Us - Indigenous Rising AI" />
+        <meta property="og:description" content="Get in touch with our team. We are here to help Indigenous entrepreneurs succeed." />
+        <meta property="og:image" content="https://indigenousrising.ai/og-contact.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content="https://indigenousrising.ai/contact" />
+        <meta name="twitter:title" content="Contact Us - Indigenous Rising AI" />
+        <meta name="twitter:description" content="Get in touch with our team." />
+        <meta name="twitter:image" content="https://indigenousrising.ai/og-contact.jpg" />
+        
+        {/* Canonical URL */}
+        <link rel="canonical" href="https://indigenousrising.ai/contact" />
+      </Helmet>
+      
+      <Navigation />
+      <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-foreground mb-4">Contact Us</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -184,6 +214,8 @@ const Contact = () => {
         </Card>
       </div>
     </div>
+      <Footer />
+    </>
   );
 };
 

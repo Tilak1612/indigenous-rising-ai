@@ -5,7 +5,8 @@ interface MetaTagsProps {
   title?: string;
   description?: string;
   keywords?: string;
-  image?: string;
+  ogImage?: string;
+  twitterImage?: string;
   url?: string;
   type?: string;
 }
@@ -14,8 +15,9 @@ const MetaTags = ({
   title = 'Indigenous Rising AI - Business Support Platform',
   description = 'Culturally respectful AI-powered platform supporting Indigenous entrepreneurs across Canada. Harmonizing traditional knowledge with modern business tools while honoring data sovereignty principles.',
   keywords = 'Indigenous business, OCAP, First Nations entrepreneurship, Aboriginal business support, Indigenous AI, business funding, NACCA, Canadian Indigenous business, traditional knowledge, data sovereignty',
-  image = 'https://www.indigenousrising.ai/logo-icon.png',
-  url = 'https://www.indigenousrising.ai',
+  ogImage = 'https://indigenousrising.ai/og-home.jpg',
+  twitterImage = 'https://indigenousrising.ai/og-home.jpg',
+  url = 'https://indigenousrising.ai',
   type = 'website'
 }: MetaTagsProps) => {
   return (
@@ -30,7 +32,9 @@ const MetaTags = ({
       <meta property="og:url" content={url} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:locale" content="en_CA" />
       <meta property="og:site_name" content="Indigenous Rising AI" />
       
@@ -39,7 +43,7 @@ const MetaTags = ({
       <meta name="twitter:url" content={url} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:image" content={twitterImage} />
       <meta name="twitter:site" content="@indigenous_ai" />
       
       {/* Additional SEO */}

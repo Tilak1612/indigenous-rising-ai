@@ -21,7 +21,10 @@ import MetaTags from '../components/MetaTags';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
-      <MetaTags />
+      <MetaTags 
+        ogImage="https://indigenousrising.ai/og-home.jpg"
+        twitterImage="https://indigenousrising.ai/og-home.jpg"
+      />
       <ProgressBar />
       {/* Skip to main content link for accessibility */}
       <a href="#main-content" className="skip-link">
