@@ -10,10 +10,14 @@ import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LoadingSpinner } from "./components/ui/loading-spinner";
+import { AuthProvider } from "./hooks/useAuth";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 // Lazy load route components
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Auth = lazy(() => import("./pages/Auth"));
+const Admin = lazy(() => import("./pages/Admin"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const AccessibilityStatement = lazy(() => import("./pages/AccessibilityStatement"));
@@ -37,7 +41,8 @@ const App = () => (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <TooltipProvider>
+          <AuthProvider>
+            <TooltipProvider>
             <Toaster />
             <Sonner />
             <Routes>
@@ -113,8 +118,26 @@ const App = () => (
                   </Suspense>
                 } 
               />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route 
+                path="/auth" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Auth />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requireAdmin>
+                      <Admin />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route
                 path="*" 
                 element={
                   <Suspense fallback={<LoadingFallback />}>
@@ -123,10 +146,11 @@ const App = () => (
                 } 
               />
             </Routes>
-            <AccessibilityToolbar />
-            <CookieConsent />
-            <ComplianceBanner />
-          </TooltipProvider>
+              <AccessibilityToolbar />
+              <CookieConsent />
+              <ComplianceBanner />
+            </TooltipProvider>
+          </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </HelmetProvider>
