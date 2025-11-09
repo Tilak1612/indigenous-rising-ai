@@ -40,21 +40,89 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <Suspense fallback={<LoadingFallback />}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/privacy" element={<PrivacyPolicy />} />
-                <Route path="/terms" element={<TermsOfService />} />
-                <Route path="/accessibility" element={<AccessibilityStatement />} />
-                <Route path="/compliance" element={<CanadianCompliance />} />
-                <Route path="/data-rights" element={<DataRights />} />
-                <Route path="/unsubscribe" element={<Unsubscribe />} />
-                <Route path="/track-request" element={<TrackRequest />} />
-                <Route path="/contact" element={<Contact />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
+            <Routes>
+              <Route 
+                path="/" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Index />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/privacy" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <PrivacyPolicy />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/terms" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <TermsOfService />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/accessibility" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <AccessibilityStatement />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/compliance" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <CanadianCompliance />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/data-rights" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <DataRights />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/unsubscribe" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Unsubscribe />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/track-request" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <TrackRequest />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/contact" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Contact />
+                  </Suspense>
+                } 
+              />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route 
+                path="*" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <NotFound />
+                  </Suspense>
+                } 
+              />
+            </Routes>
             <AccessibilityToolbar />
             <CookieConsent />
             <ComplianceBanner />
