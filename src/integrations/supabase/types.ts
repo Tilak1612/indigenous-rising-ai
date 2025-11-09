@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_submissions: {
+        Row: {
+          admin_notes: string | null
+          email: string
+          full_name: string
+          id: string
+          ip_address: string | null
+          message: string
+          phone: string | null
+          replied_at: string | null
+          status: string
+          subject: string
+          submitted_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          email: string
+          full_name: string
+          id?: string
+          ip_address?: string | null
+          message: string
+          phone?: string | null
+          replied_at?: string | null
+          status?: string
+          subject: string
+          submitted_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          ip_address?: string | null
+          message?: string
+          phone?: string | null
+          replied_at?: string | null
+          status?: string
+          subject?: string
+          submitted_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       data_requests: {
         Row: {
           assigned_to: string | null
@@ -109,6 +154,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_contact_rate_limit: {
+        Args: {
+          _ip_address: string
+          _max_submissions?: number
+          _time_window?: unknown
+        }
+        Returns: boolean
+      }
       delete_old_verification_documents: { Args: never; Returns: undefined }
     }
     Enums: {
