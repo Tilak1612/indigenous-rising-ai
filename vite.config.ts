@@ -20,6 +20,25 @@ export default defineConfig(({ mode }) => ({
       brotliSize: true,
     }),
   ].filter(Boolean),
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-select'
+          ],
+          'form-vendor': ['react-hook-form', 'zod', '@hookform/resolvers'],
+          'query-vendor': ['@tanstack/react-query']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+    minify: 'terser'
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
