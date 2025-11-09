@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { OrganizationSchema } from './StructuredData';
 
 interface MetaTagsProps {
   title?: string;
@@ -53,6 +54,9 @@ const MetaTags = ({
       
       {/* Canonical */}
       <link rel="canonical" href={url} />
+      
+      {/* Structured Data */}
+      <OrganizationSchema />
     </Helmet>
   );
 };
