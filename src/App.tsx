@@ -13,6 +13,7 @@ import CanadianCompliance from "./pages/CanadianCompliance";
 import DataRights from "./pages/DataRights";
 import Unsubscribe from "./pages/Unsubscribe";
 import TrackRequest from "./pages/TrackRequest";
+import Contact from "./pages/Contact";
 import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/data-rights" element={<DataRights />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/track-request" element={<TrackRequest />} />
+            <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
