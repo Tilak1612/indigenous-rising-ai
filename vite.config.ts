@@ -37,7 +37,8 @@ export default defineConfig(({ mode }) => ({
       }
     },
     chunkSizeWarningLimit: 1000,
-    minify: 'terser'
+    minify: 'esbuild', // esbuild is faster and built-in (no extra dependency)
+    sourcemap: false
   },
   resolve: {
     alias: {
