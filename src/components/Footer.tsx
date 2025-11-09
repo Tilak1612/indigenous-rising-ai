@@ -87,6 +87,7 @@ const Footer = () => {
                   alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
                   className="h-16 w-auto"
                   loading="lazy"
+                  decoding="async"
                   width="200"
                   height="64"
                 />
