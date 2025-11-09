@@ -17,36 +17,39 @@ import Contact from "./pages/Contact";
 import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/accessibility" element={<AccessibilityStatement />} />
-            <Route path="/compliance" element={<CanadianCompliance />} />
-            <Route path="/data-rights" element={<DataRights />} />
-            <Route path="/unsubscribe" element={<Unsubscribe />} />
-            <Route path="/track-request" element={<TrackRequest />} />
-            <Route path="/contact" element={<Contact />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <AccessibilityToolbar />
-          <CookieConsent />
-          <ComplianceBanner />
-        </TooltipProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
-  </HelmetProvider>
+  <ErrorBoundary>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/accessibility" element={<AccessibilityStatement />} />
+              <Route path="/compliance" element={<CanadianCompliance />} />
+              <Route path="/data-rights" element={<DataRights />} />
+              <Route path="/unsubscribe" element={<Unsubscribe />} />
+              <Route path="/track-request" element={<TrackRequest />} />
+              <Route path="/contact" element={<Contact />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <AccessibilityToolbar />
+            <CookieConsent />
+            <ComplianceBanner />
+          </TooltipProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </HelmetProvider>
+  </ErrorBoundary>
 );
 
 export default App;
