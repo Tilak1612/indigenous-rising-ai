@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import logoFull from '@/assets/logo-full.png';
-import LanguageSelector from './LanguageSelector';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,7 +60,6 @@ const Navigation = () => {
                 </a>
               );
             })}
-            <LanguageSelector />
             <Button size="sm" variant="hero" className="ml-2">
               Get Started
             </Button>

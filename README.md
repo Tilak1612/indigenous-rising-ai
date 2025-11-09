@@ -4,6 +4,48 @@
 
 **URL**: https://lovable.dev/projects/9f734f43-7113-4d89-8e7f-88f44b6ccf24
 
+## Indigenous Rising AI - Business Support Platform
+
+A culturally respectful AI-powered platform supporting Indigenous entrepreneurs across Canada. Built with React, TypeScript, and Tailwind CSS.
+
+### Key Features
+- ✅ PIPEDA-compliant data privacy
+- ✅ Accessible WCAG 2.1 Level AA
+- ✅ Responsive design (mobile-first)
+- ✅ SEO optimized with structured data
+- ✅ Image optimization (WebP, lazy loading)
+- ✅ Error boundaries and loading states
+- ✅ Form validation with React Hook Form + Zod
+
+### Development Roadmap
+
+#### Phase 1 (Current - MVP Launch)
+- [x] Core business platform features
+- [x] Contact forms and data request handling
+- [x] Newsletter subscription
+- [x] PIPEDA compliance implementation
+- [x] Accessibility features (toolbar, keyboard nav)
+- [x] SEO optimization and meta tags
+- [x] Image optimization and responsive images
+
+#### Phase 2 (Coming Soon)
+- [ ] **Multi-language support** (English, French, Ojibwe, Cree, Inuktitut, Mi'kmaq)
+- [ ] User authentication and accounts
+- [ ] Business planning tools
+- [ ] Funding database and matching
+- [ ] AI-powered business insights
+- [ ] Community features and networking
+
+#### Phase 3 (Future)
+- [ ] Mobile app (React Native)
+- [ ] Advanced analytics dashboard
+- [ ] Integration with government portals
+- [ ] Elder wisdom knowledge base
+- [ ] Virtual mentorship programs
+
+### Note on Multi-Language Support
+The platform currently displays English content with cultural terms in Indigenous languages. Full multi-language translation is planned for Phase 2. The LanguageSelector component has been removed from navigation to avoid confusion until this feature is fully implemented.
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
