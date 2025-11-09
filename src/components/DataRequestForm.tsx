@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,50 +9,42 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { Shield, CheckCircle, Upload, FileText, X } from 'lucide-react';
-import { z } from 'zod';
+import { dataRequestSchema, type DataRequestFormData } from '@/lib/validation-schemas';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
 
-// PIPEDA-compliant validation schema
-const dataRequestSchema = z.object({
-  fullName: z
-    .string()
-    .trim()
-    .min(2, { message: "Full name must be at least 2 characters" })
-    .max(100, { message: "Full name must be less than 100 characters" }),
-  email: z
-    .string()
-    .trim()
-    .email({ message: "Please enter a valid email address" })
-    .max(255, { message: "Email must be less than 255 characters" }),
-  requestType: z.enum(['access', 'correction', 'deletion', 'portability', 'withdraw-consent']),
-  details: z
-    .string()
-    .trim()
-    .min(10, { message: "Please provide at least 10 characters of detail" })
-    .max(2000, { message: "Details must be less than 2000 characters" })
-});
-
 const DataRequestForm = () => {
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    requestType: 'access' as 'access' | 'correction' | 'deletion' | 'portability' | 'withdraw-consent',
-    details: '',
-    phone: ''
-  });
-  const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState('');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const { toast } = useToast();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch,
+    setValue,
+    reset,
+  } = useForm<DataRequestFormData>({
+    resolver: zodResolver(dataRequestSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      requestType: 'access',
+      details: '',
+      phone: '',
+    },
+  });
+
+  const requestType = watch('requestType');
+  const details = watch('details');
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
       toast({
         title: 'File too large',
@@ -60,7 +54,6 @@ const DataRequestForm = () => {
       return;
     }
 
-    // Validate file type
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
     if (!allowedTypes.includes(file.type)) {
       toast({
@@ -79,26 +72,10 @@ const DataRequestForm = () => {
     setUploadProgress(0);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate form data
-    const validation = dataRequestSchema.safeParse(formData);
-    if (!validation.success) {
-      toast({
-        title: 'Validation Error',
-        description: validation.error.errors[0].message,
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    
+  const onSubmit = async (data: DataRequestFormData) => {
     try {
       let fileUrl = null;
 
-      // Upload file if present
       if (uploadedFile) {
         const fileExt = uploadedFile.name.split('.').pop();
         const fileName = `${crypto.randomUUID()}.${fileExt}`;
@@ -119,35 +96,33 @@ const DataRequestForm = () => {
         setUploadProgress(100);
       }
 
-      // Get client info for PIPEDA compliance
       const userAgent = navigator.userAgent;
 
-      // Submit data request
-      const { data, error } = await supabase.functions.invoke('submit-data-request', {
+      const { data: response, error } = await supabase.functions.invoke('submit-data-request', {
         body: {
-          fullName: validation.data.fullName,
-          email: validation.data.email,
-          requestType: validation.data.requestType.replace('-', '_'),
-          details: validation.data.details,
-          phone: formData.phone,
+          fullName: data.fullName,
+          email: data.email,
+          requestType: data.requestType.replace('-', '_'),
+          details: data.details,
+          phone: data.phone,
           verificationMethod: uploadedFile ? 'document_upload' : 'email_only',
           userAgent,
         },
       });
 
       if (error) throw error;
+      if (response.error) throw new Error(response.error);
 
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      setTrackingNumber(data.tracking_number);
+      setTrackingNumber(response.tracking_number);
       setIsSubmitted(true);
       
       toast({
         title: 'Request Submitted Successfully',
-        description: `Your tracking number is ${data.tracking_number}. Please save it.`,
+        description: `Your tracking number is ${response.tracking_number}. Please save it.`,
       });
+
+      reset();
+      setUploadedFile(null);
     } catch (error: any) {
       console.error('Submission error:', error);
       toast({
@@ -156,7 +131,6 @@ const DataRequestForm = () => {
         variant: 'destructive',
       });
     } finally {
-      setIsLoading(false);
       setUploadProgress(0);
     }
   };
@@ -193,14 +167,6 @@ const DataRequestForm = () => {
               onClick={() => {
                 setIsSubmitted(false);
                 setTrackingNumber('');
-                setUploadedFile(null);
-                setFormData({
-                  fullName: '',
-                  email: '',
-                  requestType: 'access',
-                  details: '',
-                  phone: ''
-                });
               }}
             >
               Submit Another Request
@@ -242,7 +208,6 @@ const DataRequestForm = () => {
   return (
     <Card className="p-8 bg-card border-border">
       <div className="space-y-6">
-        {/* Header */}
         <div className="flex items-start gap-4">
           <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
             <Shield className="w-6 h-6 text-primary" />
@@ -258,51 +223,43 @@ const DataRequestForm = () => {
           </div>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Full Name */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name *</Label>
             <Input
               id="fullName"
-              type="text"
               placeholder="Enter your full legal name"
-              value={formData.fullName}
-              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              disabled={isLoading}
-              required
-              maxLength={100}
+              {...register('fullName')}
+              disabled={isSubmitting}
             />
+            {errors.fullName && (
+              <p className="text-sm text-destructive">{errors.fullName.message}</p>
+            )}
           </div>
 
-          {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email">Email Address *</Label>
             <Input
               id="email"
               type="email"
               placeholder="email@example.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              disabled={isLoading}
-              required
-              maxLength={255}
+              {...register('email')}
+              disabled={isSubmitting}
             />
+            {errors.email && (
+              <p className="text-sm text-destructive">{errors.email.message}</p>
+            )}
             <p className="text-xs text-muted-foreground">
               We will use this email to verify your identity and respond to your request
             </p>
           </div>
 
-          {/* Request Type */}
           <div className="space-y-3">
             <Label>Type of Request *</Label>
             <RadioGroup
-              value={formData.requestType}
-              onValueChange={(value) => setFormData({ 
-                ...formData, 
-                requestType: value as typeof formData.requestType 
-              })}
-              disabled={isLoading}
+              value={requestType}
+              onValueChange={(value) => setValue('requestType', value as DataRequestFormData['requestType'])}
+              disabled={isSubmitting}
             >
               {requestTypes.map((type) => (
                 <div key={type.value} className="flex items-start space-x-3 p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors">
@@ -318,45 +275,43 @@ const DataRequestForm = () => {
                 </div>
               ))}
             </RadioGroup>
+            {errors.requestType && (
+              <p className="text-sm text-destructive">{errors.requestType.message}</p>
+            )}
           </div>
 
-          {/* Phone (Optional) */}
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number (Optional)</Label>
             <Input
               id="phone"
               type="tel"
               placeholder="+1 (555) 123-4567"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              disabled={isLoading}
-              maxLength={20}
+              {...register('phone')}
+              disabled={isSubmitting}
             />
             <p className="text-xs text-muted-foreground">
               May be used for identity verification
             </p>
           </div>
 
-          {/* Details */}
           <div className="space-y-2">
             <Label htmlFor="details">Request Details *</Label>
             <Textarea
               id="details"
               placeholder="Please provide specific details about your request. For example, if requesting data correction, specify which information needs to be updated."
-              value={formData.details}
-              onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-              disabled={isLoading}
-              required
-              maxLength={2000}
+              {...register('details')}
+              disabled={isSubmitting}
               rows={5}
               className="resize-none"
             />
+            {errors.details && (
+              <p className="text-sm text-destructive">{errors.details.message}</p>
+            )}
             <p className="text-xs text-muted-foreground">
-              {formData.details.length}/2000 characters
+              {details.length}/2000 characters
             </p>
           </div>
 
-          {/* File Upload */}
           <div className="space-y-2">
             <Label htmlFor="verification-doc">Identity Verification Document (Optional)</Label>
             <div className="border-2 border-dashed border-border rounded-lg p-6">
@@ -375,7 +330,7 @@ const DataRequestForm = () => {
                       type="file"
                       accept="image/jpeg,image/png,image/jpg,application/pdf"
                       onChange={handleFileChange}
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                       className="hidden"
                     />
                   </div>
@@ -399,7 +354,7 @@ const DataRequestForm = () => {
                     variant="ghost"
                     size="sm"
                     onClick={removeFile}
-                    disabled={isLoading}
+                    disabled={isSubmitting}
                   >
                     <X className="w-4 h-4" />
                   </Button>
@@ -418,7 +373,6 @@ const DataRequestForm = () => {
             </div>
           </div>
 
-          {/* Identity Verification Notice */}
           <div className="bg-muted/50 border border-border rounded-lg p-4">
             <p className="text-sm text-muted-foreground">
               <strong className="text-foreground">Identity Verification:</strong> To protect your privacy, 
@@ -427,17 +381,15 @@ const DataRequestForm = () => {
             </p>
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
             className="w-full gradient-earth text-white font-bold"
-            disabled={isLoading}
+            disabled={isSubmitting}
             size="lg"
           >
-            {isLoading ? 'Submitting Request...' : 'Submit PIPEDA Request'}
+            {isSubmitting ? 'Submitting Request...' : 'Submit PIPEDA Request'}
           </Button>
 
-          {/* Footer Info */}
           <div className="space-y-2 text-center">
             <p className="text-xs text-muted-foreground">
               🔒 Your request will be processed securely and confidentially

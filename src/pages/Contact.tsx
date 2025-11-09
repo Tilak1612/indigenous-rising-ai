@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,33 +8,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Mail, MapPin, Phone } from 'lucide-react';
-
-const contactSchema = z.object({
-  full_name: z.string().min(2, 'Name must be at least 2 characters').max(100),
-  email: z.string().email('Invalid email address').max(255),
-  subject: z.string().min(3, 'Subject must be at least 3 characters').max(200),
-  phone: z.string().optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(2000),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
+import { contactSchema, type ContactFormData } from '@/lib/validation-schemas';
 
 const Contact = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
+    defaultValues: {
+      full_name: '',
+      email: '',
+      subject: '',
+      phone: '',
+      message: '',
+    },
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-
     try {
       const { error } = await supabase.functions.invoke('submit-contact', {
         body: data,
@@ -57,8 +50,6 @@ const Contact = () => {
         description: error.message || 'Failed to send message. Please try again.',
         variant: 'destructive',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -113,66 +104,67 @@ const Contact = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="full_name">Full Name *</Label>
                 <Input
                   id="full_name"
                   {...register('full_name')}
                   placeholder="John Doe"
-                  className="mt-1"
+                  disabled={isSubmitting}
                 />
                 {errors.full_name && (
-                  <p className="text-sm text-destructive mt-1">{errors.full_name.message}</p>
+                  <p className="text-sm text-destructive">{errors.full_name.message}</p>
                 )}
               </div>
 
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="email">Email *</Label>
                 <Input
                   id="email"
                   type="email"
                   {...register('email')}
                   placeholder="john@example.com"
-                  className="mt-1"
+                  disabled={isSubmitting}
                 />
                 {errors.email && (
-                  <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
+                  <p className="text-sm text-destructive">{errors.email.message}</p>
                 )}
               </div>
 
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="phone">Phone (Optional)</Label>
                 <Input
                   id="phone"
                   {...register('phone')}
                   placeholder="+1 (555) 123-4567"
-                  className="mt-1"
+                  disabled={isSubmitting}
                 />
               </div>
 
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="subject">Subject *</Label>
                 <Input
                   id="subject"
                   {...register('subject')}
                   placeholder="How can we help?"
-                  className="mt-1"
+                  disabled={isSubmitting}
                 />
                 {errors.subject && (
-                  <p className="text-sm text-destructive mt-1">{errors.subject.message}</p>
+                  <p className="text-sm text-destructive">{errors.subject.message}</p>
                 )}
               </div>
 
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="message">Message *</Label>
                 <Textarea
                   id="message"
                   {...register('message')}
                   placeholder="Tell us more about your inquiry..."
-                  className="mt-1 min-h-[150px]"
+                  className="min-h-[150px]"
+                  disabled={isSubmitting}
                 />
                 {errors.message && (
-                  <p className="text-sm text-destructive mt-1">{errors.message.message}</p>
+                  <p className="text-sm text-destructive">{errors.message.message}</p>
                 )}
               </div>
 

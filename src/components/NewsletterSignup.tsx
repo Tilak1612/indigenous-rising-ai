@@ -1,73 +1,54 @@
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
-import { z } from 'zod';
-
-// PIPEDA-compliant email validation schema
-const emailSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .email({ message: "Please enter a valid email address" })
-    .max(255, { message: "Email must be less than 255 characters" })
-});
+import { newsletterSchema, type NewsletterFormData } from '@/lib/validation-schemas';
+import { Label } from '@/components/ui/label';
 
 const NewsletterSignup = () => {
-  const [email, setEmail] = useState('');
-  const [consent, setConsent] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    watch,
+    setValue,
+    reset,
+  } = useForm<NewsletterFormData>({
+    resolver: zodResolver(newsletterSchema),
+    defaultValues: {
+      email: '',
+      consent: false,
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Validate email
-    const validation = emailSchema.safeParse({ email });
-    if (!validation.success) {
-      toast({
-        title: 'Invalid email',
-        description: validation.error.errors[0].message,
-        variant: 'destructive',
-      });
-      return;
-    }
+  const consent = watch('consent');
 
-    // PIPEDA: Explicit consent required
-    if (!consent) {
-      toast({
-        title: 'Consent required',
-        description: 'Please agree to receive communications to subscribe.',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    
+  const onSubmit = async (data: NewsletterFormData) => {
     try {
-      // Get client IP and user agent for CASL compliance
       const userAgent = navigator.userAgent;
-      
       const { supabase } = await import('@/integrations/supabase/client');
       
-      const { data, error } = await supabase.functions.invoke('newsletter-subscribe', {
+      const { data: response, error } = await supabase.functions.invoke('newsletter-subscribe', {
         body: {
-          email: validation.data.email,
+          email: data.email,
           userAgent,
         },
       });
 
       if (error) throw error;
 
-      setIsSubscribed(true);
+      setIsSubmitted(true);
       
-      const requiresConfirmation = data?.requiresConfirmation;
+      const requiresConfirmation = response?.requiresConfirmation;
       
       toast({
         title: 'Miigwech! Thank you!',
@@ -76,8 +57,7 @@ const NewsletterSignup = () => {
           : 'You\'ve been subscribed to funding alerts and updates.',
       });
       
-      setEmail('');
-      setConsent(false);
+      reset();
     } catch (error: any) {
       console.error('Newsletter subscription error:', error);
       toast({
@@ -85,12 +65,10 @@ const NewsletterSignup = () => {
         description: error.message || 'Please try again later.',
         variant: 'destructive',
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  if (isSubscribed) {
+  if (isSubmitted) {
     return (
       <Card className="p-6 bg-primary/5 border-primary/20 flex items-center justify-center gap-3">
         <CheckCircle className="w-6 h-6 text-primary" />
@@ -118,47 +96,52 @@ const NewsletterSignup = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="relative">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+          <div className="space-y-1">
             <Input
               type="email"
               placeholder="Enter your email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="pr-4 bg-background"
-              disabled={isLoading}
-              required
+              {...register('email')}
+              className="bg-background"
+              disabled={isSubmitting}
             />
+            {errors.email && (
+              <p className="text-xs text-destructive">{errors.email.message}</p>
+            )}
           </div>
           
-          {/* PIPEDA: Explicit consent requirement */}
-          <div className="flex items-start space-x-2 py-2">
-            <Checkbox
-              id="newsletter-consent"
-              checked={consent}
-              onCheckedChange={(checked) => setConsent(checked as boolean)}
-              disabled={isLoading}
-              className="mt-0.5"
-            />
-            <label
-              htmlFor="newsletter-consent"
-              className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
-            >
-              I consent to receive funding alerts, community updates, and promotional communications. 
-              I understand my information will be handled according to our{' '}
-              <Link to="/privacy" className="text-primary hover:underline font-medium">
-                Privacy Policy
-              </Link>
-              {' '}and I can unsubscribe at any time.
-            </label>
+          <div className="space-y-2">
+            <div className="flex items-start space-x-2 py-2">
+              <Checkbox
+                id="newsletter-consent"
+                checked={consent}
+                onCheckedChange={(checked) => setValue('consent', checked as boolean)}
+                disabled={isSubmitting}
+                className="mt-0.5"
+              />
+              <Label
+                htmlFor="newsletter-consent"
+                className="text-xs text-muted-foreground leading-relaxed cursor-pointer"
+              >
+                I consent to receive funding alerts, community updates, and promotional communications. 
+                I understand my information will be handled according to our{' '}
+                <Link to="/privacy" className="text-primary hover:underline font-medium">
+                  Privacy Policy
+                </Link>
+                {' '}and I can unsubscribe at any time.
+              </Label>
+            </div>
+            {errors.consent && (
+              <p className="text-xs text-destructive">{errors.consent.message}</p>
+            )}
           </div>
           
           <Button
             type="submit"
             className="w-full gradient-earth text-white font-bold"
-            disabled={isLoading || !consent}
+            disabled={isSubmitting || !consent}
           >
-            {isLoading ? 'Subscribing...' : 'Subscribe to Updates'}
+            {isSubmitting ? 'Subscribing...' : 'Subscribe to Updates'}
           </Button>
           
           <div className="space-y-1">
