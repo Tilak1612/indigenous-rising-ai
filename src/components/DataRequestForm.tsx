@@ -12,6 +12,7 @@ import { Shield, CheckCircle, Upload, FileText, X } from 'lucide-react';
 import { dataRequestSchema, type DataRequestFormData } from '@/lib/validation-schemas';
 import { supabase } from '@/integrations/supabase/client';
 import { Link } from 'react-router-dom';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 const DataRequestForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -384,10 +385,17 @@ const DataRequestForm = () => {
           <Button
             type="submit"
             className="w-full gradient-earth text-white font-bold"
-            disabled={isSubmitting}
+            disabled={isSubmitting || uploadProgress > 0}
             size="lg"
           >
-            {isSubmitting ? 'Submitting Request...' : 'Submit PIPEDA Request'}
+            {isSubmitting || uploadProgress > 0 ? (
+              <>
+                <LoadingSpinner size="sm" className="mr-2" />
+                {uploadProgress > 0 ? `Uploading... ${uploadProgress}%` : 'Submitting...'}
+              </>
+            ) : (
+              'Submit PIPEDA Request'
+            )}
           </Button>
 
           <div className="space-y-2 text-center">

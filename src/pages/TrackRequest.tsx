@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Search, Shield, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -158,7 +160,10 @@ const TrackRequest = () => {
                       className="gradient-earth text-white"
                     >
                       {isLoading ? (
-                        <Clock className="w-5 h-5 animate-spin" />
+                        <>
+                          <LoadingSpinner size="sm" className="mr-2" />
+                          Tracking...
+                        </>
                       ) : (
                         <>
                           <Search className="w-5 h-5 mr-2" />
@@ -175,7 +180,22 @@ const TrackRequest = () => {
             </Card>
 
             {/* Request Status */}
-            {requestInfo && (
+            {isLoading ? (
+              <Card className="p-8 space-y-6">
+                <div className="flex items-start justify-between">
+                  <div className="space-y-2">
+                    <Skeleton className="h-8 w-48" />
+                    <Skeleton className="h-4 w-32" />
+                  </div>
+                  <Skeleton className="h-6 w-6 rounded-full" />
+                </div>
+                <div className="grid gap-4">
+                  <Skeleton className="h-16 w-full rounded-lg" />
+                  <Skeleton className="h-16 w-full rounded-lg" />
+                  <Skeleton className="h-16 w-full rounded-lg" />
+                </div>
+              </Card>
+            ) : requestInfo ? (
               <Card className="p-8 space-y-6 animate-in fade-in slide-in-from-bottom-4">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
@@ -264,7 +284,7 @@ const TrackRequest = () => {
                   </p>
                 </div>
               </Card>
-            )}
+            ) : null}
 
             {/* Information Card */}
             <Card className="p-6 bg-primary/5 border-primary/20">

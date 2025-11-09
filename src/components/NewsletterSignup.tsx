@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 import { newsletterSchema, type NewsletterFormData } from '@/lib/validation-schemas';
 import { Label } from '@/components/ui/label';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 const NewsletterSignup = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -141,7 +142,14 @@ const NewsletterSignup = () => {
             className="w-full gradient-earth text-white font-bold"
             disabled={isSubmitting || !consent}
           >
-            {isSubmitting ? 'Subscribing...' : 'Subscribe to Updates'}
+            {isSubmitting ? (
+              <>
+                <LoadingSpinner size="sm" className="mr-2" />
+                Subscribing...
+              </>
+            ) : (
+              'Subscribe to Updates'
+            )}
           </Button>
           
           <div className="space-y-1">
