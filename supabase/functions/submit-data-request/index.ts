@@ -137,6 +137,15 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
+      // Server-side length validation
+      if (payload.email.length > 255 || payload.fullName.length > 100 || 
+          payload.details.length > 1000 || (payload.phone && payload.phone.length > 20)) {
+        return new Response(
+          JSON.stringify({ error: 'One or more fields exceed maximum length' }),
+          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(payload.email)) {
@@ -146,11 +155,11 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Validate request type
-      const validRequestTypes = ['access', 'correction', 'deletion', 'portability', 'consent_withdrawal', 'objection'];
-      if (!validRequestTypes.includes(payload.requestType)) {
+      // Validate request type with strict allowlist
+      const validRequestTypes = ['access', 'correction', 'deletion', 'portability', 'consent_withdrawal', 'objection'] as const;
+      if (!validRequestTypes.includes(payload.requestType as any)) {
         return new Response(
-          JSON.stringify({ error: 'Invalid request type' }),
+          JSON.stringify({ error: 'Invalid request type. Must be one of: access, correction, deletion, portability, consent_withdrawal, or objection' }),
           { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
         );
       }
@@ -260,10 +269,26 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
   } catch (error: any) {
-    console.error('Error in submit-data-request function:', error);
+    // Log full error details server-side for debugging
+    console.error('Data request error:', {
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Return sanitized error message to client
+    const isKnownError = error.message?.includes('rate limit') || 
+                         error.message?.includes('Invalid') ||
+                         error.message?.includes('not found');
+    
     return new Response(
-      JSON.stringify({ error: error.message || 'An unexpected error occurred' }),
-      { status: 500, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        error: isKnownError ? error.message : 'An error occurred processing your data request. Please try again or contact our privacy officer at privacy@indigenousrising.ai.'
+      }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' }
+      }
     );
   }
 };

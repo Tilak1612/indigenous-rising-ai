@@ -32,10 +32,20 @@ serve(async (req: Request) => {
 
     const { full_name, email, subject, phone, message }: ContactRequest = await req.json();
 
-    // Validate input
+    // Validate required fields
     if (!full_name || !email || !subject || !message) {
       return new Response(
         JSON.stringify({ error: 'Missing required fields' }),
+        { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Server-side length validation
+    if (full_name.length > 100 || email.length > 255 || 
+        subject.length > 200 || message.length > 2000 || 
+        (phone && phone.length > 20)) {
+      return new Response(
+        JSON.stringify({ error: 'One or more fields exceed maximum length' }),
         { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -122,11 +132,26 @@ serve(async (req: Request) => {
       JSON.stringify({ success: true, message: 'Contact form submitted successfully' }),
       { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
-    console.error('Error in submit-contact function:', error);
+  } catch (error: any) {
+    // Log full error details server-side for debugging
+    console.error('Contact form error:', {
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Return sanitized error message to client
+    const isKnownError = error.message?.includes('rate limit') || 
+                         error.message?.includes('Invalid');
+    
     return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
-      { status: 500, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        error: isKnownError ? error.message : 'An error occurred submitting your message. Please try again or contact support directly.'
+      }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' }
+      }
     );
   }
 });

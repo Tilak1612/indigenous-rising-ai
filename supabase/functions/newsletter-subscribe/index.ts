@@ -310,10 +310,27 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
   } catch (error: any) {
-    console.error('Error in newsletter-subscribe function:', error);
+    // Log full error details server-side for debugging
+    console.error('Newsletter subscription error:', {
+      message: error.message,
+      stack: error.stack,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Return sanitized error message to client
+    const isKnownError = error.message?.includes('rate limit') || 
+                         error.message?.includes('Invalid') ||
+                         error.message?.includes('already subscribed') ||
+                         error.message?.includes('confirmation email');
+    
     return new Response(
-      JSON.stringify({ error: error.message || 'An unexpected error occurred' }),
-      { status: 500, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        error: isKnownError ? error.message : 'An error occurred processing your subscription. Please try again or contact support.'
+      }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' }
+      }
     );
   }
 };
