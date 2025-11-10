@@ -26,6 +26,7 @@ const DataRights = lazy(() => import("./pages/DataRights"));
 const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const TrackRequest = lazy(() => import("./pages/TrackRequest"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Training = lazy(() => import("./pages/Training"));
 
 const queryClient = new QueryClient();
 
@@ -115,6 +116,14 @@ const App = () => (
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <Contact />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/training" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Training />
                   </Suspense>
                 } 
               />
