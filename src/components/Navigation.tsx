@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen } from 'lucide-react';
+import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import logoFull from '@/assets/logo-full.png';
+import { useAuth } from '@/hooks/useAuth';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const navItems = [
     { name: 'Features', href: '#features', icon: TrendingUp, isAnchor: true },
@@ -75,9 +78,30 @@ const Navigation = () => {
                 </Link>
               );
             })}
-            <Button size="sm" variant="hero" className="ml-2">
-              Get Started
-            </Button>
+            {user ? (
+              <div className="flex items-center space-x-2 ml-2">
+                <span className="text-sm text-muted-foreground">{user.email}</span>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  onClick={() => signOut()}
+                  className="flex items-center space-x-1"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </Button>
+              </div>
+            ) : (
+              <Button 
+                size="sm" 
+                variant="hero" 
+                className="ml-2 flex items-center space-x-1"
+                onClick={() => navigate('/auth')}
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Login</span>
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -130,9 +154,36 @@ const Navigation = () => {
               );
             })}
             <div className="pt-4 px-4">
-              <Button variant="hero" className="w-full">
-                Get Started
-              </Button>
+              {user ? (
+                <div className="space-y-2">
+                  <div className="text-sm text-center text-muted-foreground mb-2">
+                    {user.email}
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full flex items-center justify-center space-x-2"
+                    onClick={() => {
+                      signOut();
+                      setIsOpen(false);
+                    }}
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
+                  </Button>
+                </div>
+              ) : (
+                <Button 
+                  variant="hero" 
+                  className="w-full flex items-center justify-center space-x-2"
+                  onClick={() => {
+                    navigate('/auth');
+                    setIsOpen(false);
+                  }}
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Login</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>
