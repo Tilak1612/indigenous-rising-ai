@@ -1,5 +1,6 @@
 import requests
 import json
+import sys
 
 def test_check_subscription():
     """Test the check-subscription edge function"""
@@ -18,10 +19,11 @@ def test_check_subscription():
     
     print("Testing check-subscription endpoint...")
     print(f"URL: {url}")
+    print(f"Method: GET (no payload needed)")
     print("-" * 60)
     
     try:
-        # Make GET request (no body needed)
+        # IMPORTANT: Use GET, not POST. The endpoint doesn't accept a body.
         response = requests.get(url, headers=headers)
         
         print(f"Status Code: {response.status_code}")
