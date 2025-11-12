@@ -89,11 +89,11 @@ export default function Auth() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Admin Portal</CardTitle>
-            <CardDescription>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/30 to-primary/10 p-4">
+        <Card className="w-full max-w-md shadow-2xl border-2">
+          <CardHeader className="text-center space-y-2">
+            <CardTitle className="text-3xl font-bold text-foreground">Admin Portal</CardTitle>
+            <CardDescription className="text-base text-muted-foreground">
               Sign in to manage Indigenous Rising AI
             </CardDescription>
           </CardHeader>
@@ -109,9 +109,9 @@ export default function Auth() {
               </TabsList>
 
               <TabsContent value="login">
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
+                    <Label htmlFor="login-email" className="text-sm font-semibold">Email</Label>
                     <Input
                       id="login-email"
                       type="email"
@@ -119,10 +119,11 @@ export default function Auth() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      className="h-11"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="login-password">Password</Label>
+                    <Label htmlFor="login-password" className="text-sm font-semibold">Password</Label>
                     <Input
                       id="login-password"
                       type="password"
@@ -130,6 +131,7 @@ export default function Auth() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      className="h-11"
                     />
                   </div>
                   {error && (
@@ -142,16 +144,16 @@ export default function Auth() {
                       <AlertDescription>{success}</AlertDescription>
                     </Alert>
                   )}
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 text-base font-semibold" disabled={loading}>
                     {loading ? 'Signing in...' : 'Sign In'}
                   </Button>
                 </form>
               </TabsContent>
 
               <TabsContent value="signup">
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
+                    <Label htmlFor="signup-name" className="text-sm font-semibold">Full Name</Label>
                     <Input
                       id="signup-name"
                       type="text"
@@ -159,10 +161,11 @@ export default function Auth() {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       required
+                      className="h-11"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
+                    <Label htmlFor="signup-email" className="text-sm font-semibold">Email</Label>
                     <Input
                       id="signup-email"
                       type="email"
@@ -170,10 +173,11 @@ export default function Auth() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
+                      className="h-11"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
+                    <Label htmlFor="signup-password" className="text-sm font-semibold">Password</Label>
                     <Input
                       id="signup-password"
                       type="password"
@@ -181,6 +185,7 @@ export default function Auth() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
+                      className="h-11"
                     />
                   </div>
                   {error && (
@@ -193,7 +198,7 @@ export default function Auth() {
                       <AlertDescription>{success}</AlertDescription>
                     </Alert>
                   )}
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full h-11 text-base font-semibold" disabled={loading}>
                     {loading ? 'Creating account...' : 'Sign Up'}
                   </Button>
                 </form>
