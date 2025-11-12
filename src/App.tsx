@@ -27,6 +27,7 @@ const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const TrackRequest = lazy(() => import("./pages/TrackRequest"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Training = lazy(() => import("./pages/Training"));
+const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 
 const queryClient = new QueryClient();
 
@@ -141,6 +142,16 @@ const App = () => (
                   <Suspense fallback={<LoadingFallback />}>
                     <ProtectedRoute requireAdmin>
                       <Admin />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/test-subscription" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <TestSubscription />
                     </ProtectedRoute>
                   </Suspense>
                 } 
