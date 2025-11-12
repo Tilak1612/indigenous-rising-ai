@@ -116,7 +116,7 @@ const PricingSection = () => {
       price: "$49",
       period: "per month",
       popular: true,
-      priceId: "price_professional_monthly", // Replace with your actual Stripe price ID
+      priceId: "price_1SSRqgS23MQcIdnrGDAHGF4C", // $49/month monthly subscription
       features: [
         "Everything in Maadaadiziwin",
         "AI-powered funding navigator",
