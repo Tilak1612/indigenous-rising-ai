@@ -42,6 +42,15 @@ serve(async (req) => {
 
     console.log('[CREATE-CHECKOUT] User authenticated:', user.email);
 
+    // Get priceId from request body
+    const { priceId } = await req.json();
+    
+    if (!priceId) {
+      throw new Error('Price ID is required');
+    }
+
+    console.log('[CREATE-CHECKOUT] Price ID:', priceId);
+
     const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
       apiVersion: '2025-08-27.basil',
     });
@@ -57,20 +66,20 @@ serve(async (req) => {
       console.log('[CREATE-CHECKOUT] No existing customer, will create during checkout');
     }
 
-    // Create checkout session for training program
+    // Create checkout session
     const origin = req.headers.get('origin') || 'http://localhost:8080';
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
       line_items: [
         {
-          price: 'price_1SRih0S23MQcIdnrW7a4jrLi', // Training Program price ID
+          price: priceId,
           quantity: 1,
         },
       ],
       mode: 'subscription',
-      success_url: `${origin}/training?success=true`,
-      cancel_url: `${origin}/training?canceled=true`,
+      success_url: `${origin}/?checkout=success`,
+      cancel_url: `${origin}/?checkout=canceled`,
     });
 
     console.log('[CREATE-CHECKOUT] Checkout session created:', session.id);

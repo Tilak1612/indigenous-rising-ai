@@ -2,8 +2,86 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Sparkles, Crown, Building, ArrowRight } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PricingSection = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const handleCheckout = async (planName: string, priceId?: string) => {
+    // Handle free plan
+    if (planName === "Maadaadiziwin") {
+      if (!user) {
+        toast.error("Please sign in to start with the free plan");
+        navigate('/auth');
+        return;
+      }
+      toast.success("You're already on the free plan!");
+      return;
+    }
+
+    // Handle enterprise plan (contact sales)
+    if (planName === "Gimishoomis") {
+      navigate('/contact');
+      toast.info("Redirecting to contact form...");
+      return;
+    }
+
+    // Handle paid plans
+    if (!user) {
+      toast.error("Please sign in to subscribe");
+      navigate('/auth');
+      return;
+    }
+
+    if (!priceId) {
+      toast.error("Price information not available");
+      return;
+    }
+
+    setLoadingPlan(planName);
+
+    try {
+      const { data: sessionData, error } = await supabase.auth.getSession();
+      
+      if (error || !sessionData.session) {
+        toast.error("Authentication error. Please sign in again.");
+        navigate('/auth');
+        return;
+      }
+
+      const { data, error: checkoutError } = await supabase.functions.invoke('create-checkout', {
+        body: { priceId },
+        headers: {
+          Authorization: `Bearer ${sessionData.session.access_token}`,
+        },
+      });
+
+      if (checkoutError) {
+        console.error('Checkout error:', checkoutError);
+        toast.error("Failed to create checkout session");
+        return;
+      }
+
+      if (data?.url) {
+        // Open Stripe checkout in new tab
+        window.open(data.url, '_blank');
+        toast.success("Opening Stripe checkout...");
+      } else {
+        toast.error("No checkout URL received");
+      }
+    } catch (error) {
+      console.error('Error creating checkout:', error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
   const plans = [
     {
       name: "Maadaadiziwin",
@@ -12,6 +90,7 @@ const PricingSection = () => {
       price: "Free",
       period: "Forever",
       popular: false,
+      priceId: undefined,
       features: [
         "Basic business planning tools",
         "Community resource directory",
@@ -37,6 +116,7 @@ const PricingSection = () => {
       price: "$49",
       period: "per month",
       popular: true,
+      priceId: "price_professional_monthly", // Replace with your actual Stripe price ID
       features: [
         "Everything in Maadaadiziwin",
         "AI-powered funding navigator",
@@ -64,6 +144,7 @@ const PricingSection = () => {
       price: "Custom",
       period: "Contact us",
       popular: false,
+      priceId: undefined, // No price ID for enterprise - redirects to contact
       features: [
         "Everything in Ogichidaakwe",
         "Dedicated account manager",
@@ -210,8 +291,10 @@ const PricingSection = () => {
                     variant={plan.popular ? "hero" : "outline"} 
                     className="w-full group/btn"
                     size="lg"
+                    onClick={() => handleCheckout(plan.name, plan.priceId)}
+                    disabled={loadingPlan === plan.name}
                   >
-                    {plan.ctaText}
+                    {loadingPlan === plan.name ? "Loading..." : plan.ctaText}
                     <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
                 </CardFooter>
