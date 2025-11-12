@@ -93,12 +93,12 @@ const Navigation = () => {
               </div>
             ) : (
               <Button 
-                size="sm" 
+                size="lg" 
                 variant="hero" 
-                className="ml-2 flex items-center space-x-1"
+                className="ml-2 flex items-center space-x-2 font-bold text-base px-6 shadow-lg hover:shadow-xl transition-all"
                 onClick={() => navigate('/auth')}
               >
-                <LogIn className="w-4 h-4" />
+                <LogIn className="w-5 h-5" />
                 <span>Login</span>
               </Button>
             )}
@@ -174,13 +174,14 @@ const Navigation = () => {
               ) : (
                 <Button 
                   variant="hero" 
-                  className="w-full flex items-center justify-center space-x-2"
+                  size="lg"
+                  className="w-full flex items-center justify-center space-x-2 font-bold text-base shadow-lg"
                   onClick={() => {
                     navigate('/auth');
                     setIsOpen(false);
                   }}
                 >
-                  <LogIn className="w-4 h-4" />
+                  <LogIn className="w-5 h-5" />
                   <span>Login</span>
                 </Button>
               )}
