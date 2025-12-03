@@ -155,7 +155,9 @@ const CookiePolicy = () => {
         url="https://indigenousrising.ai/cookies"
       />
       <Navigation />
-      <Breadcrumbs className="container mx-auto" />
+      <div className="pt-16">
+        <Breadcrumbs className="container mx-auto bg-muted border-b" />
+      </div>
 
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
