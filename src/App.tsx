@@ -28,6 +28,7 @@ const TrackRequest = lazy(() => import("./pages/TrackRequest"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Training = lazy(() => import("./pages/Training"));
 const TestSubscription = lazy(() => import("./pages/TestSubscription"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 
 const queryClient = new QueryClient();
 
@@ -153,6 +154,14 @@ const App = () => (
                     <ProtectedRoute>
                       <TestSubscription />
                     </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/cookies" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <CookiePolicy />
                   </Suspense>
                 } 
               />

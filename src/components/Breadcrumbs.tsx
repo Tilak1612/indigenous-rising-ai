@@ -11,6 +11,7 @@ const routeNames: Record<string, string> = {
   '/': 'Home',
   '/privacy': 'Privacy Policy',
   '/terms': 'Terms of Service',
+  '/cookies': 'Cookie Policy',
   '/accessibility': 'Accessibility',
   '/compliance': 'Canadian Compliance',
   '/data-rights': 'Data Rights',
