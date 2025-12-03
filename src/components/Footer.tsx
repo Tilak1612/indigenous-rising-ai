@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
 import { 
   Users, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
@@ -13,10 +14,10 @@ const Footer = () => {
       title: "Platform",
       titleTranslation: "Mazina'igan",
       links: [
-        { name: "Business Tools", href: "#business-tools" },
+        { name: "Business Tools", href: "#features" },
         { name: "Funding Navigator", href: "#funding" },
-        { name: "Impact Tracker", href: "#community" },
-        { name: "Training Programs", href: "#training" },
+        { name: "Impact Tracker", href: "#testimonials" },
+        { name: "Training Programs", href: "/training" },
         { name: "Partnerships", href: "#partnerships" },
         { name: "Pricing", href: "#pricing" }
       ]
@@ -25,24 +26,24 @@ const Footer = () => {
       title: "Resources",
       titleTranslation: "Naadamaaganan",
       links: [
-        { name: "Getting Started Guide", href: "/guide" },
-        { name: "Cultural Guidelines", href: "/cultural-guidelines" },
-        { name: "Data Sovereignty", href: "/data-sovereignty" },
-        { name: "Success Stories", href: "/stories" },
-        { name: "Community Forum", href: "/forum" },
-        { name: "Help Center", href: "/help" }
+        { name: "Training Programs", href: "/training" },
+        { name: "Data Rights Guide", href: "/data-rights" },
+        { name: "Track Your Request", href: "/track-request" },
+        { name: "Contact Support", href: "/contact" },
+        { name: "FAQ", href: "#faq" },
+        { name: "Community Forum", href: "#testimonials" }
       ]
     },
     {
       title: "Organization",
       titleTranslation: "Mamashkiing",
       links: [
-        { name: "About Us", href: "/about" },
-        { name: "Our Mission", href: "/mission" },
-        { name: "Leadership Team", href: "/team" },
-        { name: "Cultural Advisors", href: "/advisors" },
-        { name: "Careers", href: "/careers" },
-        { name: "News & Updates", href: "/news" }
+        { name: "About Us", href: "#hero" },
+        { name: "Our Mission", href: "#features" },
+        { name: "Cultural Partners", href: "#partnerships" },
+        { name: "Success Stories", href: "#testimonials" },
+        { name: "Contact Us", href: "/contact" },
+        { name: "Admin Portal", href: "/auth" }
       ]
     },
     {
@@ -82,15 +83,17 @@ const Footer = () => {
             <div className="space-y-6">
               {/* Logo and tagline */}
               <div className="space-y-2">
-                <img 
-                  src={logoFull} 
-                  alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
-                  className="h-16 w-auto"
-                  loading="lazy"
-                  decoding="async"
-                  width="200"
-                  height="64"
-                />
+                <Link to="/">
+                  <img 
+                    src={logoFull} 
+                    alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
+                    className="h-16 w-auto hover:opacity-80 transition-opacity"
+                    loading="lazy"
+                    decoding="async"
+                    width={200}
+                    height={64}
+                  />
+                </Link>
               </div>
 
               <p className="text-muted-foreground leading-relaxed max-w-md">
@@ -191,19 +194,26 @@ const Footer = () => {
                 <ul className="space-y-3">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-smooth cursor-pointer"
-                      onClick={(e) => {
-                        if (link.href.startsWith('#')) {
-                          e.preventDefault();
-                          const element = document.querySelector(link.href);
-                          element?.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
-                    >
-                      {link.name}
-                    </a>
+                      {link.href.startsWith('#') ? (
+                        <a
+                          href={link.href}
+                          className="text-sm text-muted-foreground hover:text-primary transition-smooth cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const element = document.querySelector(link.href);
+                            element?.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                        >
+                          {link.name}
+                        </a>
+                      ) : (
+                        <Link
+                          to={link.href}
+                          className="text-sm text-muted-foreground hover:text-primary transition-smooth"
+                        >
+                          {link.name}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>

@@ -169,7 +169,15 @@ const FundingSection = () => {
                           {daysLeft} days left
                         </span>
                       </div>
-                      <Button size="sm" variant="outline" className="hover:bg-primary hover:text-primary-foreground">
+                      <Button 
+                        size="sm" 
+                        variant="outline" 
+                        className="hover:bg-primary hover:text-primary-foreground"
+                        onClick={() => {
+                          const element = document.querySelector('#pricing');
+                          element?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                      >
                         Apply Now
                       </Button>
                     </div>

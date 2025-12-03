@@ -2,8 +2,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Users, Award, Clock, ArrowRight, CheckCircle, Star, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const TrainingSection = () => {
+  const navigate = useNavigate();
   const programs = [
     {
       title: "Indigenous Business Fundamentals",
@@ -222,12 +224,21 @@ const TrainingSection = () => {
                   </div>
                 </CardContent>
 
-                <CardFooter className="space-y-3">
-                  <Button variant="hero" className="w-full group/btn">
+                <CardFooter className="flex-col space-y-3">
+                  <Button 
+                    variant="hero" 
+                    className="w-full group/btn"
+                    onClick={() => navigate('/training')}
+                  >
                     Enroll Now
                     <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
-                  <Button variant="outline" size="sm" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => navigate('/training')}
+                  >
                     View Curriculum
                   </Button>
                 </CardFooter>
@@ -260,7 +271,13 @@ const TrainingSection = () => {
                     <div><strong>Requirements:</strong> {cert.requirements}</div>
                     <div><strong>Duration:</strong> {cert.duration}</div>
                   </div>
-                  <Button variant="outline" size="sm">Learn More</Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => navigate('/training')}
+                  >
+                    Learn More
+                  </Button>
                 </div>
               ))}
             </CardContent>
@@ -291,7 +308,14 @@ const TrainingSection = () => {
                     </div>
                     <Badge variant="outline" className="text-xs">{event.format}</Badge>
                   </div>
-                  <Button variant="outline" size="sm" className="w-full">Register Free</Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => navigate('/contact')}
+                  >
+                    Register Free
+                  </Button>
                 </div>
               ))}
             </CardContent>

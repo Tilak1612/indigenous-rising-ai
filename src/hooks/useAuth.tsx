@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut();
     setIsAdmin(false);
     setIsTeamMember(false);
-    navigate('/auth');
+    navigate('/');
   };
 
   return (

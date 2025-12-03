@@ -111,7 +111,9 @@ const Contact = () => {
               <CardTitle>Email</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">info@example.com</p>
+              <a href="mailto:hello@indigenousrising.ai" className="text-muted-foreground hover:text-primary transition-smooth">
+                hello@indigenousrising.ai
+              </a>
             </CardContent>
           </Card>
 
@@ -121,7 +123,9 @@ const Contact = () => {
               <CardTitle>Phone</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">+1 (555) 123-4567</p>
+              <a href="tel:+18004634436" className="text-muted-foreground hover:text-primary transition-smooth">
+                1-800-INDIGENOUS (1-800-463-4436)
+              </a>
             </CardContent>
           </Card>
 
@@ -131,7 +135,7 @@ const Contact = () => {
               <CardTitle>Location</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground">123 Main St, City, Country</p>
+              <p className="text-muted-foreground">Traditional Territory of the Anishinaabe, Toronto, ON</p>
             </CardContent>
           </Card>
         </div>

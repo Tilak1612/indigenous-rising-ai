@@ -330,7 +330,16 @@ const PricingSection = () => {
                 </CardHeader>
                 <CardFooter className="flex items-center justify-between">
                   <span className="font-semibold text-foreground">{addon.price}</span>
-                  <Button variant="outline" size="sm">Add On</Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      const element = document.querySelector('#pricing');
+                      element?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Add On
+                  </Button>
                 </CardFooter>
               </Card>
             ))}
