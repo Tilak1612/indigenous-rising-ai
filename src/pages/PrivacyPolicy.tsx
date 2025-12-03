@@ -1,40 +1,24 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Card } from '@/components/ui/card';
 import { Shield, Eye, Lock, FileText, AlertTriangle, Mail } from 'lucide-react';
+import MetaTags from '../components/MetaTags';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const PrivacyPolicy: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Privacy Policy - Indigenous Rising AI</title>
-        <meta name="description" content="Our commitment to protecting your privacy in accordance with Canadian privacy laws, including PIPEDA. Learn how we collect, use, and protect your personal information." />
-        <meta name="robots" content="index, follow" />
-        
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/privacy" />
-        <meta property="og:title" content="Privacy Policy - Indigenous Rising AI" />
-        <meta property="og:description" content="PIPEDA-compliant privacy policy for Indigenous Rising AI. Your data rights and protection." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-privacy.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        
-        {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://indigenousrising.ai/privacy" />
-        <meta name="twitter:title" content="Privacy Policy - Indigenous Rising AI" />
-        <meta name="twitter:description" content="PIPEDA-compliant privacy policy for Indigenous Rising AI." />
-        <meta name="twitter:image" content="https://indigenousrising.ai/og-privacy.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://indigenousrising.ai/privacy" />
-      </Helmet>
+      <MetaTags
+        title="Privacy Policy | PIPEDA Compliant | Indigenous Rising AI"
+        description="Our commitment to protecting your privacy in accordance with Canadian privacy laws, including PIPEDA. Learn how we collect, use, and protect your personal information."
+        url="https://indigenousrising.ai/privacy"
+        ogImage="https://indigenousrising.ai/og-privacy.jpg"
+      />
       <Navigation />
+      <Breadcrumbs className="container mx-auto" />
       
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">

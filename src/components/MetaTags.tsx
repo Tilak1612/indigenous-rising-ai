@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { StructuredData } from './StructuredData';
 
 interface MetaTagsProps {
   title?: string;
@@ -8,43 +9,22 @@ interface MetaTagsProps {
   twitterImage?: string;
   url?: string;
   type?: string;
+  isHomePage?: boolean;
+  faqs?: { question: string; answer: string }[];
 }
 
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Indigenous Rising AI",
-  "description": "AI-powered business support platform for Indigenous entrepreneurs in Canada",
-  "url": "https://indigenousrising.ai",
-  "logo": "https://indigenousrising.ai/logo.png",
-  "foundingDate": "2025",
-  "founders": [{
-    "@type": "Person",
-    "name": "[Founder Name]"
-  }],
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "CA"
-  },
-  "sameAs": [
-    "[LinkedIn URL]",
-    "[Twitter URL]"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "Customer Support",
-    "email": "support@indigenousrising.ai"
-  }
-};
+const BASE_URL = 'https://indigenousrising.ai';
 
 const MetaTags = ({
   title = 'Indigenous Rising AI - Business Support Platform',
   description = 'Culturally respectful AI-powered platform supporting Indigenous entrepreneurs across Canada. Harmonizing traditional knowledge with modern business tools while honoring data sovereignty principles.',
   keywords = 'Indigenous business, OCAP, First Nations entrepreneurship, Aboriginal business support, Indigenous AI, business funding, NACCA, Canadian Indigenous business, traditional knowledge, data sovereignty',
-  ogImage = 'https://indigenousrising.ai/og-home.jpg',
-  twitterImage = 'https://indigenousrising.ai/og-home.jpg',
-  url = 'https://indigenousrising.ai',
-  type = 'website'
+  ogImage = `${BASE_URL}/og-home.jpg`,
+  twitterImage = `${BASE_URL}/og-home.jpg`,
+  url = BASE_URL,
+  type = 'website',
+  isHomePage = false,
+  faqs
 }: MetaTagsProps) => {
   return (
     <>
@@ -74,23 +54,28 @@ const MetaTags = ({
         <meta name="twitter:site" content="@indigenous_ai" />
         
         {/* Additional SEO */}
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="7 days" />
         <meta name="author" content="Indigenous Rising AI" />
         
-        {/* Geo Tags */}
+        {/* Geo Tags for Canadian focus */}
         <meta name="geo.region" content="CA" />
         <meta name="geo.placename" content="Canada" />
         
         {/* Canonical */}
         <link rel="canonical" href={url} />
+        
+        {/* Alternate languages */}
+        <link rel="alternate" hrefLang="en-ca" href={url} />
+        <link rel="alternate" hrefLang="x-default" href={url} />
       </Helmet>
       
-      {/* Structured Data - Outside Helmet */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      {/* Structured Data */}
+      <StructuredData 
+        type={isHomePage ? 'home' : 'page'}
+        pageData={!isHomePage ? { name: title, description, url } : undefined}
+        faqs={faqs}
       />
     </>
   );
