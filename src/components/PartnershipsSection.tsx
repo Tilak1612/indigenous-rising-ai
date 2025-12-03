@@ -2,8 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Building, HandHeart, Shield, Globe, ArrowRight, Users, Target } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const PartnershipsSection = () => {
+  const navigate = useNavigate();
   const mainPartners = [
     {
       name: "NACCA",
@@ -150,7 +152,11 @@ const PartnershipsSection = () => {
                     </ul>
                   </div>
                   
-                  <Button variant="outline" className="w-full group/btn">
+                  <Button 
+                    variant="outline" 
+                    className="w-full group/btn"
+                    onClick={() => navigate('/contact')}
+                  >
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                   </Button>
@@ -263,7 +269,12 @@ const PartnershipsSection = () => {
             We're always seeking meaningful partnerships that advance Indigenous economic sovereignty 
             while respecting cultural values and data sovereignty principles.
           </p>
-          <Button variant="hero" size="lg" className="group">
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="group"
+            onClick={() => navigate('/contact')}
+          >
             Explore Partnership Opportunities
             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
