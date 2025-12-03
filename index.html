@@ -24,10 +24,17 @@
     <meta name="twitter:site" content="@indigenous_ai" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
     
-    <!-- Google Fonts for better readability -->
+    <!-- Preconnect to critical origins for faster resource loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="dns-prefetch" href="https://fsqjgexjkjicwlzcgweu.supabase.co">
+    
+    <!-- Preload critical hero image -->
+    <link rel="preload" as="image" href="/hero-image-800.webp" type="image/webp" media="(max-width: 1024px)">
+    <link rel="preload" as="image" href="/hero-image-1200.webp" type="image/webp" media="(min-width: 1025px)">
+    
+    <!-- Google Fonts with font-display: swap for better LCP -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
   </head>
 
   <body>
