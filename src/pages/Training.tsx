@@ -142,7 +142,9 @@ const Training = () => {
       />
 
       <Navigation />
-      <Breadcrumbs className="container mx-auto px-4 pt-4" />
+      <div className="pt-16">
+        <Breadcrumbs className="container mx-auto bg-muted border-b" />
+      </div>
 
       <main className="min-h-screen bg-background">
         {/* Hero Section */}

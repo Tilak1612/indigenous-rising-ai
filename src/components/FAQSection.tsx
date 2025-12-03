@@ -6,6 +6,7 @@ import {
 } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
 import { HelpCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 
 const FAQSection = () => {
   const faqs = [
@@ -23,7 +24,7 @@ const FAQSection = () => {
     },
     {
       question: 'What languages are supported on the platform?',
-      answer: 'We currently support English, French, Anishinaabemowin (Ojibwe), ᓀᐦᐃᔭᐍᐏᐣ (Cree), ᐃᓄᒃᑎᑐᑦ (Inuktitut), and Mi\'kmaw. We are continuously working with language keepers to add more Indigenous languages and improve translation accuracy.'
+      answer: "We currently support English, French, Anishinaabemowin (Ojibwe), ᓀᐦᐃᔭᐍᐏᐣ (Cree), ᐃᓄᒃᑎᑐᑦ (Inuktitut), and Mi'kmaw. We are continuously working with language keepers to add more Indigenous languages and improve translation accuracy."
     },
     {
       question: 'How do I access funding opportunities?',
@@ -47,12 +48,31 @@ const FAQSection = () => {
     },
     {
       question: 'What if I need to cancel my subscription?',
-      answer: 'You can cancel anytime, no questions asked. Your data remains yours, and you can export all information before canceling. Free accounts never expire. We believe in earning your trust every month - if we\'re not providing value, we don\'t deserve your business.'
+      answer: "You can cancel anytime, no questions asked. Your data remains yours, and you can export all information before canceling. Free accounts never expire. We believe in earning your trust every month - if we're not providing value, we don't deserve your business."
     }
   ];
 
+  // Generate FAQ Schema for SEO
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
-    <section className="py-20 bg-muted/30">
+    <section id="faq" className="py-20 bg-muted/30" aria-labelledby="faq-heading">
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(faqSchema)}
+        </script>
+      </Helmet>
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -62,7 +82,7 @@ const FAQSection = () => {
               <span className="text-sm font-bold text-primary">Frequently Asked Questions</span>
             </div>
             
-            <h2 className="font-display text-4xl md:text-5xl font-black text-foreground mb-4">
+            <h2 id="faq-heading" className="font-display text-4xl md:text-5xl font-black text-foreground mb-4">
               Your Questions
               <span className="block gradient-earth bg-clip-text text-transparent">
                 Answered

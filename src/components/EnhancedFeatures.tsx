@@ -92,7 +92,7 @@ const EnhancedFeatures = () => {
   ];
 
   return (
-    <section id="features" className="py-20 bg-muted/30">
+    <section id="features" className="py-20 bg-muted/30" aria-labelledby="features-heading">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -100,7 +100,7 @@ const EnhancedFeatures = () => {
             <Badge className="mb-6 bg-primary/10 text-primary border-primary/20 px-4 py-2">
               Comprehensive Support for Indigenous Innovation
             </Badge>
-            <h2 className="font-display text-4xl md:text-5xl font-black text-foreground mb-6">
+            <h2 id="features-heading" className="font-display text-4xl md:text-5xl font-black text-foreground mb-6">
               Platform Features Built on
               <span className="block gradient-earth bg-clip-text text-transparent">
                 Respect & Traditional Knowledge

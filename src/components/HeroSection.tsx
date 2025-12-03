@@ -6,7 +6,11 @@ import CountUpStats from './CountUpStats';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center">
+    <section 
+      id="hero" 
+      className="relative min-h-screen flex items-center justify-center"
+      aria-label="Welcome to Indigenous Rising AI"
+    >
       {/* Responsive background image with WebP */}
       <picture className="absolute inset-0">
         <source

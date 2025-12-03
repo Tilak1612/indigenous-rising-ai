@@ -16,9 +16,11 @@ const PrivacyPolicy: React.FC = () => {
         ogImage="https://indigenousrising.ai/og-privacy.jpg"
       />
       <Navigation />
-      <Breadcrumbs className="container mx-auto" />
       
-      <main className="container mx-auto px-4 py-8">
+      <div className="pt-16">
+        <Breadcrumbs className="container mx-auto bg-muted border-b" />
+        
+        <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
@@ -243,6 +245,7 @@ const PrivacyPolicy: React.FC = () => {
           </Card>
         </div>
       </main>
+      </div>
       
       <Footer />
     </div>
