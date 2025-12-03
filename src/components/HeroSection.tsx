@@ -11,7 +11,7 @@ const HeroSection = () => {
       className="relative min-h-screen flex items-center justify-center"
       aria-label="Welcome to Indigenous Rising AI"
     >
-      {/* Responsive background image with WebP */}
+      {/* Responsive background image with WebP - LCP optimized */}
       <picture className="absolute inset-0">
         <source
           srcSet="/hero-image-400.webp 400w, /hero-image-800.webp 800w, /hero-image-1200.webp 1200w, /hero-image-1920.webp 1920w"
@@ -22,7 +22,11 @@ const HeroSection = () => {
           src="/hero-image-1200.webp"
           alt="Indigenous entrepreneurs collaborating with technology, representing community-driven innovation and business growth"
           className="w-full h-full object-cover"
+          loading="eager"
           fetchPriority="high"
+          decoding="async"
+          width={1920}
+          height={1080}
         />
       </picture>
       <div className="absolute inset-0 bg-background/85 backdrop-blur-[3px]" />
