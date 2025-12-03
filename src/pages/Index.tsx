@@ -22,8 +22,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <MetaTags 
+        title="Indigenous Rising AI | Business Support for Indigenous Entrepreneurs in Canada"
+        description="AI-powered platform supporting Indigenous entrepreneurs across Canada. Access funding navigation, business analytics, training programs, and culturally respectful tools honoring OCAP principles."
         ogImage="https://indigenousrising.ai/og-home.jpg"
         twitterImage="https://indigenousrising.ai/og-home.jpg"
+        isHomePage={true}
       />
       <ProgressBar />
       {/* Skip to main content link for accessibility */}

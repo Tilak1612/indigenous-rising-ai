@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -22,6 +21,8 @@ import {
 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import MetaTags from '@/components/MetaTags';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 const Training = () => {
   const navigate = useNavigate();
@@ -134,12 +135,14 @@ const Training = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Training Program - Indigenous Rising AI</title>
-        <meta name="description" content="Join our comprehensive AI training program designed for Indigenous communities. Learn AI ethics, data sovereignty, and practical implementation." />
-      </Helmet>
+      <MetaTags
+        title="AI Training Program | Indigenous Rising AI"
+        description="Join our comprehensive AI training program designed for Indigenous communities. Learn AI ethics, data sovereignty, and practical implementation."
+        url="https://indigenousrising.ai/training"
+      />
 
       <Navigation />
+      <Breadcrumbs className="container mx-auto px-4 pt-4" />
 
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
