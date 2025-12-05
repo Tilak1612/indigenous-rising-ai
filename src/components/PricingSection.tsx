@@ -12,8 +12,8 @@ const PricingSection = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  
   const handleCheckout = async (planName: string, priceId?: string) => {
-    // Handle free plan
     if (planName === "Maadaadiziwin") {
       if (!user) {
         toast.error("Please sign in to start with the free plan");
@@ -24,14 +24,12 @@ const PricingSection = () => {
       return;
     }
 
-    // Handle enterprise plan (contact sales)
     if (planName === "Gimishoomis") {
       navigate('/contact');
       toast.info("Redirecting to contact form...");
       return;
     }
 
-    // Handle paid plans
     if (!user) {
       toast.error("Please sign in to subscribe");
       navigate('/auth');
@@ -68,7 +66,6 @@ const PricingSection = () => {
       }
 
       if (data?.url) {
-        // Open Stripe checkout in new tab
         window.open(data.url, '_blank');
         toast.success("Opening Stripe checkout...");
       } else {
@@ -106,8 +103,7 @@ const PricingSection = () => {
         "Custom integrations"
       ],
       ctaText: "Start Free",
-      icon: Sparkles,
-      gradient: "earth" as const
+      color: 'primary'
     },
     {
       name: "Ogichidaakwe",
@@ -116,7 +112,7 @@ const PricingSection = () => {
       price: "$49",
       period: "per month",
       popular: true,
-      priceId: "price_1SSRqgS23MQcIdnrGDAHGF4C", // $49/month monthly subscription
+      priceId: "price_1SSRqgS23MQcIdnrGDAHGF4C",
       features: [
         "Everything in Maadaadiziwin",
         "AI-powered funding navigator",
@@ -134,8 +130,7 @@ const PricingSection = () => {
         "White-label solutions"
       ],
       ctaText: "Start Growing",
-      icon: Crown,
-      gradient: "sky" as const
+      color: 'secondary'
     },
     {
       name: "Gimishoomis",
@@ -144,7 +139,7 @@ const PricingSection = () => {
       price: "Custom",
       period: "Contact us",
       popular: false,
-      priceId: undefined, // No price ID for enterprise - redirects to contact
+      priceId: undefined,
       features: [
         "Everything in Ogichidaakwe",
         "Dedicated account manager",
@@ -161,8 +156,7 @@ const PricingSection = () => {
       ],
       excludedFeatures: [],
       ctaText: "Contact Sales",
-      icon: Building,
-      gradient: "hero" as const
+      color: 'accent'
     }
   ];
 
@@ -188,151 +182,113 @@ const PricingSection = () => {
   ];
 
   return (
-    <section id="pricing" className="py-20 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 space-y-6 animate-fade-in-up">
-          <div className="inline-flex items-center space-x-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-natural">
-            <Crown className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-muted-foreground">
-              Ozhichigan • Investment in Growth
-            </span>
-          </div>
-          
-          <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground">
+    <section id="pricing" className="py-24 px-6 bg-background">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <h2 className="font-display text-4xl mb-4 text-foreground">
             Flexible Plans for
-            <span className="block gradient-earth bg-clip-text text-transparent">
-              Every Journey Stage
-            </span>
+            <span className="block italic text-primary">Every Journey Stage</span>
           </h2>
-          
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Choose the plan that matches your business journey. All plans include OCAP™ compliance, cultural competency features, and respect for Indigenous data sovereignty.
+          <p className="text-foreground/60 text-lg">
+            Ozhichigan • Choose the plan that matches your business journey. All plans include OCAP™ compliance and cultural competency features.
           </p>
         </div>
 
-        {/* Pricing cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          {plans.map((plan, index) => {
-            const Icon = plan.icon;
-            const gradientClass = {
-              earth: 'gradient-earth',
-              sky: 'gradient-sky',
-              hero: 'gradient-hero'
-            }[plan.gradient];
-
-            return (
-              <Card 
-                key={plan.name}
-                className={`group relative hover:shadow-elevated transition-spring animate-fade-in-up ${
-                  plan.popular ? 'ring-2 ring-primary/20 scale-105' : ''
-                }`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {plan.popular && (
-                  <Badge 
-                    className="absolute -top-3 left-1/2 transform -translate-x-1/2 gradient-earth text-primary-foreground"
-                  >
+        {/* Pricing cards - Aura style */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
+          {plans.map((plan, index) => (
+            <div 
+              key={plan.name}
+              className={`bg-card p-8 rounded-3xl transition-all duration-300 hover:-translate-y-2 shadow-card hover:shadow-elevated border ${
+                plan.popular 
+                  ? 'border-primary/30 ring-2 ring-primary/10' 
+                  : 'border-transparent hover:border-primary/20'
+              } relative`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <Badge className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-semibold">
                     Most Popular
                   </Badge>
-                )}
+                </div>
+              )}
+              
+              <div className="text-center mb-8">
+                <h3 className="font-display text-2xl mb-1 font-medium text-foreground">{plan.name}</h3>
+                <p className="text-xs text-primary/70 italic mb-2">{plan.nameTranslation}</p>
+                <p className="text-sm text-foreground/60 mb-6">{plan.description}</p>
                 
-                <CardHeader className="text-center space-y-4 pb-8">
-                  <div className={`w-16 h-16 ${gradientClass} rounded-2xl flex items-center justify-center mx-auto shadow-natural group-hover:shadow-glow transition-spring`}>
-                    <Icon className="w-8 h-8 text-primary-foreground" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <CardTitle className="font-display text-2xl text-foreground">
-                      {plan.name}
-                    </CardTitle>
-                    <p className="text-sm text-primary/70 font-medium italic">
-                      {plan.nameTranslation}
-                    </p>
-                    <CardDescription className="text-muted-foreground">
-                      {plan.description}
-                    </CardDescription>
-                  </div>
-                  
-                  <div className="space-y-1">
-                    <div className="flex items-baseline justify-center space-x-2">
-                      <span className="font-display text-4xl font-bold text-foreground">
-                        {plan.price}
-                      </span>
-                      {plan.period !== "Contact us" && (
-                        <span className="text-muted-foreground">/{plan.period}</span>
-                      )}
-                    </div>
-                    {plan.period === "Contact us" && (
-                      <p className="text-sm text-muted-foreground">{plan.period}</p>
+                <div className="space-y-1">
+                  <div className="flex items-baseline justify-center gap-2">
+                    <span className="font-display text-4xl font-medium text-foreground">{plan.price}</span>
+                    {plan.period !== "Contact us" && plan.period !== "Forever" && (
+                      <span className="text-foreground/50">/{plan.period}</span>
                     )}
                   </div>
-                </CardHeader>
+                  {(plan.period === "Contact us" || plan.period === "Forever") && (
+                    <p className="text-sm text-foreground/50">{plan.period}</p>
+                  )}
+                </div>
+              </div>
 
-                <CardContent className="space-y-6">
-                  <div className="space-y-3">
-                    {plan.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start space-x-3">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-foreground">{feature}</span>
-                      </div>
-                    ))}
-                    
-                    {plan.excludedFeatures.map((feature, idx) => (
-                      <div key={idx} className="flex items-start space-x-3 opacity-50">
-                        <div className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground line-through">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-sm">
+                    <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                    <span className="text-foreground/70">{feature}</span>
+                  </li>
+                ))}
+                
+                {plan.excludedFeatures.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-sm opacity-50">
+                    <div className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span className="text-foreground/50 line-through">{feature}</span>
+                  </li>
+                ))}
+              </ul>
 
-                <CardFooter className="pt-6">
-                  <Button 
-                    variant={plan.popular ? "hero" : "outline"} 
-                    className="w-full group/btn"
-                    size="lg"
-                    onClick={() => handleCheckout(plan.name, plan.priceId)}
-                    disabled={loadingPlan === plan.name}
-                  >
-                    {loadingPlan === plan.name ? "Loading..." : plan.ctaText}
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
+              <Button 
+                className={`w-full rounded-full font-semibold py-3 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${
+                  plan.popular 
+                    ? 'bg-primary text-primary-foreground hover:bg-[hsl(15,60%,55%)]' 
+                    : 'bg-foreground text-background hover:bg-primary'
+                }`}
+                onClick={() => handleCheckout(plan.name, plan.priceId)}
+                disabled={loadingPlan === plan.name}
+              >
+                {loadingPlan === plan.name ? "Loading..." : plan.ctaText}
+              </Button>
+            </div>
+          ))}
         </div>
 
         {/* Add-ons */}
         <div className="space-y-8">
-          <div className="text-center space-y-4">
-            <h3 className="font-display text-2xl font-bold text-foreground">
+          <div className="text-center">
+            <h3 className="font-display text-2xl font-medium text-foreground mb-2">
               Additional Services
             </h3>
-            <p className="text-muted-foreground">
+            <p className="text-foreground/60">
               Enhance your experience with specialized Indigenous business support services
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {addOns.map((addon, index) => (
-              <Card 
+            {addOns.map((addon) => (
+              <div 
                 key={addon.name}
-                className="hover:shadow-elevated transition-spring animate-fade-in-up"
-                style={{ animationDelay: `${0.5 + index * 0.1}s` }}
+                className="bg-card p-6 rounded-2xl border border-border/50 hover:border-primary/20 hover:shadow-elevated transition-all duration-300"
               >
-                <CardHeader>
-                  <CardTitle className="text-lg text-foreground">{addon.name}</CardTitle>
-                  <p className="text-sm text-primary/70 italic">{addon.nameTranslation}</p>
-                  <CardDescription className="text-muted-foreground">
-                    {addon.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="flex items-center justify-between">
+                <h4 className="font-display text-lg font-medium text-foreground mb-1">{addon.name}</h4>
+                <p className="text-xs text-primary/70 italic mb-2">{addon.nameTranslation}</p>
+                <p className="text-sm text-foreground/60 mb-4">{addon.description}</p>
+                <div className="flex items-center justify-between">
                   <span className="font-semibold text-foreground">{addon.price}</span>
                   <Button 
                     variant="outline" 
                     size="sm"
+                    className="rounded-full border-border hover:border-primary hover:text-primary"
                     onClick={() => {
                       const element = document.querySelector('#pricing');
                       element?.scrollIntoView({ behavior: 'smooth' });
@@ -340,37 +296,33 @@ const PricingSection = () => {
                   >
                     Add On
                   </Button>
-                </CardFooter>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Cultural commitment */}
-        <div className="mt-16 text-center bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 p-8 shadow-natural">
-          <h4 className="font-display text-xl font-semibold text-foreground mb-4">
+        <div className="mt-16 text-center bg-primary/5 rounded-2xl p-8 border border-primary/10">
+          <h4 className="font-display text-xl font-medium text-foreground mb-6">
             Commitment to Indigenous Values
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-muted-foreground">
-            <div className="space-y-2">
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>20% of profits returned to Indigenous communities</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>OCAP™ principles embedded in all services</span>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-foreground/60 max-w-2xl mx-auto">
+            <div className="flex items-center justify-center gap-2">
+              <Check className="w-4 h-4 text-primary" />
+              <span>20% of profits returned to Indigenous communities</span>
             </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>Cultural competency training for all staff</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>Indigenous leadership in product development</span>
-              </div>
+            <div className="flex items-center justify-center gap-2">
+              <Check className="w-4 h-4 text-primary" />
+              <span>OCAP™ principles embedded in all services</span>
+            </div>
+            <div className="flex items-center justify-center gap-2">
+              <Check className="w-4 h-4 text-primary" />
+              <span>Cultural competency training for all staff</span>
+            </div>
+            <div className="flex items-center justify-center gap-2">
+              <Check className="w-4 h-4 text-primary" />
+              <span>Indigenous leadership in product development</span>
             </div>
           </div>
         </div>
