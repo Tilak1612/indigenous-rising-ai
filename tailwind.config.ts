@@ -75,10 +75,10 @@ export default {
 				}
 			},
 			fontFamily: {
-				'display': ['var(--font-display)'],
-				'body': ['var(--font-body)'],
-				'sans': ['Inter', 'sans-serif'],
-				'serif': ['Crimson Text', 'serif']
+				'display': ['Playfair Display', 'serif'],
+				'body': ['Nunito', 'sans-serif'],
+				'sans': ['Nunito', 'sans-serif'],
+				'serif': ['Playfair Display', 'serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

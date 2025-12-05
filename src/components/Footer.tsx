@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
 import { 
-  Users, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
-  Youtube, Globe, Shield, Heart, BookOpen, Building 
+  Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
+  Youtube, Globe, Shield, Heart, BookOpen, Instagram
 } from 'lucide-react';
 import logoFull from '@/assets/logo-full.png';
 
@@ -12,7 +12,6 @@ const Footer = () => {
   const footerSections = [
     {
       title: "Platform",
-      titleTranslation: "Mazina'igan",
       links: [
         { name: "Business Tools", href: "#features" },
         { name: "Funding Navigator", href: "#funding" },
@@ -24,7 +23,6 @@ const Footer = () => {
     },
     {
       title: "Resources",
-      titleTranslation: "Naadamaaganan",
       links: [
         { name: "Training Programs", href: "/training" },
         { name: "Data Rights Guide", href: "/data-rights" },
@@ -35,169 +33,99 @@ const Footer = () => {
       ]
     },
     {
-      title: "Organization",
-      titleTranslation: "Mamashkiing",
-      links: [
-        { name: "About Us", href: "#hero" },
-        { name: "Our Mission", href: "#features" },
-        { name: "Cultural Partners", href: "#partnerships" },
-        { name: "Success Stories", href: "#testimonials" },
-        { name: "Contact Us", href: "/contact" },
-        { name: "Admin Portal", href: "/auth" }
-      ]
-    },
-    {
       title: "Legal",
-      titleTranslation: "Dibaakonigewin",
       links: [
         { name: "Privacy Policy", href: "/privacy" },
         { name: "Terms of Service", href: "/terms" },
         { name: "Cookie Policy", href: "/cookies" },
         { name: "Your Data Rights", href: "/data-rights" },
         { name: "Canadian Compliance", href: "/compliance" },
-        { name: "OCAP™ Principles", href: "/compliance#ocap" },
         { name: "Accessibility", href: "/accessibility" }
       ]
     }
   ];
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "https://facebook.com/indigenousai", color: "#1877F2" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com/indigenous_ai", color: "#1DA1F2" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/indigenous-ai", color: "#0A66C2" },
-    { name: "YouTube", icon: Youtube, href: "https://youtube.com/@indigenousai", color: "#FF0000" }
-  ];
-
-  const languages = [
-    "English", "Français", "ᐃᓄᒃᑎᑐᑦ (Inuktitut)", 
-    "ᓀᐦᐃᔭᐍᐏᐣ (Cree)", "ᐊᓂᔑᓈᐯᒧᐎᓐ (Ojibwe)"
+    { name: "Instagram", icon: Instagram, href: "https://instagram.com/indigenousai" },
+    { name: "Facebook", icon: Facebook, href: "https://facebook.com/indigenousai" },
+    { name: "YouTube", icon: Youtube, href: "https://youtube.com/@indigenousai" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/indigenous-ai" }
   ];
 
   return (
-    <footer className="bg-card border-t border-border">
-      <div className="container mx-auto px-4">
+    <footer className="bg-card border-t border-border py-12 px-6">
+      <div className="max-w-7xl mx-auto">
         {/* Main footer content */}
-        <div className="py-16 space-y-12">
-          {/* Company info and newsletter */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="space-y-6">
-              {/* Logo and tagline */}
-              <div className="space-y-2">
-                <Link to="/">
-                  <img 
-                    src={logoFull} 
-                    alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
-                    className="h-16 w-auto hover:opacity-80 transition-opacity"
-                    loading="lazy"
-                    decoding="async"
-                    width={200}
-                    height={64}
-                  />
-                </Link>
+        <div className="flex flex-col lg:flex-row justify-between gap-12 mb-12">
+          {/* Company info */}
+          <div className="lg:max-w-sm space-y-6">
+            <div className="space-y-2">
+              <Link to="/">
+                <img 
+                  src={logoFull} 
+                  alt="Indigenous Rising AI Business Support Platform" 
+                  className="h-12 w-auto hover:opacity-80 transition-opacity"
+                  loading="lazy"
+                  decoding="async"
+                  width={150}
+                  height={48}
+                />
+              </Link>
+              <p className="font-display text-lg font-medium text-foreground">Indigenous Rising AI</p>
+              <p className="text-xs text-foreground/50">Community-Driven Innovation • Biidaasige Naadamaage</p>
+            </div>
+
+            <p className="text-foreground/60 leading-relaxed text-sm">
+              Empowering Indigenous entrepreneurs across Turtle Island through culturally respectful AI technology, 
+              traditional knowledge integration, and community-centered business support.
+            </p>
+
+            {/* Contact info */}
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-primary" />
+                <a href="mailto:hello@indigenousrising.ai" className="text-foreground/60 hover:text-primary transition-colors">
+                  hello@indigenousrising.ai
+                </a>
               </div>
-
-              <p className="text-muted-foreground leading-relaxed max-w-md">
-                Empowering Indigenous entrepreneurs across Turtle Island through culturally respectful AI technology, 
-                traditional knowledge integration, and community-centered business support.
-              </p>
-
-              {/* Contact info */}
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 text-sm">
-                  <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">
-                    Traditional Territory of the Anishinaabe, Toronto, ON
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm">
-                  <Phone className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">1-800-INDIGENOUS (1-800-463-4436)</span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm">
-                  <Mail className="w-4 h-4 text-primary flex-shrink-0" />
-                  <span className="text-muted-foreground">hello@indigenousrising.ai</span>
-                </div>
-              </div>
-
-              {/* Cultural acknowledgment badges */}
-              <div className="flex flex-wrap gap-2">
-                <div className="inline-flex items-center space-x-2 bg-muted/50 rounded-full px-3 py-1 text-xs">
-                  <Shield className="w-3 h-3 text-primary" />
-                  <span className="text-muted-foreground">OCAP™ Certified</span>
-                </div>
-                <div className="inline-flex items-center space-x-2 bg-muted/50 rounded-full px-3 py-1 text-xs">
-                  <Heart className="w-3 h-3 text-primary" />
-                  <span className="text-muted-foreground">Indigenous Led</span>
-                </div>
-                <div className="inline-flex items-center space-x-2 bg-muted/50 rounded-full px-3 py-1 text-xs">
-                  <Globe className="w-3 h-3 text-primary" />
-                  <span className="text-muted-foreground">Multi-Language</span>
-                </div>
+              <div className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-primary" />
+                <span className="text-foreground/60">1-800-INDIGENOUS</span>
               </div>
             </div>
 
-            {/* Newsletter signup */}
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <h3 className="font-display text-xl font-semibold text-foreground">
-                  Stay Connected
-                </h3>
-                <p className="text-sm text-muted-foreground italic">
-                  Wiidookaage • Working Together
-                </p>
-                <p className="text-muted-foreground">
-                  Subscribe to receive updates on new features, funding opportunities, 
-                  and Indigenous business success stories.
-                </p>
-              </div>
-
-              <NewsletterSignup />
-
-              {/* Social links */}
-              <div className="space-y-3">
-                <h4 className="font-semibold text-foreground text-sm">Follow Our Journey</h4>
-                <div className="flex space-x-3">
-                  {socialLinks.map((social) => {
-                    const Icon = social.icon;
-                    return (
-                      <a
-                        key={social.name}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-10 h-10 bg-muted/50 hover:bg-muted/70 rounded-lg flex items-center justify-center transition-smooth group"
-                        aria-label={social.name}
-                        style={{ '--icon-color': social.color } as any}
-                      >
-                        <Icon 
-                          className="w-5 h-5 transition-smooth group-hover:scale-110" 
-                          style={{ color: social.color }}
-                        />
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
+            {/* Social links */}
+            <div className="flex gap-4">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-foreground/40 hover:text-primary transition-colors"
+                    aria-label={social.name}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
-          <Separator className="opacity-50" />
-
           {/* Footer links */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12">
             {footerSections.map((section) => (
               <div key={section.title} className="space-y-4">
-                <div className="space-y-1">
-                  <h3 className="font-semibold text-foreground">{section.title}</h3>
-                  <p className="text-xs text-primary/70 italic">{section.titleTranslation}</p>
-                </div>
+                <h3 className="font-semibold text-foreground text-sm">{section.title}</h3>
                 <ul className="space-y-3">
                   {section.links.map((link) => (
                     <li key={link.name}>
                       {link.href.startsWith('#') ? (
                         <a
                           href={link.href}
-                          className="text-sm text-muted-foreground hover:text-primary transition-smooth cursor-pointer"
+                          className="text-sm text-foreground/60 hover:text-primary transition-colors"
                           onClick={(e) => {
                             e.preventDefault();
                             const element = document.querySelector(link.href);
@@ -209,7 +137,7 @@ const Footer = () => {
                       ) : (
                         <Link
                           to={link.href}
-                          className="text-sm text-muted-foreground hover:text-primary transition-smooth"
+                          className="text-sm text-foreground/60 hover:text-primary transition-colors"
                         >
                           {link.name}
                         </Link>
@@ -220,59 +148,45 @@ const Footer = () => {
               </div>
             ))}
           </div>
+        </div>
 
-          <Separator className="opacity-50" />
-
-          {/* Language selector */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-foreground text-sm flex items-center space-x-2">
-              <Globe className="w-4 h-4" />
-              <span>Available Languages</span>
-              <span className="text-xs text-primary/70 italic">• Anishinaabemowin</span>
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {languages.map((language, idx) => (
-                <button
-                  key={idx}
-                  className={`px-3 py-1 text-xs rounded-full border transition-smooth ${
-                    idx === 0 
-                      ? 'bg-primary text-primary-foreground border-primary' 
-                      : 'bg-background border-border hover:border-primary/50 text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {language}
-                </button>
-              ))}
+        {/* Newsletter */}
+        <div className="py-8 border-t border-b border-border mb-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <h3 className="font-display text-lg font-medium text-foreground mb-1">Stay Connected</h3>
+              <p className="text-sm text-foreground/60">Subscribe for updates on new features and Indigenous business success stories.</p>
+            </div>
+            <div className="w-full md:w-auto md:min-w-[400px]">
+              <NewsletterSignup />
             </div>
           </div>
         </div>
 
-        <Separator className="opacity-50" />
-
         {/* Bottom footer */}
-        <div className="py-8 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
-          <div className="text-center lg:text-left">
-            <p className="text-sm text-muted-foreground">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
+            <p className="text-sm text-foreground/50">
               © 2024 Indigenous Rising AI Business Support Platform. All rights reserved.
             </p>
-            <p className="text-xs text-muted-foreground/70 mt-1">
+            <p className="text-xs text-foreground/40 mt-1">
               Built with respect on the traditional territories of Indigenous peoples across Turtle Island.
             </p>
-            <p className="text-xs text-muted-foreground/70 mt-1">
+            <p className="text-xs text-foreground/40 mt-1">
               Powered by Brainfy AI Inc
             </p>
           </div>
 
-          <div className="flex items-center space-x-6 text-xs text-muted-foreground">
-            <span className="flex items-center space-x-1">
+          <div className="flex items-center gap-6 text-xs text-foreground/50">
+            <span className="flex items-center gap-1">
               <Heart className="w-3 h-3 text-primary" />
               <span>Indigenous Owned</span>
             </span>
-            <span className="flex items-center space-x-1">
+            <span className="flex items-center gap-1">
               <Shield className="w-3 h-3 text-primary" />
               <span>OCAP™ Compliant</span>
             </span>
-            <span className="flex items-center space-x-1">
+            <span className="flex items-center gap-1">
               <BookOpen className="w-3 h-3 text-primary" />
               <span>TRC Aligned</span>
             </span>
