@@ -6,7 +6,7 @@ import {
   Users, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
   Youtube, Globe, Shield, Heart, BookOpen, Building 
 } from 'lucide-react';
-import logoFull from '@/assets/logo-full.png';
+import logoCanadaComplianceAI from '@/assets/logo-canada-compliance-ai.png';
 
 const Footer = () => {
   const footerSections = [
@@ -85,13 +85,13 @@ const Footer = () => {
               <div className="space-y-2">
                 <Link to="/">
                   <img 
-                    src={logoFull} 
-                    alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
-                    className="h-16 w-auto hover:opacity-80 transition-opacity"
+                    src={logoCanadaComplianceAI} 
+                    alt="Canada Compliance AI - Compliance Platform" 
+                    className="h-14 w-auto hover:opacity-80 transition-opacity"
                     loading="lazy"
                     decoding="async"
                     width={200}
-                    height={64}
+                    height={56}
                   />
                 </Link>
               </div>

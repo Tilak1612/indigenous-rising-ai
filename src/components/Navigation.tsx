@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import logoFull from '@/assets/logo-full.png';
+import logoCanadaComplianceAI from '@/assets/logo-canada-compliance-ai.png';
 import { useAuth } from '@/hooks/useAuth';
 
 const Navigation = () => {
@@ -25,25 +25,17 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center space-x-4 group">
+          <a href="/" className="flex items-center group">
             <img 
-              src={logoFull} 
-              alt="Indigenous Rising AI - Business Support Platform for Indigenous Entrepreneurs" 
-              className="h-12 w-auto transition-smooth group-hover:scale-105"
-              width={150}
+              src={logoCanadaComplianceAI} 
+              alt="Canada Compliance AI - Compliance Platform" 
+              className="h-10 md:h-12 w-auto transition-smooth group-hover:scale-105"
+              width={200}
               height={48}
               loading="eager"
               fetchPriority="high"
               decoding="async"
             />
-            <div className="flex flex-col">
-              <span className="font-display font-bold text-base md:text-xl text-primary tracking-tight">
-                Indigenous Rising AI
-              </span>
-              <span className="text-xs text-muted-foreground font-medium tracking-wide">
-                Business Support Platform
-              </span>
-            </div>
           </a>
 
           {/* Desktop Navigation */}
