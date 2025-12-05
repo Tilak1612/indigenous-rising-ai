@@ -1,170 +1,163 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Aura Design System - Warm, inviting cream-based palette */
+/* Indigenous Rising AI Business Support Platform Design System
+   Respectful use of Indigenous-inspired design elements with modern accessibility
+   All colors MUST be HSL.
+*/
 
 @layer base {
   :root {
-    /* Aura Cream Theme */
-    --background: 30 50% 98%;
-    --foreground: 20 15% 16%;
+    /* Earth-toned color palette - AODA compliant */
+    --background: 40 35% 97%;
+    --foreground: 120 8% 15%;
     
-    --card: 0 0% 100%;
-    --card-foreground: 20 15% 16%;
+    --card: 40 40% 99%;
+    --card-foreground: 120 8% 15%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 15% 16%;
+    --popover: 40 40% 99%;
+    --popover-foreground: 120 8% 15%;
     
-    /* Primary: Coral */
-    --primary: 15 70% 60%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 15 75% 65%;
+    /* Primary: Terracotta */
+    --primary: 18 65% 48%;
+    --primary-foreground: 40 40% 99%;
+    --primary-glow: 18 75% 58%;
     
-    /* Secondary: Teal */
-    --secondary: 175 35% 50%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary: Forest Green */
+    --secondary: 145 40% 30%;
+    --secondary-foreground: 40 40% 99%;
     
-    /* Muted: Stone */
-    --muted: 30 10% 96%;
-    --muted-foreground: 20 10% 45%;
+    /* Muted: Bone/Beige */
+    --muted: 40 30% 92%;
+    --muted-foreground: 120 6% 45%;
     
-    /* Accent: Gold */
-    --accent: 42 70% 58%;
-    --accent-foreground: 20 15% 16%;
+    /* Accent: Sky Blue */
+    --accent: 203 75% 60%;
+    --accent-foreground: 120 8% 15%;
     
-    /* Additional Aura colors */
-    --cream: 30 50% 98%;
-    --charcoal: 20 15% 16%;
-    --coral: 15 70% 60%;
-    --coral-dark: 15 60% 55%;
-    --teal: 175 35% 50%;
-    --gold: 42 70% 58%;
-    --stone: 30 10% 96%;
+    /* Additional earth tones */
+    --ochre: 30 45% 48%;
+    --canoe-red: 5 55% 42%;
+    --goldenrod: 45 75% 62%;
     
-    --success: 145 60% 42%;
-    --success-foreground: 0 0% 100%;
+    --success: 142 70% 38%;
+    --success-foreground: 40 40% 99%;
     
     --warning: 38 92% 50%;
-    --warning-foreground: 20 15% 16%;
+    --warning-foreground: 120 8% 15%;
     
     --destructive: 5 75% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 40 40% 99%;
     
-    --border: 30 15% 88%;
-    --input: 30 15% 88%;
-    --ring: 15 70% 60%;
+    --border: 40 20% 82%;
+    --input: 40 20% 82%;
+    --ring: 18 65% 48%;
     
-    --radius: 1rem;
+    --radius: 0.75rem;
 
-    /* Aura Gradients */
-    --gradient-coral: linear-gradient(135deg, hsl(15, 70%, 60%) 0%, hsl(15, 60%, 55%) 100%);
-    --gradient-teal: linear-gradient(135deg, hsl(175, 35%, 50%) 0%, hsl(180, 40%, 45%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(42, 70%, 58%) 0%, hsl(35, 65%, 52%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(15, 70%, 60%) 0%, hsl(42, 70%, 58%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(30, 50%, 98%) 0%, hsl(30, 10%, 96%) 100%);
+    /* Custom gradients inspired by nature */
+    --gradient-earth: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(30, 45%, 48%) 100%);
+    --gradient-sky: linear-gradient(135deg, hsl(203, 75%, 60%) 0%, hsl(210, 70%, 50%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(45, 75%, 62%) 100%);
+    --gradient-terracotta: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(18, 75%, 58%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(40, 35%, 97%) 0%, hsl(40, 30%, 92%) 100%);
 
-    /* Aura Shadows */
-    --shadow-natural: 0 4px 20px -4px hsl(var(--coral) / 0.1);
-    --shadow-elevated: 0 10px 40px -12px hsl(var(--charcoal) / 0.15);
-    --shadow-glow: 0 0 40px hsl(var(--coral) / 0.2);
-    --shadow-card: 0 1px 3px hsl(var(--charcoal) / 0.08);
+    /* Shadows with cultural sensitivity */
+    --shadow-natural: 0 4px 20px -4px hsl(var(--primary) / 0.15);
+    --shadow-elevated: 0 10px 40px -12px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--accent) / 0.2);
 
-    /* Typography */
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'Nunito', sans-serif;
+    /* Typography scale */
+    --font-display: 'Crimson Text', serif;
+    --font-body: 'Inter', sans-serif;
 
-    /* Transitions */
+    /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     /* Sidebar variables */
-    --sidebar-background: 30 25% 97%;
-    --sidebar-foreground: 20 15% 20%;
-    --sidebar-primary: 15 70% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 30 10% 93%;
-    --sidebar-accent-foreground: 20 15% 20%;
-    --sidebar-border: 30 15% 88%;
-    --sidebar-ring: 15 70% 60%;
+    --sidebar-background: 30 25% 96%;
+    --sidebar-foreground: 25 15% 25%;
+    --sidebar-primary: 140 35% 25%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 25 10% 90%;
+    --sidebar-accent-foreground: 25 15% 25%;
+    --sidebar-border: 25 15% 85%;
+    --sidebar-ring: 140 35% 25%;
   }
 
   .dark {
-    --background: 20 15% 8%;
-    --foreground: 30 30% 95%;
+    --background: 120 8% 10%;
+    --foreground: 40 30% 95%;
     
-    --card: 20 15% 10%;
-    --card-foreground: 30 30% 95%;
+    --card: 120 8% 12%;
+    --card-foreground: 40 30% 95%;
     
-    --popover: 20 15% 10%;
-    --popover-foreground: 30 30% 95%;
+    --popover: 120 8% 12%;
+    --popover-foreground: 40 30% 95%;
     
-    --primary: 15 70% 58%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 15 75% 62%;
+    --primary: 18 65% 48%;
+    --primary-foreground: 40 40% 99%;
+    --primary-glow: 18 75% 58%;
     
-    --secondary: 175 35% 45%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 145 40% 25%;
+    --secondary-foreground: 40 40% 99%;
     
-    --muted: 20 12% 18%;
-    --muted-foreground: 30 15% 65%;
+    --muted: 120 6% 22%;
+    --muted-foreground: 40 20% 70%;
     
-    --accent: 42 70% 55%;
-    --accent-foreground: 20 15% 10%;
+    --accent: 203 75% 55%;
+    --accent-foreground: 120 8% 10%;
     
-    --cream: 20 15% 8%;
-    --charcoal: 30 30% 95%;
-    --coral: 15 70% 58%;
-    --coral-dark: 15 60% 52%;
-    --teal: 175 35% 45%;
-    --gold: 42 70% 55%;
-    --stone: 20 12% 18%;
+    --ochre: 30 45% 45%;
+    --canoe-red: 5 55% 40%;
+    --goldenrod: 45 75% 58%;
     
-    --success: 145 60% 38%;
-    --success-foreground: 0 0% 100%;
+    --success: 142 70% 35%;
+    --success-foreground: 40 40% 99%;
     
     --warning: 38 92% 48%;
-    --warning-foreground: 20 15% 10%;
+    --warning-foreground: 120 8% 10%;
     
     --destructive: 5 75% 48%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 40 40% 99%;
     
-    --border: 20 12% 22%;
-    --input: 20 12% 22%;
-    --ring: 15 70% 58%;
+    --border: 120 6% 22%;
+    --input: 120 6% 22%;
+    --ring: 18 65% 48%;
 
-    --gradient-coral: linear-gradient(135deg, hsl(15, 70%, 58%) 0%, hsl(15, 60%, 52%) 100%);
-    --gradient-teal: linear-gradient(135deg, hsl(175, 35%, 45%) 0%, hsl(180, 40%, 40%) 100%);
-    --gradient-gold: linear-gradient(135deg, hsl(42, 70%, 55%) 0%, hsl(35, 65%, 48%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(15, 70%, 58%) 0%, hsl(42, 70%, 55%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(20, 15%, 8%) 0%, hsl(20, 12%, 18%) 100%);
+    --gradient-earth: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(30, 45%, 45%) 100%);
+    --gradient-sky: linear-gradient(135deg, hsl(203, 75%, 55%) 0%, hsl(210, 70%, 45%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(45, 75%, 58%) 100%);
+    --gradient-terracotta: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(18, 75%, 58%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(120, 8%, 10%) 0%, hsl(120, 6%, 22%) 100%);
 
-    --sidebar-background: 20 15% 6%;
-    --sidebar-foreground: 30 20% 85%;
-    --sidebar-primary: 15 70% 58%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 20 12% 12%;
-    --sidebar-accent-foreground: 30 20% 85%;
-    --sidebar-border: 20 12% 18%;
-    --sidebar-ring: 15 70% 58%;
+    --sidebar-background: 25 20% 6%;
+    --sidebar-foreground: 30 15% 85%;
+    --sidebar-primary: 140 45% 45%;
+    --sidebar-primary-foreground: 25 20% 8%;
+    --sidebar-accent: 25 15% 12%;
+    --sidebar-accent-foreground: 30 15% 85%;
+    --sidebar-border: 25 15% 18%;
+    --sidebar-ring: 140 45% 45%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border transition-smooth;
   }
 
   body {
     @apply bg-background text-foreground font-body antialiased;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-medium tracking-tight;
+    @apply font-display font-semibold tracking-tight;
   }
 
   .transition-smooth {
@@ -175,22 +168,7 @@
     transition: var(--transition-spring);
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--cream));
-  }
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 4px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground) / 0.5);
-  }
-
-  /* AODA accessibility */
+  /* AODA and accessibility enhancements */
   [data-high-contrast="true"] {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
@@ -198,6 +176,12 @@
     --card-foreground: 0 0% 100%;
     --primary: 60 100% 50%;
     --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 85%;
+    --border: 0 0% 30%;
+    --input: 0 0% 30%;
   }
 
   [data-focus-visible="true"] *:focus-visible {
@@ -205,10 +189,13 @@
     outline-offset: 2px !important;
   }
 
+  /* Ensure minimum touch target size for AODA compliance */
   button, a, input, textarea, select {
     min-height: 44px;
+    min-width: 44px;
   }
 
+  /* Skip to main content link for keyboard users */
   .skip-link {
     position: absolute;
     top: -40px;
@@ -225,6 +212,7 @@
     top: 6px;
   }
 
+  /* Reduced motion support */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -237,6 +225,7 @@
 }
 
 @layer components {
+  /* Custom pattern backgrounds inspired by traditional Indigenous art */
   .pattern-geometric {
     background-image: 
       linear-gradient(45deg, hsl(var(--muted)) 25%, transparent 25%), 
@@ -247,28 +236,16 @@
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
   }
 
-  .gradient-coral {
-    background: var(--gradient-coral);
+  .gradient-earth {
+    background: var(--gradient-earth);
   }
 
-  .gradient-teal {
-    background: var(--gradient-teal);
-  }
-
-  .gradient-gold {
-    background: var(--gradient-gold);
+  .gradient-sky {
+    background: var(--gradient-sky);
   }
 
   .gradient-hero {
     background: var(--gradient-hero);
-  }
-
-  .gradient-earth {
-    background: var(--gradient-hero);
-  }
-
-  .gradient-sky {
-    background: var(--gradient-teal);
   }
 
   .gradient-subtle {
@@ -287,26 +264,7 @@
     box-shadow: var(--shadow-glow);
   }
 
-  .shadow-card {
-    box-shadow: var(--shadow-card);
-  }
-
-  /* Aura card hover effect */
-  .card-hover {
-    @apply transition-all duration-300;
-  }
-  .card-hover:hover {
-    @apply -translate-y-2 shadow-elevated;
-  }
-
-  /* Aura button styles */
-  .btn-coral {
-    @apply bg-primary text-primary-foreground rounded-full font-semibold;
-    @apply hover:bg-[hsl(var(--coral-dark))] hover:shadow-lg hover:-translate-y-0.5;
-    @apply transition-all duration-300;
-  }
-
-  /* Animations */
+  /* Respectful animations */
   @keyframes gentle-float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-4px); }

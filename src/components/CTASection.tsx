@@ -3,77 +3,91 @@ import { ArrowRight, Sparkles, Users, Shield } from 'lucide-react';
 
 const CTASection = () => {
   return (
-    <section className="py-24 px-6 bg-foreground relative overflow-hidden">
+    <section className="py-20 bg-gradient-hero relative overflow-hidden">
+      {/* Dark overlay for better text contrast */}
+      <div className="absolute inset-0 bg-primary/70" />
       {/* Background decorative elements */}
       <div className="absolute inset-0 pattern-geometric opacity-5" />
-      <div className="absolute top-10 left-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl animate-gentle-float" />
-      <div className="absolute bottom-10 right-10 w-24 h-24 bg-secondary/20 rounded-full blur-3xl animate-gentle-float" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-10 left-10 w-32 h-32 gradient-earth rounded-full opacity-20 animate-gentle-float" />
+      <div className="absolute bottom-10 right-10 w-24 h-24 gradient-sky rounded-full opacity-20 animate-gentle-float" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-1/2 left-1/3 w-16 h-16 gradient-subtle rounded-full opacity-15 animate-gentle-float" style={{ animationDelay: '2s' }} />
       
-      <div className="relative z-10 max-w-5xl mx-auto bg-card rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row">
-        
-        {/* Left Info */}
-        <div className="md:w-5/12 bg-primary text-primary-foreground p-12 flex flex-col justify-between">
-          <div>
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-foreground/20 text-primary-foreground text-xs font-semibold tracking-wide mb-6">
-              <Sparkles className="w-3 h-3" />
-              Maadaadizi • Begin Your Journey
-            </div>
-            
-            <h2 className="font-display text-3xl mb-6 text-primary-foreground">
-              Ready to Transform Your Indigenous Business?
-            </h2>
-            <p className="text-primary-foreground/80 mb-8 leading-relaxed">
-              Join thousands of Indigenous entrepreneurs who are building sustainable, culturally grounded businesses 
-              with our AI-powered platform.
-            </p>
-            
-            {/* Key benefits */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-sm">
-                <Shield className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/90">OCAP™ Protected - Your data sovereignty guaranteed</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Users className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/90">Community Driven - Built by and for Indigenous peoples</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Sparkles className="w-5 h-5 text-primary-foreground/80" />
-                <span className="text-primary-foreground/90">AI Enhanced - Modern tools, traditional wisdom</span>
-              </div>
-            </div>
+      <div className="relative z-10 container mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in-up">
+          {/* Badge */}
+          <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 shadow-lg">
+            <Sparkles className="w-4 h-4 text-white" />
+            <span className="text-sm font-bold text-white drop-shadow-sm">
+              Maadaadizi • Begin Your Journey Today
+            </span>
           </div>
-          
-          <div className="mt-12 md:mt-0">
-            <p className="text-xs text-primary-foreground/50 uppercase tracking-widest">Trusted by Indigenous Organizations<br/>Across Canada</p>
-          </div>
-        </div>
 
-        {/* Right Content */}
-        <div className="md:w-7/12 p-12 flex flex-col justify-center">
-          <h3 className="font-display text-2xl text-foreground mb-4">Start Your Free Account</h3>
-          <p className="text-foreground/60 mb-8 leading-relaxed">
-            Start your free account today and discover opportunities that respect 
+          {/* Main heading */}
+          <h2 className="font-display text-4xl md:text-6xl font-black text-white leading-tight tracking-tight drop-shadow-lg">
+            Ready to Transform Your
+            <span className="block text-white drop-shadow-lg">
+              Indigenous Business?
+            </span>
+          </h2>
+
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl font-semibold text-white max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            Join thousands of Indigenous entrepreneurs who are building sustainable, culturally grounded businesses 
+            with our AI-powered platform. Start your free account today and discover opportunities that respect 
             your values while driving growth.
           </p>
-          
+
+          {/* Key benefits */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-8">
+            <div className="flex flex-col items-center space-y-3 text-center p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30 shadow-lg">
+                <Shield className="w-8 h-8 text-white drop-shadow-sm" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white mb-1 drop-shadow-sm">OCAP™ Protected</h3>
+                <p className="text-sm text-white font-medium drop-shadow-sm">Your data sovereignty guaranteed</p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col items-center space-y-3 text-center p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30 shadow-lg">
+                <Users className="w-8 h-8 text-white drop-shadow-sm" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white mb-1 drop-shadow-sm">Community Driven</h3>
+                <p className="text-sm text-white font-medium drop-shadow-sm">Built by and for Indigenous peoples</p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col items-center space-y-3 text-center p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/30 shadow-lg">
+                <Sparkles className="w-8 h-8 text-white drop-shadow-sm" />
+              </div>
+              <div>
+                <h3 className="font-bold text-white mb-1 drop-shadow-sm">AI Enhanced</h3>
+                <p className="text-sm text-white font-medium drop-shadow-sm">Modern tools, traditional wisdom</p>
+              </div>
+            </div>
+          </div>
+
           {/* CTA buttons */}
-          <div className="flex flex-col gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
             <Button 
-              className="px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-full hover:bg-[hsl(15,60%,55%)] hover:shadow-lg hover:-translate-y-0.5 transition-all w-full md:w-auto"
+              size="lg"
+              className="group bg-white text-primary hover:bg-white/90 shadow-2xl px-8 py-6 text-lg font-bold border-2 border-white/50"
               onClick={() => {
                 const element = document.querySelector('#pricing');
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               Start Free Account
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
             
             <Button 
               variant="outline"
-              className="px-8 py-4 border-2 border-border rounded-full hover:border-primary hover:text-primary transition-all w-full md:w-auto"
+              size="lg"
+              className="border-2 border-white/50 text-white hover:bg-white/20 backdrop-blur-sm px-8 py-6 text-lg font-bold shadow-xl bg-white/10"
               onClick={() => {
                 window.open('mailto:hello@indigenousrising.ai?subject=Demo Request&body=I would like to schedule a demo of the Indigenous Rising AI Business Support Platform.', '_blank');
               }}
@@ -83,27 +97,27 @@ const CTASection = () => {
           </div>
 
           {/* Trust indicators */}
-          <div className="pt-6 border-t border-border">
-            <p className="text-sm font-medium text-foreground mb-3">Trusted by Indigenous organizations across Canada</p>
-            <div className="flex flex-wrap items-center gap-4 text-xs text-foreground/50">
-              <span>NACCA Partner</span>
-              <span className="w-1 h-1 bg-foreground/20 rounded-full" />
-              <span>CCIB Member</span>
-              <span className="w-1 h-1 bg-foreground/20 rounded-full" />
-              <span>AFN Endorsed</span>
-              <span className="w-1 h-1 bg-foreground/20 rounded-full" />
-              <span>TRC Aligned</span>
+          <div className="pt-8 border-t border-white/30 bg-white/5 backdrop-blur-sm rounded-2xl p-6">
+            <p className="text-sm font-bold text-white mb-4 drop-shadow-sm">Trusted by Indigenous organizations across Canada</p>
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              <div className="text-white font-bold text-sm drop-shadow-sm">NACCA Partner</div>
+              <div className="w-1 h-1 bg-white rounded-full" />
+              <div className="text-white font-bold text-sm drop-shadow-sm">CCIB Member</div>
+              <div className="w-1 h-1 bg-white rounded-full" />
+              <div className="text-white font-bold text-sm drop-shadow-sm">AFN Endorsed</div>
+              <div className="w-1 h-1 bg-white rounded-full" />
+              <div className="text-white font-bold text-sm drop-shadow-sm">TRC Aligned</div>
             </div>
           </div>
 
           {/* Additional incentive */}
-          <div className="mt-8 bg-primary/5 border border-primary/20 rounded-2xl p-4">
-            <p className="text-foreground font-medium mb-1">
+          <div className="bg-white/15 backdrop-blur-sm border-2 border-white/30 rounded-2xl p-6 max-w-2xl mx-auto shadow-2xl">
+            <p className="text-white font-bold mb-2 drop-shadow-sm">
               🎁 Limited Time: First 100 Indigenous entrepreneurs get
             </p>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 text-foreground/70">
-              <span className="font-bold text-primary">3 months Premium free</span>
-              <span>+ personalized onboarding session</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-white">
+              <span className="font-black text-xl drop-shadow-sm">3 months Premium free</span>
+              <span className="text-white font-semibold drop-shadow-sm">+ personalized onboarding session</span>
             </div>
           </div>
         </div>
