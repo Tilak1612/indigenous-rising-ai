@@ -1,75 +1,77 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Geist:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Indigenous Rising AI - Aura Dark Theme Design System */
+/* Indigenous Rising AI Business Support Platform Design System
+   Respectful use of Indigenous-inspired design elements with modern accessibility
+   All colors MUST be HSL.
+*/
 
 @layer base {
   :root {
-    /* Dark theme base - Aura inspired */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    /* Earth-toned color palette - AODA compliant */
+    --background: 40 35% 97%;
+    --foreground: 120 8% 15%;
     
-    --card: 240 6% 6%;
-    --card-foreground: 0 0% 100%;
+    --card: 40 40% 99%;
+    --card-foreground: 120 8% 15%;
     
-    --popover: 240 6% 8%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 40 40% 99%;
+    --popover-foreground: 120 8% 15%;
     
-    /* Primary: Amber/Gold accent */
-    --primary: 43 96% 56%;
-    --primary-foreground: 0 0% 0%;
-    --primary-glow: 43 100% 65%;
+    /* Primary: Terracotta */
+    --primary: 18 65% 48%;
+    --primary-foreground: 40 40% 99%;
+    --primary-glow: 18 75% 58%;
     
-    /* Secondary: Emerald */
-    --secondary: 160 84% 39%;
-    --secondary-foreground: 0 0% 0%;
+    /* Secondary: Forest Green */
+    --secondary: 145 40% 30%;
+    --secondary-foreground: 40 40% 99%;
     
-    /* Muted: Zinc tones */
-    --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 65%;
+    /* Muted: Bone/Beige */
+    --muted: 40 30% 92%;
+    --muted-foreground: 120 6% 45%;
     
-    /* Accent: White/subtle */
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
+    /* Accent: Sky Blue */
+    --accent: 203 75% 60%;
+    --accent-foreground: 120 8% 15%;
     
-    /* Additional earth tones preserved */
+    /* Additional earth tones */
     --ochre: 30 45% 48%;
     --canoe-red: 5 55% 42%;
     --goldenrod: 45 75% 62%;
     
-    --success: 160 84% 39%;
-    --success-foreground: 0 0% 0%;
+    --success: 142 70% 38%;
+    --success-foreground: 40 40% 99%;
     
     --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 0%;
+    --warning-foreground: 120 8% 15%;
     
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 5 75% 50%;
+    --destructive-foreground: 40 40% 99%;
     
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 43 96% 56%;
+    --border: 40 20% 82%;
+    --input: 40 20% 82%;
+    --ring: 18 65% 48%;
     
     --radius: 0.75rem;
 
-    /* Aura gradients */
-    --gradient-earth: linear-gradient(135deg, hsl(43, 96%, 56%) 0%, hsl(30, 90%, 50%) 100%);
-    --gradient-sky: linear-gradient(135deg, hsl(160, 84%, 39%) 0%, hsl(180, 70%, 35%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(43, 96%, 56%) 0%, hsl(43, 100%, 65%) 100%);
-    --gradient-terracotta: linear-gradient(135deg, hsl(43, 96%, 56%) 0%, hsl(30, 90%, 50%) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(0, 0%, 0%) 0%, hsl(240, 6%, 6%) 100%);
-    --gradient-glass: linear-gradient(180deg, rgba(14,16,26,0.55) 0%, rgba(14,16,26,0.35) 100%);
+    /* Custom gradients inspired by nature */
+    --gradient-earth: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(30, 45%, 48%) 100%);
+    --gradient-sky: linear-gradient(135deg, hsl(203, 75%, 60%) 0%, hsl(210, 70%, 50%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(45, 75%, 62%) 100%);
+    --gradient-terracotta: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(18, 75%, 58%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(40, 35%, 97%) 0%, hsl(40, 30%, 92%) 100%);
 
-    /* Shadows */
-    --shadow-natural: 0 4px 20px -4px rgba(0, 0, 0, 0.5);
-    --shadow-elevated: 0 10px 40px -12px rgba(0, 0, 0, 0.7);
-    --shadow-glow: 0 0 40px hsl(43 96% 56% / 0.2);
+    /* Shadows with cultural sensitivity */
+    --shadow-natural: 0 4px 20px -4px hsl(var(--primary) / 0.15);
+    --shadow-elevated: 0 10px 40px -12px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--accent) / 0.2);
 
-    /* Typography */
-    --font-display: 'Inter', sans-serif;
+    /* Typography scale */
+    --font-display: 'Crimson Text', serif;
     --font-body: 'Inter', sans-serif;
 
     /* Animations */
@@ -77,25 +79,76 @@
     --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     /* Sidebar variables */
-    --sidebar-background: 240 6% 6%;
-    --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 43 96% 56%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 240 4% 12%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 240 4% 16%;
-    --sidebar-ring: 43 96% 56%;
+    --sidebar-background: 30 25% 96%;
+    --sidebar-foreground: 25 15% 25%;
+    --sidebar-primary: 140 35% 25%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 25 10% 90%;
+    --sidebar-accent-foreground: 25 15% 25%;
+    --sidebar-border: 25 15% 85%;
+    --sidebar-ring: 140 35% 25%;
   }
 
   .dark {
-    /* Same as root - dark by default */
+    --background: 120 8% 10%;
+    --foreground: 40 30% 95%;
+    
+    --card: 120 8% 12%;
+    --card-foreground: 40 30% 95%;
+    
+    --popover: 120 8% 12%;
+    --popover-foreground: 40 30% 95%;
+    
+    --primary: 18 65% 48%;
+    --primary-foreground: 40 40% 99%;
+    --primary-glow: 18 75% 58%;
+    
+    --secondary: 145 40% 25%;
+    --secondary-foreground: 40 40% 99%;
+    
+    --muted: 120 6% 22%;
+    --muted-foreground: 40 20% 70%;
+    
+    --accent: 203 75% 55%;
+    --accent-foreground: 120 8% 10%;
+    
+    --ochre: 30 45% 45%;
+    --canoe-red: 5 55% 40%;
+    --goldenrod: 45 75% 58%;
+    
+    --success: 142 70% 35%;
+    --success-foreground: 40 40% 99%;
+    
+    --warning: 38 92% 48%;
+    --warning-foreground: 120 8% 10%;
+    
+    --destructive: 5 75% 48%;
+    --destructive-foreground: 40 40% 99%;
+    
+    --border: 120 6% 22%;
+    --input: 120 6% 22%;
+    --ring: 18 65% 48%;
+
+    --gradient-earth: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(30, 45%, 45%) 100%);
+    --gradient-sky: linear-gradient(135deg, hsl(203, 75%, 55%) 0%, hsl(210, 70%, 45%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(45, 75%, 58%) 100%);
+    --gradient-terracotta: linear-gradient(135deg, hsl(18, 65%, 48%) 0%, hsl(18, 75%, 58%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(120, 8%, 10%) 0%, hsl(120, 6%, 22%) 100%);
+
+    --sidebar-background: 25 20% 6%;
+    --sidebar-foreground: 30 15% 85%;
+    --sidebar-primary: 140 45% 45%;
+    --sidebar-primary-foreground: 25 20% 8%;
+    --sidebar-accent: 25 15% 12%;
+    --sidebar-accent-foreground: 30 15% 85%;
+    --sidebar-border: 25 15% 18%;
+    --sidebar-ring: 140 45% 45%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    @apply border-border transition-smooth;
   }
 
   body {
@@ -104,7 +157,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-medium tracking-tight;
+    @apply font-display font-semibold tracking-tight;
   }
 
   .transition-smooth {
@@ -119,7 +172,7 @@
   [data-high-contrast="true"] {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 5%;
+    --card: 0 0% 10%;
     --card-foreground: 0 0% 100%;
     --primary: 60 100% 50%;
     --primary-foreground: 0 0% 0%;
@@ -136,23 +189,23 @@
     outline-offset: 2px !important;
   }
 
-  /* Touch target size for AODA compliance */
+  /* Ensure minimum touch target size for AODA compliance */
   button, a, input, textarea, select {
     min-height: 44px;
+    min-width: 44px;
   }
 
-  /* Skip to main content link */
+  /* Skip to main content link for keyboard users */
   .skip-link {
     position: absolute;
     top: -40px;
     left: 6px;
     background: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
-    padding: 8px 16px;
+    padding: 8px;
     text-decoration: none;
     z-index: 9999;
-    border-radius: 8px;
-    font-weight: 500;
+    border-radius: 4px;
   }
 
   .skip-link:focus {
@@ -172,78 +225,7 @@
 }
 
 @layer components {
-  /* Aura border gradient effect */
-  .border-gradient {
-    position: relative;
-  }
-  
-  .border-gradient::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    background: linear-gradient(225deg, rgba(255, 255, 255, 0.0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.0) 100%);
-    pointer-events: none;
-  }
-
-  /* Glass morphism nav */
-  .glass-nav {
-    background: linear-gradient(180deg, rgba(14,16,26,0.55), rgba(14,16,26,0.35)) padding-box, 
-                linear-gradient(120deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08)) border-box;
-    border: 1px solid transparent;
-    backdrop-filter: blur(16px) saturate(120%);
-    -webkit-backdrop-filter: blur(16px) saturate(120%);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
-  }
-
-  /* Aura button styles */
-  .btn-aura {
-    --border-radius: 32px;
-    --button-color: #101010;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--button-color);
-    box-shadow:
-      inset 0px 1px 1px rgba(255, 255, 255, 0.2),
-      inset 0px 2px 2px rgba(255, 255, 255, 0.15),
-      inset 0px 4px 4px rgba(255, 255, 255, 0.1),
-      inset 0px 8px 8px rgba(255, 255, 255, 0.05),
-      0px -1px 1px rgba(0, 0, 0, 0.02),
-      0px -2px 2px rgba(0, 0, 0, 0.03),
-      0px -4px 4px rgba(0, 0, 0, 0.05);
-    border: solid 1px rgba(255, 255, 255, 0.13);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: all 0.4s ease;
-  }
-
-  .btn-aura:hover {
-    border-color: hsl(43 96% 56% / 0.4);
-    box-shadow:
-      inset 0px 1px 1px rgba(255, 255, 255, 0.3),
-      inset 0px 2px 2px rgba(255, 255, 255, 0.2),
-      0 0 20px hsl(43 96% 56% / 0.2);
-  }
-
-  /* Feature card glass effect */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .glass-card:hover {
-    border-color: rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  /* Pattern backgrounds */
+  /* Custom pattern backgrounds inspired by traditional Indigenous art */
   .pattern-geometric {
     background-image: 
       linear-gradient(45deg, hsl(var(--muted)) 25%, transparent 25%), 
@@ -282,20 +264,7 @@
     box-shadow: var(--shadow-glow);
   }
 
-  /* Animations */
-  @keyframes fadeSlideIn {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-      filter: blur(8px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-      filter: blur(0px);
-    }
-  }
-
+  /* Respectful animations */
   @keyframes gentle-float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-4px); }
@@ -317,15 +286,6 @@
     }
   }
 
-  @keyframes marquee-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  .animate-fade-slide-in {
-    animation: fadeSlideIn 0.8s ease-out both;
-  }
-
   .animate-gentle-float {
     animation: gentle-float 3s ease-in-out infinite;
   }
@@ -336,28 +296,5 @@
 
   .animate-fade-in-up {
     animation: fade-in-up 0.6s ease-out;
-  }
-
-  .animate-marquee-left {
-    animation: marquee-left 80s linear infinite;
-  }
-
-  /* Badge styles */
-  .badge-amber {
-    @apply inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-500/15 px-3 py-1.5 text-xs font-medium text-amber-300;
-  }
-
-  .badge-emerald {
-    @apply inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 text-xs font-medium text-emerald-300;
-  }
-
-  /* Stats card */
-  .stats-card {
-    @apply flex flex-col min-h-[420px] rounded-2xl p-5 sm:p-6 backdrop-blur-lg justify-between transition-all;
-    background: rgba(39, 39, 42, 0.5);
-  }
-
-  .stats-card:hover {
-    border-color: rgba(63, 63, 70, 1);
   }
 }

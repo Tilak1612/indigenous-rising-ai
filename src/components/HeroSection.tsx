@@ -8,108 +8,126 @@ const HeroSection = () => {
   return (
     <section 
       id="hero" 
-      className="relative z-10 px-4 sm:px-6 lg:px-8 pt-8 pb-8 mb-20 lg:mb-40 mt-0 max-w-7xl mx-auto"
+      className="relative min-h-screen flex items-center justify-center"
       aria-label="Welcome to Indigenous Rising AI"
     >
-      {/* Animated background effect */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(1200px_600px_at_50%_-20%,rgba(251,191,36,0.08),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(800px_400px_at_80%_120%,rgba(16,185,129,0.06),transparent_60%)]" />
-      </div>
-
-      <div className="text-center max-w-4xl mx-auto mt-32 sm:mt-40 animate-fade-slide-in">
-        {/* Badge */}
-        <span className="badge-amber">
-          <Sparkles className="w-4 h-4" />
-          Biidaasige Naadamaage • Community-Driven Innovation
-        </span>
-
-        {/* Main heading */}
-        <h1 className="mt-4 sm:mt-6 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl tracking-tight font-medium">
-          <span className="block text-white">Empowering Indigenous</span>
-          <span className="block bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
-            Entrepreneurs
-          </span>
-          <span className="block text-white">with AI-Driven Tools</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="mt-3 sm:mt-4 text-base sm:text-lg font-normal text-slate-300/90 max-w-3xl mx-auto" style={{ animationDelay: '0.2s' }}>
-          Gichi-manidoo miigwech. A culturally respectful platform harmonizing traditional Indigenous knowledge 
-          with cutting-edge AI technology to support business growth while honoring data sovereignty principles.
-        </p>
-
-        {/* Key features */}
-        <div className="flex flex-wrap justify-center gap-3 mt-6 text-sm">
-          <div className="flex items-center space-x-2 px-3 py-2 rounded-full bg-white/5 border border-white/10">
-            <Shield className="w-4 h-4 text-amber-400" />
-            <span className="text-white/80">OCAP™ Compliant</span>
+      {/* Responsive background image with WebP - LCP optimized */}
+      <picture className="absolute inset-0">
+        <source
+          srcSet="/hero-image-400.webp 400w, /hero-image-800.webp 800w, /hero-image-1200.webp 1200w, /hero-image-1920.webp 1920w"
+          sizes="100vw"
+          type="image/webp"
+        />
+        <img
+          src="/hero-image-1200.webp"
+          alt="Indigenous entrepreneurs collaborating with technology, representing community-driven innovation and business growth"
+          className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width={1920}
+          height={1080}
+        />
+      </picture>
+      <div className="absolute inset-0 bg-background/85 backdrop-blur-[3px]" />
+      <div className="absolute inset-0 pattern-geometric opacity-20" />
+      
+      <div className="relative z-10 container mx-auto px-4 py-20">
+        <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in-up">
+          {/* Badge */}
+          <div className="inline-flex items-center space-x-2 bg-card/90 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-natural">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold text-foreground">
+              Biidaasige Naadamaage • Community-Driven Innovation
+            </span>
           </div>
-          <div className="flex items-center space-x-2 px-3 py-2 rounded-full bg-white/5 border border-white/10">
-            <Globe className="w-4 h-4 text-amber-400" />
-            <span className="text-white/80">Multi-Language Support</span>
-          </div>
-          <div className="flex items-center space-x-2 px-3 py-2 rounded-full bg-white/5 border border-white/10">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span className="text-white/80">AI-Powered Matching</span>
-          </div>
-        </div>
 
-        {/* CTA buttons */}
-        <div className="sm:mt-6 mt-4" style={{ animationDelay: '0.3s' }}>
+          {/* Main heading */}
+          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-black text-foreground leading-tight tracking-tight drop-shadow-sm">
+            Empowering Indigenous
+            <span className="block gradient-earth bg-clip-text text-transparent font-black">
+              Entrepreneurs
+            </span>
+            with AI-Driven Tools
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl font-semibold text-foreground/80 max-w-3xl mx-auto leading-relaxed drop-shadow-sm">
+            Gichi-manidoo miigwech. A culturally respectful platform harmonizing traditional Indigenous knowledge 
+            with cutting-edge AI technology to support business growth while honoring data sovereignty principles.
+          </p>
+
+          {/* Key features */}
+          <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-foreground">
+            <div className="flex items-center space-x-2 bg-card/50 backdrop-blur-sm px-3 py-2 rounded-full border border-border/50">
+              <Shield className="w-4 h-4 text-primary" />
+              <span>OCAP™ Compliant</span>
+            </div>
+            <div className="flex items-center space-x-2 bg-card/50 backdrop-blur-sm px-3 py-2 rounded-full border border-border/50">
+              <Globe className="w-4 h-4 text-primary" />
+              <span>Multi-Language Support</span>
+            </div>
+            <div className="flex items-center space-x-2 bg-card/50 backdrop-blur-sm px-3 py-2 rounded-full border border-border/50">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span>AI-Powered Matching</span>
+            </div>
+          </div>
+
+          {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button 
-              className="btn-aura px-6 py-3 text-base font-medium text-white flex items-center gap-2 group"
+            <Button 
+              variant="hero"
+              size="lg" 
+              className="group px-8 py-6 text-lg font-bold shadow-elevated hover:shadow-glow"
               onClick={() => {
                 const element = document.querySelector('#pricing');
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
-              <Sparkles className="w-5 h-5 text-amber-400" />
-              <span>Start Your Journey</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-            
+              Start Your Journey
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
             <VideoModal 
               triggerText="Watch How It Works"
               triggerVariant="outline"
               triggerSize="lg"
-              triggerClassName="border border-white/20 text-white/80 hover:text-white hover:bg-white/5 backdrop-blur-sm px-6 py-3 rounded-full"
+              triggerClassName="border-2 bg-card/80 backdrop-blur-sm hover:bg-primary/10 hover:border-primary transition-smooth px-8 py-6 text-lg font-bold border-primary/30 text-foreground"
             />
           </div>
+
+          {/* Interactive Quiz */}
+          <div className="mt-8">
+            <InteractiveQuiz />
+          </div>
+
+          {/* Statistics */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 border-t border-border bg-card/50 backdrop-blur-sm rounded-2xl p-8 shadow-natural">
+            <div className="text-center space-y-2 animate-gentle-float">
+              <div className="font-display text-5xl font-black text-primary drop-shadow-sm">
+                <CountUpStats end={500} suffix="+" />
+              </div>
+              <div className="text-sm font-bold text-foreground">Indigenous Businesses Supported</div>
+            </div>
+            <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '0.5s' }}>
+              <div className="font-display text-5xl font-black text-secondary drop-shadow-sm">
+                $<CountUpStats end={2.5} decimals={1} />M
+              </div>
+              <div className="text-sm font-bold text-foreground">Funding Connected</div>
+            </div>
+            <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '1s' }}>
+              <div className="font-display text-5xl font-black text-accent drop-shadow-sm">
+                <CountUpStats end={50} suffix="+" />
+              </div>
+              <div className="text-sm font-bold text-foreground">Community Partnerships</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Interactive Quiz */}
-      <div className="mt-8 max-w-2xl mx-auto" style={{ animationDelay: '0.4s' }}>
-        <InteractiveQuiz />
-      </div>
-
-      {/* Statistics */}
-      <div className="sm:mt-20 mt-12 relative" style={{ animationDelay: '0.5s' }}>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="glass-card rounded-2xl p-6 text-center border-gradient animate-gentle-float">
-            <div className="text-5xl font-medium text-amber-400 tracking-tighter">
-              <CountUpStats end={500} suffix="+" />
-            </div>
-            <div className="mt-2 text-sm text-white/70">Indigenous Businesses Supported</div>
-          </div>
-          
-          <div className="glass-card rounded-2xl p-6 text-center border-gradient animate-gentle-float" style={{ animationDelay: '0.5s' }}>
-            <div className="text-5xl font-medium text-emerald-400 tracking-tighter">
-              $<CountUpStats end={2.5} decimals={1} />M
-            </div>
-            <div className="mt-2 text-sm text-white/70">Funding Connected</div>
-          </div>
-          
-          <div className="glass-card rounded-2xl p-6 text-center border-gradient animate-gentle-float" style={{ animationDelay: '1s' }}>
-            <div className="text-5xl font-medium text-amber-400 tracking-tighter">
-              <CountUpStats end={50} suffix="+" />
-            </div>
-            <div className="mt-2 text-sm text-white/70">Community Partnerships</div>
-          </div>
-        </div>
-      </div>
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-10 w-20 h-20 gradient-earth rounded-full opacity-20 animate-gentle-float" />
+      <div className="absolute bottom-20 right-10 w-16 h-16 gradient-sky rounded-full opacity-20 animate-gentle-float" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-1/2 left-1/4 w-12 h-12 gradient-hero rounded-full opacity-15 animate-gentle-float" style={{ animationDelay: '2s' }} />
     </section>
   );
 };
