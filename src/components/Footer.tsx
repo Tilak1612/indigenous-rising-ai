@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
 import { 
-  Users, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
-  Youtube, Globe, Shield, Heart, BookOpen, Building 
+  Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
+  Youtube, Globe, Shield, Heart, BookOpen
 } from 'lucide-react';
 import logoFull from '@/assets/logo-full.png';
 
@@ -74,75 +74,79 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-card border-t border-border">
-      <div className="container mx-auto px-4">
+    <footer className="bg-card border-t border-border/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Main footer content */}
-        <div className="py-16 space-y-12">
+        <div className="py-20 space-y-16">
           {/* Company info and newsletter */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <div className="space-y-8">
               {/* Logo and tagline */}
-              <div className="space-y-2">
-                <Link to="/">
-                  <img 
-                    src={logoFull} 
-                    alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
-                    className="h-16 w-auto hover:opacity-80 transition-opacity"
-                    loading="lazy"
-                    decoding="async"
-                    width={200}
-                    height={64}
-                  />
-                </Link>
-              </div>
+              <Link to="/" className="inline-block group">
+                <img 
+                  src={logoFull} 
+                  alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
+                  className="h-14 w-auto transition-all duration-300 group-hover:opacity-80"
+                  loading="lazy"
+                  decoding="async"
+                  width={180}
+                  height={56}
+                />
+              </Link>
 
-              <p className="text-muted-foreground leading-relaxed max-w-md">
+              <p className="text-muted-foreground leading-relaxed max-w-md text-lg">
                 Empowering Indigenous entrepreneurs across Turtle Island through culturally respectful AI technology, 
                 traditional knowledge integration, and community-centered business support.
               </p>
 
               {/* Contact info */}
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 text-sm">
-                  <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-8 h-8 glass bg-muted/50 rounded-lg flex items-center justify-center">
+                    <MapPin className="w-4 h-4 text-secondary" />
+                  </div>
                   <span className="text-muted-foreground">
                     Traditional Territory of the Anishinaabe, Toronto, ON
                   </span>
                 </div>
-                <div className="flex items-center space-x-3 text-sm">
-                  <Phone className="w-4 h-4 text-primary flex-shrink-0" />
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-8 h-8 glass bg-muted/50 rounded-lg flex items-center justify-center">
+                    <Phone className="w-4 h-4 text-secondary" />
+                  </div>
                   <span className="text-muted-foreground">1-800-INDIGENOUS (1-800-463-4436)</span>
                 </div>
-                <div className="flex items-center space-x-3 text-sm">
-                  <Mail className="w-4 h-4 text-primary flex-shrink-0" />
+                <div className="flex items-center gap-3 text-sm">
+                  <div className="w-8 h-8 glass bg-muted/50 rounded-lg flex items-center justify-center">
+                    <Mail className="w-4 h-4 text-secondary" />
+                  </div>
                   <span className="text-muted-foreground">hello@indigenousrising.ai</span>
                 </div>
               </div>
 
-              {/* Cultural acknowledgment badges */}
+              {/* Cultural badges */}
               <div className="flex flex-wrap gap-2">
-                <div className="inline-flex items-center space-x-2 bg-muted/50 rounded-full px-3 py-1 text-xs">
-                  <Shield className="w-3 h-3 text-primary" />
+                <div className="inline-flex items-center gap-2 glass bg-muted/30 border border-border/30 rounded-full px-4 py-2 text-xs font-medium">
+                  <Shield className="w-3 h-3 text-secondary" />
                   <span className="text-muted-foreground">OCAP™ Certified</span>
                 </div>
-                <div className="inline-flex items-center space-x-2 bg-muted/50 rounded-full px-3 py-1 text-xs">
-                  <Heart className="w-3 h-3 text-primary" />
+                <div className="inline-flex items-center gap-2 glass bg-muted/30 border border-border/30 rounded-full px-4 py-2 text-xs font-medium">
+                  <Heart className="w-3 h-3 text-secondary" />
                   <span className="text-muted-foreground">Indigenous Led</span>
                 </div>
-                <div className="inline-flex items-center space-x-2 bg-muted/50 rounded-full px-3 py-1 text-xs">
-                  <Globe className="w-3 h-3 text-primary" />
+                <div className="inline-flex items-center gap-2 glass bg-muted/30 border border-border/30 rounded-full px-4 py-2 text-xs font-medium">
+                  <Globe className="w-3 h-3 text-secondary" />
                   <span className="text-muted-foreground">Multi-Language</span>
                 </div>
               </div>
             </div>
 
             {/* Newsletter signup */}
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <h3 className="font-display text-xl font-semibold text-foreground">
+            <div className="glass bg-card/50 border border-border/30 rounded-3xl p-8 space-y-6">
+              <div className="space-y-2">
+                <h3 className="font-display text-2xl font-light text-foreground">
                   Stay Connected
                 </h3>
-                <p className="text-sm text-muted-foreground italic">
+                <p className="text-sm text-secondary italic">
                   Wiidookaage • Working Together
                 </p>
                 <p className="text-muted-foreground">
@@ -154,9 +158,9 @@ const Footer = () => {
               <NewsletterSignup />
 
               {/* Social links */}
-              <div className="space-y-3">
-                <h4 className="font-semibold text-foreground text-sm">Follow Our Journey</h4>
-                <div className="flex space-x-3">
+              <div className="space-y-4 pt-4">
+                <h4 className="font-medium text-foreground text-sm">Follow Our Journey</h4>
+                <div className="flex gap-3">
                   {socialLinks.map((social) => {
                     const Icon = social.icon;
                     return (
@@ -165,12 +169,11 @@ const Footer = () => {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-10 h-10 bg-muted/50 hover:bg-muted/70 rounded-lg flex items-center justify-center transition-smooth group"
+                        className="w-10 h-10 glass bg-muted/30 hover:bg-muted/50 border border-border/30 rounded-xl flex items-center justify-center transition-smooth hover-lift group"
                         aria-label={social.name}
-                        style={{ '--icon-color': social.color } as any}
                       >
                         <Icon 
-                          className="w-5 h-5 transition-smooth group-hover:scale-110" 
+                          className="w-4 h-4 transition-smooth group-hover:scale-110" 
                           style={{ color: social.color }}
                         />
                       </a>
@@ -181,15 +184,15 @@ const Footer = () => {
             </div>
           </div>
 
-          <Separator className="opacity-50" />
+          <Separator className="opacity-30" />
 
           {/* Footer links */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {footerSections.map((section) => (
-              <div key={section.title} className="space-y-4">
+              <div key={section.title} className="space-y-5">
                 <div className="space-y-1">
-                  <h3 className="font-semibold text-foreground">{section.title}</h3>
-                  <p className="text-xs text-primary/70 italic">{section.titleTranslation}</p>
+                  <h3 className="font-medium text-foreground">{section.title}</h3>
+                  <p className="text-xs text-secondary italic">{section.titleTranslation}</p>
                 </div>
                 <ul className="space-y-3">
                   {section.links.map((link) => (
@@ -197,7 +200,7 @@ const Footer = () => {
                       {link.href.startsWith('#') ? (
                         <a
                           href={link.href}
-                          className="text-sm text-muted-foreground hover:text-primary transition-smooth cursor-pointer"
+                          className="text-sm text-muted-foreground hover:text-foreground transition-smooth cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault();
                             const element = document.querySelector(link.href);
@@ -209,7 +212,7 @@ const Footer = () => {
                       ) : (
                         <Link
                           to={link.href}
-                          className="text-sm text-muted-foreground hover:text-primary transition-smooth"
+                          className="text-sm text-muted-foreground hover:text-foreground transition-smooth"
                         >
                           {link.name}
                         </Link>
@@ -221,23 +224,23 @@ const Footer = () => {
             ))}
           </div>
 
-          <Separator className="opacity-50" />
+          <Separator className="opacity-30" />
 
           {/* Language selector */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-foreground text-sm flex items-center space-x-2">
-              <Globe className="w-4 h-4" />
+            <h4 className="font-medium text-foreground text-sm flex items-center gap-2">
+              <Globe className="w-4 h-4 text-secondary" />
               <span>Available Languages</span>
-              <span className="text-xs text-primary/70 italic">• Anishinaabemowin</span>
+              <span className="text-xs text-secondary italic">• Anishinaabemowin</span>
             </h4>
             <div className="flex flex-wrap gap-2">
               {languages.map((language, idx) => (
                 <button
                   key={idx}
-                  className={`px-3 py-1 text-xs rounded-full border transition-smooth ${
+                  className={`px-4 py-2 text-xs rounded-xl border transition-smooth ${
                     idx === 0 
                       ? 'bg-primary text-primary-foreground border-primary' 
-                      : 'bg-background border-border hover:border-primary/50 text-muted-foreground hover:text-foreground'
+                      : 'glass bg-card/50 border-border/50 hover:border-secondary/50 text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   {language}
@@ -247,33 +250,33 @@ const Footer = () => {
           </div>
         </div>
 
-        <Separator className="opacity-50" />
+        <Separator className="opacity-30" />
 
         {/* Bottom footer */}
-        <div className="py-8 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
-          <div className="text-center lg:text-left">
+        <div className="py-8 flex flex-col lg:flex-row items-center justify-between gap-6">
+          <div className="text-center lg:text-left space-y-1">
             <p className="text-sm text-muted-foreground">
               © 2024 Indigenous Rising AI Business Support Platform. All rights reserved.
             </p>
-            <p className="text-xs text-muted-foreground/70 mt-1">
+            <p className="text-xs text-muted-foreground/70">
               Built with respect on the traditional territories of Indigenous peoples across Turtle Island.
             </p>
-            <p className="text-xs text-muted-foreground/70 mt-1">
+            <p className="text-xs text-muted-foreground/70">
               Powered by Brainfy AI Inc
             </p>
           </div>
 
-          <div className="flex items-center space-x-6 text-xs text-muted-foreground">
-            <span className="flex items-center space-x-1">
-              <Heart className="w-3 h-3 text-primary" />
+          <div className="flex items-center gap-6 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <Heart className="w-3 h-3 text-secondary" />
               <span>Indigenous Owned</span>
             </span>
-            <span className="flex items-center space-x-1">
-              <Shield className="w-3 h-3 text-primary" />
+            <span className="flex items-center gap-1.5">
+              <Shield className="w-3 h-3 text-secondary" />
               <span>OCAP™ Compliant</span>
             </span>
-            <span className="flex items-center space-x-1">
-              <BookOpen className="w-3 h-3 text-primary" />
+            <span className="flex items-center gap-1.5">
+              <BookOpen className="w-3 h-3 text-secondary" />
               <span>TRC Aligned</span>
             </span>
           </div>

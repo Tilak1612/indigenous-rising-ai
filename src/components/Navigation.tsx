@@ -21,50 +21,47 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-background/95 backdrop-blur-sm border-b border-border shadow-natural">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 fade-in w-full max-w-5xl px-4">
+      <nav className="glass bg-card/80 border border-border/60 rounded-2xl px-6 py-3 shadow-aura-lg">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <a href="/" className="flex items-center space-x-4 group">
+          <Link to="/" className="flex items-center space-x-3 group">
             <img 
               src={logoFull} 
               alt="Indigenous Rising AI - Business Support Platform for Indigenous Entrepreneurs" 
-              className="h-12 w-auto transition-smooth group-hover:scale-105"
-              width={150}
-              height={48}
+              className="h-10 w-auto transition-all duration-300 group-hover:scale-105"
+              width={120}
+              height={40}
               loading="eager"
               fetchPriority="high"
               decoding="async"
             />
-            <div className="flex flex-col">
-              <span className="font-display font-bold text-base md:text-xl text-primary tracking-tight">
+            <div className="hidden sm:flex flex-col">
+              <span className="font-display font-semibold text-sm text-foreground tracking-tight">
                 Indigenous Rising AI
               </span>
-              <span className="text-xs text-muted-foreground font-medium tracking-wide">
+              <span className="text-xs text-muted-foreground">
                 Business Support Platform
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => {
-              const Icon = item.icon;
-              
               if (item.isAnchor) {
                 return (
                   <a
                     key={item.name}
                     href={item.href}
-                    className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-muted/50 transition-smooth group"
+                    className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-smooth"
                     onClick={(e) => {
                       e.preventDefault();
                       const element = document.querySelector(item.href);
                       element?.scrollIntoView({ behavior: 'smooth' });
                     }}
                   >
-                    <Icon className="w-4 h-4 group-hover:text-primary transition-smooth" />
-                    <span>{item.name}</span>
+                    {item.name}
                   </a>
                 );
               }
@@ -73,35 +70,34 @@ const Navigation = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-muted/50 transition-smooth group"
+                  className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-smooth"
                 >
-                  <Icon className="w-4 h-4 group-hover:text-primary transition-smooth" />
-                  <span>{item.name}</span>
+                  {item.name}
                 </Link>
               );
             })}
+            
             {user ? (
-              <div className="flex items-center space-x-2 ml-2">
-                <span className="text-sm text-muted-foreground">{user.email}</span>
+              <div className="flex items-center gap-2 ml-2">
+                <span className="text-xs text-muted-foreground hidden xl:block">{user.email}</span>
                 <Button 
                   size="sm" 
-                  variant="outline" 
+                  variant="ghost"
                   onClick={() => signOut()}
-                  className="flex items-center space-x-1"
+                  className="text-sm font-medium hover:bg-muted/50"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
+                  <LogOut className="w-4 h-4 mr-1" />
+                  Logout
                 </Button>
               </div>
             ) : (
               <Button 
-                size="lg" 
-                variant="hero" 
-                className="ml-2 flex items-center space-x-2 font-bold text-base px-6 shadow-lg hover:shadow-xl transition-all"
+                size="sm"
+                className="ml-2 glass bg-gradient-purple text-primary-foreground font-medium rounded-xl px-5 hover:shadow-glow glow-hover"
                 onClick={() => navigate('/auth')}
               >
-                <LogIn className="w-5 h-5" />
-                <span>Login</span>
+                <LogIn className="w-4 h-4 mr-1" />
+                Login
               </Button>
             )}
           </div>
@@ -109,18 +105,18 @@ const Navigation = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-muted/50 transition-smooth"
+            className="lg:hidden p-2 rounded-xl hover:bg-muted/50 transition-smooth"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         <div className={cn(
           "lg:hidden transition-all duration-300 ease-in-out overflow-hidden",
-          isOpen ? "max-h-96 opacity-100 pb-4" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[400px] opacity-100 pt-4 mt-4 border-t border-border/50" : "max-h-0 opacity-0"
         )}>
-          <div className="space-y-2 pt-4 border-t border-border">
+          <div className="space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               
@@ -135,9 +131,9 @@ const Navigation = () => {
                       const element = document.querySelector(item.href);
                       element?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-lg text-foreground/70 hover:text-foreground hover:bg-muted/50 transition-smooth group"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-smooth group"
                   >
-                    <Icon className="w-5 h-5 group-hover:text-primary transition-smooth" />
+                    <Icon className="w-4 h-4 group-hover:text-secondary transition-smooth" />
                     <span className="font-medium">{item.name}</span>
                   </a>
                 );
@@ -148,50 +144,49 @@ const Navigation = () => {
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg text-foreground/70 hover:text-foreground hover:bg-muted/50 transition-smooth group"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-smooth group"
                 >
-                  <Icon className="w-5 h-5 group-hover:text-primary transition-smooth" />
+                  <Icon className="w-4 h-4 group-hover:text-secondary transition-smooth" />
                   <span className="font-medium">{item.name}</span>
                 </Link>
               );
             })}
-            <div className="pt-4 px-4">
+            
+            <div className="pt-4 px-2">
               {user ? (
                 <div className="space-y-2">
-                  <div className="text-sm text-center text-muted-foreground mb-2">
+                  <p className="text-sm text-center text-muted-foreground px-4">
                     {user.email}
-                  </div>
+                  </p>
                   <Button 
                     variant="outline" 
-                    className="w-full flex items-center justify-center space-x-2"
+                    className="w-full rounded-xl"
                     onClick={() => {
                       signOut();
                       setIsOpen(false);
                     }}
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span>Logout</span>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
                   </Button>
                 </div>
               ) : (
                 <Button 
-                  variant="hero" 
-                  size="lg"
-                  className="w-full flex items-center justify-center space-x-2 font-bold text-base shadow-lg"
+                  className="w-full glass bg-gradient-purple text-primary-foreground font-medium rounded-xl hover:shadow-glow"
                   onClick={() => {
                     navigate('/auth');
                     setIsOpen(false);
                   }}
                 >
-                  <LogIn className="w-5 h-5" />
-                  <span>Login</span>
+                  <LogIn className="w-4 h-4 mr-2" />
+                  Login
                 </Button>
               )}
             </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
 };
 
