@@ -8,7 +8,6 @@ import ElderWisdom from '../components/ElderWisdom';
 import TrainingSection from '../components/TrainingSection';
 import PartnershipsSection from '../components/PartnershipsSection';
 import PricingSection from '../components/PricingSection';
-import FAQSection from '../components/FAQSection';
 import CTASection from '../components/CTASection';
 import Footer from '../components/Footer';
 import ScrollToTop from '../components/ScrollToTop';
@@ -45,7 +44,6 @@ const Index = () => {
         <TrainingSection />
         <PartnershipsSection />
         <PricingSection />
-        <FAQSection />
         <div className="container mx-auto px-4 py-12">
           <CanadianComplianceBadge />
         </div>

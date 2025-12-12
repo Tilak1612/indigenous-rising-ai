@@ -21,6 +21,7 @@ const routeNames: Record<string, string> = {
   '/admin': 'Admin Dashboard',
   '/track-request': 'Track Request',
   '/unsubscribe': 'Unsubscribe',
+  '/faq': 'FAQ',
 };
 
 interface BreadcrumbsProps {
