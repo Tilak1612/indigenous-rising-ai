@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -69,13 +69,13 @@ const FeatureCard = ({
       </CardContent>
 
       <CardFooter>
-        <Button 
-          variant="outline" 
-          className="w-full group/btn hover:bg-muted/50 transition-smooth border-border hover:border-primary/50"
+        <ShinyButton 
+          size="sm"
+          className="w-full group/btn"
         >
           {ctaText}
-          <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-        </Button>
+          <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
+        </ShinyButton>
       </CardFooter>
     </Card>
   );

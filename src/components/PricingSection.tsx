@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Check, Sparkles, Crown, Building, ArrowRight } from 'lucide-react';
@@ -287,16 +287,15 @@ const PricingSection = () => {
                 </CardContent>
 
                 <CardFooter className="pt-6">
-                  <Button 
-                    variant={plan.popular ? "hero" : "outline"} 
+                  <ShinyButton 
                     className="w-full group/btn"
                     size="lg"
                     onClick={() => handleCheckout(plan.name, plan.priceId)}
                     disabled={loadingPlan === plan.name}
                   >
                     {loadingPlan === plan.name ? "Loading..." : plan.ctaText}
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
+                    <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
+                  </ShinyButton>
                 </CardFooter>
               </Card>
             );
@@ -330,8 +329,7 @@ const PricingSection = () => {
                 </CardHeader>
                 <CardFooter className="flex items-center justify-between">
                   <span className="font-semibold text-foreground">{addon.price}</span>
-                  <Button 
-                    variant="outline" 
+                  <ShinyButton 
                     size="sm"
                     onClick={() => {
                       const element = document.querySelector('#pricing');
@@ -339,7 +337,7 @@ const PricingSection = () => {
                     }}
                   >
                     Add On
-                  </Button>
+                  </ShinyButton>
                 </CardFooter>
               </Card>
             ))}

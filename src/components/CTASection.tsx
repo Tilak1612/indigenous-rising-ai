@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { ArrowRight, Sparkles, Users, Shield } from 'lucide-react';
 
@@ -79,15 +78,14 @@ const CTASection = () => {
               <ArrowRight className="w-5 h-5 ml-2 inline-block group-hover:translate-x-1 transition-transform" />
             </ShinyButton>
             
-            <Button 
-              variant="outline"
-              className="glass bg-white/10 border-2 border-white/30 text-white hover:bg-white/20 rounded-2xl px-10 py-6 font-medium shadow-aura-lg transition-all duration-300 h-auto text-lg"
+            <ShinyButton 
+              className="group"
               onClick={() => {
                 window.open('mailto:hello@indigenousrising.ai?subject=Demo Request&body=I would like to schedule a demo of the Indigenous Rising AI Business Support Platform.', '_blank');
               }}
             >
               Schedule Demo
-            </Button>
+            </ShinyButton>
           </div>
 
           {/* Trust indicators */}

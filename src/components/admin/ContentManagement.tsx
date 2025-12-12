@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -83,10 +83,10 @@ export default function ContentManagement() {
             </p>
           </div>
 
-          <Button onClick={handleSave} disabled={saving} className="w-full">
-            <Save className="w-4 h-4 mr-2" />
+          <ShinyButton onClick={handleSave} disabled={saving} className="w-full">
+            <Save className="w-4 h-4 mr-2 inline-block" />
             {saving ? 'Saving...' : 'Save Changes'}
-          </Button>
+          </ShinyButton>
         </CardContent>
       </Card>
     </div>

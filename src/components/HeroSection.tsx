@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { ArrowRight, Play, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
 import VideoModal from './VideoModal';
@@ -86,22 +86,21 @@ const HeroSection = () => {
             className="mt-8 flex flex-wrap items-center gap-4 opacity-0 translate-y-8"
             style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1s forwards' }}
           >
-            <Button 
+            <ShinyButton 
               onClick={() => {
                 const element = document.querySelector('#pricing');
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 transition text-sm font-semibold text-primary-foreground rounded-full py-3 px-6 shadow-deep"
+              className="group"
             >
               <span className="font-geist">Start Your Journey</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </Button>
+              <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover:translate-x-0.5 transition-transform" />
+            </ShinyButton>
             
             <VideoModal 
               triggerText="Watch How It Works"
-              triggerVariant="default"
               triggerSize="lg"
-              triggerClassName="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 transition text-sm font-semibold text-white font-geist ring-1 ring-white/20 rounded-full py-3 px-5 shadow-deep backdrop-blur"
+              triggerClassName="inline-flex items-center gap-2"
             />
           </div>
 

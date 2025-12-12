@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Search, Shield, Clock, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
@@ -166,10 +166,9 @@ const TrackRequest = () => {
                       disabled={isLoading}
                       required
                     />
-                    <Button
+                    <ShinyButton
                       type="submit"
                       disabled={isLoading || trackingNumber.length !== 12}
-                      className="gradient-earth text-white"
                     >
                       {isLoading ? (
                         <>
@@ -178,11 +177,11 @@ const TrackRequest = () => {
                         </>
                       ) : (
                         <>
-                          <Search className="w-5 h-5 mr-2" />
+                          <Search className="w-5 h-5 mr-2 inline-block" />
                           Track
                         </>
                       )}
-                    </Button>
+                    </ShinyButton>
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Your tracking number was provided when you submitted your request
