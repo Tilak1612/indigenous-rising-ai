@@ -36,26 +36,34 @@ serve(async (req) => {
     
     let event: Stripe.Event;
 
-    // Verify webhook signature if webhook secret is set
+    // Verify webhook signature - REQUIRED for security
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
-    if (webhookSecret && signature) {
-      try {
-        event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-        logStep("Webhook signature verified");
-      } catch (err) {
-        logStep("Webhook signature verification failed", { error: err.message });
-        return new Response(
-          JSON.stringify({ error: 'Webhook signature verification failed' }),
-          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-    } else {
-      // Parse without verification (for testing)
-      if (!webhookSecret) {
-        logStep("WARNING: STRIPE_WEBHOOK_SECRET not set - webhook signature not verified");
-      }
-      event = JSON.parse(body);
+    if (!webhookSecret) {
+      logStep("ERROR: STRIPE_WEBHOOK_SECRET not configured");
+      return new Response(
+        JSON.stringify({ error: 'Webhook secret not configured. Please set STRIPE_WEBHOOK_SECRET.' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
+
+    if (!signature) {
+      logStep("ERROR: Missing stripe-signature header");
+      return new Response(
+        JSON.stringify({ error: 'Missing stripe-signature header' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    let event: Stripe.Event;
+    try {
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+      logStep("Webhook signature verified successfully");
+    } catch (err) {
+      logStep("Webhook signature verification failed", { error: err.message });
+      return new Response(
+        JSON.stringify({ error: 'Webhook signature verification failed' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
 
     logStep("Processing event", { type: event.type, id: event.id });
 
