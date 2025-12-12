@@ -29,6 +29,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Training = lazy(() => import("./pages/Training"));
 const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const FAQ = lazy(() => import("./pages/FAQ"));
 
 const queryClient = new QueryClient();
 
@@ -162,6 +163,14 @@ const App = () => (
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <CookiePolicy />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/faq" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <FAQ />
                   </Suspense>
                 } 
               />
