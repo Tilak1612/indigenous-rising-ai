@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { ArrowRight, Sparkles, Users, Shield } from 'lucide-react';
 
 const CTASection = () => {
@@ -67,16 +68,16 @@ const CTASection = () => {
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center slide-up stagger-4">
-            <Button 
-              className="group glass bg-white text-primary hover:bg-white/90 rounded-2xl px-10 py-6 font-medium shadow-aura-xl hover:shadow-aura-xl transition-all duration-300 h-auto text-lg"
+            <ShinyButton 
+              className="group"
               onClick={() => {
                 const element = document.querySelector('#pricing');
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               Start Free Account
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <ArrowRight className="w-5 h-5 ml-2 inline-block group-hover:translate-x-1 transition-transform" />
+            </ShinyButton>
             
             <Button 
               variant="outline"
