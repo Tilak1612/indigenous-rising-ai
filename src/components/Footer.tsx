@@ -30,7 +30,7 @@ const Footer = () => {
         { name: "Data Rights Guide", href: "/data-rights" },
         { name: "Track Your Request", href: "/track-request" },
         { name: "Contact Support", href: "/contact" },
-        { name: "FAQ", href: "#faq" },
+        { name: "FAQ", href: "/faq" },
         { name: "Community Forum", href: "#testimonials" }
       ]
     },

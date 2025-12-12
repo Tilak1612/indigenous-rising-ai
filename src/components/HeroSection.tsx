@@ -48,7 +48,7 @@ const HeroSection = () => {
             </span>
             
             {/* Main heading */}
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-medium text-white font-geist drop-shadow-xl tracking-tighter">
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white font-geist tracking-tighter" style={{ textShadow: '0 4px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.4)' }}>
               Empowering Indigenous Entrepreneurs
             </h1>
           </div>
