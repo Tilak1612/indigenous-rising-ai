@@ -34,8 +34,6 @@ serve(async (req) => {
     const signature = req.headers.get('stripe-signature');
     const body = await req.text();
     
-    let event: Stripe.Event;
-
     // Verify webhook signature - REQUIRED for security
     const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
     if (!webhookSecret) {
@@ -64,6 +62,7 @@ serve(async (req) => {
         JSON.stringify({ error: 'Webhook signature verification failed' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    }
 
     logStep("Processing event", { type: event.type, id: event.id });
 
