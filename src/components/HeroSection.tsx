@@ -1,135 +1,148 @@
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles, Shield, Globe, ChevronDown } from 'lucide-react';
+import { ArrowRight, Play, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
 import VideoModal from './VideoModal';
 import CountUpStats from './CountUpStats';
 
 const HeroSection = () => {
-  const scrollToCollections = () => {
+  const scrollToFeatures = () => {
     const element = document.querySelector('#features');
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToStats = () => {
+    const element = document.querySelector('#stats');
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section 
-      id="hero" 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-hero"
-      aria-label="Welcome to Indigenous Rising AI"
-    >
-      {/* Floating decorative elements */}
-      <div className="absolute top-1/4 left-10 w-24 h-24 bg-gradient-to-br from-purple-300/30 to-pink-300/30 rounded-full blur-xl floating" />
-      <div className="absolute bottom-1/3 right-16 w-20 h-20 bg-gradient-to-br from-blue-200/30 to-indigo-200/30 rounded-full blur-xl floating" style={{ animationDelay: '-2s' }} />
-      <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-gradient-to-br from-amber-200/30 to-orange-200/30 rounded-full blur-xl floating" style={{ animationDelay: '-4s' }} />
-      <div className="absolute bottom-1/4 left-1/3 w-12 h-12 bg-gradient-to-br from-green-200/30 to-emerald-200/30 rounded-full blur-xl floating" style={{ animationDelay: '-1s' }} />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center pt-24 pb-16">
-        <div className="fade-in">
-          {/* Badge */}
-          <div className="mb-8 slide-up">
-            <span className="inline-flex items-center gap-2 glass bg-card/60 border border-border/40 text-foreground text-sm font-medium rounded-full py-3 px-6">
-              <Sparkles className="w-4 h-4 text-secondary" />
+    <section id="hero" className="relative isolate" aria-label="Welcome to Indigenous Rising AI">
+      {/* Background image */}
+      <div className="absolute inset-0 -z-10">
+        <picture>
+          <source media="(min-width: 1025px)" srcSet="/hero-image-1200.webp" type="image/webp" />
+          <source media="(max-width: 1024px)" srcSet="/hero-image-800.webp" type="image/webp" />
+          <img 
+            src="/hero-image-1200.webp" 
+            alt="Indigenous community gathering with mountains in background" 
+            className="object-center w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70"></div>
+      </div>
+
+      {/* Content */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="pt-28 pb-16 sm:pt-32 md:pt-36 lg:pt-40 sm:pb-20 lg:pb-24">
+          {/* Brand badge */}
+          <div 
+            className="flex flex-col gap-2 sm:gap-3 lg:gap-4 opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.2s forwards' }}
+          >
+            <span className="inline-flex items-center gap-2 text-white/80 text-sm font-medium font-geist mb-4">
+              <Sparkles className="w-4 h-4" />
               Biidaasige Naadamaage • Community-Driven Innovation
             </span>
-          </div>
-
-          {/* Main heading */}
-          <div className="mb-8">
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl leading-none font-light tracking-tight font-display">
-              <span className="bg-gradient-to-r from-foreground via-muted-foreground to-secondary bg-clip-text text-transparent inline-block mb-4">
-                Empowering Indigenous
-              </span>
-              <span className="block font-light text-muted-foreground/60 relative">
-                <span>Entrepreneurs</span>
-                <div className="absolute -right-8 -top-4 w-8 h-8 bg-gradient-to-br from-purple-300 to-pink-300 rounded-full opacity-60 blur-sm floating" />
-              </span>
+            
+            {/* Main heading */}
+            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-medium text-white font-geist drop-shadow-xl tracking-tighter">
+              Empowering Indigenous Entrepreneurs
             </h1>
           </div>
 
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl lg:text-2xl max-w-4xl mx-auto mb-12 leading-relaxed slide-up font-light text-muted-foreground">
+          <p 
+            className="mt-6 max-w-2xl text-white/85 text-base sm:text-lg leading-relaxed font-geist opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.6s forwards' }}
+          >
             Gichi-manidoo miigwech. A culturally respectful platform harmonizing traditional Indigenous knowledge 
             with cutting-edge AI technology to support business growth while honoring data sovereignty principles.
           </p>
 
-          {/* Key features */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12 slide-up stagger-1">
-            <div className="flex items-center gap-2 glass bg-card/50 border border-border/30 px-4 py-2 rounded-full text-sm font-medium text-foreground">
-              <Shield className="w-4 h-4 text-secondary" />
-              <span>OCAP™ Compliant</span>
+          {/* Key features badges */}
+          <div 
+            className="mt-6 flex flex-wrap gap-3 opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.8s forwards' }}
+          >
+            <div className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium rounded-full px-4 py-2 ring-1 ring-white/20 backdrop-blur">
+              <Shield className="w-4 h-4" />
+              <span className="font-geist">OCAP™ Compliant</span>
             </div>
-            <div className="flex items-center gap-2 glass bg-card/50 border border-border/30 px-4 py-2 rounded-full text-sm font-medium text-foreground">
-              <Globe className="w-4 h-4 text-secondary" />
-              <span>Multi-Language Support</span>
+            <div className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium rounded-full px-4 py-2 ring-1 ring-white/20 backdrop-blur">
+              <Globe className="w-4 h-4" />
+              <span className="font-geist">Multi-Language Support</span>
             </div>
-            <div className="flex items-center gap-2 glass bg-card/50 border border-border/30 px-4 py-2 rounded-full text-sm font-medium text-foreground">
-              <Sparkles className="w-4 h-4 text-secondary" />
-              <span>AI-Powered Matching</span>
+            <div className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium rounded-full px-4 py-2 ring-1 ring-white/20 backdrop-blur">
+              <Sparkles className="w-4 h-4" />
+              <span className="font-geist">AI-Powered Matching</span>
             </div>
           </div>
 
-          {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 slide-up stagger-2 mb-12">
+          {/* CTAs */}
+          <div 
+            className="mt-8 flex flex-wrap items-center gap-4 opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1s forwards' }}
+          >
             <Button 
-              className="group glass bg-card/90 border border-border/60 rounded-2xl px-10 py-6 font-medium hover-lift magnetic flex items-center gap-3 shadow-aura-lg hover:shadow-aura-xl transition-all duration-300 text-foreground h-auto"
               onClick={() => {
                 const element = document.querySelector('#pricing');
                 element?.scrollIntoView({ behavior: 'smooth' });
               }}
+              className="group inline-flex items-center gap-2 bg-primary hover:bg-primary/90 transition text-sm font-semibold text-primary-foreground rounded-full py-3 px-6 shadow-deep"
             >
-              <Sparkles className="w-5 h-5" />
-              Start Your Journey
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <span className="font-geist">Start Your Journey</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </Button>
+            
             <VideoModal 
               triggerText="Watch How It Works"
               triggerVariant="default"
               triggerSize="lg"
-              triggerClassName="glass bg-gradient-purple border border-primary/20 rounded-2xl px-10 py-6 font-medium hover-lift magnetic flex items-center gap-3 shadow-aura-lg hover:shadow-glow-lg transition-all duration-300 text-primary-foreground h-auto"
+              triggerClassName="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 transition text-sm font-semibold text-white font-geist ring-1 ring-white/20 rounded-full py-3 px-5 shadow-deep backdrop-blur"
             />
           </div>
 
           {/* Interactive Quiz */}
-          <div className="mt-8 mb-12">
+          <div 
+            className="mt-10 opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1.2s forwards' }}
+          >
             <InteractiveQuiz />
           </div>
 
-          {/* Statistics */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 slide-up stagger-3">
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-light font-display mb-1 text-foreground">
-                <CountUpStats end={500} suffix="+" />
-              </div>
-              <p className="text-sm text-muted-foreground uppercase tracking-wider">Indigenous Businesses Supported</p>
-            </div>
-            <div className="hidden sm:block w-px h-8 bg-border" />
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-light font-display mb-1 text-foreground">
-                $<CountUpStats end={2.5} decimals={1} />M
-              </div>
-              <p className="text-sm text-muted-foreground uppercase tracking-wider">Funding Connected</p>
-            </div>
-            <div className="hidden sm:block w-px h-8 bg-border" />
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl font-light font-display mb-1 text-foreground">
-                <CountUpStats end={50} suffix="+" />
-              </div>
-              <p className="text-sm text-muted-foreground uppercase tracking-wider">Community Partnerships</p>
-            </div>
+          {/* Scroll indicator */}
+          <div 
+            className="mt-16 sm:mt-20 flex justify-center opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1.4s forwards' }}
+          >
+            <button 
+              onClick={scrollToStats}
+              className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition font-geist"
+            >
+              <ChevronDown className="w-6 h-4 animate-pulse-soft" />
+              Scroll to See More
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 slide-up stagger-4">
-        <button 
-          onClick={scrollToCollections}
-          className="flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-smooth cursor-pointer group"
-        >
-          <span className="text-sm font-medium tracking-wider uppercase">Scroll</span>
-          <div className="w-px h-8 bg-border group-hover:bg-foreground transition-smooth" />
-          <ChevronDown className="w-4 h-4 animate-bounce" />
-        </button>
-      </div>
+      <style>{`
+        @keyframes fadeSlideBlurIn {
+          0% {
+            opacity: 0;
+            transform: translateY(32px);
+            filter: blur(8px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0px);
+          }
+        }
+      `}</style>
     </section>
   );
 };
