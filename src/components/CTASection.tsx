@@ -5,13 +5,13 @@ const CTASection = () => {
   return (
     <section className="relative py-32 overflow-hidden">
       {/* Background with gradient */}
-      <div className="absolute inset-0 bg-gradient-purple" />
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-700 via-emerald-800 to-emerald-900" />
       <div className="absolute inset-0 pattern-geometric opacity-5" />
       
       {/* Floating elements */}
-      <div className="absolute top-10 left-10 w-32 h-32 bg-purple-400/20 rounded-full blur-2xl floating" />
-      <div className="absolute bottom-10 right-10 w-24 h-24 bg-pink-400/20 rounded-full blur-2xl floating" style={{ animationDelay: '-2s' }} />
-      <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-blue-400/20 rounded-full blur-xl floating" style={{ animationDelay: '-4s' }} />
+      <div className="absolute top-10 left-10 w-32 h-32 bg-emerald-400/20 rounded-full blur-2xl floating" />
+      <div className="absolute bottom-10 right-10 w-24 h-24 bg-emerald-300/20 rounded-full blur-2xl floating" style={{ animationDelay: '-2s' }} />
+      <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-emerald-500/20 rounded-full blur-xl floating" style={{ animationDelay: '-4s' }} />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center space-y-8 fade-in">
