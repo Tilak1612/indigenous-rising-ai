@@ -55,8 +55,8 @@ const HeroSection = () => {
 
           {/* Subtitle */}
           <p 
-            className="mt-6 max-w-2xl text-white/85 text-base sm:text-lg leading-relaxed font-geist opacity-0 translate-y-8"
-            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.6s forwards' }}
+            className="mt-6 max-w-2xl text-white/90 text-base sm:text-lg leading-relaxed font-geist opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.6s forwards', textShadow: '0 2px 12px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.4)' }}
           >
             Gichi-manidoo miigwech. A culturally respectful platform harmonizing traditional Indigenous knowledge 
             with cutting-edge AI technology to support business growth while honoring data sovereignty principles.
