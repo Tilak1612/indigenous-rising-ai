@@ -7,19 +7,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Play } from 'lucide-react';
 
 interface VideoModalProps {
   triggerText?: string;
-  triggerVariant?: 'default' | 'outline' | 'hero' | 'ghost';
   triggerSize?: 'default' | 'sm' | 'lg';
   triggerClassName?: string;
 }
 
 const VideoModal = ({ 
   triggerText = 'Watch Video', 
-  triggerVariant = 'outline',
   triggerSize = 'lg',
   triggerClassName = ''
 }: VideoModalProps) => {
@@ -28,14 +26,13 @@ const VideoModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button 
-          variant={triggerVariant} 
+        <ShinyButton 
           size={triggerSize}
           className={`gap-2 ${triggerClassName}`}
         >
           <Play className="w-5 h-5" />
           {triggerText}
-        </Button>
+        </ShinyButton>
       </DialogTrigger>
       <DialogContent className="max-w-4xl w-full bg-background">
         <DialogHeader>

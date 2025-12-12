@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card } from '@/components/ui/card';
 import { Rocket, TrendingUp, DollarSign, X } from 'lucide-react';
 
@@ -70,17 +70,17 @@ const InteractiveQuiz = ({ onClose }: InteractiveQuizProps) => {
         {quizOptions.map((option) => {
           const Icon = option.icon;
           return (
-            <Button
+            <ShinyButton
               key={option.id}
-              variant="outline"
-              className="h-auto flex-col gap-3 p-6 hover:bg-primary/10 hover:border-primary transition-all group"
+              size="sm"
+              className="h-auto flex-col gap-3 p-6 group"
               onClick={() => handleOptionClick(option.targetSection)}
             >
-              <Icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform" />
+              <Icon className="w-8 h-8 group-hover:scale-110 transition-transform" />
               <span className="font-semibold text-sm text-center">
                 {option.title}
               </span>
-            </Button>
+            </ShinyButton>
           );
         })}
       </div>

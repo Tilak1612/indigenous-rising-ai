@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut, ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import logoFull from '@/assets/logo-full.png';
@@ -150,9 +150,9 @@ const Navigation = () => {
                 <p className="text-sm text-center text-white/60 px-4 font-geist">
                   {user.email}
                 </p>
-                <Button 
-                  variant="outline" 
-                  className="w-full rounded-lg bg-white/10 border-white/20 text-white hover:bg-white/20"
+                <ShinyButton 
+                  size="sm"
+                  className="w-full"
                   onClick={() => {
                     signOut();
                     setIsOpen(false);
@@ -160,11 +160,12 @@ const Navigation = () => {
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
-                </Button>
+                </ShinyButton>
               </div>
             ) : (
-              <Button 
-                className="w-full bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90"
+              <ShinyButton 
+                size="sm"
+                className="w-full"
                 onClick={() => {
                   navigate('/auth');
                   setIsOpen(false);
@@ -172,7 +173,7 @@ const Navigation = () => {
               >
                 <LogIn className="w-4 h-4 mr-2" />
                 Login
-              </Button>
+              </ShinyButton>
             )}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -119,13 +119,14 @@ const ImpactCalculator = () => {
               </div>
             </div>
 
-            <Button
+            <ShinyButton
               onClick={calculateImpact}
               disabled={!businessStage || !industry || !location || !teamSize}
-              className="w-full gradient-earth text-white font-bold py-6 text-lg shadow-elevated hover:shadow-glow"
+              size="lg"
+              className="w-full"
             >
               Calculate My Impact
-            </Button>
+            </ShinyButton>
 
             {showResults && (
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up">
@@ -185,17 +186,15 @@ const ImpactCalculator = () => {
                   Based on your profile, we recommend starting with our{' '}
                   <span className="font-bold text-primary">Growing Strong</span> plan
                 </p>
-                <Button
+                <ShinyButton
                   size="lg"
-                  variant="outline"
-                  className="border-2 border-primary hover:bg-primary hover:text-primary-foreground"
                   onClick={() => {
                     const element = document.querySelector('#pricing');
                     element?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 >
                   Get Your Free Assessment
-                </Button>
+                </ShinyButton>
               </div>
             )}
           </Card>

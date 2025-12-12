@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -104,9 +104,9 @@ const Unsubscribe = () => {
                 <p className="text-muted-foreground">{message}</p>
                 <div className="pt-4">
                   <Link to="/">
-                    <Button className="gradient-earth text-white">
+                    <ShinyButton>
                       Return to Homepage
-                    </Button>
+                    </ShinyButton>
                   </Link>
                 </div>
               </div>
@@ -121,9 +121,9 @@ const Unsubscribe = () => {
                 <p className="text-muted-foreground">{message}</p>
                 <div className="pt-4 space-y-3">
                   <Link to="/">
-                    <Button className="w-full gradient-earth text-white">
+                    <ShinyButton className="w-full">
                       Return to Homepage
-                    </Button>
+                    </ShinyButton>
                   </Link>
                   <p className="text-xs text-muted-foreground">
                     Need help? Contact us at{' '}

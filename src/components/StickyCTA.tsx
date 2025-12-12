@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { ArrowRight, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -46,10 +46,9 @@ const StickyCTA = () => {
           <p className="font-bold text-sm">
             Ready to transform your Indigenous business?
           </p>
-          <Button
+          <ShinyButton
             size="sm"
-            variant="outline"
-            className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 border-none"
+            className="w-full"
             onClick={() => {
               const element = document.querySelector('#pricing');
               element?.scrollIntoView({ behavior: 'smooth' });
@@ -57,8 +56,8 @@ const StickyCTA = () => {
             }}
           >
             Start Free Today
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
+            <ArrowRight className="w-4 h-4 ml-2 inline-block" />
+          </ShinyButton>
         </div>
       </div>
     </div>

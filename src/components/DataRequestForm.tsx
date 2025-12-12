@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
@@ -185,19 +185,18 @@ const DataRequestForm = () => {
           </p>
           <div className="flex gap-3 pt-4">
             <Link to="/track-request">
-              <Button className="gradient-earth text-white">
+              <ShinyButton>
                 Track My Request
-              </Button>
+              </ShinyButton>
             </Link>
-            <Button
-              variant="outline"
+            <ShinyButton
               onClick={() => {
                 setIsSubmitted(false);
                 setTrackingNumber('');
               }}
             >
               Submit Another Request
-            </Button>
+            </ShinyButton>
           </div>
         </div>
       </Card>
@@ -376,15 +375,14 @@ const DataRequestForm = () => {
                       </p>
                     </div>
                   </div>
-                  <Button
+                  <ShinyButton
                     type="button"
-                    variant="ghost"
                     size="sm"
                     onClick={removeFile}
                     disabled={isSubmitting}
                   >
                     <X className="w-4 h-4" />
-                  </Button>
+                  </ShinyButton>
                 </div>
               )}
               {uploadProgress > 0 && uploadProgress < 100 && (
@@ -408,11 +406,11 @@ const DataRequestForm = () => {
             </p>
           </div>
 
-          <Button
+          <ShinyButton
             type="submit"
-            className="w-full gradient-earth text-white font-bold"
-            disabled={isSubmitting || uploadProgress > 0}
+            className="w-full"
             size="lg"
+            disabled={isSubmitting || uploadProgress > 0}
           >
             {isSubmitting || uploadProgress > 0 ? (
               <>
@@ -422,7 +420,7 @@ const DataRequestForm = () => {
             ) : (
               'Submit PIPEDA Request'
             )}
-          </Button>
+          </ShinyButton>
 
           <div className="space-y-2 text-center">
             <p className="text-xs text-muted-foreground">

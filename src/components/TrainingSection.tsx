@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Users, Award, Clock, ArrowRight, CheckCircle, Star, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -225,22 +225,20 @@ const TrainingSection = () => {
                 </CardContent>
 
                 <CardFooter className="flex-col space-y-3">
-                  <Button 
-                    variant="hero" 
+                  <ShinyButton 
                     className="w-full group/btn"
                     onClick={() => navigate('/training')}
                   >
                     Enroll Now
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                  </Button>
-                  <Button 
-                    variant="outline" 
+                    <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
+                  </ShinyButton>
+                  <ShinyButton 
                     size="sm" 
                     className="w-full"
                     onClick={() => navigate('/training')}
                   >
                     View Curriculum
-                  </Button>
+                  </ShinyButton>
                 </CardFooter>
               </Card>
             );
@@ -271,13 +269,12 @@ const TrainingSection = () => {
                     <div><strong>Requirements:</strong> {cert.requirements}</div>
                     <div><strong>Duration:</strong> {cert.duration}</div>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <ShinyButton 
                     size="sm"
                     onClick={() => navigate('/training')}
                   >
                     Learn More
-                  </Button>
+                  </ShinyButton>
                 </div>
               ))}
             </CardContent>
@@ -308,14 +305,13 @@ const TrainingSection = () => {
                     </div>
                     <Badge variant="outline" className="text-xs">{event.format}</Badge>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <ShinyButton 
                     size="sm" 
                     className="w-full"
                     onClick={() => navigate('/contact')}
                   >
                     Register Free
-                  </Button>
+                  </ShinyButton>
                 </div>
               ))}
             </CardContent>

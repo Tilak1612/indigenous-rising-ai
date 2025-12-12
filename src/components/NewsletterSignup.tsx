@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -163,9 +163,9 @@ const NewsletterSignup = () => {
             )}
           </div>
           
-          <Button
+          <ShinyButton
             type="submit"
-            className="w-full gradient-earth text-white font-bold"
+            className="w-full"
             disabled={isSubmitting || !consent}
           >
             {isSubmitting ? (
@@ -176,7 +176,7 @@ const NewsletterSignup = () => {
             ) : (
               'Subscribe to Updates'
             )}
-          </Button>
+          </ShinyButton>
           
           <div className="space-y-1">
             <p className="text-xs text-muted-foreground text-center">

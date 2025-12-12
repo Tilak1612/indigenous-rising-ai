@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -144,9 +144,9 @@ export default function Auth() {
                       <AlertDescription>{success}</AlertDescription>
                     </Alert>
                   )}
-                  <Button type="submit" className="w-full h-11 text-base font-semibold" disabled={loading}>
+                  <ShinyButton type="submit" className="w-full" disabled={loading}>
                     {loading ? 'Signing in...' : 'Sign In'}
-                  </Button>
+                  </ShinyButton>
                 </form>
               </TabsContent>
 
@@ -198,9 +198,9 @@ export default function Auth() {
                       <AlertDescription>{success}</AlertDescription>
                     </Alert>
                   )}
-                  <Button type="submit" className="w-full h-11 text-base font-semibold" disabled={loading}>
+                  <ShinyButton type="submit" className="w-full" disabled={loading}>
                     {loading ? 'Creating account...' : 'Sign Up'}
-                  </Button>
+                  </ShinyButton>
                 </form>
               </TabsContent>
             </Tabs>

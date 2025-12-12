@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -213,7 +213,7 @@ const Contact = () => {
                 )}
               </div>
 
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
+              <ShinyButton type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <LoadingSpinner size="sm" className="mr-2" />
@@ -222,7 +222,7 @@ const Contact = () => {
                 ) : (
                   'Send Message'
                 )}
-              </Button>
+              </ShinyButton>
             </form>
           </CardContent>
         </Card>

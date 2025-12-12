@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '@/hooks/useAuth';
-import { Button } from '@/components/ui/button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Mail, FileText, Settings, LogOut } from 'lucide-react';
@@ -37,10 +37,10 @@ export default function Admin() {
             <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
             <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground">{user?.email}</span>
-              <Button variant="outline" size="sm" onClick={signOut}>
-                <LogOut className="w-4 h-4 mr-2" />
+              <ShinyButton size="sm" onClick={signOut}>
+                <LogOut className="w-4 h-4 mr-2 inline-block" />
                 Sign Out
-              </Button>
+              </ShinyButton>
             </div>
           </div>
         </header>
