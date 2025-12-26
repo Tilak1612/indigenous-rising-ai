@@ -16,7 +16,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section id="hero" className="relative isolate" aria-label="Welcome to Indigenous Rising AI">
+    <section id="hero" className="relative isolate min-h-screen" aria-label="Welcome to Indigenous Rising AI">
       {/* Background image */}
       <div className="absolute inset-0 -z-10">
         <picture>
@@ -25,13 +25,13 @@ const HeroSection = () => {
           <img 
             src="/hero-image-1200.webp" 
             alt="Indigenous community gathering with mountains in background" 
-            className="object-center w-full h-full object-cover"
+            className="w-full h-full object-cover object-top sm:object-center"
             loading="eager"
             fetchPriority="high"
             decoding="async"
           />
         </picture>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60"></div>
       </div>
 
       {/* Content */}
