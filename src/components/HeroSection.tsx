@@ -21,11 +21,12 @@ const HeroSection = () => {
       <div className="absolute inset-0 -z-10">
         <picture>
           <source media="(min-width: 1025px)" srcSet="/hero-image-1200.webp" type="image/webp" />
-          <source media="(max-width: 1024px)" srcSet="/hero-image-800.webp" type="image/webp" />
+          <source media="(min-width: 640px) and (max-width: 1024px)" srcSet="/hero-image-800.webp" type="image/webp" />
+          <source media="(max-width: 639px)" srcSet="/hero-image-mobile.webp" type="image/webp" />
           <img 
-            src="/hero-image-1200.webp" 
+            src="/hero-image-mobile.webp" 
             alt="Indigenous community gathering with mountains in background" 
-            className="w-full h-full object-cover object-top sm:object-center"
+            className="w-full h-full object-cover object-center"
             loading="eager"
             fetchPriority="high"
             decoding="async"
