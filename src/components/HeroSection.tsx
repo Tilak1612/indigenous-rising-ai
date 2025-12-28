@@ -3,6 +3,7 @@ import { ArrowRight, Play, ChevronDown, Sparkles, Shield, Globe } from 'lucide-r
 import InteractiveQuiz from './InteractiveQuiz';
 import VideoModal from './VideoModal';
 import CountUpStats from './CountUpStats';
+import heroImage from '@/assets/hero-indigenous-entrepreneurs.jpg';
 
 const HeroSection = () => {
   const scrollToFeatures = () => {
@@ -17,22 +18,17 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="relative isolate min-h-screen" aria-label="Welcome to Indigenous Rising AI">
-      {/* Background image */}
+      {/* Background image - SAME image for all breakpoints */}
       <div className="absolute inset-0 -z-10">
-        <picture>
-          <source media="(min-width: 1025px)" srcSet="/hero-image-1200.webp" type="image/webp" />
-          <source media="(min-width: 640px) and (max-width: 1024px)" srcSet="/hero-image-800.webp" type="image/webp" />
-          <source media="(max-width: 639px)" srcSet="/hero-image-mobile.webp" type="image/webp" />
-          <img 
-            src="/hero-image-mobile.webp" 
-            alt="Indigenous community gathering with mountains in background" 
-            className="w-full h-full object-cover object-center"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </picture>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60"></div>
+        <img 
+          src={heroImage} 
+          alt="Indigenous Canadian entrepreneurs collaborating in a modern office with mountain views" 
+          className="w-full h-full object-cover object-center"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
       </div>
 
       {/* Content */}

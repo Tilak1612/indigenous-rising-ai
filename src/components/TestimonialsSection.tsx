@@ -1,6 +1,12 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Quote, Star, Users, Building, Target } from 'lucide-react';
+
+// Import testimonial headshots
+import testimonialMaria from '@/assets/testimonial-maria.jpg';
+import testimonialJames from '@/assets/testimonial-james.jpg';
+import testimonialSarah from '@/assets/testimonial-sarah.jpg';
+import testimonialRobert from '@/assets/testimonial-robert.jpg';
 
 const TestimonialsSection = () => {
   const testimonials = [
@@ -11,7 +17,8 @@ const TestimonialsSection = () => {
       content: "Indigenous Rising AI helped us connect with $50K in funding within our first month. The cultural competency and respect for our data sovereignty made all the difference.",
       rating: 5,
       metric: "$50K",
-      metricLabel: "Funding Secured"
+      metricLabel: "Funding Secured",
+      image: testimonialMaria
     },
     {
       name: "James Running Bear",
@@ -20,7 +27,8 @@ const TestimonialsSection = () => {
       content: "The AI matching system understood our community impact goals. We've created 15 new jobs and reduced our carbon footprint by 40% using their guidance.",
       rating: 5,
       metric: "15 Jobs",
-      metricLabel: "Created"
+      metricLabel: "Created",
+      image: testimonialJames
     },
     {
       name: "Sarah Littlewing",
@@ -29,7 +37,8 @@ const TestimonialsSection = () => {
       content: "Miigwech! The training programs integrate our traditional knowledge beautifully with modern business skills. Our youth graduation rate increased by 85%.",
       rating: 5,
       metric: "85%",
-      metricLabel: "Graduation Increase"
+      metricLabel: "Graduation Increase",
+      image: testimonialSarah
     },
     {
       name: "Robert Whitehorse",
@@ -38,7 +47,8 @@ const TestimonialsSection = () => {
       content: "The platform's partnership network connected us with NACCA and helped scale our operations across three provinces. Revenue grew 300% this year.",
       rating: 5,
       metric: "300%",
-      metricLabel: "Revenue Growth"
+      metricLabel: "Revenue Growth",
+      image: testimonialRobert
     }
   ];
 
@@ -88,11 +98,16 @@ const TestimonialsSection = () => {
                 {/* Author info */}
                 <div className="flex items-start justify-between pt-4 border-t border-border/50">
                   <div className="flex items-start space-x-4">
-                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
-                      <span className="text-primary font-bold text-lg">
+                    <Avatar className="w-14 h-14 border-2 border-primary/20 ring-2 ring-primary/10">
+                      <AvatarImage 
+                        src={testimonial.image} 
+                        alt={`${testimonial.name} - ${testimonial.title}`}
+                        className="object-cover"
+                      />
+                      <AvatarFallback className="bg-primary/10 text-primary font-bold text-lg">
                         {testimonial.name.split(' ').map(n => n[0]).join('')}
-                      </span>
-                    </div>
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
                       <div className="font-bold text-foreground text-lg">{testimonial.name}</div>
                       <div className="text-sm text-muted-foreground">{testimonial.title}</div>
