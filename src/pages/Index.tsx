@@ -1,5 +1,6 @@
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
+import PartnerLogos from '../components/PartnerLogos';
 import EnhancedFeatures from '../components/EnhancedFeatures';
 import FundingSection from '../components/FundingSection';
 import TestimonialsSection from '../components/TestimonialsSection';
@@ -16,7 +17,6 @@ import ProgressBar from '../components/ProgressBar';
 import CanadianComplianceBadge from '../components/CanadianComplianceBadge';
 import SocialProof from '../components/SocialProof';
 import MetaTags from '../components/MetaTags';
-
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -35,6 +35,7 @@ const Index = () => {
       <Navigation />
       <main id="main-content" role="main">
         <HeroSection />
+        <PartnerLogos />
         <SocialProof />
         <EnhancedFeatures />
         <FundingSection />
