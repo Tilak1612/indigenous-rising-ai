@@ -4,6 +4,7 @@ import PartnerLogos from '../components/PartnerLogos';
 import EnhancedFeatures from '../components/EnhancedFeatures';
 import FundingSection from '../components/FundingSection';
 import TestimonialsSection from '../components/TestimonialsSection';
+import SuccessGallery from '../components/SuccessGallery';
 import ImpactCalculator from '../components/ImpactCalculator';
 import ElderWisdom from '../components/ElderWisdom';
 import TrainingSection from '../components/TrainingSection';
@@ -40,6 +41,7 @@ const Index = () => {
         <EnhancedFeatures />
         <FundingSection />
         <TestimonialsSection />
+        <SuccessGallery />
         <ImpactCalculator />
         <ElderWisdom />
         <TrainingSection />
