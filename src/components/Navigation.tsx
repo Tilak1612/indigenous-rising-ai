@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut, ArrowUpRight } from 'lucide-react';
+import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut, ArrowUpRight, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import logoFull from '@/assets/logo-full.png';
 import { useAuth } from '@/hooks/useAuth';
@@ -18,6 +18,16 @@ const Navigation = () => {
     { name: 'Training Program', href: '/training', icon: BookOpen, isAnchor: false },
     { name: 'Partnerships', href: '#partnerships', icon: Building, isAnchor: true },
     { name: 'Pricing', href: '#pricing', icon: Award, isAnchor: true }
+  ];
+
+  const appNavItems = [
+    { name: 'Dashboard', href: '/dashboard', icon: TrendingUp, isAnchor: false },
+    { name: 'Plan', href: '/plan', icon: Award, isAnchor: false },
+    { name: 'Funding', href: '/funding', icon: Target, isAnchor: false },
+    { name: 'Impact', href: '/impact', icon: TrendingUp, isAnchor: false },
+    { name: 'Learning', href: '/learning', icon: BookOpen, isAnchor: false },
+    { name: 'Network', href: '/network', icon: Users, isAnchor: false },
+    { name: 'Data & Settings', href: '/settings', icon: Settings, isAnchor: false }
   ];
 
   return (
@@ -41,7 +51,7 @@ const Navigation = () => {
             
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8 text-white/90">
-              {navItems.map((item) => {
+              {(user ? appNavItems : navItems).map((item) => {
                 if (item.isAnchor) {
                   return (
                     <a
@@ -109,7 +119,7 @@ const Navigation = () => {
         isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
       )}>
         <div className="px-4 py-4 space-y-1">
-          {navItems.map((item) => {
+          {(user ? appNavItems : navItems).map((item) => {
             const Icon = item.icon;
             
             if (item.isAnchor) {

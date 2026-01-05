@@ -17,10 +17,23 @@ const languages = [
   { code: 'mi', name: "Mi'kmaq", nativeName: "Mi'kmaw" },
 ];
 
-const LanguageSelector = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+const STORAGE_KEY = 'preferred-language';
 
-  const currentLanguage = languages.find(lang => lang.code === selectedLanguage);
+const LanguageSelector = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState(() => {
+    try {
+      return localStorage.getItem(STORAGE_KEY) || 'en';
+    } catch {
+      return 'en';
+    }
+  });
+
+  const currentLanguage = languages.find((lang) => lang.code === selectedLanguage);
+
+  const setAndPersist = (code: string) => {
+    setSelectedLanguage(code);
+    try { localStorage.setItem(STORAGE_KEY, code); } catch {}
+  };
 
   return (
     <DropdownMenu>
@@ -40,7 +53,7 @@ const LanguageSelector = () => {
         {languages.map((language) => (
           <DropdownMenuItem
             key={language.code}
-            onClick={() => setSelectedLanguage(language.code)}
+            onClick={() => setAndPersist(language.code)}
             className="flex items-center justify-between cursor-pointer"
           >
             <div className="flex flex-col">

@@ -42,6 +42,9 @@ const InteractiveQuiz = ({ onClose }: InteractiveQuizProps) => {
     const element = document.querySelector(`#${targetSection}`);
     element?.scrollIntoView({ behavior: 'smooth' });
     setIsVisible(false);
+    try {
+      localStorage.setItem('quiz-choice', targetSection);
+    } catch {}
     onClose?.();
   };
 
