@@ -33,7 +33,7 @@ export default function Auth() {
 
   useEffect(() => {
     if (user) {
-      navigate('/admin');
+      navigate('/dashboard');
     }
   }, [user, navigate]);
 

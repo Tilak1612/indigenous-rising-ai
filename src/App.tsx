@@ -30,6 +30,11 @@ const Training = lazy(() => import("./pages/Training"));
 const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
+const Funding = lazy(() => import("./pages/dashboard/Funding"));
+const Analytics = lazy(() => import("./pages/dashboard/Analytics"));
+const Settings = lazy(() => import("./pages/dashboard/Settings"));
 
 const queryClient = new QueryClient();
 
@@ -157,6 +162,56 @@ const App = () => (
                     </ProtectedRoute>
                   </Suspense>
                 } 
+              />
+              <Route 
+                path="/dashboard" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route
+                path="/dashboard/business-tools"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <BusinessTools />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/funding"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Funding />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/analytics"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Analytics />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/settings"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Settings />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
               />
               <Route 
                 path="/cookies" 

@@ -78,6 +78,22 @@ npm i
 npm run dev
 ```
 
+## Running tests
+
+This project uses `vitest` and `@testing-library/react` for unit tests. Run tests with:
+
+```sh
+npm run test
+```
+
+Run tests in watch mode during development:
+
+```sh
+npm run test:watch
+```
+
+New tests added cover core scaffolds: Dashboard components, Plan stepper, Funding list, and Impact logs. Analytics events are stored to a local queue (`analytics-queue-v1`) for batching in production.
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).

@@ -6,11 +6,13 @@ import { BrowserRouter } from 'react-router-dom';
 import DataRequestForm from './DataRequestForm';
 
 // Mock hooks
-vi.mock('@/hooks/use-toast', () => ({
-  useToast: () => ({
-    toast: vi.fn(),
-  }),
-}));
+vi.mock('@/hooks/use-toast', () => {
+  const t = vi.fn();
+  return {
+    useToast: () => ({ toast: t }),
+    toast: t,
+  };
+});
 
 // Mock Supabase client
 vi.mock('@/integrations/supabase/client', () => ({

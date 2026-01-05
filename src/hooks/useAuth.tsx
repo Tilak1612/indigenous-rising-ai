@@ -81,9 +81,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
     });
     
-    if (!error) {
-      navigate('/admin');
-    }
+    // Do not navigate here — allow calling components to react to auth state
+    // and handle redirects (e.g., Auth page redirects to `/dashboard` on user change).
     
     return { error };
   };

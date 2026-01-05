@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ShinyButton } from '@/components/ui/shiny-button';
@@ -25,6 +25,7 @@ const DataRequestForm = () => {
   const [trackingNumber, setTrackingNumber] = useState('');
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [emailError, setEmailError] = useState('');
   const { toast } = useToast();
 
   const {
@@ -34,6 +35,7 @@ const DataRequestForm = () => {
     watch,
     setValue,
     reset,
+    setError,
   } = useForm<DataRequestFormData>({
     resolver: zodResolver(dataRequestSchema),
     defaultValues: {
@@ -47,6 +49,23 @@ const DataRequestForm = () => {
 
   const requestType = watch('requestType');
   const details = watch('details');
+  const emailValue = watch('email');
+
+  useEffect(() => {
+    if (!emailValue) return;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailValue)) {
+      setEmailError('Please enter a valid email');
+    } else {
+      setEmailError('');
+    }
+  }, [emailValue]);
+
+  // Debug: log validation errors during tests
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.debug('DATA_REQUEST_ERRORS', errors);
+  }, [errors]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -80,6 +99,15 @@ const DataRequestForm = () => {
   };
 
   const onSubmit = async (data: DataRequestFormData) => {
+    // Manual fallback validation for email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      // @ts-ignore
+      (setError as any) && setError('email', { type: 'manual', message: 'Please enter a valid email' });
+      setEmailError('Please enter a valid email');
+      return;
+    }
+    setEmailError('');
     // Client-side rate limiting: 3 submissions per hour
     const rateLimitConfig = {
       key: 'data-request',
@@ -272,9 +300,12 @@ const DataRequestForm = () => {
               {...register('email')}
               disabled={isSubmitting}
             />
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
-            )}
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email.message}</p>
+              )}
+              {emailError && !errors.email && (
+                <p className="text-sm text-destructive">{emailError}</p>
+              )}
             <p className="text-xs text-muted-foreground">
               We will use this email to verify your identity and respond to your request
             </p>
