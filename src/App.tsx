@@ -30,6 +30,7 @@ const Training = lazy(() => import("./pages/Training"));
 const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 const queryClient = new QueryClient();
 
@@ -154,6 +155,16 @@ const App = () => (
                   <Suspense fallback={<LoadingFallback />}>
                     <ProtectedRoute>
                       <TestSubscription />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/dashboard" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Dashboard />
                     </ProtectedRoute>
                   </Suspense>
                 } 

@@ -5,7 +5,9 @@ global.ResizeObserver = class ResizeObserver {
   observe() {}
   unobserve() {}
   disconnect() {}
-};import '@testing-library/jest-dom';
+};
+
+import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 

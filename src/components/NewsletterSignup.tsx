@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ShinyButton } from '@/components/ui/shiny-button';
@@ -20,6 +20,7 @@ import {
 
 const NewsletterSignup = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const { toast } = useToast();
   
   const {
@@ -29,6 +30,7 @@ const NewsletterSignup = () => {
     watch,
     setValue,
     reset,
+    setError,
   } = useForm<NewsletterFormData>({
     resolver: zodResolver(newsletterSchema),
     defaultValues: {
@@ -38,8 +40,36 @@ const NewsletterSignup = () => {
   });
 
   const consent = watch('consent');
+  const emailValue = watch('email');
+
+  useEffect(() => {
+    if (!emailValue) return;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailValue)) {
+      setEmailError('Please enter a valid email address');
+    } else {
+      setEmailError('');
+    }
+  }, [emailValue]);
+
+  // Debug: log validation errors during tests
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.debug('NEWSLETTER_ERRORS', errors);
+  }, [errors]);
 
   const onSubmit = async (data: NewsletterFormData) => {
+    // debug
+    // eslint-disable-next-line no-console
+    console.debug('NEWSLETTER_ONSUBMIT', data);
+    // Manual fallback validation for email (ensures tests catch invalid format)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      setError('email' as any, { type: 'manual', message: 'Please enter a valid email address' });
+      setEmailError('Please enter a valid email address');
+      return;
+    }
+    setEmailError('');
     // Client-side rate limiting: 3 submissions per hour
     const rateLimitConfig = {
       key: 'newsletter',
@@ -132,9 +162,12 @@ const NewsletterSignup = () => {
               className="bg-background"
               disabled={isSubmitting}
             />
-            {errors.email && (
-              <p className="text-xs text-destructive">{errors.email.message}</p>
-            )}
+              {errors.email && (
+                <p className="text-xs text-destructive">{errors.email.message}</p>
+              )}
+              {emailError && !errors.email && (
+                <p className="text-xs text-destructive">{emailError}</p>
+              )}
           </div>
           
           <div className="space-y-2">
