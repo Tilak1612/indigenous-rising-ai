@@ -15,7 +15,7 @@ describe('PlanStepper', () => {
     const aiButton = screen.getByText('Use AI co-pilot');
     fireEvent.click(aiButton);
 
-    await waitFor(() => expect(textarea).toHaveValue(expect.stringContaining('Edited by AI co-pilot')));
+    await waitFor(() => expect((textarea as HTMLTextAreaElement).value).toContain('Edited by AI co-pilot'));
 
     // click Next to complete section (should record analytics)
     const next = screen.getByText('Next');

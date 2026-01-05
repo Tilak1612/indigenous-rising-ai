@@ -105,6 +105,9 @@ const Navigation = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
+              aria-expanded={isOpen}
+              aria-controls="mobile-navigation"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
               className="md:hidden p-2 text-white/90 hover:text-white transition"
             >
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -114,7 +117,7 @@ const Navigation = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className={cn(
+      <div id="mobile-navigation" className={cn(
         "md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-neutral-900/95 backdrop-blur-sm",
         isOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
       )}>
