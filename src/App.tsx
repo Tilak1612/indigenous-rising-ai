@@ -33,9 +33,14 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
-const Funding = lazy(() => import("./pages/dashboard/Funding"));
+const DashboardFunding = lazy(() => import("./pages/dashboard/Funding"));
 const Analytics = lazy(() => import("./pages/dashboard/Analytics"));
 const Settings = lazy(() => import("./pages/dashboard/Settings"));
+const PlanPage = lazy(() => import("./pages/Plan/index"));
+const FundingPage = lazy(() => import("./pages/Funding/index"));
+const ImpactPage = lazy(() => import("./pages/Impact/index"));
+const LearningPage = lazy(() => import("./pages/Learning/index"));
+const DataSettingsPage = lazy(() => import("./pages/DataSettings/index"));
 
 const queryClient = new QueryClient();
 
@@ -189,7 +194,7 @@ const App = () => (
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <ProtectedRoute requirePaid>
-                      <Funding />
+                      <DashboardFunding />
                     </ProtectedRoute>
                   </Suspense>
                 }
@@ -235,6 +240,56 @@ const App = () => (
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <Pricing />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/plan" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <PlanPage />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/funding" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <FundingPage />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/impact" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <ImpactPage />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/learning" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <LearningPage />
+                    </ProtectedRoute>
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/settings" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <DataSettingsPage />
+                    </ProtectedRoute>
                   </Suspense>
                 } 
               />

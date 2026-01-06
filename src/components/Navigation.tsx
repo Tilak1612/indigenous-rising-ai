@@ -26,8 +26,7 @@ const Navigation = () => {
     { name: 'Funding', href: '/funding', icon: Target, isAnchor: false },
     { name: 'Impact', href: '/impact', icon: TrendingUp, isAnchor: false },
     { name: 'Learning', href: '/learning', icon: BookOpen, isAnchor: false },
-    { name: 'Network', href: '/network', icon: Users, isAnchor: false },
-    { name: 'Data & Settings', href: '/settings', icon: Settings, isAnchor: false }
+    { name: 'Settings', href: '/settings', icon: Settings, isAnchor: false }
   ];
 
   return (
