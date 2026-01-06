@@ -29,6 +29,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Training = lazy(() => import("./pages/Training"));
 const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
+const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
@@ -226,6 +227,14 @@ const App = () => (
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <FAQ />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/pricing" 
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Pricing />
                   </Suspense>
                 } 
               />
