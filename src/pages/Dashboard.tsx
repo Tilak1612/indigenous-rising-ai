@@ -31,7 +31,7 @@ const SnapshotTile = ({ title, value }: { title: string; value: string | number 
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const preferredLang = (user?.preferredLanguage) || (() => { try { return localStorage.getItem(LANG_KEY) || 'en'; } catch { return 'en'; } })();
+  const preferredLang = (() => { try { return localStorage.getItem(LANG_KEY) || 'en'; } catch { return 'en'; } })();
   const quizChoice = (() => { try { return localStorage.getItem(QUIZ_KEY); } catch { return null; } })();
   const journey = mapQuizToJourney(quizChoice);
 

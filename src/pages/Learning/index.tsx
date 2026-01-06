@@ -23,7 +23,6 @@ const LearningPage: React.FC = () => {
             <div className="bg-white/4 p-4 rounded-md">
               <h3 className="font-medium">Ogichidaakwe Discount</h3>
               <p className="text-sm text-white/70 mt-1">Members on the Ogichidaakwe plan see a 20% discount on course pricing.</p>
-              {user?.plan === 'Ogichidaakwe' && <div className="mt-3 inline-block px-3 py-1 bg-emerald-500 rounded-md text-white text-sm">20% discount applied</div>}
             </div>
 
             <CertificationTracker />
