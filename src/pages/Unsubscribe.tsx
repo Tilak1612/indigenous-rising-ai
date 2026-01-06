@@ -24,33 +24,23 @@ const Unsubscribe = () => {
 
     const handleUnsubscribe = async () => {
       try {
-        // Find subscription by unsubscribe token
-        const { data: subscription, error: fetchError } = await supabase
-          .from('newsletter_subscriptions')
-          .select('*')
-          .eq('unsubscribe_token', unsubscribeToken)
-          .single();
+        // Call the secure edge function for unsubscribe
+        const { data, error } = await supabase.functions.invoke('newsletter-unsubscribe', {
+          body: { token: unsubscribeToken }
+        });
 
-        if (fetchError || !subscription) {
-          throw new Error('Subscription not found');
+        if (error) {
+          throw new Error(error.message || 'Failed to unsubscribe');
         }
 
-        if (!subscription.is_active) {
+        if (data?.success) {
           setStatus('success');
-          setMessage('You are already unsubscribed from our newsletter.');
-          return;
+          setMessage(data.message);
+        } else if (data?.error) {
+          throw new Error(data.error);
+        } else {
+          throw new Error('Unexpected response from server');
         }
-
-        // Update subscription to inactive
-        const { error: updateError } = await supabase
-          .from('newsletter_subscriptions')
-          .update({ is_active: false })
-          .eq('id', subscription.id);
-
-        if (updateError) throw updateError;
-
-        setStatus('success');
-        setMessage('You have been successfully unsubscribed from our newsletter. We\'re sorry to see you go!');
       } catch (error: any) {
         console.error('Unsubscribe error:', error);
         setStatus('error');
