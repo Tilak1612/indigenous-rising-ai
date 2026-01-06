@@ -17,7 +17,7 @@ const Navigation = () => {
     { name: 'Testimonials', href: '#testimonials', icon: Users, isAnchor: true },
     { name: 'Training Program', href: '/training', icon: BookOpen, isAnchor: false },
     { name: 'Partnerships', href: '#partnerships', icon: Building, isAnchor: true },
-    { name: 'Pricing', href: '#pricing', icon: Award, isAnchor: true }
+    { name: 'Pricing', href: '/pricing', icon: Award, isAnchor: false }
   ];
 
   const appNavItems = [
