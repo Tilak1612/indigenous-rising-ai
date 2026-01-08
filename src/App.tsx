@@ -33,14 +33,23 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
+const BusinessPlanner = lazy(() => import("./pages/dashboard/BusinessPlanner"));
+const Resources = lazy(() => import("./pages/dashboard/Resources"));
+const Forum = lazy(() => import("./pages/dashboard/Forum"));
+const Compliance = lazy(() => import("./pages/dashboard/Compliance"));
 const DashboardFunding = lazy(() => import("./pages/dashboard/Funding"));
 const Analytics = lazy(() => import("./pages/dashboard/Analytics"));
+const Network = lazy(() => import("./pages/dashboard/Network"));
+const Certifications = lazy(() => import("./pages/dashboard/Certifications"));
+const Templates = lazy(() => import("./pages/dashboard/Templates"));
+const ApiAccess = lazy(() => import("./pages/dashboard/ApiAccess"));
+const Team = lazy(() => import("./pages/dashboard/Team"));
+const Security = lazy(() => import("./pages/dashboard/Security"));
+const Integrations = lazy(() => import("./pages/dashboard/Integrations"));
+const TrainingCalendar = lazy(() => import("./pages/dashboard/TrainingCalendar"));
+const Support = lazy(() => import("./pages/dashboard/Support"));
+const Profile = lazy(() => import("./pages/dashboard/Profile"));
 const Settings = lazy(() => import("./pages/dashboard/Settings"));
-const PlanPage = lazy(() => import("./pages/Plan/index"));
-const FundingPage = lazy(() => import("./pages/Funding/index"));
-const ImpactPage = lazy(() => import("./pages/Impact/index"));
-const LearningPage = lazy(() => import("./pages/Learning/index"));
-const DataSettingsPage = lazy(() => import("./pages/DataSettings/index"));
 
 const queryClient = new QueryClient();
 
