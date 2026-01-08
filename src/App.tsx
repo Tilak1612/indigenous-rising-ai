@@ -228,6 +228,156 @@ const App = () => (
                   </Suspense>
                 }
               />
+              <Route
+                path="/dashboard/plan"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <BusinessPlanner />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/resources"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Resources />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/forum"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Forum />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/community"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Forum />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/compliance"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Compliance />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/network"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Network />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/certifications"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Certifications />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/templates"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Templates />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/api"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <ApiAccess />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/team"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Team />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/security"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Security />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/integrations"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Integrations />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/training-calendar"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <TrainingCalendar />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/support"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute requirePaid>
+                      <Support />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/profile"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
               <Route 
                 path="/cookies" 
                 element={
@@ -249,56 +399,6 @@ const App = () => (
                 element={
                   <Suspense fallback={<LoadingFallback />}>
                     <Pricing />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/plan" 
-                element={
-                  <Suspense fallback={<LoadingFallback />}>
-                    <ProtectedRoute>
-                      <PlanPage />
-                    </ProtectedRoute>
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/funding" 
-                element={
-                  <Suspense fallback={<LoadingFallback />}>
-                    <ProtectedRoute>
-                      <FundingPage />
-                    </ProtectedRoute>
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/impact" 
-                element={
-                  <Suspense fallback={<LoadingFallback />}>
-                    <ProtectedRoute>
-                      <ImpactPage />
-                    </ProtectedRoute>
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/learning" 
-                element={
-                  <Suspense fallback={<LoadingFallback />}>
-                    <ProtectedRoute>
-                      <LearningPage />
-                    </ProtectedRoute>
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/settings" 
-                element={
-                  <Suspense fallback={<LoadingFallback />}>
-                    <ProtectedRoute>
-                      <DataSettingsPage />
-                    </ProtectedRoute>
                   </Suspense>
                 } 
               />
