@@ -32,18 +32,32 @@ export const useSubscription = () => {
     try {
       setStatus(prev => ({ ...prev, loading: true }));
       
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      
+      // If no valid session token, don't call the edge function
+      if (!accessToken) {
+        setStatus({
+          subscribed: false,
+          product_id: null,
+          subscription_end: null,
+          loading: false,
+        });
+        return;
+      }
+      
       const { data, error } = await supabase.functions.invoke('check-subscription', {
         headers: {
-          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
       if (error) throw error;
 
       setStatus({
-        subscribed: data.subscribed || false,
-        product_id: data.product_id || null,
-        subscription_end: data.subscription_end || null,
+        subscribed: data?.subscribed || false,
+        product_id: data?.product_id || null,
+        subscription_end: data?.subscription_end || null,
         loading: false,
       });
     } catch (error) {
