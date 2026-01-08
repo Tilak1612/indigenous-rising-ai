@@ -35,7 +35,6 @@ import {
   Lock,
   ChevronRight,
   Bell,
-  Search,
   LogOut,
   User,
   Globe,
@@ -55,6 +54,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import GlobalSearch from '@/components/GlobalSearch';
 
 type SubscriptionTier = 'free' | 'paid' | 'enterprise';
 
@@ -263,14 +263,7 @@ function DashboardHeader() {
       <div className="flex items-center gap-4">
         <SidebarTrigger />
         <div className="hidden md:flex items-center gap-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search features, resources..."
-              className="h-9 w-64 rounded-lg border border-input bg-background pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          </div>
+          <GlobalSearch />
         </div>
       </div>
 
