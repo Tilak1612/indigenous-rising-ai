@@ -1,30 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { ShinyButton } from '@/components/ui/shiny-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Helmet } from 'react-helmet-async';
 import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-const signupSchema = loginSchema.extend({
+const signupSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string(),
+  terms: z.boolean().refine(val => val === true, 'You must agree to the terms'),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -56,7 +63,13 @@ export default function Auth() {
           }
         }
       } else {
-        const validated = signupSchema.parse({ email, password, fullName });
+        const validated = signupSchema.parse({ 
+          email, 
+          password, 
+          confirmPassword,
+          fullName, 
+          terms: termsAccepted 
+        });
         const { error } = await signUp(validated.email, validated.password, validated.fullName);
         
         if (error) {
@@ -69,6 +82,8 @@ export default function Auth() {
           setSuccess('Account created successfully! You can now sign in.');
           setIsLogin(true);
           setPassword('');
+          setConfirmPassword('');
+          setTermsAccepted(false);
         }
       }
     } catch (err) {
@@ -82,131 +97,165 @@ export default function Auth() {
     }
   };
 
+  const switchMode = () => {
+    setIsLogin(!isLogin);
+    setError('');
+    setSuccess('');
+  };
+
   return (
     <>
       <Helmet>
-        <title>Admin Login - Indigenous Rising AI</title>
+        <title>{isLogin ? 'Sign In' : 'Create Account'} - Indigenous Rising AI</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted/30 to-primary/10 p-4">
-        <Card className="w-full max-w-md shadow-2xl border-2">
-          <CardHeader className="text-center space-y-2">
-            <CardTitle className="text-3xl font-bold text-foreground">Admin Portal</CardTitle>
-            <CardDescription className="text-base text-muted-foreground">
-              Sign in to manage Indigenous Rising AI
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Tabs value={isLogin ? 'login' : 'signup'} onValueChange={(v) => {
-              setIsLogin(v === 'login');
-              setError('');
-              setSuccess('');
-            }}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
-              </TabsList>
+      <section className="bg-background font-serif min-h-screen flex items-center justify-center px-4">
+        <div className="container mx-auto">
+          <div className="flex justify-center">
+            <div className="w-full sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12">
+              <div className="bg-card p-8 rounded-lg shadow-lg border">
+                <div className="text-center mb-8">
+                  <h1 className="text-3xl font-bold text-foreground mb-2">
+                    {isLogin ? 'Welcome Back' : 'Create an Account'}
+                  </h1>
+                  <p className="text-muted-foreground">
+                    {isLogin ? 'Sign in to your account' : 'Join our community today'}
+                  </p>
+                </div>
 
-              <TabsContent value="login">
-                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email" className="text-sm font-semibold">Email</Label>
-                    <Input
-                      id="login-email"
-                      type="email"
-                      placeholder="admin@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="h-11"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password" className="text-sm font-semibold">Password</Label>
-                    <Input
-                      id="login-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="h-11"
-                    />
-                  </div>
-                  {error && (
-                    <Alert variant="destructive">
-                      <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                  )}
-                  {success && (
-                    <Alert>
-                      <AlertDescription>{success}</AlertDescription>
-                    </Alert>
-                  )}
-                  <ShinyButton type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Signing in...' : 'Sign In'}
-                  </ShinyButton>
-                </form>
-              </TabsContent>
+                <form onSubmit={handleSubmit}>
+                  <div className="space-y-5">
+                    {!isLogin && (
+                      <div>
+                        <Label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">
+                          Full Name
+                        </Label>
+                        <Input
+                          type="text"
+                          id="name"
+                          className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                          placeholder="John Doe"
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          required
+                        />
+                      </div>
+                    )}
 
-              <TabsContent value="signup">
-                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name" className="text-sm font-semibold">Full Name</Label>
-                    <Input
-                      id="signup-name"
-                      type="text"
-                      placeholder="John Doe"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      required
-                      className="h-11"
-                    />
+                    <div>
+                      <Label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
+                        Email Address
+                      </Label>
+                      <Input
+                        type="email"
+                        id="email"
+                        className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="john@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="password" className="block text-sm font-medium text-foreground mb-1">
+                        Password
+                      </Label>
+                      <Input
+                        type="password"
+                        id="password"
+                        className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                      {!isLogin && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Password must be at least 8 characters long
+                        </p>
+                      )}
+                    </div>
+
+                    {!isLogin && (
+                      <>
+                        <div>
+                          <Label htmlFor="confirm-password" className="block text-sm font-medium text-foreground mb-1">
+                            Confirm Password
+                          </Label>
+                          <Input
+                            type="password"
+                            id="confirm-password"
+                            className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            placeholder="••••••••"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                          />
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="terms"
+                            checked={termsAccepted}
+                            onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+                            className="border-border data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                          />
+                          <label htmlFor="terms" className="text-sm text-muted-foreground">
+                            I agree to the{' '}
+                            <Link to="/terms" className="text-primary hover:text-primary/80">
+                              Terms of Service
+                            </Link>{' '}
+                            and{' '}
+                            <Link to="/privacy" className="text-primary hover:text-primary/80">
+                              Privacy Policy
+                            </Link>
+                          </label>
+                        </div>
+                      </>
+                    )}
+
+                    {error && (
+                      <Alert variant="destructive">
+                        <AlertDescription>{error}</AlertDescription>
+                      </Alert>
+                    )}
+                    {success && (
+                      <Alert>
+                        <AlertDescription>{success}</AlertDescription>
+                      </Alert>
+                    )}
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-4 rounded-md transition duration-200"
+                      disabled={loading}
+                    >
+                      {loading 
+                        ? (isLogin ? 'Signing in...' : 'Creating Account...') 
+                        : (isLogin ? 'Sign In' : 'Create Account')
+                      }
+                    </Button>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email" className="text-sm font-semibold">Email</Label>
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="admin@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="h-11"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password" className="text-sm font-semibold">Password</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="h-11"
-                    />
-                  </div>
-                  {error && (
-                    <Alert variant="destructive">
-                      <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                  )}
-                  {success && (
-                    <Alert>
-                      <AlertDescription>{success}</AlertDescription>
-                    </Alert>
-                  )}
-                  <ShinyButton type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Creating account...' : 'Sign Up'}
-                  </ShinyButton>
                 </form>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
-      </div>
+
+                <div className="mt-6 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    {isLogin ? "Don't have an account? " : 'Already have an account? '}
+                    <button 
+                      onClick={switchMode} 
+                      className="text-primary hover:text-primary/80 font-medium"
+                    >
+                      {isLogin ? 'Sign up' : 'Sign in'}
+                    </button>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
