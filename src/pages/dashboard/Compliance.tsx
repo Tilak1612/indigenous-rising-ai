@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,8 +16,13 @@ import {
   Eye,
   Database,
   Download,
+  Award,
+  ChevronRight,
+  Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import OCAPRequirementModal from '@/components/dashboard/OCAPRequirementModal';
+import ComplianceCertificate from '@/components/dashboard/ComplianceCertificate';
 
 interface ComplianceItem {
   id: string;
@@ -120,9 +125,13 @@ const statusStyles = {
 };
 
 export default function CompliancePage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showCertificate, setShowCertificate] = useState(false);
+  
   const completeCount = complianceItems.filter(i => i.status === 'complete').length;
   const totalCount = complianceItems.length;
   const complianceScore = Math.round((completeCount / totalCount) * 100);
+  const communityBenchmark = 68;
 
   return (
     <DashboardLayout>
@@ -132,11 +141,48 @@ export default function CompliancePage() {
             <h1 className="text-2xl font-bold">OCAP™ Compliance Dashboard</h1>
             <p className="text-muted-foreground">Ownership, Control, Access, and Possession principles</p>
           </div>
-          <Button variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Export Report
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setShowCertificate(true)}>
+              <Award className="h-4 w-4 mr-2" />
+              Export Certificate
+            </Button>
+            <Button variant="outline">
+              <Download className="h-4 w-4 mr-2" />
+              Export Report
+            </Button>
+          </div>
         </div>
+
+        {/* Overall Score Card */}
+        <Card className="bg-gradient-to-br from-primary/10 via-background to-green-500/10 border-primary/20">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Shield className="h-8 w-8 text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">OCAP™ Compliance Score</p>
+                  <p className="text-4xl font-bold">{complianceScore}%</p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {completeCount} of {totalCount} requirements complete
+                  </p>
+                </div>
+              </div>
+              <div className="text-right space-y-2">
+                <Badge variant="secondary" className="bg-green-500/10 text-green-600">
+                  Good Standing
+                </Badge>
+                <p className="text-sm text-muted-foreground">Last reviewed: Today</p>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Users className="h-4 w-4" />
+                  <span>Community avg: {communityBenchmark}%</span>
+                </div>
+              </div>
+            </div>
+            <Progress value={complianceScore} className="mt-6 h-3" />
+          </CardContent>
+        </Card>
 
         {/* Overall Score Card */}
         <Card className="bg-gradient-to-br from-primary/10 via-background to-green-500/10 border-primary/20">
@@ -188,6 +234,15 @@ export default function CompliancePage() {
                     </div>
                     <Progress value={score} className="h-1.5" />
                   </div>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="w-full mt-3 gap-1"
+                    onClick={() => setSelectedCategory(key)}
+                  >
+                    View Requirements
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
                 </CardContent>
               </Card>
             );
@@ -332,6 +387,22 @@ export default function CompliancePage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* OCAP Requirement Modal */}
+      <OCAPRequirementModal
+        open={!!selectedCategory}
+        onOpenChange={(open) => !open && setSelectedCategory(null)}
+        category={selectedCategory || ''}
+      />
+
+      {/* Compliance Certificate Modal */}
+      <ComplianceCertificate
+        open={showCertificate}
+        onOpenChange={setShowCertificate}
+        score={complianceScore}
+        completedRequirements={completeCount}
+        totalRequirements={totalCount}
+      />
     </DashboardLayout>
   );
 }
