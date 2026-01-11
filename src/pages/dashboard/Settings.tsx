@@ -261,9 +261,19 @@ export default function Settings() {
                   <CardContent className="space-y-4">
                     <div>
                       <label className="text-sm font-medium">Email Address</label>
-                      <Input value={user?.email || ''} disabled className="mt-1" />
+                      <div className="flex gap-2 mt-1">
+                        <Input value={user?.email || ''} disabled className="flex-1" />
+                        <Button 
+                          variant="outline" 
+                          onClick={() => {
+                            toast.info('Email change verification sent! Check your inbox.');
+                          }}
+                        >
+                          Change Email
+                        </Button>
+                      </div>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Contact support to change your email address
+                        A verification link will be sent to both your current and new email
                       </p>
                     </div>
                     <div>

@@ -7,11 +7,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const PricingSection = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+
   const handleCheckout = async (planName: string, priceId?: string) => {
     // Handle free plan
     if (planName === "Maadaadiziwin") {
@@ -82,12 +85,18 @@ const PricingSection = () => {
     }
   };
 
+  const monthlyPrice = 49;
+  const annualPrice = Math.round(monthlyPrice * 12 * 0.8); // 20% discount
+  const annualMonthlyEquivalent = Math.round(annualPrice / 12);
+  const annualSavings = (monthlyPrice * 12) - annualPrice;
+
   const plans = [
     {
       name: "Maadaadiziwin",
       nameTranslation: "Starting Out",
       description: "Perfect for new Indigenous entrepreneurs taking their first steps",
-      price: "Free",
+      monthlyPrice: "Free",
+      annualPrice: "Free",
       period: "Forever",
       popular: false,
       priceId: undefined,
@@ -113,10 +122,13 @@ const PricingSection = () => {
       name: "Ogichidaakwe",
       nameTranslation: "Growing Strong",
       description: "Comprehensive tools for established businesses ready to scale",
-      price: "$49",
-      period: "per month",
+      monthlyPrice: `$${monthlyPrice}`,
+      annualPrice: `$${annualMonthlyEquivalent}`,
+      annualTotal: annualPrice,
+      period: billingCycle === 'monthly' ? 'per month' : 'per month, billed annually',
       popular: true,
       priceId: "price_1SSRqgS23MQcIdnrGDAHGF4C", // $49/month monthly subscription
+      annualPriceId: "price_annual_placeholder", // Would need actual annual price ID
       features: [
         "Everything in Maadaadiziwin",
         "AI-powered funding navigator",
@@ -141,7 +153,8 @@ const PricingSection = () => {
       name: "Gimishoomis",
       nameTranslation: "Elder Wisdom",
       description: "Enterprise solutions for large organizations and communities",
-      price: "Custom",
+      monthlyPrice: "Custom",
+      annualPrice: "Custom",
       period: "Contact us",
       popular: false,
       priceId: undefined, // No price ID for enterprise - redirects to contact
@@ -157,7 +170,8 @@ const PricingSection = () => {
         "On-site training programs",
         "Community impact consulting",
         "Data sovereignty consulting",
-        "Government partnership facilitation"
+        "Government partnership facilitation",
+        "Usage-based API pricing"
       ],
       excludedFeatures: [],
       ctaText: "Contact Sales",
@@ -208,6 +222,27 @@ const PricingSection = () => {
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Choose the plan that matches your business journey. All plans include OCAP™ compliance, cultural competency features, and respect for Indigenous data sovereignty.
           </p>
+
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-4">
+            <Tabs value={billingCycle} onValueChange={(v) => setBillingCycle(v as 'monthly' | 'annual')}>
+              <TabsList className="grid w-[300px] grid-cols-2">
+                <TabsTrigger value="monthly">Monthly</TabsTrigger>
+                <TabsTrigger value="annual" className="relative">
+                  Annual
+                  <Badge className="absolute -top-3 -right-2 bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5">
+                    Save 20%
+                  </Badge>
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+          
+          {billingCycle === 'annual' && (
+            <p className="text-sm text-primary font-medium animate-fade-in">
+              Save ${annualSavings} per year with annual billing
+            </p>
+          )}
         </div>
 
         {/* Pricing cards */}
@@ -219,6 +254,10 @@ const PricingSection = () => {
               sky: 'gradient-sky',
               hero: 'gradient-hero'
             }[plan.gradient];
+
+            const displayPrice = billingCycle === 'annual' && plan.annualPrice !== 'Custom' && plan.annualPrice !== 'Free' 
+              ? plan.annualPrice 
+              : plan.monthlyPrice;
 
             return (
               <Card 
@@ -256,14 +295,19 @@ const PricingSection = () => {
                   <div className="space-y-1">
                     <div className="flex items-baseline justify-center space-x-2">
                       <span className="font-display text-4xl font-bold text-foreground">
-                        {plan.price}
+                        {displayPrice}
                       </span>
-                      {plan.period !== "Contact us" && (
-                        <span className="text-muted-foreground">/{plan.period}</span>
+                      {plan.period !== "Contact us" && plan.period !== "Forever" && (
+                        <span className="text-muted-foreground">/{billingCycle === 'annual' ? 'mo' : plan.period.replace('per ', '')}</span>
                       )}
                     </div>
                     {plan.period === "Contact us" && (
                       <p className="text-sm text-muted-foreground">{plan.period}</p>
+                    )}
+                    {billingCycle === 'annual' && plan.annualTotal && (
+                      <p className="text-sm text-muted-foreground">
+                        ${plan.annualTotal}/year billed annually
+                      </p>
                     )}
                   </div>
                 </CardHeader>
@@ -290,7 +334,10 @@ const PricingSection = () => {
                   <ShinyButton 
                     className="w-full group/btn"
                     size="lg"
-                    onClick={() => handleCheckout(plan.name, plan.priceId)}
+                    onClick={() => handleCheckout(
+                      plan.name, 
+                      billingCycle === 'annual' && plan.annualPriceId ? plan.annualPriceId : plan.priceId
+                    )}
                     disabled={loadingPlan === plan.name}
                   >
                     {loadingPlan === plan.name ? "Loading..." : plan.ctaText}
@@ -301,6 +348,79 @@ const PricingSection = () => {
             );
           })}
         </div>
+
+        {/* Comparison Table */}
+        <Card className="mb-16 overflow-hidden">
+          <CardHeader>
+            <CardTitle className="text-center">Compare Plans</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b bg-muted/50">
+                    <th className="text-left p-4 font-medium">Feature</th>
+                    <th className="text-center p-4 font-medium">Maadaadiziwin</th>
+                    <th className="text-center p-4 font-medium bg-primary/5">Ogichidaakwe</th>
+                    <th className="text-center p-4 font-medium">Gimishoomis</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { feature: 'Business Planning Tools', free: 'Basic', pro: 'Advanced', enterprise: 'Custom' },
+                    { feature: 'AI Funding Navigator', free: '❌', pro: '✓', enterprise: '✓' },
+                    { feature: 'Impact Analytics', free: '❌', pro: '✓', enterprise: 'Advanced' },
+                    { feature: 'Partner Network', free: '❌', pro: '✓', enterprise: '✓' },
+                    { feature: 'Languages Supported', free: '3', pro: '8', enterprise: '20+' },
+                    { feature: 'Support', free: 'Email', pro: 'Priority', enterprise: '24/7 Dedicated' },
+                    { feature: 'API Access', free: '❌', pro: '✓', enterprise: 'Unlimited' },
+                    { feature: 'Team Members', free: '1', pro: '5', enterprise: 'Unlimited' },
+                    { feature: 'White-label Options', free: '❌', pro: '❌', enterprise: '✓' },
+                  ].map((row, idx) => (
+                    <tr key={idx} className="border-b">
+                      <td className="p-4 font-medium">{row.feature}</td>
+                      <td className="text-center p-4 text-muted-foreground">{row.free}</td>
+                      <td className="text-center p-4 bg-primary/5">{row.pro}</td>
+                      <td className="text-center p-4 text-muted-foreground">{row.enterprise}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* FAQ Section */}
+        <Card className="mb-16">
+          <CardHeader>
+            <CardTitle className="text-center">Frequently Asked Questions</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                q: "How does the 20% profit sharing work?",
+                a: "20% of our net profits are distributed to Indigenous communities through our Community Impact Fund. This includes grants for community projects, scholarships, and direct support for Indigenous entrepreneurs."
+              },
+              {
+                q: "What is included in cultural services?",
+                a: "Cultural services include Elder Knowledge Sessions, Cultural Impact Assessments, and access to our network of Indigenous business mentors who can guide you in integrating traditional values with modern business practices."
+              },
+              {
+                q: "Can I switch plans at any time?",
+                a: "Yes! You can upgrade or downgrade your plan at any time. If you upgrade, you'll be prorated for the remainder of your billing cycle. If you downgrade, the change takes effect at the start of your next billing period."
+              },
+              {
+                q: "Is my data protected under OCAP™ principles?",
+                a: "Absolutely. All plans include OCAP™ compliant data handling. You maintain Ownership of your data, Control over how it's used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure."
+              },
+            ].map((faq, idx) => (
+              <div key={idx} className="space-y-2">
+                <h4 className="font-medium text-foreground">{faq.q}</h4>
+                <p className="text-sm text-muted-foreground">{faq.a}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
 
         {/* Add-ons */}
         <div className="space-y-8">

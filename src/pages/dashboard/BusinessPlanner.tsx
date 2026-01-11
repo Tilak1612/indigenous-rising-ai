@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   FileText, 
   Sparkles, 
@@ -15,11 +12,21 @@ import {
   ChevronRight, 
   ChevronLeft,
   CheckCircle2,
-  Circle,
   Lightbulb,
+  FileDown,
+  Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { AutoSaveIndicator } from '@/components/dashboard/AutoSaveIndicator';
+import { RichTextToolbar } from '@/components/dashboard/RichTextToolbar';
+import { VersionHistory } from '@/components/dashboard/VersionHistory';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const STEPS = [
   { id: 'vision', title: 'Vision & Mission', description: 'Define your business purpose' },
@@ -31,6 +38,20 @@ const STEPS = [
 ];
 
 const STORAGE_KEY = 'business-plan-answers';
+const VERSIONS_KEY = 'business-plan-versions';
+const AUTO_SAVE_DELAY = 2000;
+
+interface Version {
+  id: string;
+  timestamp: Date;
+  summary: string;
+  data: Record<string, string>;
+}
+
+// Mock active collaborators
+const activeCollaborators = [
+  { name: 'Sarah C.', color: 'bg-blue-500' },
+];
 
 export default function BusinessPlannerPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -42,46 +63,187 @@ export default function BusinessPlannerPage() {
       return {};
     }
   });
-
-  const saveAnswers = (newAnswers: Record<string, string>) => {
-    setAnswers(newAnswers);
+  const [versions, setVersions] = useState<Version[]>(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newAnswers));
-      toast.success('Progress saved');
+      const saved = localStorage.getItem(VERSIONS_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return parsed.map((v: any) => ({ ...v, timestamp: new Date(v.timestamp) }));
+      }
+      return [];
     } catch {
-      toast.error('Failed to save');
+      return [];
     }
-  };
+  });
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const editorRef = useRef<HTMLDivElement>(null);
+  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-save logic
+  const saveAnswers = useCallback(async (newAnswers: Record<string, string>, createVersion = false) => {
+    setIsSaving(true);
+    setHasError(false);
+    
+    try {
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 300));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newAnswers));
+      
+      if (createVersion) {
+        const completedSections = STEPS.filter(step => newAnswers[step.id]?.trim().length > 0);
+        const newVersion: Version = {
+          id: Date.now().toString(),
+          timestamp: new Date(),
+          summary: `${completedSections.length} sections completed`,
+          data: { ...newAnswers },
+        };
+        const updatedVersions = [newVersion, ...versions].slice(0, 10);
+        setVersions(updatedVersions);
+        localStorage.setItem(VERSIONS_KEY, JSON.stringify(updatedVersions));
+      }
+      
+      setLastSaved(new Date());
+    } catch {
+      setHasError(true);
+      toast.error('Failed to save');
+    } finally {
+      setIsSaving(false);
+    }
+  }, [versions]);
+
+  // Auto-save on content change
+  useEffect(() => {
+    if (autoSaveTimeoutRef.current) {
+      clearTimeout(autoSaveTimeoutRef.current);
+    }
+    
+    autoSaveTimeoutRef.current = setTimeout(() => {
+      if (Object.keys(answers).length > 0) {
+        saveAnswers(answers, false);
+      }
+    }, AUTO_SAVE_DELAY);
+
+    return () => {
+      if (autoSaveTimeoutRef.current) {
+        clearTimeout(autoSaveTimeoutRef.current);
+      }
+    };
+  }, [answers, saveAnswers]);
 
   const handleAnswerChange = (stepId: string, value: string) => {
     const newAnswers = { ...answers, [stepId]: value };
     setAnswers(newAnswers);
   };
 
-  const handleSave = () => {
-    saveAnswers(answers);
+  const handleManualSave = () => {
+    saveAnswers(answers, true);
+    toast.success('Progress saved with version');
+  };
+
+  const handleFormat = (command: string) => {
+    document.execCommand(command, false);
+    editorRef.current?.focus();
+  };
+
+  const handleEditorInput = () => {
+    if (editorRef.current) {
+      handleAnswerChange(STEPS[currentStep].id, editorRef.current.innerHTML);
+    }
+  };
+
+  const handleRestoreVersion = (version: Version) => {
+    setAnswers(version.data);
+    toast.success('Version restored');
+  };
+
+  const handlePreviewVersion = (version: Version) => {
+    toast.info('Preview feature coming soon');
+  };
+
+  const handleExport = (format: 'pdf' | 'word' | 'grant') => {
+    toast.success(`Exporting as ${format.toUpperCase()}...`);
+    // Implement actual export logic here
   };
 
   const completedSteps = STEPS.filter(step => answers[step.id]?.trim().length > 0).length;
   const progress = (completedSteps / STEPS.length) * 100;
 
+  // Update editor content when step changes
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.innerHTML = answers[STEPS[currentStep].id] || '';
+    }
+  }, [currentStep]);
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-2xl font-bold">Business Planning Assistant</h1>
             <p className="text-muted-foreground">Build your Indigenous business plan step by step</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Button variant="outline" onClick={handleSave}>
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Active Collaborators */}
+            {activeCollaborators.length > 0 && (
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-full">
+                <Users className="h-4 w-4 text-muted-foreground" />
+                <div className="flex -space-x-2">
+                  {activeCollaborators.map((collab, idx) => (
+                    <div 
+                      key={idx}
+                      className={cn("h-6 w-6 rounded-full flex items-center justify-center text-xs text-white", collab.color)}
+                      title={`${collab.name} is viewing`}
+                    >
+                      {collab.name[0]}
+                    </div>
+                  ))}
+                </div>
+                <span className="text-xs text-muted-foreground">viewing</span>
+              </div>
+            )}
+            
+            <AutoSaveIndicator 
+              lastSaved={lastSaved} 
+              isSaving={isSaving} 
+              hasError={hasError}
+            />
+            
+            <VersionHistory 
+              versions={versions}
+              onRestore={handleRestoreVersion}
+              onPreview={handlePreviewVersion}
+            />
+            
+            <Button variant="outline" onClick={handleManualSave}>
               <Save className="h-4 w-4 mr-2" />
-              Save Progress
+              Save
             </Button>
-            <Button variant="outline">
-              <Download className="h-4 w-4 mr-2" />
-              Export PDF
-            </Button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => handleExport('pdf')}>
+                  <FileDown className="h-4 w-4 mr-2" />
+                  Export as PDF
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleExport('word')}>
+                  <FileText className="h-4 w-4 mr-2" />
+                  Export as Word
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleExport('grant')}>
+                  <FileText className="h-4 w-4 mr-2" />
+                  Grant Application Format
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -172,18 +334,35 @@ export default function BusinessPlannerPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Textarea
-                  placeholder={`Write about your ${STEPS[currentStep].title.toLowerCase()}...`}
-                  className="min-h-[300px]"
-                  value={answers[STEPS[currentStep].id] || ''}
-                  onChange={(e) => handleAnswerChange(STEPS[currentStep].id, e.target.value)}
-                />
+                {/* Rich Text Toolbar */}
+                <RichTextToolbar onFormat={handleFormat} />
                 
-                <div className="flex items-center justify-between pt-4 border-t">
-                  <Button variant="outline" className="gap-2">
-                    <Sparkles className="h-4 w-4" />
+                {/* Rich Text Editor */}
+                <div
+                  ref={editorRef}
+                  contentEditable
+                  className="min-h-[300px] p-4 border rounded-b-lg focus:outline-none focus:ring-2 focus:ring-ring prose prose-sm max-w-none dark:prose-invert"
+                  onInput={handleEditorInput}
+                  data-placeholder={`Write about your ${STEPS[currentStep].title.toLowerCase()}...`}
+                  suppressContentEditableWarning
+                />
+
+                {/* AI Inline Suggestions */}
+                <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg border border-primary/20">
+                  <Sparkles className="h-4 w-4 text-primary shrink-0" />
+                  <p className="text-sm text-muted-foreground flex-1">
+                    Need help? Click AI Suggestions for personalized content ideas for this section.
+                  </p>
+                  <Button size="sm" variant="outline" className="shrink-0">
+                    <Sparkles className="h-3 w-3 mr-1" />
                     AI Suggestions
                   </Button>
+                </div>
+                
+                <div className="flex items-center justify-between pt-4 border-t">
+                  <div className="text-sm text-muted-foreground">
+                    {answers[STEPS[currentStep].id]?.length || 0} characters
+                  </div>
                   <div className="flex gap-2">
                     <Button
                       variant="outline"

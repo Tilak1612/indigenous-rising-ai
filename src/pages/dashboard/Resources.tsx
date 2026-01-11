@@ -16,8 +16,28 @@ import {
   Download,
   Star,
   Clock,
+  Heart,
+  Eye,
+  Plus,
+  MapPin,
+  Briefcase,
+  Globe,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
+import { ResourcePreviewModal } from '@/components/resources/ResourcePreviewModal';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 interface Resource {
   id: string;
@@ -29,6 +49,9 @@ interface Resource {
   downloads?: number;
   duration?: string;
   featured?: boolean;
+  region?: string;
+  stage?: string;
+  language?: string;
 }
 
 const resources: Resource[] = [
@@ -41,6 +64,9 @@ const resources: Resource[] = [
     rating: 4.8,
     downloads: 1250,
     featured: true,
+    region: 'National',
+    stage: 'Startup',
+    language: 'English',
   },
   {
     id: '2',
@@ -50,6 +76,9 @@ const resources: Resource[] = [
     type: 'Article',
     rating: 4.9,
     downloads: 890,
+    region: 'National',
+    stage: 'All Stages',
+    language: 'English',
   },
   {
     id: '3',
@@ -60,6 +89,9 @@ const resources: Resource[] = [
     rating: 4.7,
     downloads: 2100,
     featured: true,
+    region: 'National',
+    stage: 'Startup',
+    language: 'English',
   },
   {
     id: '4',
@@ -69,6 +101,9 @@ const resources: Resource[] = [
     type: 'Excel',
     rating: 4.5,
     downloads: 1800,
+    region: 'National',
+    stage: 'Growth',
+    language: 'English',
   },
   {
     id: '5',
@@ -78,6 +113,9 @@ const resources: Resource[] = [
     type: 'Video',
     rating: 4.6,
     duration: '45 min',
+    region: 'National',
+    stage: 'All Stages',
+    language: 'English',
   },
   {
     id: '6',
@@ -86,6 +124,9 @@ const resources: Resource[] = [
     category: 'partner',
     type: 'Partner Organization',
     rating: 4.8,
+    region: 'Ontario',
+    stage: 'All Stages',
+    language: 'English',
   },
 ];
 
@@ -103,25 +144,64 @@ const categoryColors = {
   partner: 'bg-amber-500/10 text-amber-600',
 };
 
+const regions = ['All Regions', 'National', 'Ontario', 'British Columbia', 'Alberta', 'Quebec', 'Manitoba', 'Saskatchewan'];
+const stages = ['All Stages', 'Startup', 'Growth', 'Established'];
+const languages = ['All Languages', 'English', 'French', 'Cree', 'Ojibwe', 'Inuktitut'];
+
 export default function ResourcesPage() {
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('all');
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [previewResource, setPreviewResource] = useState<Resource | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  
+  // Filter states
+  const [regionFilter, setRegionFilter] = useState('All Regions');
+  const [stageFilter, setStageFilter] = useState('All Stages');
+  const [languageFilter, setLanguageFilter] = useState('All Languages');
+  const [showFilters, setShowFilters] = useState(false);
 
   const filteredResources = resources.filter(resource => {
     const matchesSearch = resource.title.toLowerCase().includes(search.toLowerCase()) ||
                           resource.description.toLowerCase().includes(search.toLowerCase());
     const matchesTab = activeTab === 'all' || resource.category === activeTab;
-    return matchesSearch && matchesTab;
+    const matchesRegion = regionFilter === 'All Regions' || resource.region === regionFilter;
+    const matchesStage = stageFilter === 'All Stages' || resource.stage === stageFilter || resource.stage === 'All Stages';
+    const matchesLanguage = languageFilter === 'All Languages' || resource.language === languageFilter;
+    return matchesSearch && matchesTab && matchesRegion && matchesStage && matchesLanguage;
   });
+
+  const toggleFavorite = (resourceId: string) => {
+    setFavorites(prev => {
+      const newFavorites = new Set(prev);
+      if (newFavorites.has(resourceId)) {
+        newFavorites.delete(resourceId);
+        toast.success('Removed from favorites');
+      } else {
+        newFavorites.add(resourceId);
+        toast.success('Added to favorites');
+      }
+      return newFavorites;
+    });
+  };
+
+  const handlePreview = (resource: Resource) => {
+    setPreviewResource(resource);
+    setShowPreview(true);
+  };
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-2xl font-bold">Community Resource Directory</h1>
             <p className="text-muted-foreground">Guides, templates, videos, and partner organizations</p>
           </div>
+          <Button>
+            <Plus className="h-4 w-4 mr-2" />
+            Contribute Resource
+          </Button>
         </div>
 
         {/* Search and Filters */}
@@ -135,10 +215,87 @@ export default function ResourcesPage() {
               className="pl-10"
             />
           </div>
-          <Button variant="outline">
-            <Filter className="h-4 w-4 mr-2" />
-            Filters
-          </Button>
+          <Popover open={showFilters} onOpenChange={setShowFilters}>
+            <PopoverTrigger asChild>
+              <Button variant="outline">
+                <Filter className="h-4 w-4 mr-2" />
+                Filters
+                {(regionFilter !== 'All Regions' || stageFilter !== 'All Stages' || languageFilter !== 'All Languages') && (
+                  <Badge variant="secondary" className="ml-2 h-5 w-5 p-0 flex items-center justify-center">
+                    {[regionFilter !== 'All Regions', stageFilter !== 'All Stages', languageFilter !== 'All Languages'].filter(Boolean).length}
+                  </Badge>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80" align="end">
+              <div className="space-y-4">
+                <h4 className="font-medium">Filter Resources</h4>
+                
+                <div className="space-y-2">
+                  <label className="text-sm text-muted-foreground flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    Region
+                  </label>
+                  <Select value={regionFilter} onValueChange={setRegionFilter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {regions.map(region => (
+                        <SelectItem key={region} value={region}>{region}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm text-muted-foreground flex items-center gap-2">
+                    <Briefcase className="h-4 w-4" />
+                    Business Stage
+                  </label>
+                  <Select value={stageFilter} onValueChange={setStageFilter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {stages.map(stage => (
+                        <SelectItem key={stage} value={stage}>{stage}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm text-muted-foreground flex items-center gap-2">
+                    <Globe className="h-4 w-4" />
+                    Language
+                  </label>
+                  <Select value={languageFilter} onValueChange={setLanguageFilter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {languages.map(lang => (
+                        <SelectItem key={lang} value={lang}>{lang}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => {
+                    setRegionFilter('All Regions');
+                    setStageFilter('All Stages');
+                    setLanguageFilter('All Languages');
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         {/* Category Tabs */}
@@ -159,6 +316,7 @@ export default function ResourcesPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {resources.filter(r => r.featured).map(resource => {
                     const Icon = categoryIcons[resource.category];
+                    const isFavorite = favorites.has(resource.id);
                     return (
                       <Card key={resource.id} className="border-primary/20 bg-gradient-to-br from-primary/5 to-background">
                         <CardContent className="p-6">
@@ -187,10 +345,26 @@ export default function ResourcesPage() {
                                     {resource.downloads.toLocaleString()}
                                   </span>
                                 )}
-                                <Button size="sm" className="ml-auto">
-                                  Access
-                                  <ExternalLink className="h-3 w-3 ml-1" />
-                                </Button>
+                                <div className="flex items-center gap-2 ml-auto">
+                                  <Button 
+                                    size="sm" 
+                                    variant="ghost"
+                                    onClick={() => toggleFavorite(resource.id)}
+                                  >
+                                    <Heart className={cn("h-4 w-4", isFavorite && "fill-red-500 text-red-500")} />
+                                  </Button>
+                                  <Button 
+                                    size="sm" 
+                                    variant="ghost"
+                                    onClick={() => handlePreview(resource)}
+                                  >
+                                    <Eye className="h-4 w-4" />
+                                  </Button>
+                                  <Button size="sm">
+                                    Access
+                                    <ExternalLink className="h-3 w-3 ml-1" />
+                                  </Button>
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -206,6 +380,7 @@ export default function ResourcesPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredResources.map(resource => {
                 const Icon = categoryIcons[resource.category];
+                const isFavorite = favorites.has(resource.id);
                 return (
                   <Card key={resource.id} className="hover:shadow-md transition-shadow">
                     <CardContent className="p-5">
@@ -228,6 +403,24 @@ export default function ResourcesPage() {
                                 {resource.duration}
                               </span>
                             )}
+                            <div className="flex items-center gap-1 ml-auto">
+                              <Button 
+                                size="sm" 
+                                variant="ghost"
+                                className="h-7 w-7 p-0"
+                                onClick={() => toggleFavorite(resource.id)}
+                              >
+                                <Heart className={cn("h-3 w-3", isFavorite && "fill-red-500 text-red-500")} />
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="ghost"
+                                className="h-7 w-7 p-0"
+                                onClick={() => handlePreview(resource)}
+                              >
+                                <Eye className="h-3 w-3" />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -245,6 +438,12 @@ export default function ResourcesPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <ResourcePreviewModal 
+        open={showPreview}
+        onOpenChange={setShowPreview}
+        resource={previewResource}
+      />
     </DashboardLayout>
   );
 }
