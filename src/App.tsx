@@ -9,9 +9,14 @@ import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
 import { ErrorBoundary } from "./components/ErrorBoundary";
-import { LoadingSpinner } from "./components/ui/loading-spinner";
 import { AuthProvider } from "./hooks/useAuth";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { 
+  DashboardSkeleton, 
+  BusinessPlannerSkeleton, 
+  ResourcesSkeleton, 
+  PageSkeleton 
+} from "./components/skeletons";
 
 // Lazy load route components
 const Index = lazy(() => import("./pages/Index"));
@@ -53,13 +58,6 @@ const Settings = lazy(() => import("./pages/dashboard/Settings"));
 
 const queryClient = new QueryClient();
 
-// Loading fallback component
-const LoadingFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <LoadingSpinner size="lg" />
-  </div>
-);
-
 const App = () => (
   <ErrorBoundary>
     <HelmetProvider>
@@ -73,7 +71,7 @@ const App = () => (
               <Route 
                 path="/" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
                     <Index />
                   </Suspense>
                 } 
@@ -81,7 +79,7 @@ const App = () => (
               <Route 
                 path="/privacy" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <PrivacyPolicy />
                   </Suspense>
                 } 
@@ -89,7 +87,7 @@ const App = () => (
               <Route 
                 path="/terms" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <TermsOfService />
                   </Suspense>
                 } 
@@ -97,7 +95,7 @@ const App = () => (
               <Route 
                 path="/accessibility" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <AccessibilityStatement />
                   </Suspense>
                 } 
@@ -105,7 +103,7 @@ const App = () => (
               <Route 
                 path="/compliance" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <CanadianCompliance />
                   </Suspense>
                 } 
@@ -113,7 +111,7 @@ const App = () => (
               <Route 
                 path="/data-rights" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <DataRights />
                   </Suspense>
                 } 
@@ -121,7 +119,7 @@ const App = () => (
               <Route 
                 path="/unsubscribe" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <Unsubscribe />
                   </Suspense>
                 } 
@@ -129,7 +127,7 @@ const App = () => (
               <Route 
                 path="/track-request" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <TrackRequest />
                   </Suspense>
                 } 
@@ -137,7 +135,7 @@ const App = () => (
               <Route 
                 path="/contact" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <Contact />
                   </Suspense>
                 } 
@@ -145,7 +143,7 @@ const App = () => (
               <Route 
                 path="/training" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <Training />
                   </Suspense>
                 } 
@@ -153,7 +151,7 @@ const App = () => (
               <Route 
                 path="/auth" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton variant="auth" />}>
                     <Auth />
                   </Suspense>
                 } 
@@ -161,7 +159,7 @@ const App = () => (
               <Route 
                 path="/admin" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requireAdmin>
                       <Admin />
                     </ProtectedRoute>
@@ -171,7 +169,7 @@ const App = () => (
               <Route 
                 path="/test-subscription" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <ProtectedRoute>
                       <TestSubscription />
                     </ProtectedRoute>
@@ -181,7 +179,7 @@ const App = () => (
               <Route 
                 path="/dashboard" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <Dashboard />
                     </ProtectedRoute>
@@ -191,7 +189,7 @@ const App = () => (
               <Route
                 path="/dashboard/business-tools"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <BusinessTools />
                     </ProtectedRoute>
@@ -201,7 +199,7 @@ const App = () => (
               <Route
                 path="/dashboard/funding"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <DashboardFunding />
                     </ProtectedRoute>
@@ -211,7 +209,7 @@ const App = () => (
               <Route
                 path="/dashboard/analytics"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Analytics />
                     </ProtectedRoute>
@@ -221,7 +219,7 @@ const App = () => (
               <Route
                 path="/dashboard/settings"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <Settings />
                     </ProtectedRoute>
@@ -231,7 +229,7 @@ const App = () => (
               <Route
                 path="/dashboard/plan"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<BusinessPlannerSkeleton />}>
                     <ProtectedRoute>
                       <BusinessPlanner />
                     </ProtectedRoute>
@@ -241,7 +239,7 @@ const App = () => (
               <Route
                 path="/dashboard/resources"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<ResourcesSkeleton />}>
                     <ProtectedRoute>
                       <Resources />
                     </ProtectedRoute>
@@ -251,7 +249,7 @@ const App = () => (
               <Route
                 path="/dashboard/forum"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <Forum />
                     </ProtectedRoute>
@@ -261,7 +259,7 @@ const App = () => (
               <Route
                 path="/dashboard/community"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <Forum />
                     </ProtectedRoute>
@@ -271,7 +269,7 @@ const App = () => (
               <Route
                 path="/dashboard/compliance"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <Compliance />
                     </ProtectedRoute>
@@ -281,7 +279,7 @@ const App = () => (
               <Route
                 path="/dashboard/network"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Network />
                     </ProtectedRoute>
@@ -291,7 +289,7 @@ const App = () => (
               <Route
                 path="/dashboard/certifications"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Certifications />
                     </ProtectedRoute>
@@ -301,7 +299,7 @@ const App = () => (
               <Route
                 path="/dashboard/templates"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Templates />
                     </ProtectedRoute>
@@ -311,7 +309,7 @@ const App = () => (
               <Route
                 path="/dashboard/api"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <ApiAccess />
                     </ProtectedRoute>
@@ -321,7 +319,7 @@ const App = () => (
               <Route
                 path="/dashboard/team"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Team />
                     </ProtectedRoute>
@@ -331,7 +329,7 @@ const App = () => (
               <Route
                 path="/dashboard/security"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Security />
                     </ProtectedRoute>
@@ -341,7 +339,7 @@ const App = () => (
               <Route
                 path="/dashboard/integrations"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Integrations />
                     </ProtectedRoute>
@@ -351,7 +349,7 @@ const App = () => (
               <Route
                 path="/dashboard/training-calendar"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <TrainingCalendar />
                     </ProtectedRoute>
@@ -361,7 +359,7 @@ const App = () => (
               <Route
                 path="/dashboard/support"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <Support />
                     </ProtectedRoute>
@@ -371,7 +369,7 @@ const App = () => (
               <Route
                 path="/dashboard/profile"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <Profile />
                     </ProtectedRoute>
@@ -381,7 +379,7 @@ const App = () => (
               <Route 
                 path="/cookies" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <CookiePolicy />
                   </Suspense>
                 } 
@@ -389,7 +387,7 @@ const App = () => (
               <Route 
                 path="/faq" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <FAQ />
                   </Suspense>
                 } 
@@ -397,7 +395,7 @@ const App = () => (
               <Route 
                 path="/pricing" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
                     <Pricing />
                   </Suspense>
                 } 
@@ -406,7 +404,7 @@ const App = () => (
               <Route
                 path="*" 
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <NotFound />
                   </Suspense>
                 } 
