@@ -5,6 +5,8 @@ import StatCard from '@/components/dashboard/StatCard';
 import JourneyProgress from '@/components/dashboard/JourneyProgress';
 import QuickActions from '@/components/dashboard/QuickActions';
 import ActivityFeed from '@/components/dashboard/ActivityFeed';
+import GettingStartedChecklist from '@/components/dashboard/GettingStartedChecklist';
+import RecentActivity from '@/components/dashboard/RecentActivity';
 import { useSubscription } from '@/hooks/useSubscription';
 import { Target, TrendingUp, BookOpen, Users, Crown, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -64,12 +66,16 @@ const Dashboard: React.FC = () => {
           />
         </div>
 
+        {/* Getting Started Checklist for new users */}
+        <GettingStartedChecklist />
+
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Journey & Actions */}
           <div className="lg:col-span-2 space-y-6">
             <JourneyProgress progress={getProgressFromQuiz()} />
             <QuickActions />
+            <RecentActivity />
           </div>
 
           {/* Right Column - Activity & Upgrade */}
