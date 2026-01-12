@@ -9,6 +9,28 @@ import contextBackgroundImage from '@/assets/blog/context-background.jpg';
 import businessDevelopmentImage from '@/assets/blog/business-development.jpg';
 import identitySpecificImage from '@/assets/blog/identity-specific.jpg';
 
+// Individual post images
+import post1Image from '@/assets/blog/post-1-grants-guide.jpg';
+import post2Image from '@/assets/blog/post-2-how-to-apply.jpg';
+import post3Image from '@/assets/blog/post-3-alberta.jpg';
+import post4Image from '@/assets/blog/post-4-bc.jpg';
+import post5Image from '@/assets/blog/post-5-ontario.jpg';
+import post6Image from '@/assets/blog/post-6-youth.jpg';
+import post7Image from '@/assets/blog/post-7-women.jpg';
+import post8Image from '@/assets/blog/post-8-contributions.jpg';
+import post9Image from '@/assets/blog/post-9-financial.jpg';
+import post10Image from '@/assets/blog/post-10-tech.jpg';
+import post11Image from '@/assets/blog/post-11-clean-energy.jpg';
+import post12Image from '@/assets/blog/post-12-business-plan.jpg';
+import post13Image from '@/assets/blog/post-13-tourism.jpg';
+import post14Image from '@/assets/blog/post-14-training.jpg';
+import post15Image from '@/assets/blog/post-15-community.jpg';
+import post16Image from '@/assets/blog/post-16-reconciliation.jpg';
+import post17Image from '@/assets/blog/post-17-procurement.jpg';
+import post18Image from '@/assets/blog/post-18-rural.jpg';
+import post19Image from '@/assets/blog/post-19-metis.jpg';
+import post20Image from '@/assets/blog/post-20-inuit.jpg';
+
 export const categoryImages: Record<string, string> = {
   "Funding Guides": fundingGuidesImage,
   "How-To Guides": howToGuidesImage,
@@ -22,8 +44,35 @@ export const categoryImages: Record<string, string> = {
   "Identity-Specific": identitySpecificImage,
 };
 
+export const postImages: Record<string, string> = {
+  "1": post1Image,
+  "2": post2Image,
+  "3": post3Image,
+  "4": post4Image,
+  "5": post5Image,
+  "6": post6Image,
+  "7": post7Image,
+  "8": post8Image,
+  "9": post9Image,
+  "10": post10Image,
+  "11": post11Image,
+  "12": post12Image,
+  "13": post13Image,
+  "14": post14Image,
+  "15": post15Image,
+  "16": post16Image,
+  "17": post17Image,
+  "18": post18Image,
+  "19": post19Image,
+  "20": post20Image,
+};
+
 export const getCategoryImage = (category: string): string => {
   return categoryImages[category] || fundingGuidesImage;
+};
+
+export const getPostImage = (postId: string): string => {
+  return postImages[postId] || fundingGuidesImage;
 };
 
 export interface BlogPost {
