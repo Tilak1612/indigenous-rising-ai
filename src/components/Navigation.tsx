@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut, ArrowUpRight, Settings } from 'lucide-react';
+import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut, ArrowUpRight, Settings, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import logoFull from '@/assets/logo-full.png';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,9 +14,8 @@ const Navigation = () => {
   const navItems = [
     { name: 'Features', href: '#features', icon: TrendingUp, isAnchor: true },
     { name: 'Funding', href: '#funding', icon: Target, isAnchor: true },
-    { name: 'Testimonials', href: '#testimonials', icon: Users, isAnchor: true },
-    { name: 'Training Program', href: '/training', icon: BookOpen, isAnchor: false },
-    { name: 'Partnerships', href: '#partnerships', icon: Building, isAnchor: true },
+    { name: 'Training', href: '/training', icon: BookOpen, isAnchor: false },
+    { name: 'Blog', href: '/blog', icon: FileText, isAnchor: false },
     { name: 'Pricing', href: '/pricing', icon: Award, isAnchor: false }
   ];
 
