@@ -10,7 +10,7 @@ import {
   ArrowLeft, Calendar, Clock, User, Share2, BookOpen,
   ArrowRight, ChevronUp, Facebook, Twitter, Linkedin, Link as LinkIcon
 } from 'lucide-react';
-import { getBlogBySlug, getRelatedPosts } from '@/data/blogPosts';
+import { getBlogBySlug, getRelatedPosts, getCategoryImage } from '@/data/blogPosts';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -102,7 +102,7 @@ const BlogPost = () => {
         <meta property="og:description" content={post.summary} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={shareUrl} />
-        <meta property="og:image" content={`https://indigenousrising.ai${post.image}`} />
+        <meta property="og:image" content={getCategoryImage(post.category)} />
         <meta property="article:published_time" content={post.publishedAt} />
         <meta property="article:modified_time" content={post.updatedAt} />
         <meta property="article:author" content={post.author.name} />
@@ -121,7 +121,7 @@ const BlogPost = () => {
             "@type": "BlogPosting",
             "headline": post.title,
             "description": post.summary,
-            "image": `https://indigenousrising.ai${post.image}`,
+            "image": getCategoryImage(post.category),
             "url": shareUrl,
             "datePublished": post.publishedAt,
             "dateModified": post.updatedAt,
