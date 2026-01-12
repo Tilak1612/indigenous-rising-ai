@@ -36,6 +36,8 @@ const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
 const BusinessPlanner = lazy(() => import("./pages/dashboard/BusinessPlanner"));
