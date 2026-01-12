@@ -38,6 +38,10 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const PublicFunding = lazy(() => import("./pages/PublicFunding"));
+const PublicPlan = lazy(() => import("./pages/PublicPlan"));
+const PublicImpact = lazy(() => import("./pages/PublicImpact"));
+const PublicLearning = lazy(() => import("./pages/PublicLearning"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
 const BusinessPlanner = lazy(() => import("./pages/dashboard/BusinessPlanner"));
@@ -415,6 +419,38 @@ const App = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <BlogPost />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/funding" 
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <PublicFunding />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/plan" 
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <PublicPlan />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/impact" 
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <PublicImpact />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/learning" 
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <PublicLearning />
                   </Suspense>
                 } 
               />
