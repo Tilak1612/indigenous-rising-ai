@@ -402,6 +402,22 @@ const App = () => (
                   </Suspense>
                 } 
               />
+              <Route 
+                path="/blog" 
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <Blog />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/blog/:slug" 
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <BlogPost />
+                  </Suspense>
+                } 
+              />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route
                 path="*" 
