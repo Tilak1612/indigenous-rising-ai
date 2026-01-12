@@ -21,11 +21,11 @@ const Navigation = () => {
 
   const appNavItems = [
     { name: 'Dashboard', href: '/dashboard', icon: TrendingUp, isAnchor: false },
-    { name: 'Plan', href: '/plan', icon: Award, isAnchor: false },
-    { name: 'Funding', href: '/funding', icon: Target, isAnchor: false },
-    { name: 'Impact', href: '/impact', icon: TrendingUp, isAnchor: false },
-    { name: 'Learning', href: '/learning', icon: BookOpen, isAnchor: false },
-    { name: 'Settings', href: '/settings', icon: Settings, isAnchor: false }
+    { name: 'Plan', href: '/dashboard/plan', icon: Award, isAnchor: false },
+    { name: 'Funding', href: '/dashboard/funding', icon: Target, isAnchor: false },
+    { name: 'Resources', href: '/dashboard/resources', icon: BookOpen, isAnchor: false },
+    { name: 'Forum', href: '/dashboard/forum', icon: Users, isAnchor: false },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings, isAnchor: false }
   ];
 
   return (
