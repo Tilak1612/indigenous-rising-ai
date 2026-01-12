@@ -11,7 +11,7 @@ import {
   Search, Calendar, Clock, ArrowRight, BookOpen, 
   TrendingUp, Filter, ChevronDown 
 } from 'lucide-react';
-import { blogPosts, getAllCategories, searchBlogs, getCategoryImage } from '@/data/blogPosts';
+import { blogPosts, getAllCategories, searchBlogs, getPostImage } from '@/data/blogPosts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -157,7 +157,7 @@ const Blog = () => {
                 <div className="grid md:grid-cols-2 gap-0">
                   <div className="aspect-video md:aspect-auto overflow-hidden">
                     <img 
-                      src={getCategoryImage(featuredPost.category)} 
+                      src={getPostImage(featuredPost.id)} 
                       alt={featuredPost.title}
                       className="w-full h-full object-cover transition-transform group-hover:scale-105"
                     />
@@ -197,7 +197,7 @@ const Blog = () => {
                   <Card className="h-full hover:shadow-lg transition-all hover:border-primary/30 overflow-hidden">
                     <div className="aspect-video overflow-hidden">
                       <img 
-                        src={getCategoryImage(post.category)} 
+                        src={getPostImage(post.id)} 
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform group-hover:scale-105"
                         loading="lazy"
