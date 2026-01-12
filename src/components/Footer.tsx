@@ -26,12 +26,12 @@ const Footer = () => {
       title: "Resources",
       titleTranslation: "Naadamaaganan",
       links: [
+        { name: "Blog", href: "/blog" },
         { name: "Training Programs", href: "/training" },
         { name: "Data Rights Guide", href: "/data-rights" },
         { name: "Track Your Request", href: "/track-request" },
         { name: "Contact Support", href: "/contact" },
-        { name: "FAQ", href: "/faq" },
-        { name: "Community Forum", href: "#testimonials" }
+        { name: "FAQ", href: "/faq" }
       ]
     },
     {
