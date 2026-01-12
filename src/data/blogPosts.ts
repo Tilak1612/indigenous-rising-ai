@@ -1,3 +1,31 @@
+import fundingGuidesImage from '@/assets/blog/funding-guides.jpg';
+import howToGuidesImage from '@/assets/blog/how-to-guides.jpg';
+import provincialGuidesImage from '@/assets/blog/provincial-guides.jpg';
+import audienceSpecificImage from '@/assets/blog/audience-specific.jpg';
+import industryGuidesImage from '@/assets/blog/industry-guides.jpg';
+import trainingDevelopmentImage from '@/assets/blog/training-development.jpg';
+import communityDevelopmentImage from '@/assets/blog/community-development.jpg';
+import contextBackgroundImage from '@/assets/blog/context-background.jpg';
+import businessDevelopmentImage from '@/assets/blog/business-development.jpg';
+import identitySpecificImage from '@/assets/blog/identity-specific.jpg';
+
+export const categoryImages: Record<string, string> = {
+  "Funding Guides": fundingGuidesImage,
+  "How-To Guides": howToGuidesImage,
+  "Provincial Guides": provincialGuidesImage,
+  "Audience-Specific": audienceSpecificImage,
+  "Industry Guides": industryGuidesImage,
+  "Training & Development": trainingDevelopmentImage,
+  "Community Development": communityDevelopmentImage,
+  "Context & Background": contextBackgroundImage,
+  "Business Development": businessDevelopmentImage,
+  "Identity-Specific": identitySpecificImage,
+};
+
+export const getCategoryImage = (category: string): string => {
+  return categoryImages[category] || fundingGuidesImage;
+};
+
 export interface BlogPost {
   id: string;
   slug: string;

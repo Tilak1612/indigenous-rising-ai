@@ -11,7 +11,7 @@ import {
   Search, Calendar, Clock, ArrowRight, BookOpen, 
   TrendingUp, Filter, ChevronDown 
 } from 'lucide-react';
-import { blogPosts, getAllCategories, searchBlogs } from '@/data/blogPosts';
+import { blogPosts, getAllCategories, searchBlogs, getCategoryImage } from '@/data/blogPosts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -155,8 +155,12 @@ const Blog = () => {
             <Link to={`/blog/${featuredPost.slug}`} className="block mb-12 group">
               <Card className="overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all">
                 <div className="grid md:grid-cols-2 gap-0">
-                  <div className="aspect-video md:aspect-auto bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                    <TrendingUp className="w-24 h-24 text-primary/40" />
+                  <div className="aspect-video md:aspect-auto overflow-hidden">
+                    <img 
+                      src={getCategoryImage(featuredPost.category)} 
+                      alt={featuredPost.title}
+                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    />
                   </div>
                   <div className="p-8 flex flex-col justify-center">
                     <Badge variant="secondary" className="w-fit mb-4">
@@ -190,7 +194,15 @@ const Blog = () => {
               // Skip featured post in grid if not filtering
               (!searchQuery && !selectedCategory && idx === 0) ? null : (
                 <Link key={post.id} to={`/blog/${post.slug}`} className="group">
-                  <Card className="h-full hover:shadow-lg transition-all hover:border-primary/30">
+                  <Card className="h-full hover:shadow-lg transition-all hover:border-primary/30 overflow-hidden">
+                    <div className="aspect-video overflow-hidden">
+                      <img 
+                        src={getCategoryImage(post.category)} 
+                        alt={post.title}
+                        className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
                     <CardHeader className="pb-4">
                       <div className="flex items-center gap-2 mb-3">
                         <Badge variant="outline" className="text-xs">
