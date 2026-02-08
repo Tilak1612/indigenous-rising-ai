@@ -409,6 +409,7 @@ export default function Analytics() {
                       <p className="text-xs text-muted-foreground">{achievement.date}</p>
                       <p className="font-medium">{achievement.title}</p>
                     </div>
+                  </div>
                   <p className="text-sm text-muted-foreground">{achievement.description}</p>
                 </div>
               ))}
