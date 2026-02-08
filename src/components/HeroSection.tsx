@@ -3,7 +3,7 @@ import { ArrowRight, Play, ChevronDown, Sparkles, Shield, Globe } from 'lucide-r
 import InteractiveQuiz from './InteractiveQuiz';
 import VideoModal from './VideoModal';
 import CountUpStats from './CountUpStats';
-import heroImage from '@/assets/hero-indigenous-entrepreneurs.jpg';
+import heroImage from '@/assets/hero-image.jpg';
 
 const HeroSection = () => {
   const scrollToFeatures = () => {
@@ -22,8 +22,8 @@ const HeroSection = () => {
       <div className="absolute inset-0 -z-10">
         <img 
           src={heroImage} 
-          alt="Indigenous Canadian entrepreneurs collaborating in a modern office with mountain views" 
-          className="w-full h-full object-cover object-center"
+          alt="Indigenous entrepreneurs collaborating in a bright workspace" 
+          className="w-full h-full object-cover object-[50%_35%]"
           loading="eager"
           fetchPriority="high"
           decoding="async"
