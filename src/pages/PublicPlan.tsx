@@ -62,7 +62,7 @@ const PublicPlan: React.FC = () => {
         description="Create a professional business plan with AI-powered guidance. Sector-specific templates and step-by-step assistance for Indigenous entrepreneurs."
       />
       
-      <div className="min-h-screen bg-neutral-900">
+      <div className="min-h-screen bg-white">
         <Navigation />
         
         {/* Hero Section */}

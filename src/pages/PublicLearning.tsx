@@ -78,7 +78,7 @@ const PublicLearning: React.FC = () => {
         description="Build your business skills with courses designed for Indigenous entrepreneurs. Self-paced learning, certifications, and expert mentorship."
       />
       
-      <div className="min-h-screen bg-neutral-900">
+      <div className="min-h-screen bg-white">
         <Navigation />
         
         {/* Hero Section */}

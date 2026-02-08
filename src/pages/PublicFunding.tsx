@@ -54,7 +54,7 @@ const PublicFunding: React.FC = () => {
         description="Discover grants, loans, and equity opportunities for Indigenous entrepreneurs. AI-powered matching to find funding you qualify for."
       />
       
-      <div className="min-h-screen bg-neutral-900">
+      <div className="min-h-screen bg-white">
         <Navigation />
         
         {/* Hero Section */}
