@@ -7,11 +7,11 @@ const LearningPage: React.FC = () => {
   const { user } = useAuth();
 
   return (
-    <main className="min-h-screen bg-neutral-900 text-white py-10 px-6">
+    <main className="min-h-screen bg-background text-foreground py-10 px-6">
       <div className="max-w-7xl mx-auto space-y-6">
         <header>
           <h1 className="text-3xl font-semibold">Learning & Certification</h1>
-          <p className="text-sm text-white/70 mt-1">My Learning, enrollments, and certification tracking.</p>
+          <p className="text-sm text-muted-foreground mt-1">My Learning, enrollments, and certification tracking.</p>
         </header>
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -20,10 +20,9 @@ const LearningPage: React.FC = () => {
           </div>
 
           <aside className="space-y-4">
-            <div className="bg-white/4 p-4 rounded-md">
+            <div className="bg-muted p-4 rounded-md border">
               <h3 className="font-medium">Ogichidaakwe Discount</h3>
-              <p className="text-sm text-white/70 mt-1">Members on the Ogichidaakwe plan see a 20% discount on course pricing.</p>
-              {user?.plan === 'Ogichidaakwe' && <div className="mt-3 inline-block px-3 py-1 bg-emerald-500 rounded-md text-white text-sm">20% discount applied</div>}
+              <p className="text-sm text-muted-foreground mt-1">Members on the Ogichidaakwe plan see a 20% discount on course pricing.</p>
             </div>
 
             <CertificationTracker />

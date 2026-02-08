@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, test, expect } from 'vitest';
 import PlanStepper from '@/components/PlanStepper';
 
 describe('PlanStepper', () => {

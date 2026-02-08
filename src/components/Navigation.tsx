@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut, ArrowUpRight, Settings } from 'lucide-react';
+import { Menu, X, Users, TrendingUp, Target, Award, BookOpen, LogIn, LogOut, ArrowUpRight, Settings, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import logoFull from '@/assets/logo-full.png';
 import { useAuth } from '@/hooks/useAuth';
@@ -12,22 +12,20 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   const navItems = [
-    { name: 'Features', href: '#features', icon: TrendingUp, isAnchor: true },
-    { name: 'Funding', href: '#funding', icon: Target, isAnchor: true },
-    { name: 'Funding Opportunities', href: '#funding', icon: Target, isAnchor: true },
-    { name: 'Training Program', href: '/training', icon: BookOpen, isAnchor: false },
-    { name: 'Partnerships', href: '#partnerships', icon: Building, isAnchor: true },
-    { name: 'Pricing', href: '#pricing', icon: Award, isAnchor: true }
+    { name: 'Funding', href: '/funding', icon: Target, isAnchor: false },
+    { name: 'Plan', href: '/plan', icon: Award, isAnchor: false },
+    { name: 'Learning', href: '/learning', icon: BookOpen, isAnchor: false },
+    { name: 'Blog', href: '/blog', icon: FileText, isAnchor: false },
+    { name: 'Pricing', href: '/pricing', icon: Award, isAnchor: false }
   ];
 
   const appNavItems = [
     { name: 'Dashboard', href: '/dashboard', icon: TrendingUp, isAnchor: false },
-    { name: 'Plan', href: '/plan', icon: Award, isAnchor: false },
-    { name: 'Funding', href: '/funding', icon: Target, isAnchor: false },
-    { name: 'Impact', href: '/impact', icon: TrendingUp, isAnchor: false },
-    { name: 'Learning', href: '/learning', icon: BookOpen, isAnchor: false },
-    { name: 'Network', href: '/network', icon: Users, isAnchor: false },
-    { name: 'Data & Settings', href: '/settings', icon: Settings, isAnchor: false }
+    { name: 'Plan', href: '/dashboard/plan', icon: Award, isAnchor: false },
+    { name: 'Funding', href: '/dashboard/funding', icon: Target, isAnchor: false },
+    { name: 'Resources', href: '/dashboard/resources', icon: BookOpen, isAnchor: false },
+    { name: 'Forum', href: '/dashboard/forum', icon: Users, isAnchor: false },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings, isAnchor: false }
   ];
 
   return (
