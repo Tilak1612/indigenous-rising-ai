@@ -13,9 +13,7 @@ const Navigation = () => {
 
   const navItems = [
     { name: 'Funding', href: '/funding', icon: Target, isAnchor: false },
-    { name: 'Plan', href: '/plan', icon: Award, isAnchor: false },
     { name: 'Learning', href: '/learning', icon: BookOpen, isAnchor: false },
-    { name: 'Blog', href: '/blog', icon: FileText, isAnchor: false },
     { name: 'Pricing', href: '/pricing', icon: Award, isAnchor: false }
   ];
 
