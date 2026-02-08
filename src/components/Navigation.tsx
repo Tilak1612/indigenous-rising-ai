@@ -14,7 +14,7 @@ const Navigation = () => {
   const navItems = [
     { name: 'Features', href: '#features', icon: TrendingUp, isAnchor: true },
     { name: 'Funding', href: '#funding', icon: Target, isAnchor: true },
-    { name: 'Testimonials', href: '#testimonials', icon: Users, isAnchor: true },
+    { name: 'Funding Opportunities', href: '#funding', icon: Target, isAnchor: true },
     { name: 'Training Program', href: '/training', icon: BookOpen, isAnchor: false },
     { name: 'Partnerships', href: '#partnerships', icon: Building, isAnchor: true },
     { name: 'Pricing', href: '#pricing', icon: Award, isAnchor: true }

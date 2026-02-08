@@ -14,12 +14,14 @@ interface VideoModalProps {
   triggerText?: string;
   triggerSize?: 'default' | 'sm' | 'lg';
   triggerClassName?: string;
+  videoUrl?: string | null;
 }
 
 const VideoModal = ({ 
   triggerText = 'Watch Video', 
   triggerSize = 'lg',
   triggerClassName = ''
+  , videoUrl = null
 }: VideoModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -44,26 +46,26 @@ const VideoModal = ({
           </DialogDescription>
         </DialogHeader>
         <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center">
-          {/* Placeholder for actual video */}
-          <div className="text-center space-y-4">
-            <Play className="w-16 h-16 mx-auto text-primary" />
-            <p className="text-muted-foreground">
-              Video coming soon: Platform demonstration
-            </p>
-            <p className="text-sm text-muted-foreground max-w-md mx-auto">
-              Our comprehensive platform walkthrough will show you how to navigate funding opportunities, 
-              track community impact, and access training programs—all while maintaining data sovereignty.
-            </p>
-          </div>
-          {/* Replace with actual video embed when available:
-          <iframe
-            src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-            title="Indigenous Rising AI Demo"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full rounded-lg"
-          />
-          */}
+          {videoUrl ? (
+            <iframe
+              src={videoUrl}
+              title="Indigenous Rising AI Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="w-full h-full rounded-lg"
+            />
+          ) : (
+            <div className="text-center space-y-4">
+              <Play className="w-16 h-16 mx-auto text-primary" />
+              <p className="text-muted-foreground">
+                Video coming soon: Platform demonstration
+              </p>
+              <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                Our comprehensive platform walkthrough will show you how to navigate funding opportunities, 
+                track community impact, and access training programs—all while maintaining data sovereignty.
+              </p>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

@@ -1,17 +1,25 @@
-import { ShinyButton } from '@/components/ui/shiny-button';
+import * as React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, type LucideIcon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, LucideIcon } from 'lucide-react';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
+import UpgradeModal from '@/components/UpgradeModal';
 
 interface FeatureCardProps {
   title: string;
-  titleTranslation: string;
+  titleTranslation?: string;
   description: string;
   icon: LucideIcon;
   features: string[];
-  ctaText: string;
+  ctaText?: string;
   gradient?: 'earth' | 'sky' | 'hero';
   className?: string;
+  to?: string;
+  onClick?: () => void;
+  premium?: boolean;
 }
 
 const FeatureCard = ({
@@ -20,9 +28,12 @@ const FeatureCard = ({
   description,
   icon: Icon,
   features,
-  ctaText,
+  ctaText = 'Learn more',
   gradient = 'earth',
-  className
+  className,
+  to,
+  onClick,
+  premium = false,
 }: FeatureCardProps) => {
   const gradientClass = {
     earth: 'gradient-earth',
@@ -30,11 +41,32 @@ const FeatureCard = ({
     hero: 'gradient-hero'
   }[gradient];
 
+  const { user } = useAuth();
+  const { subscribed } = useSubscription();
+  const navigate = useNavigate();
+
+  const handleCTA = () => {
+    if (onClick) {
+      onClick();
+      return;
+    }
+
+    if (to) {
+      navigate(to);
+      return;
+    }
+  };
+
   return (
     <Card className={cn(
       "group hover:shadow-elevated transition-spring bg-card/80 backdrop-blur-sm border-border/50",
       className
     )}>
+      {premium && (
+        <div className="absolute top-3 right-3 z-10">
+          <div className="px-2 py-1 rounded-md bg-amber-600 text-white text-xs font-semibold">Premium</div>
+        </div>
+      )}
       <CardHeader className="space-y-4">
         <div className={cn(
           "w-12 h-12 rounded-xl flex items-center justify-center shadow-natural group-hover:shadow-glow transition-spring",
@@ -69,13 +101,28 @@ const FeatureCard = ({
       </CardContent>
 
       <CardFooter>
-        <ShinyButton 
-          size="sm"
-          className="w-full group/btn"
-        >
-          {ctaText}
-          <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
-        </ShinyButton>
+        {premium ? (
+          (!user || !subscribed) ? (
+            <UpgradeModal triggerText={ctaText} triggerSize="sm" details={`${title} is available for Ogichidaakwe subscribers.`} />
+          ) : (
+            <ShinyButton size="sm" className="w-full group/btn" onClick={handleCTA}>
+              {ctaText}
+              <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
+            </ShinyButton>
+          )
+        ) : to ? (
+          <ShinyButton asChild size="sm" className="w-full group/btn">
+            <Link to={to} className="flex items-center justify-center">
+              {ctaText}
+              <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
+            </Link>
+          </ShinyButton>
+        ) : (
+          <ShinyButton size="sm" className="w-full group/btn" onClick={handleCTA}>
+            {ctaText}
+            <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
+          </ShinyButton>
+        )}
       </CardFooter>
     </Card>
   );

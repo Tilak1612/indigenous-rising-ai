@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,45 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface FundingOpportunity {
-  id: string;
-  name: string;
-  amount: string;
-  deadline: string;
-  province: string;
-  industry: string;
-  description: string;
-}
-
-const fundingOpportunities: FundingOpportunity[] = [
-  {
-    id: '1',
-    name: 'Indigenous Business Development Fund',
-    amount: '$50,000',
-    deadline: '2025-04-15',
-    province: 'National',
-    industry: 'All Sectors',
-    description: 'Support for Indigenous-owned businesses across Canada',
-  },
-  {
-    id: '2',
-    name: 'Aboriginal Entrepreneurship Program',
-    amount: '$25,000',
-    deadline: '2025-03-30',
-    province: 'Ontario',
-    industry: 'Technology',
-    description: 'Tech sector funding for Indigenous entrepreneurs',
-  },
-  {
-    id: '3',
-    name: 'First Nations Economic Development',
-    amount: '$75,000',
-    deadline: '2025-05-20',
-    province: 'British Columbia',
-    industry: 'Tourism',
-    description: 'Tourism and cultural business development',
-  },
-];
+import { fundingOpportunities } from '@/lib/funding-data';
 
 const FundingSection = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -64,6 +28,9 @@ const FundingSection = () => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
+
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const filteredOpportunities = fundingOpportunities.filter((opp) => {
     const matchesSearch = opp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -133,7 +100,8 @@ const FundingSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredOpportunities.map((opportunity, index) => {
               const daysLeft = getDaysUntilDeadline(opportunity.deadline);
-              const isUrgent = daysLeft <= 14;
+              const isExpired = daysLeft < 0;
+              const isUrgent = !isExpired && daysLeft <= 14;
 
               return (
                 <Card
@@ -141,15 +109,31 @@ const FundingSection = () => {
                   className="p-6 hover:shadow-elevated transition-all hover:-translate-y-1 animate-fade-in-up"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-display text-xl font-bold text-foreground mb-2">
-                        {opportunity.name}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {opportunity.description}
-                      </p>
-                    </div>
+                      <div className="space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="font-display text-xl font-bold text-foreground mb-2">
+                              {opportunity.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {opportunity.description}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {isExpired ? (
+                              <Badge variant="destructive" className="text-white">Closed</Badge>
+                            ) : isUrgent ? (
+                              <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-100">Closing Soon</Badge>
+                            ) : (
+                              <Badge variant="secondary" className="bg-primary/10 text-primary">Active</Badge>
+                            )}
+
+                            {/* Demo 'Best Match' ribbon for highest fit (placeholder) */}
+                            {index === 0 && (
+                              <Badge variant="secondary" className="bg-accent/10 text-accent">Best Match</Badge>
+                            )}
+                          </div>
+                        </div>
 
                     <div className="flex flex-wrap gap-2">
                       <Badge variant="secondary" className="bg-primary/10 text-primary">
@@ -165,18 +149,28 @@ const FundingSection = () => {
                     <div className="flex items-center justify-between pt-4 border-t border-border">
                       <div className="flex items-center text-sm">
                         <Calendar className="w-4 h-4 mr-2 text-muted-foreground" />
-                        <span className={isUrgent ? 'text-destructive font-semibold' : 'text-muted-foreground'}>
-                          {daysLeft} days left
-                        </span>
+                        {!isExpired ? (
+                          <span className={isUrgent ? 'text-destructive font-semibold' : 'text-muted-foreground'}>
+                            {daysLeft} days left
+                          </span>
+                        ) : (
+                          <Badge variant="destructive" className="text-white">Application closed</Badge>
+                        )}
                       </div>
                       <Button 
                         size="sm" 
                         variant="outline" 
                         className="hover:bg-primary hover:text-primary-foreground"
                         onClick={() => {
-                          const element = document.querySelector('#pricing');
-                          element?.scrollIntoView({ behavior: 'smooth' });
+                          if (isExpired) return;
+
+                          if (user) {
+                            navigate(`/funding/${opportunity.id}`);
+                          } else {
+                            navigate(`/auth?next=/funding/${opportunity.id}`);
+                          }
                         }}
+                        disabled={isExpired}
                       >
                         Apply Now
                       </Button>

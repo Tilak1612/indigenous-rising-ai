@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Feather, Compass, TreePine, Users, Network, GraduationCap, ArrowRight, Check } from 'lucide-react';
+import VideoModal from './VideoModal';
 
 const EnhancedFeatures = () => {
   const features = [
@@ -150,14 +151,25 @@ const EnhancedFeatures = () => {
                         ))}
                       </ul>
                       
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="group/btn text-primary hover:text-primary hover:bg-primary/10 -ml-2"
-                      >
-                        Learn More
-                        <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-                      </Button>
+                              <div className="flex items-center gap-3">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="group/btn text-primary hover:text-primary hover:bg-primary/10 -ml-2"
+                                >
+                                  Learn More
+                                  <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                </Button>
+                                {feature.title === 'Funding Navigator' && (
+                                  <VideoModal
+                                    triggerText="Watch Platform Video"
+                                    triggerSize="sm"
+                                    triggerClassName=""
+                                    // Replace VIDEO_ID with the published YouTube video id when available
+                                    videoUrl="https://www.youtube.com/embed/VIDEO_ID"
+                                  />
+                                )}
+                              </div>
                     </div>
                   </div>
                 </Card>
