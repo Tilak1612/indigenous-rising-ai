@@ -32,6 +32,9 @@ const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const TrackRequest = lazy(() => import("./pages/TrackRequest"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Training = lazy(() => import("./pages/Training"));
+const FundingDetail = lazy(() => import("./pages/FundingDetail"));
+const FeatureDetail = lazy(() => import("./pages/FeatureDetail"));
+const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
@@ -161,6 +164,32 @@ const App = () => (
                     <Auth />
                   </Suspense>
                 } 
+              />
+              <Route 
+                path="/funding/:id"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <FundingDetail />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/features/:slug"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <FeatureDetail />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/onboarding"
+                element={
+                  <Suspense fallback={<LoadingFallback />}>
+                    <ProtectedRoute>
+                      <OnboardingPage />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
               />
               <Route 
                 path="/admin" 

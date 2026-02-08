@@ -61,11 +61,12 @@ const Footer = () => {
     }
   ];
 
+  // Audit: Facebook page currently unavailable; mark as coming soon.
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "https://facebook.com/indigenousai", color: "#1877F2" },
-    { name: "Twitter", icon: Twitter, href: "https://twitter.com/indigenous_ai", color: "#1DA1F2" },
-    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/indigenous-ai", color: "#0A66C2" },
-    { name: "YouTube", icon: Youtube, href: "https://youtube.com/@indigenousai", color: "#FF0000" }
+    { name: "Facebook", icon: Facebook, href: "#", color: "#1877F2", available: false, note: 'Coming soon' },
+    { name: "Twitter", icon: Twitter, href: "https://twitter.com/indigenous_ai", color: "#1DA1F2", available: true },
+    { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/indigenous-ai", color: "#0A66C2", available: true },
+    { name: "YouTube", icon: Youtube, href: "https://youtube.com/@indigenousai", color: "#FF0000", available: true }
   ];
 
   const languages = [
@@ -162,7 +163,21 @@ const Footer = () => {
                 <h4 className="font-medium text-foreground text-sm">Follow Our Journey</h4>
                 <div className="flex gap-3">
                   {socialLinks.map((social) => {
-                    const Icon = social.icon;
+                    const Icon = social.icon as any;
+                    if (!social.available) {
+                      return (
+                        <button
+                          key={social.name}
+                          className="w-10 h-10 glass bg-muted/20 border border-border/30 rounded-xl flex items-center justify-center transition-smooth cursor-not-allowed opacity-60"
+                          aria-label={`${social.name} (coming soon)`}
+                          title={social.note || 'Coming soon'}
+                          disabled
+                        >
+                          <Icon className="w-4 h-4" style={{ color: social.color }} />
+                        </button>
+                      );
+                    }
+
                     return (
                       <a
                         key={social.name}

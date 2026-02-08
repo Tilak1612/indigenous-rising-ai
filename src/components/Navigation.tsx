@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { Menu, X, Users, TrendingUp, Target, Award, Building, BookOpen, LogIn, LogOut, ArrowUpRight, Settings, FileText } from 'lucide-react';
+import { Menu, X, Users, TrendingUp, Target, Award, BookOpen, LogIn, LogOut, ArrowUpRight, Settings, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import logoFull from '@/assets/logo-full.png';
 import { useAuth } from '@/hooks/useAuth';

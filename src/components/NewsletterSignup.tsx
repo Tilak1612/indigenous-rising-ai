@@ -54,13 +54,13 @@ const NewsletterSignup = () => {
 
   // Debug: log validation errors during tests
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.debug('NEWSLETTER_ERRORS', errors);
   }, [errors]);
 
   const onSubmit = async (data: NewsletterFormData) => {
     // debug
-    // eslint-disable-next-line no-console
+     
     console.debug('NEWSLETTER_ONSUBMIT', data);
     // Manual fallback validation for email (ensures tests catch invalid format)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

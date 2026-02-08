@@ -406,10 +406,9 @@ export default function Analytics() {
                       <achievement.icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="font-medium">{achievement.title}</p>
                       <p className="text-xs text-muted-foreground">{achievement.date}</p>
+                      <p className="font-medium">{achievement.title}</p>
                     </div>
-                  </div>
                   <p className="text-sm text-muted-foreground">{achievement.description}</p>
                 </div>
               ))}

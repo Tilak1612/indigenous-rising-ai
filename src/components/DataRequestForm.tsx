@@ -63,7 +63,7 @@ const DataRequestForm = () => {
 
   // Debug: log validation errors during tests
   useEffect(() => {
-    // eslint-disable-next-line no-console
+     
     console.debug('DATA_REQUEST_ERRORS', errors);
   }, [errors]);
 
@@ -103,7 +103,9 @@ const DataRequestForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
       // @ts-ignore
-      (setError as any) && setError('email', { type: 'manual', message: 'Please enter a valid email' });
+      if (setError) {
+        (setError as any)('email', { type: 'manual', message: 'Please enter a valid email' });
+      }
       setEmailError('Please enter a valid email');
       return;
     }

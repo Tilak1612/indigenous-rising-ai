@@ -52,8 +52,8 @@ def test_public_endpoint_contact():
         print("⚠️  WARNING: Rate limited (endpoint is working)")
     else:
         print(f"❌ FAIL: Unexpected status {response.status_code}")
-    
-    return response.status_code in [200, 429]
+
+    assert response.status_code in [200, 429]
 
 def test_database_rest_api():
     """Test database REST API - Read public content"""
@@ -84,18 +84,19 @@ def test_database_rest_api():
     if response.status_code == 200:
         try:
             data = response.json()
-            print(f"Response: {json.dumps(data, indent=2)[:200]}...")
-            print(f"\n✅ PASS: Database REST API working")
-            print(f"   Retrieved {len(data)} records")
-            return True
-        except:
+        except ValueError:
             print(f"Response: {response.text}")
             print("❌ FAIL: Invalid JSON response")
-            return False
+            raise
+
+        print(f"Response: {json.dumps(data, indent=2)[:200]}...")
+        print(f"\n✅ PASS: Database REST API working")
+        print(f"   Retrieved {len(data)} records")
     else:
         print(f"Response: {response.text}")
         print(f"❌ FAIL: Status {response.status_code}")
-        return False
+
+    assert response.status_code == 200
 
 def test_authenticated_endpoint():
     """Test authenticated endpoint - Requires JWT token"""
@@ -125,17 +126,16 @@ def test_authenticated_endpoint():
     
     if response.status_code == 200:
         print("✅ PASS: Authenticated endpoint working")
-        return True
     elif response.status_code in [401, 403]:
         print("⚠️  EXPECTED: Authentication required (need valid JWT token)")
         print("   To get JWT token:")
         print("   1. Sign in at the website")
         print("   2. Open browser DevTools > Network")
         print("   3. Look for Authorization header in any request")
-        return True
     else:
         print(f"❌ FAIL: Unexpected status {response.status_code}")
-        return False
+
+    assert response.status_code in [200, 401, 403]
 
 def test_frontend_url():
     """Demonstrate why frontend URL doesn't work for API calls"""
@@ -217,9 +217,9 @@ def run_all_tests():
     results = []
     
     # Run tests
-    results.append(("Contact Form API", test_public_endpoint_contact()))
-    results.append(("Database REST API", test_database_rest_api()))
-    results.append(("Authenticated API", test_authenticated_endpoint()))
+    results.append(("Contact Form API", test_public_endpoint_contact() is None))
+    results.append(("Database REST API", test_database_rest_api() is None))
+    results.append(("Authenticated API", test_authenticated_endpoint() is None))
     test_frontend_url()
     
     # Print summary
