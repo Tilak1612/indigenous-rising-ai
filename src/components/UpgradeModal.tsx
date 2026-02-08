@@ -48,7 +48,7 @@ const UpgradeModal: React.FC<UpgradeModalProps> = ({ triggerText = 'Upgrade to a
             <ShinyButton asChild>
               <Link to="/pricing">View Plans</Link>
             </ShinyButton>
-            <ShinyButton variant="ghost" asChild>
+            <ShinyButton asChild className="bg-transparent hover:bg-muted text-foreground">
               <Link to="/contact">Contact Sales</Link>
             </ShinyButton>
           </div>

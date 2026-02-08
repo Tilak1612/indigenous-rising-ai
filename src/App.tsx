@@ -168,7 +168,7 @@ const App = () => (
               <Route 
                 path="/funding/:id"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <FundingDetail />
                   </Suspense>
                 }
@@ -176,7 +176,7 @@ const App = () => (
               <Route
                 path="/features/:slug"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <FeatureDetail />
                   </Suspense>
                 }
@@ -184,7 +184,7 @@ const App = () => (
               <Route
                 path="/onboarding"
                 element={
-                  <Suspense fallback={<LoadingFallback />}>
+                  <Suspense fallback={<PageSkeleton />}>
                     <ProtectedRoute>
                       <OnboardingPage />
                     </ProtectedRoute>

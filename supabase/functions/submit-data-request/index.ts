@@ -268,22 +268,31 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-  } catch (error: any) {
+    // Fallback return for unhandled cases
+    return new Response(
+      JSON.stringify({ error: 'Invalid request' }),
+      { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+    );
+
+  } catch (error: unknown) {
     // Log full error details server-side for debugging
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    
     console.error('Data request error:', {
-      message: error.message,
-      stack: error.stack,
+      message: errorMessage,
+      stack: errorStack,
       timestamp: new Date().toISOString()
     });
     
     // Return sanitized error message to client
-    const isKnownError = error.message?.includes('rate limit') || 
-                         error.message?.includes('Invalid') ||
-                         error.message?.includes('not found');
+    const isKnownError = errorMessage?.includes('rate limit') || 
+                         errorMessage?.includes('Invalid') ||
+                         errorMessage?.includes('not found');
     
     return new Response(
       JSON.stringify({ 
-        error: isKnownError ? error.message : 'An error occurred processing your data request. Please try again or contact our privacy officer at privacy@indigenousrising.ai.'
+        error: isKnownError ? errorMessage : 'An error occurred processing your data request. Please try again or contact our privacy officer at privacy@indigenousrising.ai.'
       }),
       { 
         status: 500,
