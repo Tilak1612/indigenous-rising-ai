@@ -45,12 +45,20 @@ const ImpactCalculator = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12 animate-fade-in-up">
-            <h2 className="font-display text-4xl md:text-5xl font-black text-foreground mb-4">
-              See Your Potential Impact
-            </h2>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <h2 className="font-display text-4xl md:text-5xl font-black text-foreground">
+                See Your Potential Impact
+              </h2>
+              <span className="inline-flex items-center rounded-full border border-border/60 bg-background/70 px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                Beta
+              </span>
+            </div>
             <p className="text-lg text-muted-foreground">
               Discover what Indigenous Rising AI can help you achieve
             </p>
+            <a href="/impact" className="mt-3 inline-flex text-sm font-semibold text-primary hover:underline">
+              Learn how we calculate this
+            </a>
           </div>
 
           <Card className="p-8 shadow-elevated bg-card/95 backdrop-blur-sm">

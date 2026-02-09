@@ -1,14 +1,8 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, Users, Award, Clock, ArrowRight, CheckCircle, Star, Calendar } from 'lucide-react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { useNavigate } from 'react-router-dom';
+import { BookOpen, Users, Award, Clock, ArrowRight, Star, Calendar } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const TrainingSection = () => {
   const navigate = useNavigate();
@@ -164,21 +158,14 @@ const TrainingSection = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  <Accordion type="single" collapsible>
-                    <AccordionItem value="learn">
-                      <AccordionTrigger className="text-sm">What you will learn</AccordionTrigger>
-                      <AccordionContent>
-                        <ul className="space-y-2">
-                          {program.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-start space-x-2 text-sm">
-                              <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                              <span className="text-muted-foreground">{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
+                  <div className="space-y-2">
+                    <p className="text-sm text-muted-foreground">
+                      Outcome: build a clear, culturally grounded action plan and next steps for your business.
+                    </p>
+                    <Link to="/training" className="text-sm font-semibold text-primary hover:underline">
+                      View full syllabus
+                    </Link>
+                  </div>
 
                   {/* Social proof */}
                   <div className="pt-4 border-t border-border/50 space-y-2">

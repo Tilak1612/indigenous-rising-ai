@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
@@ -7,7 +6,6 @@ import {
   Youtube, Globe, Shield, Heart, BookOpen
 } from 'lucide-react';
 import logoFull from '@/assets/logo-full.png';
-import { toast } from 'sonner';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -70,29 +68,6 @@ const Footer = () => {
     { name: "YouTube", icon: Youtube, href: "https://youtube.com/@indigenousai", color: "#FF0000", available: true }
   ];
 
-  const languages = [
-    { code: 'en', label: 'English' },
-    { code: 'fr', label: 'Français' },
-    { code: 'iu', label: 'ᐃᓄᒃᑎᑐᑦ (Inuktitut)' },
-    { code: 'cr', label: 'ᓀᐦᐃᔭᐍᐏᐣ (Cree)' },
-    { code: 'oj', label: 'ᐊᓂᔑᓈᐯᒧᐎᓐ (Ojibwe)' },
-    { code: 'mic', label: "Mi'kmaw" }
-  ];
-
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
-
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('preferred-language');
-    if (savedLanguage) {
-      setSelectedLanguage(savedLanguage);
-    }
-  }, []);
-
-  const handleLanguageSelect = (code: string) => {
-    setSelectedLanguage(code);
-    localStorage.setItem('preferred-language', code);
-    toast.info('Language preference saved. Full translations are rolling out.');
-  };
 
   return (
     <footer className="bg-card border-t border-border/50">
@@ -272,25 +247,8 @@ const Footer = () => {
               <span>Available Languages</span>
               <span className="text-xs text-secondary italic">• Anishinaabemowin</span>
             </h4>
-            <div className="flex flex-wrap gap-2">
-              {languages.map((language) => (
-                <button
-                  key={language.code}
-                  type="button"
-                  aria-pressed={language.code === selectedLanguage}
-                  onClick={() => handleLanguageSelect(language.code)}
-                  className={`px-4 py-2 text-xs rounded-xl border transition-smooth ${
-                    language.code === selectedLanguage 
-                      ? 'bg-primary text-primary-foreground border-primary' 
-                      : 'glass bg-card/50 border-border/50 hover:border-secondary/50 text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {language.label}
-                </button>
-              ))}
-            </div>
             <p className="text-xs text-muted-foreground">
-              Language preferences are saved now; interface translations are rolling out.
+              Available in English, French, and select Indigenous languages. More translations are rolling out.
             </p>
           </div>
         </div>

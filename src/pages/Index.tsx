@@ -15,7 +15,6 @@ import ScrollToTop from '../components/ScrollToTop';
 import StickyCTA from '../components/StickyCTA';
 import ProgressBar from '../components/ProgressBar';
 import CanadianComplianceBadge from '../components/CanadianComplianceBadge';
-import SocialProof from '../components/SocialProof';
 import MetaTags from '../components/MetaTags';
 
 const Index = () => {
@@ -37,7 +36,6 @@ const Index = () => {
       <main id="main-content" role="main">
         <HeroSection />
         <PartnerLogos />
-        <SocialProof />
         <EnhancedFeatures />
         <FundingSection />
         <TestimonialsSection />

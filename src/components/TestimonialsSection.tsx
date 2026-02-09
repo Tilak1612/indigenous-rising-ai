@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Quote, Star, Users, Building, Target } from 'lucide-react';
+import { Quote, Star, Users, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Import testimonial headshots
@@ -131,8 +131,8 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Impact statistics */}
-        <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 p-8 shadow-natural">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div id="stats" className="bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 p-8 shadow-natural">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div className="text-center space-y-2 animate-gentle-float">
               <div className="w-12 h-12 gradient-earth rounded-xl flex items-center justify-center mx-auto mb-3">
                 <Users className="w-6 h-6 text-primary-foreground" />
@@ -142,14 +142,6 @@ const TestimonialsSection = () => {
             </div>
             
             <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '0.5s' }}>
-              <div className="w-12 h-12 gradient-sky rounded-xl flex items-center justify-center mx-auto mb-3">
-                <Building className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <div className="font-display text-2xl md:text-3xl font-bold text-accent">850+</div>
-              <div className="text-sm text-muted-foreground">Businesses Launched</div>
-            </div>
-            
-            <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '1s' }}>
               <div className="w-12 h-12 gradient-hero rounded-xl flex items-center justify-center mx-auto mb-3">
                 <Target className="w-6 h-6 text-primary-foreground" />
               </div>
@@ -157,7 +149,7 @@ const TestimonialsSection = () => {
               <div className="text-sm text-muted-foreground">Funding Connected</div>
             </div>
             
-            <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '1.5s' }}>
+            <div className="text-center space-y-2 animate-gentle-float" style={{ animationDelay: '1s' }}>
               <div className="w-12 h-12 gradient-earth rounded-xl flex items-center justify-center mx-auto mb-3">
                 <Users className="w-6 h-6 text-primary-foreground" />
               </div>

@@ -14,7 +14,7 @@ const quizOptions: QuizOption[] = [
     id: 'starting',
     title: 'Starting a Business',
     icon: Rocket,
-    targetSection: 'features',
+    targetSection: 'training',
   },
   {
     id: 'growing',
@@ -87,7 +87,7 @@ const InteractiveQuiz = ({ onClose }: InteractiveQuizProps) => {
                       {option.title}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      Jump to the right tools and guidance.
+                      Scrolls to your recommended tools below.
                     </div>
                   </div>
                 </div>
@@ -96,6 +96,10 @@ const InteractiveQuiz = ({ onClose }: InteractiveQuizProps) => {
           );
         })}
       </div>
+
+      <p className="mt-4 text-xs text-muted-foreground">
+        Scrolls to your recommended tools below.
+      </p>
     </Card>
   );
 };

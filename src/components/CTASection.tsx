@@ -1,5 +1,5 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { ArrowRight, Sparkles, Users, Shield } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 const CTASection = () => {
   return (
@@ -32,41 +32,12 @@ const CTASection = () => {
           </h2>
 
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed text-white/80 slide-up stagger-2">
-            Join thousands of Indigenous entrepreneurs who are building sustainable, culturally grounded businesses 
-            with our AI-powered platform. Start your free account today and discover opportunities that respect 
-            your values while driving growth.
+          <p className="text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed text-white/80 slide-up stagger-2">
+            Start your free account today and explore tools aligned with Indigenous values.
           </p>
 
-          {/* Key benefits grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-12 slide-up stagger-3">
-            <div className="glass bg-white/10 border border-white/20 rounded-3xl p-8 hover-lift">
-              <div className="w-16 h-16 glass bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="font-semibold text-white text-lg mb-2">OCAP™ Protected</h3>
-              <p className="text-sm text-white/70">Your data sovereignty guaranteed</p>
-            </div>
-            
-            <div className="glass bg-white/10 border border-white/20 rounded-3xl p-8 hover-lift">
-              <div className="w-16 h-16 glass bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                <Users className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="font-semibold text-white text-lg mb-2">Community Driven</h3>
-              <p className="text-sm text-white/70">Built by and for Indigenous peoples</p>
-            </div>
-            
-            <div className="glass bg-white/10 border border-white/20 rounded-3xl p-8 hover-lift">
-              <div className="w-16 h-16 glass bg-white/20 rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="font-semibold text-white text-lg mb-2">AI Enhanced</h3>
-              <p className="text-sm text-white/70">Modern tools, traditional wisdom</p>
-            </div>
-          </div>
-
           {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center slide-up stagger-4">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center slide-up stagger-3">
             <ShinyButton 
               className="group"
               onClick={() => {

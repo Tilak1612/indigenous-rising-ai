@@ -74,9 +74,6 @@ vi.mock('../components/CanadianComplianceBadge', () => ({
   default: () => <div data-testid="compliance-badge">Compliance Badge</div>,
 }));
 
-vi.mock('../components/SocialProof', () => ({
-  default: () => <section data-testid="social-proof">Social Proof</section>,
-}));
 
 vi.mock('../components/MetaTags', () => ({
   default: () => <div data-testid="meta-tags">Meta Tags</div>,
@@ -106,14 +103,13 @@ describe('Index Page', () => {
     
     const sections = [
       'hero',
-      'social-proof',
+      'partner-logos',
       'features',
       'funding',
       'testimonials',
       'calculator',
       'elder-wisdom',
       'training',
-      'partner-logos',
       'pricing',
       'faq',
       'compliance-badge',
