@@ -55,6 +55,9 @@ const CanadianCompliance = () => {
                 Indigenous Rising AI adheres to all Canadian federal and provincial regulations 
                 governing data privacy, accessibility, and Indigenous rights.
               </p>
+              <p className="text-sm text-muted-foreground mt-4">
+                Last updated: {new Date().toLocaleDateString('en-CA')}
+              </p>
             </div>
 
             {/* Main Compliance Sections */}

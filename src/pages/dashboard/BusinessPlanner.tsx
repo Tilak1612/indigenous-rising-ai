@@ -169,13 +169,15 @@ export default function BusinessPlannerPage() {
 
   const completedSteps = STEPS.filter(step => answers[step.id]?.trim().length > 0).length;
   const progress = (completedSteps / STEPS.length) * 100;
+  const currentAnswer = answers[STEPS[currentStep].id] || '';
 
   // Update editor content when step changes
   useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.innerHTML = answers[STEPS[currentStep].id] || '';
+    const editor = editorRef.current;
+    if (editor && editor.innerHTML !== currentAnswer) {
+      editor.innerHTML = currentAnswer;
     }
-  }, [currentStep]);
+  }, [currentStep, currentAnswer]);
 
   return (
     <DashboardLayout>

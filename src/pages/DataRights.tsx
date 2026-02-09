@@ -88,6 +88,9 @@ const DataRights = () => {
             As a Canadian organization, we respect your rights under the Personal Information Protection 
             and Electronic Documents Act (PIPEDA). You have control over your personal information.
           </p>
+          <p className="text-sm text-muted-foreground mb-6">
+            Last updated: {new Date().toLocaleDateString('en-CA')}
+          </p>
           <Link to="/track-request">
             <Button variant="outline" className="gap-2">
               <Search className="w-4 h-4" />

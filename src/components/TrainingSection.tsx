@@ -29,7 +29,7 @@ const TrainingSection = () => {
       ],
       testimonials: 3.2,
       enrolled: 1247,
-      nextStart: "March 15, 2024",
+      nextStart: "March 15, 2026",
       gradient: "earth" as const
     },
     {
@@ -48,7 +48,7 @@ const TrainingSection = () => {
       ],
       testimonials: 4.8,
       enrolled: 892,
-      nextStart: "March 22, 2024",
+      nextStart: "March 22, 2026",
       gradient: "sky" as const
     },
     {
@@ -67,7 +67,7 @@ const TrainingSection = () => {
       ],
       testimonials: 4.9,
       enrolled: 234,
-      nextStart: "April 5, 2024",
+      nextStart: "April 5, 2026",
       gradient: "hero" as const
     }
   ];

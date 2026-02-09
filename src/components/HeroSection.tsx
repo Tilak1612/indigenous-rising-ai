@@ -1,7 +1,6 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { ArrowRight, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
-import VideoModal from './VideoModal';
 import heroImage from '@/assets/hero-image.jpg';
 import { useNavigate } from 'react-router-dom';
 
@@ -129,11 +128,12 @@ const HeroSection = () => {
             >
               View Training Programs
             </button>
-            <VideoModal
-              triggerText="Watch How It Works"
-              triggerSize="sm"
-              triggerClassName="underline underline-offset-4"
-            />
+            <button
+              onClick={() => navigate('/contact')}
+              className="underline underline-offset-4 hover:text-white transition"
+            >
+              Request Platform Video
+            </button>
           </div>
 
           <div

@@ -104,16 +104,6 @@ const CTASection = () => {
             </div>
           </div>
 
-          {/* Limited time offer */}
-          <div className="glass bg-white/15 border-2 border-white/30 rounded-3xl p-8 max-w-2xl mx-auto slide-up stagger-4">
-            <p className="text-white font-semibold mb-3">
-              🎁 Limited Time: First 100 Indigenous entrepreneurs get
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-white">
-              <span className="font-bold text-xl">3 months Premium free</span>
-              <span className="text-white/80">+ personalized onboarding session</span>
-            </div>
-          </div>
         </div>
       </div>
     </section>

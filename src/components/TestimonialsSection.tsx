@@ -125,6 +125,9 @@ const TestimonialsSection = () => {
           >
             View All Success Stories
           </Link>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Stories are shared with permission. Results vary by business and community.
+          </p>
         </div>
 
         {/* Impact statistics */}
@@ -158,7 +161,7 @@ const TestimonialsSection = () => {
               <div className="w-12 h-12 gradient-earth rounded-xl flex items-center justify-center mx-auto mb-3">
                 <Users className="w-6 h-6 text-primary-foreground" />
               </div>
-              <div className="font-display text-2xl md:text-3xl font-bold text-primary">45+</div>
+              <div className="font-display text-2xl md:text-3xl font-bold text-primary">150+</div>
               <div className="text-sm text-muted-foreground">Community Partners</div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,11 +24,7 @@ export default function NewsletterManagement() {
   const [search, setSearch] = useState('');
   const { toast } = useToast();
 
-  useEffect(() => {
-    fetchSubscriptions();
-  }, []);
-
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('newsletter_subscriptions')
@@ -47,7 +43,11 @@ export default function NewsletterManagement() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchSubscriptions();
+  }, [fetchSubscriptions]);
 
   const exportToCSV = () => {
     const headers = ['Email', 'Subscribed At', 'Status', 'Confirmed'];

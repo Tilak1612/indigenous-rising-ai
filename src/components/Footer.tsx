@@ -1,14 +1,17 @@
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
 import { Separator } from '@/components/ui/separator';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
 import { 
-  Mail, Phone, MapPin, Facebook, Twitter, Linkedin, 
+  Mail, Phone, MapPin, Twitter, Linkedin, 
   Youtube, Globe, Shield, Heart, BookOpen
 } from 'lucide-react';
 import logoFull from '@/assets/logo-full.png';
+import { toast } from 'sonner';
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const footerSections = [
     {
       title: "Platform",
@@ -16,7 +19,7 @@ const Footer = () => {
       links: [
         { name: "Business Tools", href: "#features" },
         { name: "Funding Navigator", href: "#funding" },
-        { name: "Impact Tracker", href: "#testimonials" },
+        { name: "Impact Tracker", href: "/impact" },
         { name: "Training Programs", href: "/training" },
         { name: "Partnerships", href: "#partnerships" },
         { name: "Pricing", href: "#pricing" }
@@ -61,18 +64,35 @@ const Footer = () => {
     }
   ];
 
-  // Audit: Facebook page currently unavailable; mark as coming soon.
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#", color: "#1877F2", available: false, note: 'Coming soon' },
     { name: "Twitter", icon: Twitter, href: "https://twitter.com/indigenous_ai", color: "#1DA1F2", available: true },
     { name: "LinkedIn", icon: Linkedin, href: "https://linkedin.com/company/indigenous-ai", color: "#0A66C2", available: true },
     { name: "YouTube", icon: Youtube, href: "https://youtube.com/@indigenousai", color: "#FF0000", available: true }
   ];
 
   const languages = [
-    "English", "Français", "ᐃᓄᒃᑎᑐᑦ (Inuktitut)", 
-    "ᓀᐦᐃᔭᐍᐏᐣ (Cree)", "ᐊᓂᔑᓈᐯᒧᐎᓐ (Ojibwe)"
+    { code: 'en', label: 'English' },
+    { code: 'fr', label: 'Français' },
+    { code: 'iu', label: 'ᐃᓄᒃᑎᑐᑦ (Inuktitut)' },
+    { code: 'cr', label: 'ᓀᐦᐃᔭᐍᐏᐣ (Cree)' },
+    { code: 'oj', label: 'ᐊᓂᔑᓈᐯᒧᐎᓐ (Ojibwe)' },
+    { code: 'mic', label: "Mi'kmaw" }
   ];
+
+  const [selectedLanguage, setSelectedLanguage] = useState('en');
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferred-language');
+    if (savedLanguage) {
+      setSelectedLanguage(savedLanguage);
+    }
+  }, []);
+
+  const handleLanguageSelect = (code: string) => {
+    setSelectedLanguage(code);
+    localStorage.setItem('preferred-language', code);
+    toast.info('Language preference saved. Full translations are rolling out.');
+  };
 
   return (
     <footer className="bg-card border-t border-border/50">
@@ -218,6 +238,10 @@ const Footer = () => {
                           className="text-sm text-muted-foreground hover:text-foreground transition-smooth cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault();
+                            if (location.pathname !== '/') {
+                              navigate(`/${link.href}`);
+                              return;
+                            }
                             const element = document.querySelector(link.href);
                             element?.scrollIntoView({ behavior: 'smooth' });
                           }}
@@ -249,19 +273,25 @@ const Footer = () => {
               <span className="text-xs text-secondary italic">• Anishinaabemowin</span>
             </h4>
             <div className="flex flex-wrap gap-2">
-              {languages.map((language, idx) => (
+              {languages.map((language) => (
                 <button
-                  key={idx}
+                  key={language.code}
+                  type="button"
+                  aria-pressed={language.code === selectedLanguage}
+                  onClick={() => handleLanguageSelect(language.code)}
                   className={`px-4 py-2 text-xs rounded-xl border transition-smooth ${
-                    idx === 0 
+                    language.code === selectedLanguage 
                       ? 'bg-primary text-primary-foreground border-primary' 
                       : 'glass bg-card/50 border-border/50 hover:border-secondary/50 text-muted-foreground hover:text-foreground'
                   }`}
                 >
-                  {language}
+                  {language.label}
                 </button>
               ))}
             </div>
+            <p className="text-xs text-muted-foreground">
+              Language preferences are saved now; interface translations are rolling out.
+            </p>
           </div>
         </div>
 
@@ -271,7 +301,7 @@ const Footer = () => {
         <div className="py-8 flex flex-col lg:flex-row items-center justify-between gap-6">
           <div className="text-center lg:text-left space-y-1">
             <p className="text-sm text-muted-foreground">
-              © 2024 Indigenous Rising AI Business Support Platform. All rights reserved.
+              © {new Date().getFullYear()} Indigenous Rising AI Business Support Platform. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground/70">
               Built with respect on the traditional territories of Indigenous peoples across Turtle Island.

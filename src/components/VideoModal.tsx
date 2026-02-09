@@ -20,10 +20,25 @@ interface VideoModalProps {
 const VideoModal = ({ 
   triggerText = 'Watch Video', 
   triggerSize = 'lg',
-  triggerClassName = ''
-  , videoUrl = null
+  triggerClassName = '',
+  videoUrl = null
 }: VideoModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const hasVideo = Boolean(videoUrl);
+
+  if (!hasVideo) {
+    return (
+      <ShinyButton
+        size={triggerSize}
+        className={`gap-2 ${triggerClassName}`}
+        disabled
+        aria-disabled="true"
+      >
+        <Play className="w-5 h-5" />
+        {triggerText}
+      </ShinyButton>
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -46,26 +61,13 @@ const VideoModal = ({
           </DialogDescription>
         </DialogHeader>
         <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center">
-          {videoUrl ? (
-            <iframe
-              src={videoUrl}
-              title="Indigenous Rising AI Demo"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-full rounded-lg"
-            />
-          ) : (
-            <div className="text-center space-y-4">
-              <Play className="w-16 h-16 mx-auto text-primary" />
-              <p className="text-muted-foreground">
-                Video coming soon: Platform demonstration
-              </p>
-              <p className="text-sm text-muted-foreground max-w-md mx-auto">
-                Our comprehensive platform walkthrough will show you how to navigate funding opportunities, 
-                track community impact, and access training programs—all while maintaining data sovereignty.
-              </p>
-            </div>
-          )}
+          <iframe
+            src={videoUrl}
+            title="Indigenous Rising AI Demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full rounded-lg"
+          />
         </div>
       </DialogContent>
     </Dialog>

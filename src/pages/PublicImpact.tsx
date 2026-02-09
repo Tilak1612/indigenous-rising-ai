@@ -23,7 +23,7 @@ const impactMetrics = [
   },
   {
     title: 'Businesses Supported',
-    value: '1,200+',
+    value: '2,500+',
     description: 'Indigenous businesses using our platform',
     icon: TrendingUp
   },

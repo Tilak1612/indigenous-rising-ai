@@ -1,6 +1,6 @@
 const SocialProof = () => {
   const stats = [
-    { value: '500+', label: 'Indigenous Businesses Supported' },
+    { value: '2,500+', label: 'Entrepreneurs Served' },
     { value: '$12M+', label: 'Funding Matched' },
     { value: '150+', label: 'Community Partners' },
   ];

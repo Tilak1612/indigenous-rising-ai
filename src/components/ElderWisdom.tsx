@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Feather } from 'lucide-react';
@@ -41,15 +41,7 @@ const ElderWisdom = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 8000);
-
-    return () => clearInterval(interval);
-  }, [currentIndex]);
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     if (!isAnimating) {
       setIsAnimating(true);
       setTimeout(() => {
@@ -57,9 +49,9 @@ const ElderWisdom = () => {
         setIsAnimating(false);
       }, 300);
     }
-  };
+  }, [isAnimating]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (!isAnimating) {
       setIsAnimating(true);
       setTimeout(() => {
@@ -67,7 +59,15 @@ const ElderWisdom = () => {
         setIsAnimating(false);
       }, 300);
     }
-  };
+  }, [isAnimating]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, [handleNext]);
 
   const currentQuote = quotes[currentIndex];
 

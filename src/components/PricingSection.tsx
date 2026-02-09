@@ -6,14 +6,24 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const PricingSection = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+
+  const handleAddonsClick = () => {
+    if (location.pathname === '/pricing') {
+      const element = document.querySelector('#addons');
+      element?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    navigate('/pricing#addons');
+  };
 
   const handleCheckout = async (planName: string, priceId?: string) => {
     // Handle free plan
@@ -368,7 +378,7 @@ const PricingSection = () => {
           </CardContent>
         </Card>
 
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="addons" className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 shadow-natural">
             <h4 className="font-display text-xl font-semibold text-foreground mb-2">
               Add-ons Available
@@ -376,7 +386,7 @@ const PricingSection = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Elder sessions, impact reporting, and expanded language support.
             </p>
-            <ShinyButton size="sm" onClick={() => navigate('/pricing')}>
+            <ShinyButton size="sm" onClick={handleAddonsClick}>
               View Add-ons
             </ShinyButton>
           </Card>

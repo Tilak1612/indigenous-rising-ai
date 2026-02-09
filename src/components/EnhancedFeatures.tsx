@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Feather, Compass, TreePine, Users, Network, GraduationCap, ArrowRight, Check } from 'lucide-react';
-import VideoModal from './VideoModal';
+import { Link } from 'react-router-dom';
 
 const EnhancedFeatures = () => {
   const features = [
@@ -155,13 +155,9 @@ const EnhancedFeatures = () => {
                                   <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                                 </Button>
                                 {feature.title === 'Funding Navigator' && (
-                                  <VideoModal
-                                    triggerText="Watch Platform Video"
-                                    triggerSize="sm"
-                                    triggerClassName=""
-                                    // Replace VIDEO_ID with the published YouTube video id when available
-                                    videoUrl="https://www.youtube.com/embed/VIDEO_ID"
-                                  />
+                                  <Button asChild size="sm" variant="outline">
+                                    <Link to="/contact">Request Platform Video</Link>
+                                  </Button>
                                 )}
                               </div>
                     </div>
@@ -180,11 +176,11 @@ const EnhancedFeatures = () => {
               Experience how Indigenous Rising AI harmonizes traditional knowledge with cutting-edge technology
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="hero" className="shadow-elevated hover:shadow-glow">
-                Schedule Interactive Demo
+              <Button asChild size="lg" variant="hero" className="shadow-elevated hover:shadow-glow">
+                <Link to="/contact">Schedule Interactive Demo</Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-2 border-primary hover:bg-primary/10">
-                Watch Platform Video
+              <Button asChild size="lg" variant="outline" className="border-2 border-primary hover:bg-primary/10">
+                <Link to="/contact">Request Demo Recording</Link>
               </Button>
             </div>
           </Card>

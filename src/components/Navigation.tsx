@@ -15,7 +15,7 @@ const Navigation = () => {
   const navItems = [
     { name: 'Funding', href: '#funding', icon: Target, isAnchor: true },
     { name: 'Learning', href: '#training', icon: BookOpen, isAnchor: true },
-    { name: 'Success Stories', href: '#testimonials', icon: Users, isAnchor: true },
+    { name: 'Success Stories', href: '/success-stories', icon: Users, isAnchor: false },
     { name: 'Pricing', href: '#pricing', icon: Award, isAnchor: true },
     { name: 'Compliance & OCAP', href: '#compliance', icon: FileText, isAnchor: true }
   ];
