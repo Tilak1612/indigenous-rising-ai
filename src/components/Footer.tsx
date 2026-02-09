@@ -40,8 +40,8 @@ const Footer = () => {
       links: [
         { name: "About Us", href: "#hero" },
         { name: "Our Mission", href: "#features" },
-        { name: "Cultural Partners", href: "#partnerships" },
-        { name: "Success Stories", href: "#testimonials" },
+        { name: "Success Stories", href: "/success-stories" },
+        { name: "Community Impact", href: "/success-stories#impact" },
         { name: "Contact Us", href: "/contact" },
         { name: "Admin Portal", href: "/auth" }
       ]
