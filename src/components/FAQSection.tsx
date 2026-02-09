@@ -31,6 +31,22 @@ const FAQSection = () => {
       answer: 'All members can browse our funding database. Free accounts get 5 AI-powered matches per month, while Growing Strong members get unlimited access. Our AI analyzes your business profile, community impact goals, and eligibility criteria to match you with the most relevant funding opportunities from federal, provincial, and private sources.'
     },
     {
+      question: 'How does the 20% profit sharing work?',
+      answer: '20% of our net profits are distributed to Indigenous communities through our Community Impact Fund. This includes grants for community projects, scholarships, and direct support for Indigenous entrepreneurs.'
+    },
+    {
+      question: 'What is included in cultural services?',
+      answer: 'Cultural services include Elder Knowledge Sessions, Cultural Impact Assessments, and access to our network of Indigenous business mentors who can guide you in integrating traditional values with modern business practices.'
+    },
+    {
+      question: 'Can I switch plans at any time?',
+      answer: "Yes! You can upgrade or downgrade your plan at any time. If you upgrade, you'll be prorated for the remainder of your billing cycle. If you downgrade, the change takes effect at the start of your next billing period."
+    },
+    {
+      question: 'Is my data protected under OCAP™ principles?',
+      answer: 'Absolutely. All plans include OCAP™ compliant data handling. You maintain Ownership of your data, Control over how it is used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure.'
+    },
+    {
       question: 'Is my business data stored in Canada?',
       answer: 'Yes, absolutely. All data is stored exclusively on Canadian servers and subject to Canadian jurisdiction. We comply with PIPEDA (federal privacy law) and never transfer data outside Canada without explicit consent. This ensures your information is protected under Canadian law and Indigenous data sovereignty principles.'
     },

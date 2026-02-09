@@ -390,38 +390,6 @@ const PricingSection = () => {
           </CardContent>
         </Card>
 
-        {/* FAQ Section */}
-        <Card className="mb-16">
-          <CardHeader>
-            <CardTitle className="text-center">Frequently Asked Questions</CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                q: "How does the 20% profit sharing work?",
-                a: "20% of our net profits are distributed to Indigenous communities through our Community Impact Fund. This includes grants for community projects, scholarships, and direct support for Indigenous entrepreneurs."
-              },
-              {
-                q: "What is included in cultural services?",
-                a: "Cultural services include Elder Knowledge Sessions, Cultural Impact Assessments, and access to our network of Indigenous business mentors who can guide you in integrating traditional values with modern business practices."
-              },
-              {
-                q: "Can I switch plans at any time?",
-                a: "Yes! You can upgrade or downgrade your plan at any time. If you upgrade, you'll be prorated for the remainder of your billing cycle. If you downgrade, the change takes effect at the start of your next billing period."
-              },
-              {
-                q: "Is my data protected under OCAP™ principles?",
-                a: "Absolutely. All plans include OCAP™ compliant data handling. You maintain Ownership of your data, Control over how it's used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure."
-              },
-            ].map((faq, idx) => (
-              <div key={idx} className="space-y-2">
-                <h4 className="font-medium text-foreground">{faq.q}</h4>
-                <p className="text-sm text-muted-foreground">{faq.a}</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
         {/* Add-ons */}
         <div className="space-y-8">
           <div className="text-center space-y-4">

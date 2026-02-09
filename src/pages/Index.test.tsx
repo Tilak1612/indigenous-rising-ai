@@ -49,6 +49,7 @@ vi.mock('../components/FAQSection', () => ({
   default: () => <section data-testid="faq">FAQ</section>,
 }));
 
+
 vi.mock('../components/CTASection', () => ({
   default: () => <section data-testid="cta">CTA</section>,
 }));
