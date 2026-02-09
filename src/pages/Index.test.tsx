@@ -37,8 +37,8 @@ vi.mock('../components/TrainingSection', () => ({
   default: () => <section data-testid="training">Training</section>,
 }));
 
-vi.mock('../components/PartnershipsSection', () => ({
-  default: () => <section data-testid="partnerships">Partnerships</section>,
+vi.mock('../components/PartnerLogos', () => ({
+  default: () => <section data-testid="partner-logos">Partner Logos</section>,
 }));
 
 vi.mock('../components/PricingSection', () => ({
@@ -113,7 +113,7 @@ describe('Index Page', () => {
       'calculator',
       'elder-wisdom',
       'training',
-      'partnerships',
+      'partner-logos',
       'pricing',
       'faq',
       'compliance-badge',

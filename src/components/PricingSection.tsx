@@ -138,8 +138,7 @@ const PricingSection = () => {
         "Priority email & chat support",
         "Training program discounts (20%)",
         "Custom business model templates",
-        "Multi-language support (8 languages)",
-        "API access for integrations"
+        "Multi-language support (8 languages)"
       ],
       excludedFeatures: [
         "Dedicated account manager",
@@ -170,8 +169,7 @@ const PricingSection = () => {
         "On-site training programs",
         "Community impact consulting",
         "Data sovereignty consulting",
-        "Government partnership facilitation",
-        "Usage-based API pricing"
+        "Government partnership facilitation"
       ],
       excludedFeatures: [],
       ctaText: "Contact Sales",
@@ -180,26 +178,6 @@ const PricingSection = () => {
     }
   ];
 
-  const addOns = [
-    {
-      name: "Elder Knowledge Sessions",
-      nameTranslation: "Gichi-manidoo Gikinoo'amaage",
-      description: "Monthly virtual sessions with Indigenous business elders",
-      price: "$25/month"
-    },
-    {
-      name: "Cultural Impact Assessment",
-      nameTranslation: "Aaniin Biidaasige",
-      description: "Quarterly comprehensive community impact reports",
-      price: "$150/quarter"
-    },
-    {
-      name: "Advanced Language Pack",
-      nameTranslation: "Gichi-Anishinaabemowin",
-      description: "Support for 20+ Indigenous languages",
-      price: "$20/month"
-    }
-  ];
 
   return (
     <section id="pricing" className="py-20 bg-background">
@@ -390,75 +368,26 @@ const PricingSection = () => {
           </CardContent>
         </Card>
 
-        {/* Add-ons */}
-        <div className="space-y-8">
-          <div className="text-center space-y-4">
-            <h3 className="font-display text-2xl font-bold text-foreground">
-              Additional Services
-            </h3>
-            <p className="text-muted-foreground">
-              Enhance your experience with specialized Indigenous business support services
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 shadow-natural">
+            <h4 className="font-display text-xl font-semibold text-foreground mb-2">
+              Add-ons Available
+            </h4>
+            <p className="text-sm text-muted-foreground mb-4">
+              Elder sessions, impact reporting, and expanded language support.
             </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {addOns.map((addon, index) => (
-              <Card 
-                key={addon.name}
-                className="hover:shadow-elevated transition-spring animate-fade-in-up"
-                style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-              >
-                <CardHeader>
-                  <CardTitle className="text-lg text-foreground">{addon.name}</CardTitle>
-                  <p className="text-sm text-primary/70 italic">{addon.nameTranslation}</p>
-                  <CardDescription className="text-muted-foreground">
-                    {addon.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="flex items-center justify-between">
-                  <span className="font-semibold text-foreground">{addon.price}</span>
-                  <ShinyButton 
-                    size="sm"
-                    onClick={() => {
-                      const element = document.querySelector('#pricing');
-                      element?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    Add On
-                  </ShinyButton>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Cultural commitment */}
-        <div className="mt-16 text-center bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 p-8 shadow-natural">
-          <h4 className="font-display text-xl font-semibold text-foreground mb-4">
-            Commitment to Indigenous Values
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-muted-foreground">
-            <div className="space-y-2">
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>20% of profits returned to Indigenous communities</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>OCAP™ principles embedded in all services</span>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>Cultural competency training for all staff</span>
-              </div>
-              <div className="flex items-center justify-center space-x-2">
-                <Check className="w-4 h-4 text-primary" />
-                <span>Indigenous leadership in product development</span>
-              </div>
-            </div>
-          </div>
+            <ShinyButton size="sm" onClick={() => navigate('/pricing')}>
+              View Add-ons
+            </ShinyButton>
+          </Card>
+          <Card className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 shadow-natural">
+            <h4 className="font-display text-xl font-semibold text-foreground mb-2">
+              Indigenous Values Built In
+            </h4>
+            <p className="text-sm text-muted-foreground">
+              Indigenous-led, OCAP™ compliant, and 20% of profits returned to communities.
+            </p>
+          </Card>
         </div>
       </div>
     </section>

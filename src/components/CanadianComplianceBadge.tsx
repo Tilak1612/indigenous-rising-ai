@@ -40,13 +40,13 @@ const CanadianComplianceBadge = () => {
   ];
 
   return (
-    <Card className="p-6 bg-card/50 backdrop-blur-sm border-border/50">
+    <Card id="compliance" className="p-6 bg-card/50 backdrop-blur-sm border-border/50">
       <div className="text-center mb-6">
         <h3 className="font-display text-xl font-bold text-foreground mb-2">
           🍁 Canadian Compliance Certified
         </h3>
         <p className="text-sm text-muted-foreground">
-          Meeting the highest standards of Canadian regulatory requirements
+          Canadian Compliance Certified (PIPEDA, CASL, data stored in Canada).
         </p>
       </div>
 
@@ -77,12 +77,14 @@ const CanadianComplianceBadge = () => {
       <div className="mt-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
         <div className="flex items-start gap-3">
           <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-          <div className="text-sm space-y-1">
+          <div className="text-sm space-y-2">
             <p className="font-semibold text-foreground">Indigenous Data Sovereignty (OCAP™)</p>
             <p className="text-muted-foreground">
-              We uphold the principles of Ownership, Control, Access, and Possession, 
-              ensuring Indigenous communities maintain sovereignty over their data.
+              We uphold the principles of Ownership, Control, Access, and Possession.
             </p>
+            <a href="/compliance" className="text-primary font-semibold text-sm hover:underline">
+              Learn more about compliance
+            </a>
           </div>
         </div>
       </div>

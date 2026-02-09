@@ -7,8 +7,14 @@ import {
 import { Card } from '@/components/ui/card';
 import { HelpCircle } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
-const FAQSection = () => {
+interface FAQSectionProps {
+  includeSchema?: boolean;
+  maxItems?: number;
+}
+
+const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
   const faqs = [
     {
       question: 'What is OCAP™ and why does it matter?',
@@ -19,16 +25,24 @@ const FAQSection = () => {
       answer: 'While we prioritize Indigenous-owned and operated businesses, we also support businesses that work closely with Indigenous communities, employ Indigenous peoples, or operate on Indigenous lands. Our platform is designed to respect and amplify Indigenous values in business, regardless of formal registration status.'
     },
     {
+      question: 'How do I access funding opportunities?',
+      answer: 'All members can browse our funding database. Free accounts get 5 AI-powered matches per month, while Growing Strong members get unlimited access. Our AI analyzes your business profile, community impact goals, and eligibility criteria to match you with the most relevant funding opportunities from federal, provincial, and private sources.'
+    },
+    {
+      question: 'Is my business data stored in Canada?',
+      answer: 'Yes, absolutely. All data is stored exclusively on Canadian servers and subject to Canadian jurisdiction. We comply with PIPEDA (federal privacy law) and never transfer data outside Canada without explicit consent. This ensures your information is protected under Canadian law and Indigenous data sovereignty principles.'
+    },
+    {
+      question: 'Can I switch plans at any time?',
+      answer: "Yes! You can upgrade or downgrade your plan at any time. If you upgrade, you'll be prorated for the remainder of your billing cycle. If you downgrade, the change takes effect at the start of your next billing period."
+    },
+    {
       question: 'How does the AI respect traditional knowledge?',
       answer: 'Our AI is trained with input from Indigenous Elders and knowledge keepers to ensure cultural sensitivity. It never claims ownership of traditional knowledge and always prompts users for consent before using culturally significant information. The AI serves as a tool to amplify Indigenous wisdom, not replace it.'
     },
     {
       question: 'What languages are supported on the platform?',
       answer: "We currently support English, French, Anishinaabemowin (Ojibwe), ᓀᐦᐃᔭᐍᐏᐣ (Cree), ᐃᓄᒃᑎᑐᑦ (Inuktitut), and Mi'kmaw. We are continuously working with language keepers to add more Indigenous languages and improve translation accuracy."
-    },
-    {
-      question: 'How do I access funding opportunities?',
-      answer: 'All members can browse our funding database. Free accounts get 5 AI-powered matches per month, while Growing Strong members get unlimited access. Our AI analyzes your business profile, community impact goals, and eligibility criteria to match you with the most relevant funding opportunities from federal, provincial, and private sources.'
     },
     {
       question: 'How does the 20% profit sharing work?',
@@ -39,16 +53,8 @@ const FAQSection = () => {
       answer: 'Cultural services include Elder Knowledge Sessions, Cultural Impact Assessments, and access to our network of Indigenous business mentors who can guide you in integrating traditional values with modern business practices.'
     },
     {
-      question: 'Can I switch plans at any time?',
-      answer: "Yes! You can upgrade or downgrade your plan at any time. If you upgrade, you'll be prorated for the remainder of your billing cycle. If you downgrade, the change takes effect at the start of your next billing period."
-    },
-    {
       question: 'Is my data protected under OCAP™ principles?',
       answer: 'Absolutely. All plans include OCAP™ compliant data handling. You maintain Ownership of your data, Control over how it is used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure.'
-    },
-    {
-      question: 'Is my business data stored in Canada?',
-      answer: 'Yes, absolutely. All data is stored exclusively on Canadian servers and subject to Canadian jurisdiction. We comply with PIPEDA (federal privacy law) and never transfer data outside Canada without explicit consent. This ensures your information is protected under Canadian law and Indigenous data sovereignty principles.'
     },
     {
       question: 'Can I get help with grant applications?',
@@ -68,6 +74,8 @@ const FAQSection = () => {
     }
   ];
 
+  const displayedFaqs = typeof maxItems === 'number' ? faqs.slice(0, maxItems) : faqs;
+
   // Generate FAQ Schema for SEO
   const faqSchema = {
     "@context": "https://schema.org",
@@ -84,11 +92,13 @@ const FAQSection = () => {
 
   return (
     <section id="faq" className="py-20 bg-muted/30" aria-labelledby="faq-heading">
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(faqSchema)}
-        </script>
-      </Helmet>
+      {includeSchema && (
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(faqSchema)}
+          </script>
+        </Helmet>
+      )}
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -113,7 +123,7 @@ const FAQSection = () => {
           {/* FAQ Accordion */}
           <Card className="p-8 bg-card/50 backdrop-blur-sm">
             <Accordion type="single" collapsible className="space-y-4">
-              {faqs.map((faq, index) => (
+              {displayedFaqs.map((faq, index) => (
                 <AccordionItem 
                   key={index} 
                   value={`item-${index}`}
@@ -129,6 +139,17 @@ const FAQSection = () => {
               ))}
             </Accordion>
           </Card>
+
+          {typeof maxItems === 'number' && (
+            <div className="text-center mt-8">
+              <Link
+                to="/faq"
+                className="inline-flex items-center justify-center px-6 py-3 border-2 border-border rounded-lg font-semibold hover:bg-muted/50 transition-colors"
+              >
+                View All FAQs
+              </Link>
+            </div>
+          )}
 
           {/* Contact CTA */}
           <div className="text-center mt-12">

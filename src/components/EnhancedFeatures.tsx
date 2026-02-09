@@ -10,10 +10,9 @@ const EnhancedFeatures = () => {
       icon: Feather,
       title: 'Business Planning Assistant',
       ojibwe: 'Oshki-Kijiganan Naadamaage',
-      description: 'OCAP™ compliant AI tools that integrate traditional Indigenous knowledge with modern business strategies.',
+      description: 'OCAP™ compliant AI tools that connect traditional knowledge with modern business strategy.',
       benefits: [
-        'Cultural business model templates',
-        'Traditional knowledge integration',
+        'Cultural business templates',
         'Community impact forecasting',
         'Seven generations planning'
       ],
@@ -24,12 +23,11 @@ const EnhancedFeatures = () => {
       icon: Compass,
       title: 'Funding Navigator',
       ojibwe: 'Tebwewin Naadamaage',
-      description: 'AI-powered grant matching system that connects you with funding opportunities aligned with your community goals.',
+      description: 'AI-powered grant matching aligned with your community goals.',
       benefits: [
         'Smart grant matching (500+ sources)',
-        'Application template library',
-        'Success rate analytics',
-        'Partnership connections'
+        'Application templates',
+        'Success rate analytics'
       ],
       color: 'accent',
       bgGradient: 'from-accent/10 to-accent/5'
@@ -38,10 +36,9 @@ const EnhancedFeatures = () => {
       icon: TreePine,
       title: 'Community Impact Tracker',
       ojibwe: 'Biidaasige Gibaakwa\'iganan',
-      description: 'Measure and report on your business contributions to community wellbeing and environmental stewardship.',
+      description: 'Measure community wellbeing and environmental stewardship.',
       benefits: [
-        'Employment & youth metrics',
-        'Truth & Reconciliation alignment',
+        'Employment and youth metrics',
         'Wellness indicators dashboard',
         'Environmental impact tracking'
       ],
@@ -52,10 +49,9 @@ const EnhancedFeatures = () => {
       icon: GraduationCap,
       title: 'Training & Certification',
       ojibwe: 'Gikinoo\'amaage miinawaa Dibendaagoziwinikazo',
-      description: 'Comprehensive learning programs blending cultural competency with essential business skills.',
+      description: 'Learning programs blending cultural competency and core business skills.',
       benefits: [
         'Indigenous Business Fundamentals',
-        'Digital storytelling workshops',
         'Elder knowledge integration',
         'Peer mentorship programs'
       ],
@@ -66,10 +62,9 @@ const EnhancedFeatures = () => {
       icon: Network,
       title: 'Partnership Network',
       ojibwe: 'Wiidookodaadwin Mazina\'igan',
-      description: 'Access to established networks including NACCA, CCIB, AFN, and regional Indigenous business councils.',
+      description: 'Access to established networks and regional Indigenous councils.',
       benefits: [
         '150+ partner organizations',
-        'Cross-cultural collaboration tools',
         'Supplier diversity programs',
         'Government partnership facilitation'
       ],
@@ -80,11 +75,10 @@ const EnhancedFeatures = () => {
       icon: Users,
       title: 'Data Sovereignty Tools',
       ojibwe: 'Gibaakwa\'iganan Dibendaagoziwining',
-      description: 'Built on OCAP™ principles ensuring Indigenous communities maintain control over their data.',
+      description: 'Built on OCAP™ principles so communities control their data.',
       benefits: [
         'Secure, encrypted storage',
         'Community-controlled access',
-        'Transparent data usage',
         'Indigenous-led governance'
       ],
       color: 'canoe-red',

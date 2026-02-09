@@ -1,13 +1,14 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { ArrowRight, Play, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
 import VideoModal from './VideoModal';
-import CountUpStats from './CountUpStats';
 import heroImage from '@/assets/hero-image.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection = () => {
-  const scrollToFeatures = () => {
-    const element = document.querySelector('#features');
+  const navigate = useNavigate();
+  const scrollToFunding = () => {
+    const element = document.querySelector('#funding');
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -46,7 +47,7 @@ const HeroSection = () => {
             
             {/* Main heading */}
             <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white font-geist tracking-tighter" style={{ textShadow: '0 4px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.4)' }}>
-              Empowering Indigenous Entrepreneurs
+              AI-Powered Support for Indigenous Entrepreneurs
             </h1>
           </div>
 
@@ -55,9 +56,15 @@ const HeroSection = () => {
             className="mt-6 max-w-2xl text-white/90 text-base sm:text-lg leading-relaxed font-geist opacity-0 translate-y-8"
             style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.6s forwards', textShadow: '0 2px 12px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.4)' }}
           >
-            Gichi-manidoo miigwech. A culturally respectful platform harmonizing traditional Indigenous knowledge 
-            with cutting-edge AI technology to support business growth while honoring data sovereignty principles.
+            AI-powered business support for Indigenous entrepreneurs across Canada, built on OCAP™ and traditional knowledge.
           </p>
+
+          <div
+            className="mt-6 max-w-3xl text-white/80 text-sm sm:text-base font-geist opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.7s forwards' }}
+          >
+            AI-powered support rooted in Indigenous values.
+          </div>
 
           {/* Key features badges */}
           <div 
@@ -69,12 +76,12 @@ const HeroSection = () => {
               <span className="font-geist">OCAP™ Compliant</span>
             </div>
             <div className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium rounded-full px-4 py-2 ring-1 ring-white/20 backdrop-blur">
-              <Globe className="w-4 h-4" />
-              <span className="font-geist">Multi-Language Support</span>
-            </div>
-            <div className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium rounded-full px-4 py-2 ring-1 ring-white/20 backdrop-blur">
               <Sparkles className="w-4 h-4" />
               <span className="font-geist">AI-Powered Matching</span>
+            </div>
+            <div className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium rounded-full px-4 py-2 ring-1 ring-white/20 backdrop-blur">
+              <Globe className="w-4 h-4" />
+              <span className="font-geist">Multi-Language Support</span>
             </div>
           </div>
 
@@ -85,20 +92,66 @@ const HeroSection = () => {
           >
             <ShinyButton 
               onClick={() => {
-                const element = document.querySelector('#pricing');
-                element?.scrollIntoView({ behavior: 'smooth' });
+                navigate('/auth');
               }}
               className="group"
             >
-              <span className="font-geist">Start Your Journey</span>
+              <span className="font-geist">Start Free Account</span>
               <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover:translate-x-0.5 transition-transform" />
             </ShinyButton>
-            
-            <VideoModal 
+
+            <ShinyButton
+              onClick={() => {
+                window.open('mailto:hello@indigenousrising.ai?subject=Demo Request&body=I would like to schedule a demo of the Indigenous Rising AI Business Support Platform.', '_blank');
+              }}
+              className="group"
+            >
+              <span className="font-geist">Schedule Demo</span>
+            </ShinyButton>
+          </div>
+
+          <div
+            className="mt-4 flex flex-wrap items-center gap-4 text-sm text-white/80 opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1.1s forwards' }}
+          >
+            <button
+              onClick={scrollToFunding}
+              className="underline underline-offset-4 hover:text-white transition"
+            >
+              Explore Funding
+            </button>
+            <button
+              onClick={() => {
+                const element = document.querySelector('#training');
+                element?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="underline underline-offset-4 hover:text-white transition"
+            >
+              View Training Programs
+            </button>
+            <VideoModal
               triggerText="Watch How It Works"
-              triggerSize="lg"
-              triggerClassName="inline-flex items-center gap-2"
+              triggerSize="sm"
+              triggerClassName="underline underline-offset-4"
             />
+          </div>
+
+          <div
+            className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-white/90 text-sm opacity-0 translate-y-8"
+            style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1.15s forwards' }}
+          >
+            <div className="bg-white/10 border border-white/20 rounded-2xl p-4">
+              <div className="font-semibold">1) Create your free account</div>
+              <div className="text-white/70">It takes under two minutes.</div>
+            </div>
+            <div className="bg-white/10 border border-white/20 rounded-2xl p-4">
+              <div className="font-semibold">2) Share your goals</div>
+              <div className="text-white/70">Tell us about your community and business.</div>
+            </div>
+            <div className="bg-white/10 border border-white/20 rounded-2xl p-4">
+              <div className="font-semibold">3) Get matched</div>
+              <div className="text-white/70">Funding, tools, and training tailored to you.</div>
+            </div>
           </div>
 
           {/* Interactive Quiz */}

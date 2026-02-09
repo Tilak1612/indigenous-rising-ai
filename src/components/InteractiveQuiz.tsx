@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card } from '@/components/ui/card';
 import { Rocket, TrendingUp, DollarSign, X } from 'lucide-react';
 
@@ -21,7 +20,7 @@ const quizOptions: QuizOption[] = [
     id: 'growing',
     title: 'Growing Existing Business',
     icon: TrendingUp,
-    targetSection: 'training',
+    targetSection: 'impact',
   },
   {
     id: 'funding',
@@ -66,24 +65,34 @@ const InteractiveQuiz = ({ onClose }: InteractiveQuizProps) => {
       </button>
       
       <h3 className="font-display text-xl font-bold text-foreground mb-4">
-        What brings you here today?
+        Choose your path
       </h3>
       
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {quizOptions.map((option) => {
           const Icon = option.icon;
           return (
-            <ShinyButton
+            <button
               key={option.id}
-              size="sm"
-              className="h-auto flex-col gap-3 p-6 group"
               onClick={() => handleOptionClick(option.targetSection)}
+              className="text-left"
             >
-              <Icon className="w-8 h-8 group-hover:scale-110 transition-transform" />
-              <span className="font-semibold text-sm text-center">
-                {option.title}
-              </span>
-            </ShinyButton>
+              <Card className="h-full border-2 border-border/60 hover:border-primary/50 bg-background/70 hover:bg-background transition-spring p-6 group">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                    <Icon className="w-6 h-6 text-primary group-hover:scale-110 transition-transform" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="font-semibold text-foreground">
+                      {option.title}
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                      Jump to the right tools and guidance.
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </button>
           );
         })}
       </div>

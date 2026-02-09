@@ -1,12 +1,12 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Quote, Star, Users, Building, Target } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Import testimonial headshots
 import testimonialMaria from '@/assets/testimonial-maria.jpg';
 import testimonialJames from '@/assets/testimonial-james.jpg';
 import testimonialSarah from '@/assets/testimonial-sarah.jpg';
-import testimonialRobert from '@/assets/testimonial-robert.jpg';
 
 const TestimonialsSection = () => {
   const testimonials = [
@@ -39,16 +39,6 @@ const TestimonialsSection = () => {
       metric: "85%",
       metricLabel: "Graduation Increase",
       image: testimonialSarah
-    },
-    {
-      name: "Robert Whitehorse",
-      title: "Owner, Indigenous Tourism Collective",
-      location: "British Columbia",
-      content: "The platform's partnership network connected us with NACCA and helped scale our operations across three provinces. Revenue grew 300% this year.",
-      rating: 5,
-      metric: "300%",
-      metricLabel: "Revenue Growth",
-      image: testimonialRobert
     }
   ];
 
@@ -75,7 +65,7 @@ const TestimonialsSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {testimonials.map((testimonial, index) => (
             <Card 
               key={testimonial.name}
@@ -126,6 +116,15 @@ const TestimonialsSection = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        <div className="text-center mb-16">
+          <Link
+            to="/success-stories"
+            className="inline-flex items-center justify-center px-6 py-3 border-2 border-border rounded-lg font-semibold hover:bg-muted/50 transition-colors"
+          >
+            View All Success Stories
+          </Link>
         </div>
 
         {/* Impact statistics */}

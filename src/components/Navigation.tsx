@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Menu, X, Users, TrendingUp, Target, Award, BookOpen, LogIn, LogOut, ArrowUpRight, Settings, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -10,11 +10,14 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems = [
-    { name: 'Funding', href: '/funding', icon: Target, isAnchor: false },
-    { name: 'Learning', href: '/learning', icon: BookOpen, isAnchor: false },
-    { name: 'Pricing', href: '/pricing', icon: Award, isAnchor: false }
+    { name: 'Funding', href: '#funding', icon: Target, isAnchor: true },
+    { name: 'Learning', href: '#training', icon: BookOpen, isAnchor: true },
+    { name: 'Success Stories', href: '#testimonials', icon: Users, isAnchor: true },
+    { name: 'Pricing', href: '#pricing', icon: Award, isAnchor: true },
+    { name: 'Compliance & OCAP', href: '#compliance', icon: FileText, isAnchor: true }
   ];
 
   const appNavItems = [
@@ -56,6 +59,10 @@ const Navigation = () => {
                       className="hover:text-white transition text-sm font-medium font-geist"
                       onClick={(e) => {
                         e.preventDefault();
+                        if (location.pathname !== '/') {
+                          navigate(`/${item.href}`);
+                          return;
+                        }
                         const element = document.querySelector(item.href);
                         element?.scrollIntoView({ behavior: 'smooth' });
                       }}
@@ -129,6 +136,10 @@ const Navigation = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     setIsOpen(false);
+                    if (location.pathname !== '/') {
+                      navigate(`/${item.href}`);
+                      return;
+                    }
                     const element = document.querySelector(item.href);
                     element?.scrollIntoView({ behavior: 'smooth' });
                   }}

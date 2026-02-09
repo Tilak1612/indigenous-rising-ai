@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Camera, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -55,21 +56,27 @@ const galleryItems = [
   }
 ];
 
-const SuccessGallery = () => {
+interface SuccessGalleryProps {
+  limit?: number;
+  showCta?: boolean;
+}
+
+const SuccessGallery = ({ limit, showCta = true }: SuccessGalleryProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const visibleItems = typeof limit === 'number' ? galleryItems.slice(0, limit) : galleryItems;
 
   const openLightbox = (index: number) => setSelectedIndex(index);
   const closeLightbox = () => setSelectedIndex(null);
   
   const goToPrevious = () => {
     if (selectedIndex !== null) {
-      setSelectedIndex(selectedIndex === 0 ? galleryItems.length - 1 : selectedIndex - 1);
+      setSelectedIndex(selectedIndex === 0 ? visibleItems.length - 1 : selectedIndex - 1);
     }
   };
   
   const goToNext = () => {
     if (selectedIndex !== null) {
-      setSelectedIndex(selectedIndex === galleryItems.length - 1 ? 0 : selectedIndex + 1);
+      setSelectedIndex(selectedIndex === visibleItems.length - 1 ? 0 : selectedIndex + 1);
     }
   };
 
@@ -100,7 +107,7 @@ const SuccessGallery = () => {
 
         {/* Gallery Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {galleryItems.map((item, index) => (
+          {visibleItems.map((item, index) => (
             <div 
               key={item.title}
               className="group relative overflow-hidden rounded-2xl bg-card shadow-natural hover:shadow-elevated transition-all duration-500 cursor-pointer animate-fade-in-up"
@@ -173,29 +180,40 @@ const SuccessGallery = () => {
                 
                 {/* Image */}
                 <img 
-                  src={galleryItems[selectedIndex].image} 
-                  alt={galleryItems[selectedIndex].title}
+                  src={visibleItems[selectedIndex].image} 
+                  alt={visibleItems[selectedIndex].title}
                   className="w-full max-h-[70vh] object-contain"
                 />
                 
                 {/* Caption */}
                 <div className="p-6 bg-black/80">
                   <h3 className="font-display text-2xl font-bold text-white mb-2">
-                    {galleryItems[selectedIndex].title}
+                    {visibleItems[selectedIndex].title}
                   </h3>
                   <p className="text-white/80 mb-3">
-                    {galleryItems[selectedIndex].description}
+                    {visibleItems[selectedIndex].description}
                   </p>
                   <div className="flex items-center gap-4 text-sm text-white/60">
-                    <span className="font-medium">{galleryItems[selectedIndex].business}</span>
+                    <span className="font-medium">{visibleItems[selectedIndex].business}</span>
                     <span>•</span>
-                    <span>{galleryItems[selectedIndex].location}</span>
+                    <span>{visibleItems[selectedIndex].location}</span>
                   </div>
                 </div>
               </div>
             )}
           </DialogContent>
         </Dialog>
+
+        {showCta && (
+          <div className="text-center mt-10">
+            <Link
+              to="/success-stories"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-border rounded-lg font-semibold hover:bg-muted/50 transition-colors"
+            >
+              View All Success Stories
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

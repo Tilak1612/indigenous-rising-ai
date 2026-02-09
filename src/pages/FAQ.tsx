@@ -17,7 +17,7 @@ const FAQ = () => {
         <div className="container mx-auto px-4 py-8">
           <Breadcrumbs />
         </div>
-        <FAQSection />
+        <FAQSection includeSchema />
       </main>
       <Footer />
     </div>

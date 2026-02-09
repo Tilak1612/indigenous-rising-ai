@@ -39,6 +39,7 @@ const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const SuccessStories = lazy(() => import("./pages/SuccessStories"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const PublicFunding = lazy(() => import("./pages/PublicFunding"));
@@ -425,6 +426,14 @@ const App = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <FAQ />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/success-stories" 
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <SuccessStories />
                   </Suspense>
                 } 
               />

@@ -2,6 +2,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Users, Award, Clock, ArrowRight, CheckCircle, Star, Calendar } from 'lucide-react';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { useNavigate } from 'react-router-dom';
 
 const TrainingSection = () => {
@@ -18,11 +24,8 @@ const TrainingSection = () => {
       originalPrice: "$397",
       features: [
         "Traditional business planning methods",
-        "Financial literacy for Indigenous contexts",
         "OCAP™ data sovereignty training",
-        "Community engagement strategies",
-        "Elder mentorship sessions",
-        "Certificate of completion"
+        "Elder mentorship sessions"
       ],
       testimonials: 3.2,
       enrolled: 1247,
@@ -40,11 +43,8 @@ const TrainingSection = () => {
       originalPrice: "$247",
       features: [
         "Culturally authentic brand development", 
-        "Social media strategy for Indigenous businesses",
-        "Content creation with traditional elements",
         "Community-based marketing approaches",
-        "Digital storytelling techniques",
-        "Portfolio development"
+        "Digital storytelling techniques"
       ],
       testimonials: 4.8,
       enrolled: 892,
@@ -63,9 +63,6 @@ const TrainingSection = () => {
       features: [
         "Traditional governance integration",
         "Strategic planning with cultural values",
-        "Conflict resolution Indigenous methods",
-        "Board governance and accountability",
-        "Succession planning",
         "Executive coaching sessions"
       ],
       testimonials: 4.9,
@@ -75,37 +72,6 @@ const TrainingSection = () => {
     }
   ];
 
-  const certifications = [
-    {
-      name: "Indigenous Business Certified Professional (IBCP)",
-      description: "Comprehensive certification recognizing expertise in culturally competent business practices",
-      requirements: "Complete 3 core programs + capstone project",
-      duration: "6-12 months"
-    },
-    {
-      name: "Cultural Competency in AI (CCAI)",
-      description: "Specialized certification for using AI tools while maintaining Indigenous data sovereignty",
-      requirements: "Complete AI Ethics + Data Sovereignty courses",
-      duration: "4-8 weeks"
-    }
-  ];
-
-  const upcomingEvents = [
-    {
-      title: "Elder Wisdom Circle - Business Planning",
-      date: "March 8, 2024",
-      time: "2:00 PM EST",
-      format: "Virtual",
-      speaker: "Elder Mary Sinclair"
-    },
-    {
-      title: "Indigenous Women in Business Panel",
-      date: "March 15, 2024", 
-      time: "7:00 PM EST",
-      format: "Toronto, ON",
-      speaker: "Multiple Speakers"
-    }
-  ];
 
   return (
     <section id="training" className="py-20 bg-background">
@@ -198,17 +164,21 @@ const TrainingSection = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-sm text-foreground/80">What you'll learn:</h4>
-                    <ul className="space-y-2">
-                      {program.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start space-x-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                          <span className="text-muted-foreground">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <Accordion type="single" collapsible>
+                    <AccordionItem value="learn">
+                      <AccordionTrigger className="text-sm">What you will learn</AccordionTrigger>
+                      <AccordionContent>
+                        <ul className="space-y-2">
+                          {program.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-start space-x-2 text-sm">
+                              <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                              <span className="text-muted-foreground">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
 
                   {/* Social proof */}
                   <div className="pt-4 border-t border-border/50 space-y-2">
@@ -229,15 +199,8 @@ const TrainingSection = () => {
                     className="w-full group/btn"
                     onClick={() => navigate('/training')}
                   >
-                    Enroll Now
+                    Explore All Programs
                     <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
-                  </ShinyButton>
-                  <ShinyButton 
-                    size="sm" 
-                    className="w-full"
-                    onClick={() => navigate('/training')}
-                  >
-                    View Curriculum
                   </ShinyButton>
                 </CardFooter>
               </Card>
@@ -245,75 +208,46 @@ const TrainingSection = () => {
           })}
         </div>
 
-        {/* Certifications */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           <Card className="bg-card/50 backdrop-blur-sm animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <CardHeader>
-              <div className="flex items-center space-x-3 mb-4">
+              <div className="flex items-center space-x-3 mb-2">
                 <div className="w-12 h-12 gradient-sky rounded-xl flex items-center justify-center">
                   <Award className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <CardTitle className="font-display text-xl text-foreground">
-                  Professional Certifications
+                  Certifications
                 </CardTitle>
               </div>
+              <CardDescription>
+                Explore professional credentials tailored to Indigenous business leaders.
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {certifications.map((cert, idx) => (
-                <div key={idx} className="border border-border/50 rounded-lg p-4 space-y-3">
-                  <div className="space-y-1">
-                    <h4 className="font-semibold text-foreground">{cert.name}</h4>
-                    <p className="text-sm text-muted-foreground">{cert.description}</p>
-                  </div>
-                  <div className="grid grid-cols-1 gap-2 text-xs text-muted-foreground">
-                    <div><strong>Requirements:</strong> {cert.requirements}</div>
-                    <div><strong>Duration:</strong> {cert.duration}</div>
-                  </div>
-                  <ShinyButton 
-                    size="sm"
-                    onClick={() => navigate('/training')}
-                  >
-                    Learn More
-                  </ShinyButton>
-                </div>
-              ))}
+            <CardContent>
+              <ShinyButton size="sm" onClick={() => navigate('/training')}>
+                View Certifications
+              </ShinyButton>
             </CardContent>
           </Card>
 
           <Card className="bg-card/50 backdrop-blur-sm animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
             <CardHeader>
-              <div className="flex items-center space-x-3 mb-4">
+              <div className="flex items-center space-x-3 mb-2">
                 <div className="w-12 h-12 gradient-hero rounded-xl flex items-center justify-center">
                   <Calendar className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <CardTitle className="font-display text-xl text-foreground">
-                  Upcoming Events
+                  Events & Circles
                 </CardTitle>
               </div>
+              <CardDescription>
+                Join upcoming learning circles and community sessions.
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {upcomingEvents.map((event, idx) => (
-                <div key={idx} className="border border-border/50 rounded-lg p-4 space-y-3">
-                  <div className="space-y-1">
-                    <h4 className="font-semibold text-foreground">{event.title}</h4>
-                    <p className="text-sm text-muted-foreground">with {event.speaker}</p>
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="space-x-4">
-                      <span className="text-primary font-medium">{event.date}</span>
-                      <span className="text-muted-foreground">{event.time}</span>
-                    </div>
-                    <Badge variant="outline" className="text-xs">{event.format}</Badge>
-                  </div>
-                  <ShinyButton 
-                    size="sm" 
-                    className="w-full"
-                    onClick={() => navigate('/contact')}
-                  >
-                    Register Free
-                  </ShinyButton>
-                </div>
-              ))}
+            <CardContent>
+              <ShinyButton size="sm" onClick={() => navigate('/contact')}>
+                See Events
+              </ShinyButton>
             </CardContent>
           </Card>
         </div>
