@@ -46,6 +46,27 @@
     <!-- Fonts: Geist and Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Restore SPA routes when served from GitHub Pages 404 fallback -->
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var path = params.get('p');
+        if (!path) {
+          return;
+        }
+        var query = params.get('q');
+        var hash = params.get('h');
+        var newUrl = decodeURIComponent(path);
+        if (query) {
+          newUrl += '?' + decodeURIComponent(query);
+        }
+        if (hash) {
+          newUrl += '#' + decodeURIComponent(hash);
+        }
+        window.history.replaceState(null, '', newUrl);
+      })();
+    </script>
   </head>
 
   <body>
