@@ -45,6 +45,7 @@ const PublicFunding = lazy(() => import("./pages/PublicFunding"));
 const PublicPlan = lazy(() => import("./pages/PublicPlan"));
 const PublicImpact = lazy(() => import("./pages/PublicImpact"));
 const PublicLearning = lazy(() => import("./pages/PublicLearning"));
+const SuccessStories = lazy(() => import("./pages/SuccessStories"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
 const BusinessPlanner = lazy(() => import("./pages/dashboard/BusinessPlanner"));
@@ -480,6 +481,14 @@ const App = () => (
                 element={
                   <Suspense fallback={<PageSkeleton variant="landing" />}>
                     <PublicLearning />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/success-stories" 
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <SuccessStories />
                   </Suspense>
                 } 
               />

@@ -5,10 +5,7 @@ import EnhancedFeatures from '../components/EnhancedFeatures';
 import FundingSection from '../components/FundingSection';
 import TestimonialsSection from '../components/TestimonialsSection';
 import SuccessGallery from '../components/SuccessGallery';
-import ImpactCalculator from '../components/ImpactCalculator';
-import ElderWisdom from '../components/ElderWisdom';
 import TrainingSection from '../components/TrainingSection';
-import PartnershipsSection from '../components/PartnershipsSection';
 import PricingSection from '../components/PricingSection';
 import FAQSection from '../components/FAQSection';
 import CTASection from '../components/CTASection';
@@ -19,6 +16,7 @@ import ProgressBar from '../components/ProgressBar';
 import CanadianComplianceBadge from '../components/CanadianComplianceBadge';
 import SocialProof from '../components/SocialProof';
 import MetaTags from '../components/MetaTags';
+
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -43,10 +41,7 @@ const Index = () => {
         <FundingSection />
         <TestimonialsSection />
         <SuccessGallery />
-        <ImpactCalculator />
-        <ElderWisdom />
         <TrainingSection />
-        <PartnershipsSection />
         <PricingSection />
         <FAQSection />
         <div className="container mx-auto px-4 py-12">
