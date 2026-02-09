@@ -5,7 +5,12 @@ import { componentTagger } from "lovable-tagger";
 import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }) => {
+  const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1];
+  const base = process.env.GITHUB_PAGES === 'true' && repoName ? `/${repoName}/` : '/';
+
+  return {
+    base,
   server: {
     host: "::",
     port: 8080,
@@ -45,4 +50,5 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-}));
+  };
+});
