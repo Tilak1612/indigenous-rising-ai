@@ -3,7 +3,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
 const securityHeaders = {
@@ -12,23 +12,11 @@ const securityHeaders = {
   'Referrer-Policy': 'strict-origin-when-cross-origin',
 };
 
-interface DataRequestPayload {
-  fullName: string;
-  email: string;
-  requestType: string;
-  details: string;
-  phone?: string;
-  verificationMethod?: string;
-  ipAddress?: string;
-  userAgent?: string;
-}
-
 interface TrackingRequest {
   trackingNumber: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: { ...corsHeaders, ...securityHeaders } });
   }
@@ -40,13 +28,37 @@ const handler = async (req: Request): Promise<Response> => {
     
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const url = new URL(req.url);
-    const action = url.searchParams.get('action') || 'submit';
+    // Determine content type
+    const contentType = req.headers.get('content-type') || '';
+    const isMultipart = contentType.includes('multipart/form-data');
 
-    // Handle request tracking
-    if (action === 'track' || req.method === 'POST') {
+    let fullName: string;
+    let email: string;
+    let requestType: string;
+    let details: string;
+    let phone: string | undefined;
+    let verificationMethod: string | undefined;
+    let userAgent: string | undefined;
+    let file: File | null = null;
+
+    if (isMultipart) {
+      // Handle FormData (file upload)
+      const formData = await req.formData();
+      fullName = formData.get('fullName') as string;
+      email = formData.get('email') as string;
+      requestType = formData.get('requestType') as string;
+      details = formData.get('details') as string;
+      phone = (formData.get('phone') as string) || undefined;
+      verificationMethod = (formData.get('verificationMethod') as string) || undefined;
+      userAgent = (formData.get('userAgent') as string) || undefined;
+      const fileEntry = formData.get('file');
+      if (fileEntry && fileEntry instanceof File && fileEntry.size > 0) {
+        file = fileEntry;
+      }
+    } else {
+      // Handle JSON
       const body = await req.json();
-      
+
       // Check if this is a tracking request
       if ('trackingNumber' in body) {
         const { trackingNumber } = body as TrackingRequest;
@@ -73,7 +85,6 @@ const handler = async (req: Request): Promise<Response> => {
           );
         }
 
-        // Return sanitized request info (exclude sensitive fields)
         const sanitizedRequest = {
           tracking_number: request.tracking_number,
           request_type: request.request_type,
@@ -88,194 +99,230 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
-      // Otherwise, handle new data request submission
-      const payload = body as DataRequestPayload;
+      fullName = body.fullName;
+      email = body.email;
+      requestType = body.requestType;
+      details = body.details;
+      phone = body.phone;
+      verificationMethod = body.verificationMethod;
+      userAgent = body.userAgent;
+    }
 
-      // Get client IP
-      const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || 
-                       req.headers.get('x-real-ip') || 
-                       payload.ipAddress || 
-                       'unknown';
+    // Get client IP
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0] || 
+                     req.headers.get('x-real-ip') || 
+                     'unknown';
 
-      // Rate limiting: Check submissions per minute (3 per minute)
-      const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
-      const { data: recentMinute } = await supabase
-        .from('data_requests')
-        .select('id')
-        .eq('ip_address', clientIp)
-        .gte('submitted_at', oneMinuteAgo);
+    // Rate limiting: 3 per minute
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
+    const { data: recentMinute } = await supabase
+      .from('data_requests')
+      .select('id')
+      .eq('ip_address', clientIp)
+      .gte('submitted_at', oneMinuteAgo);
 
-      if (recentMinute && recentMinute.length >= 3) {
-        console.warn('Rate limit exceeded (per minute):', clientIp);
-        return new Response(
-          JSON.stringify({ error: 'Too many requests. Please try again in a minute.' }),
-          { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Rate limiting: Check submissions per hour (10 per hour)
-      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-      const { data: recentHour } = await supabase
-        .from('data_requests')
-        .select('id')
-        .eq('ip_address', clientIp)
-        .gte('submitted_at', oneHourAgo);
-
-      if (recentHour && recentHour.length >= 10) {
-        console.warn('Rate limit exceeded (per hour):', clientIp);
-        return new Response(
-          JSON.stringify({ error: 'Too many requests. Please try again later.' }),
-          { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Validate required fields
-      if (!payload.fullName || !payload.email || !payload.requestType || !payload.details) {
-        return new Response(
-          JSON.stringify({ error: 'Missing required fields' }),
-          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Server-side length validation
-      if (payload.email.length > 255 || payload.fullName.length > 100 || 
-          payload.details.length > 1000 || (payload.phone && payload.phone.length > 20)) {
-        return new Response(
-          JSON.stringify({ error: 'One or more fields exceed maximum length' }),
-          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Validate email format
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(payload.email)) {
-        return new Response(
-          JSON.stringify({ error: 'Invalid email address' }),
-          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Validate request type with strict allowlist
-      const validRequestTypes = ['access', 'correction', 'deletion', 'portability', 'consent_withdrawal', 'objection'] as const;
-      if (!validRequestTypes.includes(payload.requestType as any)) {
-        return new Response(
-          JSON.stringify({ error: 'Invalid request type. Must be one of: access, correction, deletion, portability, consent_withdrawal, or objection' }),
-          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      console.log('Creating data request for:', payload.email);
-
-      // Create data request in database
-      const { data: dataRequest, error: insertError } = await supabase
-        .from('data_requests')
-        .insert({
-          full_name: payload.fullName,
-          email: payload.email.toLowerCase().trim(),
-          request_type: payload.requestType,
-          description: payload.details,
-          phone: payload.phone,
-          verification_method: payload.verificationMethod,
-          ip_address: clientIp,
-          user_agent: payload.userAgent || req.headers.get('user-agent') || 'unknown',
-        })
-        .select()
-        .single();
-
-      if (insertError) {
-        console.error('Error creating data request:', insertError);
-        throw insertError;
-      }
-
-      console.log('Data request created:', dataRequest.id, 'Tracking:', dataRequest.tracking_number);
-
-      // Send confirmation email to user
-      try {
-        const userEmailResponse = await fetch('https://api.hubapi.com/marketing/v3/transactional/single-email/send', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${hubspotApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            emailId: 'data-request-confirmation', // Create this template in HubSpot
-            message: {
-              to: payload.email,
-              from: 'privacy@indigenousrising.ai',
-            },
-            customProperties: {
-              tracking_number: dataRequest.tracking_number,
-              request_type: payload.requestType,
-              full_name: payload.fullName,
-            },
-          }),
-        });
-
-        if (!userEmailResponse.ok) {
-          const errorText = await userEmailResponse.text();
-          console.error('HubSpot user email error:', errorText);
-        } else {
-          console.log('Confirmation email sent to user');
-        }
-      } catch (emailError) {
-        console.error('Error sending user confirmation email:', emailError);
-        // Continue anyway
-      }
-
-      // Send notification email to Privacy Officer
-      try {
-        const officerEmailResponse = await fetch('https://api.hubapi.com/marketing/v3/transactional/single-email/send', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${hubspotApiKey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            emailId: 'data-request-notification', // Create this template in HubSpot
-            message: {
-              to: 'privacy@indigenousrising.ai',
-              from: 'system@indigenousrising.ai',
-            },
-            customProperties: {
-              tracking_number: dataRequest.tracking_number,
-              request_type: payload.requestType,
-              full_name: payload.fullName,
-              email: payload.email,
-              details: payload.details,
-              submitted_at: dataRequest.submitted_at,
-            },
-          }),
-        });
-
-        if (!officerEmailResponse.ok) {
-          const errorText = await officerEmailResponse.text();
-          console.error('HubSpot officer email error:', errorText);
-        } else {
-          console.log('Notification email sent to Privacy Officer');
-        }
-      } catch (emailError) {
-        console.error('Error sending officer notification email:', emailError);
-        // Continue anyway
-      }
-
+    if (recentMinute && recentMinute.length >= 3) {
+      console.warn('Rate limit exceeded (per minute):', clientIp);
       return new Response(
-        JSON.stringify({
-          success: true,
-          tracking_number: dataRequest.tracking_number,
-          message: 'Your data request has been submitted successfully. Please save your tracking number.',
-        }),
-        { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: 'Too many requests. Please try again in a minute.' }),
+        { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Fallback return for unhandled cases
+    // Rate limiting: 10 per hour
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recentHour } = await supabase
+      .from('data_requests')
+      .select('id')
+      .eq('ip_address', clientIp)
+      .gte('submitted_at', oneHourAgo);
+
+    if (recentHour && recentHour.length >= 10) {
+      console.warn('Rate limit exceeded (per hour):', clientIp);
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+        { status: 429, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate required fields
+    if (!fullName || !email || !requestType || !details) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required fields' }),
+        { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Server-side length validation
+    if (email.length > 255 || fullName.length > 100 || 
+        details.length > 1000 || (phone && phone.length > 20)) {
+      return new Response(
+        JSON.stringify({ error: 'One or more fields exceed maximum length' }),
+        { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid email address' }),
+        { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate request type
+    const validRequestTypes = ['access', 'correction', 'deletion', 'portability', 'consent_withdrawal', 'objection'] as const;
+    if (!validRequestTypes.includes(requestType as any)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request type. Must be one of: access, correction, deletion, portability, consent_withdrawal, or objection' }),
+        { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Handle file upload server-side using service role key
+    let filePath: string | null = null;
+    if (file) {
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        return new Response(
+          JSON.stringify({ error: 'File too large. Maximum size is 5MB.' }),
+          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+      if (!allowedTypes.includes(file.type)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid file type. Only JPEG, PNG, and PDF are allowed.' }),
+          { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${crypto.randomUUID()}.${fileExt}`;
+      filePath = `verification/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('data-request-documents')
+        .upload(filePath, file, {
+          contentType: file.type,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error('File upload error:', uploadError);
+        return new Response(
+          JSON.stringify({ error: 'Failed to upload verification document.' }),
+          { status: 500, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      console.log('File uploaded:', filePath);
+    }
+
+    console.log('Creating data request for:', email);
+
+    const { data: dataRequest, error: insertError } = await supabase
+      .from('data_requests')
+      .insert({
+        full_name: fullName,
+        email: email.toLowerCase().trim(),
+        request_type: requestType,
+        description: details,
+        phone: phone,
+        verification_method: verificationMethod,
+        ip_address: clientIp,
+        user_agent: userAgent || req.headers.get('user-agent') || 'unknown',
+      })
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error('Error creating data request:', insertError);
+      throw insertError;
+    }
+
+    console.log('Data request created:', dataRequest.id, 'Tracking:', dataRequest.tracking_number);
+
+    // Send confirmation email to user
+    try {
+      const userEmailResponse = await fetch('https://api.hubapi.com/marketing/v3/transactional/single-email/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${hubspotApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          emailId: 'data-request-confirmation',
+          message: {
+            to: email,
+            from: 'privacy@indigenousrising.ai',
+          },
+          customProperties: {
+            tracking_number: dataRequest.tracking_number,
+            request_type: requestType,
+            full_name: fullName,
+          },
+        }),
+      });
+
+      if (!userEmailResponse.ok) {
+        const errorText = await userEmailResponse.text();
+        console.error('HubSpot user email error:', errorText);
+      } else {
+        console.log('Confirmation email sent to user');
+      }
+    } catch (emailError) {
+      console.error('Error sending user confirmation email:', emailError);
+    }
+
+    // Send notification to Privacy Officer
+    try {
+      const officerEmailResponse = await fetch('https://api.hubapi.com/marketing/v3/transactional/single-email/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${hubspotApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          emailId: 'data-request-notification',
+          message: {
+            to: 'privacy@indigenousrising.ai',
+            from: 'system@indigenousrising.ai',
+          },
+          customProperties: {
+            tracking_number: dataRequest.tracking_number,
+            request_type: requestType,
+            full_name: fullName,
+            email: email,
+            details: details,
+            submitted_at: dataRequest.submitted_at,
+          },
+        }),
+      });
+
+      if (!officerEmailResponse.ok) {
+        const errorText = await officerEmailResponse.text();
+        console.error('HubSpot officer email error:', errorText);
+      } else {
+        console.log('Notification email sent to Privacy Officer');
+      }
+    } catch (emailError) {
+      console.error('Error sending officer notification email:', emailError);
+    }
+
     return new Response(
-      JSON.stringify({ error: 'Invalid request' }),
-      { status: 400, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({
+        success: true,
+        tracking_number: dataRequest.tracking_number,
+        message: 'Your data request has been submitted successfully. Please save your tracking number.',
+      }),
+      { status: 200, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error: unknown) {
-    // Log full error details server-side for debugging
     const errorMessage = error instanceof Error ? error.message : String(error);
     const errorStack = error instanceof Error ? error.stack : undefined;
     
@@ -285,7 +332,6 @@ const handler = async (req: Request): Promise<Response> => {
       timestamp: new Date().toISOString()
     });
     
-    // Return sanitized error message to client
     const isKnownError = errorMessage?.includes('rate limit') || 
                          errorMessage?.includes('Invalid') ||
                          errorMessage?.includes('not found');
