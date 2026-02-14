@@ -10,7 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { Shield, CheckCircle, Upload, FileText, X } from 'lucide-react';
 import { dataRequestSchema, type DataRequestFormData } from '@/lib/validation-schemas';
-import { supabase } from '@/integrations/supabase/client';
+
 import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { 
@@ -128,44 +128,45 @@ const DataRequestForm = () => {
     }
 
     try {
-      let fileUrl = null;
-
-      if (uploadedFile) {
-        const fileExt = uploadedFile.name.split('.').pop();
-        const fileName = `${crypto.randomUUID()}.${fileExt}`;
-        const filePath = `verification/${fileName}`;
-
-        setUploadProgress(50);
-
-        const { error: uploadError } = await supabase.storage
-          .from('data-request-documents')
-          .upload(filePath, uploadedFile);
-
-        if (uploadError) {
-          console.error('File upload error:', uploadError);
-          throw new Error('Failed to upload verification document');
-        }
-
-        fileUrl = filePath;
-        setUploadProgress(100);
-      }
+      setUploadProgress(uploadedFile ? 30 : 0);
 
       const userAgent = navigator.userAgent;
 
-      const { data: response, error } = await supabase.functions.invoke('submit-data-request', {
-        body: {
-          fullName: data.fullName,
-          email: data.email,
-          requestType: data.requestType.replace('-', '_'),
-          details: data.details,
-          phone: data.phone,
-          verificationMethod: uploadedFile ? 'document_upload' : 'email_only',
-          userAgent,
+      // Build form data to send file through edge function (not direct storage)
+      const formData = new FormData();
+      formData.append('fullName', data.fullName);
+      formData.append('email', data.email);
+      formData.append('requestType', data.requestType.replace('-', '_'));
+      formData.append('details', data.details);
+      formData.append('phone', data.phone || '');
+      formData.append('verificationMethod', uploadedFile ? 'document_upload' : 'email_only');
+      formData.append('userAgent', userAgent);
+      if (uploadedFile) {
+        formData.append('file', uploadedFile);
+      }
+
+      setUploadProgress(uploadedFile ? 60 : 0);
+
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      const res = await fetch(`${supabaseUrl}/functions/v1/submit-data-request`, {
+        method: 'POST',
+        headers: {
+          'apikey': supabaseKey,
         },
+        body: formData,
       });
+
+      setUploadProgress(uploadedFile ? 90 : 0);
+
+      const response = await res.json();
+      const error = !res.ok ? new Error(response.error || 'Request failed') : null;
 
       if (error) throw error;
       if (response.error) throw new Error(response.error);
+
+      setUploadProgress(100);
 
       // Record successful submission for rate limiting
       recordSubmission('data-request');
