@@ -165,7 +165,7 @@ const Footer = () => {
                           key={social.name}
                           className="w-10 h-10 glass bg-muted/20 border border-border/30 rounded-xl flex items-center justify-center transition-smooth cursor-not-allowed opacity-60"
                           aria-label={`${social.name} (coming soon)`}
-                          title={social.note || 'Coming soon'}
+                          title={'Coming soon'}
                           disabled
                         >
                           <Icon className="w-4 h-4" style={{ color: social.color }} />
