@@ -432,7 +432,7 @@ const Careers = () => {
 
           <section className="mt-12 max-w-5xl mx-auto space-y-10">
             <div>
-              <h2 className="text-3xl font-bold">Section 1: List of Roles</h2>
+              <h2 className="text-3xl font-bold">Open Roles</h2>
             </div>
 
             {rolesByCategory.map((category) => (
@@ -477,7 +477,7 @@ const Careers = () => {
           </section>
 
           <section className="mt-16 max-w-5xl mx-auto space-y-6">
-            <h2 className="text-3xl font-bold">Section 2: Hiring Now</h2>
+            <h2 className="text-3xl font-bold">Hiring Now</h2>
             <p className="text-muted-foreground">
               These are the five roles we are actively filling as we move from early platform launch to community-scale growth.
             </p>
@@ -491,9 +491,9 @@ const Careers = () => {
           <section className="mt-16 max-w-5xl mx-auto">
             <Card>
               <CardHeader>
-                <CardTitle className="text-3xl">Section 3: Application Form Fields</CardTitle>
+                <CardTitle className="text-3xl">Apply Now</CardTitle>
                 <CardDescription>
-                  Use this form for all roles. Role-specific guidance adapts automatically based on your Role You Are Applying For selection.
+                  Use this form for all roles. Role-specific guidance adapts automatically based on the role you select.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -502,15 +502,15 @@ const Careers = () => {
                     <h3 className="text-xl font-semibold">Basic Information</h3>
 
                     <div className="space-y-2">
-                      <Label htmlFor="full_name">Full Name</Label>
-                      <Input id="full_name" type="text" {...register('full_name')} placeholder="Please enter your name as you would like it to appear in our communications with you." />
-                      {errors.full_name && <p className="text-sm text-destructive">{errors.full_name.message}</p>}
+                      <Label htmlFor="full_name">Full Name <span className="text-destructive">*</span></Label>
+                      <Input id="full_name" type="text" aria-required="true" aria-invalid={!!errors.full_name} {...register('full_name')} placeholder="Please enter your name as you would like it to appear in our communications with you." />
+                      {errors.full_name && <p className="text-sm text-destructive" role="alert">{errors.full_name.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="email_address">Email Address</Label>
-                      <Input id="email_address" type="email" {...register('email_address')} placeholder="We will use this address for all application correspondence." />
-                      {errors.email_address && <p className="text-sm text-destructive">{errors.email_address.message}</p>}
+                      <Label htmlFor="email_address">Email Address <span className="text-destructive">*</span></Label>
+                      <Input id="email_address" type="email" aria-required="true" aria-invalid={!!errors.email_address} {...register('email_address')} placeholder="We will use this address for all application correspondence." />
+                      {errors.email_address && <p className="text-sm text-destructive" role="alert">{errors.email_address.message}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -519,19 +519,19 @@ const Careers = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="city_province">City and Province / Territory</Label>
-                      <Input id="city_province" type="text" {...register('city_province')} placeholder="e.g., Winnipeg, Manitoba or Yellowknife, Northwest Territories" />
-                      {errors.city_province && <p className="text-sm text-destructive">{errors.city_province.message}</p>}
+                      <Label htmlFor="city_province">City and Province / Territory <span className="text-destructive">*</span></Label>
+                      <Input id="city_province" type="text" aria-required="true" aria-invalid={!!errors.city_province} {...register('city_province')} placeholder="e.g., Winnipeg, Manitoba or Yellowknife, Northwest Territories" />
+                      {errors.city_province && <p className="text-sm text-destructive" role="alert">{errors.city_province.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Are you legally eligible to work in Canada?</Label>
+                      <Label id="work-eligibility-label">Are you legally eligible to work in Canada? <span className="text-destructive">*</span></Label>
                       <Controller
                         control={control}
                         name="work_eligibility"
                         render={({ field }) => (
                           <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger>
+                            <SelectTrigger aria-labelledby="work-eligibility-label" aria-required="true" aria-invalid={!!errors.work_eligibility}>
                               <SelectValue placeholder="Select work eligibility" />
                             </SelectTrigger>
                             <SelectContent>
@@ -545,7 +545,7 @@ const Careers = () => {
                         )}
                       />
                       <p className="text-xs text-muted-foreground">We welcome applications from candidates across Canada and internationally where work permits apply.</p>
-                      {errors.work_eligibility && <p className="text-sm text-destructive">{errors.work_eligibility.message}</p>}
+                      {errors.work_eligibility && <p className="text-sm text-destructive" role="alert">{errors.work_eligibility.message}</p>}
                     </div>
                   </div>
 
@@ -553,13 +553,13 @@ const Careers = () => {
                     <h3 className="text-xl font-semibold">Role & Location Details</h3>
 
                     <div className="space-y-2">
-                      <Label>Role You Are Applying For</Label>
+                      <Label id="role-applying-label">Role You Are Applying For <span className="text-destructive">*</span></Label>
                       <Controller
                         control={control}
                         name="role_applying_for"
                         render={({ field }) => (
                           <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger>
+                            <SelectTrigger aria-labelledby="role-applying-label" aria-required="true" aria-invalid={!!errors.role_applying_for}>
                               <SelectValue placeholder="Select role" />
                             </SelectTrigger>
                             <SelectContent>
@@ -572,7 +572,7 @@ const Careers = () => {
                           </Select>
                         )}
                       />
-                      {errors.role_applying_for && <p className="text-sm text-destructive">{errors.role_applying_for.message}</p>}
+                      {errors.role_applying_for && <p className="text-sm text-destructive" role="alert">{errors.role_applying_for.message}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -582,13 +582,13 @@ const Careers = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Preferred Work Location</Label>
+                      <Label id="work-location-label">Preferred Work Location <span className="text-destructive">*</span></Label>
                       <Controller
                         control={control}
                         name="preferred_work_location"
                         render={({ field }) => (
                           <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger>
+                            <SelectTrigger aria-labelledby="work-location-label" aria-required="true" aria-invalid={!!errors.preferred_work_location}>
                               <SelectValue placeholder="Select preferred work location" />
                             </SelectTrigger>
                             <SelectContent>
@@ -602,7 +602,7 @@ const Careers = () => {
                         )}
                       />
                       <p className="text-xs text-muted-foreground">All roles are currently remote-first. Some community-facing roles may involve periodic travel.</p>
-                      {errors.preferred_work_location && <p className="text-sm text-destructive">{errors.preferred_work_location.message}</p>}
+                      {errors.preferred_work_location && <p className="text-sm text-destructive" role="alert">{errors.preferred_work_location.message}</p>}
                     </div>
                   </div>
 
@@ -612,7 +612,7 @@ const Careers = () => {
                     <div className="space-y-2">
                       <Label htmlFor="linkedin_url">LinkedIn Profile URL</Label>
                       <Input id="linkedin_url" type="url" {...register('linkedin_url')} />
-                      {errors.linkedin_url && <p className="text-sm text-destructive">{errors.linkedin_url.message}</p>}
+                      {errors.linkedin_url && <p className="text-sm text-destructive" role="alert">{errors.linkedin_url.message}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -623,7 +623,7 @@ const Careers = () => {
                           ? 'For engineering and product roles, a GitHub profile is strongly encouraged.'
                           : 'For community and partnership roles, feel free to share a personal or organizational website.'}
                       </p>
-                      {errors.portfolio_github_url && <p className="text-sm text-destructive">{errors.portfolio_github_url.message}</p>}
+                      {errors.portfolio_github_url && <p className="text-sm text-destructive" role="alert">{errors.portfolio_github_url.message}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -634,7 +634,7 @@ const Careers = () => {
                           ? 'Relevant for growth, content, partnerships, and community engagement roles. Link to blog posts, reports, grant proposals, or similar work.'
                           : 'Optional for all roles. Share any relevant writing or case studies.'}
                       </p>
-                      {errors.writing_samples_url && <p className="text-sm text-destructive">{errors.writing_samples_url.message}</p>}
+                      {errors.writing_samples_url && <p className="text-sm text-destructive" role="alert">{errors.writing_samples_url.message}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -647,15 +647,15 @@ const Careers = () => {
                     <h3 className="text-xl font-semibold">Uploads</h3>
 
                     <div className="space-y-2">
-                      <Label htmlFor="resume_cv">CV / Resume (required)</Label>
-                      <Input id="resume_cv" type="file" accept=".pdf,.doc,.docx" required />
-                      <p className="text-xs text-muted-foreground">Please upload your most current CV or resume in PDF or Word format (max 5MB).</p>
+                      <Label htmlFor="resume_cv">CV / Resume <span className="text-destructive">*</span></Label>
+                      <Input id="resume_cv" type="file" accept=".pdf,.doc,.docx" required aria-required="true" aria-describedby="resume-hint" />
+                      <p id="resume-hint" className="text-xs text-muted-foreground">Please upload your most current CV or resume in PDF or Word format (max 5MB).</p>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="cover_letter_story">Cover Letter or 1-Page Story (optional)</Label>
-                      <Input id="cover_letter_story" type="file" accept=".pdf,.doc,.docx" />
-                      <p className="text-xs text-muted-foreground">You are welcome to upload a traditional cover letter, or something less conventional — a 1-page story about why this work matters to you, a letter of support from a community member, or whatever feels most authentic.</p>
+                      <Label htmlFor="cover_letter_story">Cover Letter or 1-Page Story <span className="text-muted-foreground">(optional)</span></Label>
+                      <Input id="cover_letter_story" type="file" accept=".pdf,.doc,.docx" aria-describedby="cover-letter-hint" />
+                      <p id="cover-letter-hint" className="text-xs text-muted-foreground">You are welcome to upload a traditional cover letter, or something less conventional — a 1-page story about why this work matters to you, a letter of support from a community member, or whatever feels most authentic.</p>
                     </div>
                   </div>
 
@@ -663,24 +663,24 @@ const Careers = () => {
                     <h3 className="text-xl font-semibold">Short Answer Questions</h3>
 
                     <div className="space-y-2">
-                      <Label htmlFor="indigenous_sovereignty_meaning">What does Indigenous economic sovereignty mean to you, and how does it show up in your work?</Label>
-                      <Textarea id="indigenous_sovereignty_meaning" {...register('indigenous_sovereignty_meaning')} className="min-h-[140px]" />
-                      <p className="text-xs text-muted-foreground">There is no single right answer. We are looking for genuine reflection, not a textbook definition. (300 words or fewer)</p>
-                      {errors.indigenous_sovereignty_meaning && <p className="text-sm text-destructive">{errors.indigenous_sovereignty_meaning.message}</p>}
+                      <Label htmlFor="indigenous_sovereignty_meaning">What does Indigenous economic sovereignty mean to you, and how does it show up in your work? <span className="text-destructive">*</span></Label>
+                      <Textarea id="indigenous_sovereignty_meaning" aria-required="true" aria-invalid={!!errors.indigenous_sovereignty_meaning} aria-describedby="sovereignty-hint" {...register('indigenous_sovereignty_meaning')} className="min-h-[140px]" />
+                      <p id="sovereignty-hint" className="text-xs text-muted-foreground">There is no single right answer. We are looking for genuine reflection, not a textbook definition. (300 words or fewer)</p>
+                      {errors.indigenous_sovereignty_meaning && <p className="text-sm text-destructive" role="alert">{errors.indigenous_sovereignty_meaning.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="community_experience">Tell us about a time you worked with or alongside an Indigenous community. If you haven't yet, how would you approach building that relationship respectfully?</Label>
-                      <Textarea id="community_experience" {...register('community_experience')} className="min-h-[140px]" />
-                      <p className="text-xs text-muted-foreground">We value honesty over polish here. If your experience is limited, tell us how you would learn. (300 words or fewer)</p>
-                      {errors.community_experience && <p className="text-sm text-destructive">{errors.community_experience.message}</p>}
+                      <Label htmlFor="community_experience">Tell us about a time you worked with or alongside an Indigenous community. If you haven&apos;t yet, how would you approach building that relationship respectfully? <span className="text-destructive">*</span></Label>
+                      <Textarea id="community_experience" aria-required="true" aria-invalid={!!errors.community_experience} aria-describedby="community-hint" {...register('community_experience')} className="min-h-[140px]" />
+                      <p id="community-hint" className="text-xs text-muted-foreground">We value honesty over polish here. If your experience is limited, tell us how you would learn. (300 words or fewer)</p>
+                      {errors.community_experience && <p className="text-sm text-destructive" role="alert">{errors.community_experience.message}</p>}
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="ocap_aligned_ai_interest">Why are you interested in working on OCAP™-aligned, community-driven AI tools?</Label>
-                      <Textarea id="ocap_aligned_ai_interest" {...register('ocap_aligned_ai_interest')} className="min-h-[140px]" />
-                      <p className="text-xs text-muted-foreground">Tell us what draws you to this specific kind of work — technically, ethically, or personally. (300 words or fewer)</p>
-                      {errors.ocap_aligned_ai_interest && <p className="text-sm text-destructive">{errors.ocap_aligned_ai_interest.message}</p>}
+                      <Label htmlFor="ocap_aligned_ai_interest">Why are you interested in working on OCAP™-aligned, community-driven AI tools? <span className="text-destructive">*</span></Label>
+                      <Textarea id="ocap_aligned_ai_interest" aria-required="true" aria-invalid={!!errors.ocap_aligned_ai_interest} aria-describedby="ocap-hint" {...register('ocap_aligned_ai_interest')} className="min-h-[140px]" />
+                      <p id="ocap-hint" className="text-xs text-muted-foreground">Tell us what draws you to this specific kind of work — technically, ethically, or personally. (300 words or fewer)</p>
+                      {errors.ocap_aligned_ai_interest && <p className="text-sm text-destructive" role="alert">{errors.ocap_aligned_ai_interest.message}</p>}
                     </div>
                   </div>
 
@@ -688,13 +688,13 @@ const Careers = () => {
                     <h3 className="text-xl font-semibold">Voluntary Self-Identification</h3>
 
                     <div className="space-y-2">
-                      <Label>Voluntary Self-Identification — Indigenous Identity</Label>
+                      <Label id="indigenous-identity-label">Voluntary Self-Identification — Indigenous Identity <span className="text-muted-foreground">(optional)</span></Label>
                       <Controller
                         control={control}
                         name="indigenous_identity"
                         render={({ field }) => (
                           <Select onValueChange={field.onChange} value={field.value}>
-                            <SelectTrigger>
+                            <SelectTrigger aria-labelledby="indigenous-identity-label">
                               <SelectValue placeholder="Select an option (optional)" />
                             </SelectTrigger>
                             <SelectContent>
@@ -718,15 +718,15 @@ const Careers = () => {
                         control={control}
                         name="privacy_consent"
                         render={({ field }) => (
-                          <Checkbox checked={field.value} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="mt-1" />
+                          <Checkbox id="privacy_consent" checked={field.value} onCheckedChange={(checked) => field.onChange(Boolean(checked))} className="mt-1" aria-required="true" />
                         )}
                       />
-                      <Label className="leading-relaxed cursor-pointer">
-                        I understand that the information I submit in this application will be stored and processed in Canada in accordance with Indigenous Rising AI&apos;s Privacy Policy and PIPEDA requirements. I consent to my application data being reviewed by the hiring team for the purpose of evaluating my candidacy.
+                      <Label htmlFor="privacy_consent" className="leading-relaxed cursor-pointer">
+                        I understand that the information I submit in this application will be stored and processed in Canada in accordance with Indigenous Rising AI&apos;s Privacy Policy and PIPEDA requirements. I consent to my application data being reviewed by the hiring team for the purpose of evaluating my candidacy. <span className="text-destructive">*</span>
                       </Label>
                     </div>
                     <p className="text-xs text-muted-foreground">Your data will never be shared with third parties outside the hiring process without your consent.</p>
-                    {errors.privacy_consent && <p className="text-sm text-destructive">{errors.privacy_consent.message}</p>}
+                    {errors.privacy_consent && <p className="text-sm text-destructive" role="alert">{errors.privacy_consent.message}</p>}
                   </div>
 
                   <ShinyButton type="submit" className="w-full" disabled={isSubmitting}>
