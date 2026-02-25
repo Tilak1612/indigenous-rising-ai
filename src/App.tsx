@@ -46,6 +46,7 @@ const PublicPlan = lazy(() => import("./pages/PublicPlan"));
 const PublicImpact = lazy(() => import("./pages/PublicImpact"));
 const PublicLearning = lazy(() => import("./pages/PublicLearning"));
 const SuccessStories = lazy(() => import("./pages/SuccessStories"));
+const Careers = lazy(() => import("./pages/Careers"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
 const BusinessPlanner = lazy(() => import("./pages/dashboard/BusinessPlanner"));
@@ -435,6 +436,14 @@ const App = () => (
                     <SuccessStories />
                   </Suspense>
                 } 
+              />
+              <Route
+                path="/careers"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <Careers />
+                  </Suspense>
+                }
               />
               <Route 
                 path="/pricing" 
