@@ -10,7 +10,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 interface RequestStatus {
   tracking_number: string;

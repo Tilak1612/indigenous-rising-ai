@@ -15,7 +15,7 @@ vi.mock('@/hooks/use-toast', () => {
 });
 
 // Mock Supabase client
-vi.mock('@/integrations/supabase/client', () => ({
+vi.mock('@/lib/supabase', () => ({
   supabase: {
     functions: {
       invoke: vi.fn(),
@@ -178,7 +178,7 @@ describe('DataRequestForm', () => {
 
   it('submits form with valid data', async () => {
     const user = userEvent.setup();
-    const { supabase } = await import('@/integrations/supabase/client');
+    const { supabase } = await import('@/lib/supabase');
     
     vi.mocked(supabase.functions.invoke).mockResolvedValue({
       data: { tracking_number: 'REQ-123456' },
@@ -203,7 +203,7 @@ describe('DataRequestForm', () => {
 
   it('displays success screen with tracking number', async () => {
     const user = userEvent.setup();
-    const { supabase } = await import('@/integrations/supabase/client');
+    const { supabase } = await import('@/lib/supabase');
     
     vi.mocked(supabase.functions.invoke).mockResolvedValue({
       data: { tracking_number: 'REQ-789012' },

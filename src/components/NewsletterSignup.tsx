@@ -89,7 +89,7 @@ const NewsletterSignup = () => {
 
     try {
       const userAgent = navigator.userAgent;
-      const { supabase } = await import('@/integrations/supabase/client');
+      const { supabase } = await import('@/lib/supabase');
       
       const { data: response, error } = await supabase.functions.invoke('newsletter-subscribe', {
         body: {
