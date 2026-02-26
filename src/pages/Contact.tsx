@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { contactSchema, type ContactFormData } from '@/lib/validation-schemas';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';

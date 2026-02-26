@@ -6,7 +6,7 @@ import { ShinyButton } from '@/components/ui/shiny-button';
 import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 const Unsubscribe = () => {
   const [searchParams] = useSearchParams();

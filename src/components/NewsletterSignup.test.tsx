@@ -15,7 +15,7 @@ vi.mock('@/hooks/use-toast', () => {
 });
 
 // Mock Supabase client
-vi.mock('@/integrations/supabase/client', () => ({
+vi.mock('@/lib/supabase', () => ({
   supabase: {
     functions: {
       invoke: vi.fn(),
@@ -111,7 +111,7 @@ describe('NewsletterSignup', () => {
 
   it('displays success message after successful submission', async () => {
     const user = userEvent.setup();
-    const { supabase } = await import('@/integrations/supabase/client');
+    const { supabase } = await import('@/lib/supabase');
     
     vi.mocked(supabase.functions.invoke).mockResolvedValue({
       data: { requiresConfirmation: false },
@@ -135,7 +135,7 @@ describe('NewsletterSignup', () => {
 
   it('displays loading state during submission', async () => {
     const user = userEvent.setup();
-    const { supabase } = await import('@/integrations/supabase/client');
+    const { supabase } = await import('@/lib/supabase');
     
     vi.mocked(supabase.functions.invoke).mockImplementation(
       () => new Promise((resolve) => setTimeout(() => resolve({ data: {}, error: null } as any), 1000))
