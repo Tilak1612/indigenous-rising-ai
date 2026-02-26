@@ -96,9 +96,9 @@ Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 ## Deployment Configuration
 
-### Lovable Hosting
+### Managed Hosting (Generic)
 
-If deploying through Lovable, contact support to configure custom headers.
+If your host does not expose response header configuration directly, apply headers at your CDN/proxy layer.
 
 ### Vercel
 

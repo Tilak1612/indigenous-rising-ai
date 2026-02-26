@@ -3,6 +3,7 @@ import json
 import hmac
 import hashlib
 import time
+import os
 
 def test_stripe_webhook():
     """
@@ -17,7 +18,10 @@ def test_stripe_webhook():
     3. Use Stripe test mode to trigger real events
     """
     
-    BASE_URL = "https://fsqjgexjkjicwlzcgweu.supabase.co"
+    BASE_URL = os.getenv("SUPABASE_URL")
+    if not BASE_URL:
+        print("❌ Missing SUPABASE_URL environment variable")
+        return
     url = f"{BASE_URL}/functions/v1/stripe-webhook"
     
     # Example Stripe checkout.session.completed event payload
@@ -142,7 +146,7 @@ def print_testing_guide():
     
     print("\n1. Using Stripe CLI (Recommended for Development):")
     print("   $ stripe login")
-    print("   $ stripe listen --forward-to https://fsqjgexjkjicwlzcgweu.supabase.co/functions/v1/stripe-webhook")
+    print("   $ stripe listen --forward-to $SUPABASE_URL/functions/v1/stripe-webhook")
     print("   $ stripe trigger checkout.session.completed")
     
     print("\n2. Using Stripe Dashboard:")
@@ -157,7 +161,7 @@ def print_testing_guide():
     print("   c. Stripe will automatically call your webhook")
     
     print("\n4. Webhook Endpoint Configuration:")
-    print("   URL: https://fsqjgexjkjicwlzcgweu.supabase.co/functions/v1/stripe-webhook")
+    print("   URL: $SUPABASE_URL/functions/v1/stripe-webhook")
     print("   Events to listen for:")
     print("   - checkout.session.completed")
     print("   - customer.subscription.created")

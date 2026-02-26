@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { Shield, CheckCircle, Upload, FileText, X } from 'lucide-react';
 import { dataRequestSchema, type DataRequestFormData } from '@/lib/validation-schemas';
+import { supabase } from '@/lib/supabase';
 
 import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -147,21 +148,11 @@ const DataRequestForm = () => {
 
       setUploadProgress(uploadedFile ? 60 : 0);
 
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-
-      const res = await fetch(`${supabaseUrl}/functions/v1/submit-data-request`, {
-        method: 'POST',
-        headers: {
-          'apikey': supabaseKey,
-        },
+      const { data: response, error } = await supabase.functions.invoke('submit-data-request', {
         body: formData,
       });
 
       setUploadProgress(uploadedFile ? 90 : 0);
-
-      const response = await res.json();
-      const error = !res.ok ? new Error(response.error || 'Request failed') : null;
 
       if (error) throw error;
       if (response.error) throw new Error(response.error);

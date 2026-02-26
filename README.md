@@ -1,8 +1,9 @@
-# Welcome to your Lovable project
+# Indigenous Rising AI
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/9f734f43-7113-4d89-8e7f-88f44b6ccf24
+- Frontend: Vite + React + TypeScript
+- Backend: Supabase (Auth, Postgres, Storage, Edge Functions)
 
 ## Indigenous Rising AI - Business Support Platform
 
@@ -50,15 +51,13 @@ The platform currently displays English content with cultural terms in Indigenou
 
 There are several ways of editing your application.
 
-**Use Lovable**
+**Use your preferred IDE**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9f734f43-7113-4d89-8e7f-88f44b6ccf24) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
+Open this repository in your local environment or Codespace and edit directly.
 
 **Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+If you want to work locally using your own IDE, you can clone this repo and push changes normally.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -120,14 +119,10 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/9f734f43-7113-4d89-8e7f-88f44b6ccf24) and click on Share -> Publish.
+Deploy the frontend to Vercel or Netlify and configure environment variables there.
 
-## Can I connect a custom domain to my Lovable project?
+## Can I connect a custom domain?
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Yes. Configure your custom domain from your hosting provider's dashboard (Vercel/Netlify).
 
 <!-- Trigger deployment -->

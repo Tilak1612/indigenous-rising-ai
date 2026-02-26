@@ -1,14 +1,17 @@
 import requests
 import json
 import sys
+import os
 
 def test_check_subscription():
     """Test the check-subscription edge function"""
     
     # Configuration
-    SUPABASE_URL = "https://fsqjgexjkjicwlzcgweu.supabase.co"
-    # Replace this token with a fresh one from your browser (check Network tab or /test-subscription page)
-    JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsImtpZCI6InljQ2FWVk1jd3lDZHJUdXUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2ZzcWpnZXhqa2ppY3dsemNnd2V1LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJmOWE4ODBjNC05ODVjLTRmZDAtYmM1ZC1kNTIxNzMzZTFiYmMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzYyOTI5NzE5LCJpYXQiOjE3NjI5MjYxMTksImVtYWlsIjoidGlsYWsxMTExQGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWwiOiJ0aWxhazExMTFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZ1bGxfbmFtZSI6IlRpbGFrIHJhaiIsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiZjlhODgwYzQtOTg1Yy00ZmQwLWJjNWQtZDUyMTczM2UxYmJjIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoicGFzc3dvcmQiLCJ0aW1lc3RhbXAiOjE3NjI5MjYxMTl9XSwic2Vzc2lvbl9pZCI6Ijk3YTAwNjJkLTliYjktNGM5Zi05YjkxLTRhOGMwMWEwODYxNCIsImlzX2Fub255bW91cyI6ZmFsc2V9.EBVhv3s0ldYbsB4z_iHgZZb6Tz_LbdJybQJgxVQ3Iqo"
+    SUPABASE_URL = os.getenv("SUPABASE_URL")
+    JWT_TOKEN = os.getenv("SUPABASE_JWT_TOKEN")
+    if not SUPABASE_URL or not JWT_TOKEN:
+        print("❌ Missing SUPABASE_URL or SUPABASE_JWT_TOKEN environment variable")
+        sys.exit(1)
     
     url = f"{SUPABASE_URL}/functions/v1/check-subscription"
     

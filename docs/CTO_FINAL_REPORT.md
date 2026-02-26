@@ -62,7 +62,7 @@ The Indigenous Rising AI platform is **100% production-ready** with all requeste
 - **State Management**: TanStack Query for server state
 
 ### Backend Stack:
-- **Database**: Supabase PostgreSQL (via Lovable Cloud)
+- **Database**: Supabase PostgreSQL (project-owned)
 - **Authentication**: Supabase Auth with session management
 - **Storage**: Supabase Storage with security policies
 - **Edge Functions**: Deno-based serverless functions for:
@@ -518,8 +518,8 @@ The first admin must be created manually via database access. This prevents unau
 - Includes: SSL, CDN, DDoS protection, analytics
 - Scalable to millions of requests
 
-**Database** (Supabase via Lovable Cloud):
-- Included in Lovable subscription
+**Database** (Supabase project):
+- Billed per selected Supabase plan
 - No additional cost up to X GB database
 - X GB bandwidth included
 
@@ -589,7 +589,7 @@ The first admin must be created manually via database access. This prevents unau
 ### Business Risks:
 
 **Dependency Risks**:
-- Lovable Cloud shutdown: Data exportable to standard Supabase
+- Supabase service changes: Data export/backup strategy maintained
 - Vercel/Netlify price increases: Can migrate to AWS/Cloudflare
 - React/Framework deprecation: Long-term support, large community
 
@@ -665,12 +665,12 @@ All documentation is located in the `docs/` folder:
 
 **Development Team**:
 - Lead Developer: [Name/Email]
-- Backend Specialist: Lovable Support
+- Backend Specialist: Supabase Specialist / Internal Team
 - UI/UX Designer: [Name/Email]
 
 **Service Providers**:
 - Hosting: support@vercel.com or support@netlify.com
-- Database: support@supabase.com (via Lovable)
+- Database: support@supabase.com
 - Email: HubSpot support
 
 **Compliance & Legal**:
@@ -754,7 +754,7 @@ The Indigenous Rising AI platform is fully functional, secure, performant, and c
 - Explore mobile app for broader reach
 
 **Technical**:
-- Migrate to own Supabase project when scaling (more control)
+- Continue optimizing and scaling existing Supabase project
 - Implement advanced caching strategies
 - Add real-time features (live updates)
 - Build comprehensive analytics dashboard
@@ -893,7 +893,7 @@ Backend: https://fsqjgexjkjicwlzcgweu.supabase.co
 
 **Project Team**:
 - Technical Lead: [Your Name/Email]
-- Backend Support: Lovable Support (via platform)
+- Backend Support: Supabase + Internal Platform Team
 - Hosting Support: Vercel/Netlify Support
 
 **For Technical Issues**:

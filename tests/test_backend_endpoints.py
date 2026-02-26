@@ -1,9 +1,13 @@
 import requests
 import json
+import os
 
 # Base configuration
-BASE_URL = "https://fsqjgexjkjicwlzcgweu.supabase.co"
-ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZzcWpnZXhqa2ppY3dsemNnd2V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3MjEyMzMsImV4cCI6MjA3ODI5NzIzM30.tApN-tvh9gu5zQ7KjywZRzgO7Y6m7VxthAcnPWqmzv0"
+BASE_URL = os.getenv("SUPABASE_URL")
+ANON_KEY = os.getenv("SUPABASE_ANON_KEY") or os.getenv("VITE_SUPABASE_ANON_KEY")
+
+if not BASE_URL or not ANON_KEY:
+    raise SystemExit("Missing SUPABASE_URL and/or SUPABASE_ANON_KEY environment variable")
 
 def test_contact_form():
     """Test the contact form submission endpoint"""

@@ -141,9 +141,9 @@ npm run build
 
 **Required Secrets**:
 - ✅ `HUBSPOT_API_KEY` - Configured and encrypted
-- ✅ `SUPABASE_URL` - Auto-configured by Lovable Cloud
-- ✅ `SUPABASE_SERVICE_ROLE_KEY` - Auto-configured by Lovable Cloud
-- ✅ `SUPABASE_ANON_KEY` - Auto-configured by Lovable Cloud
+- ✅ `SUPABASE_URL` - Configured in Supabase project secrets
+- ✅ `SUPABASE_SERVICE_ROLE_KEY` - Configured in Supabase project secrets
+- ✅ `SUPABASE_ANON_KEY` - Configured in Supabase project secrets
 
 **All secrets are stored securely and available to edge functions** ✅
 
@@ -283,7 +283,7 @@ Target: < 500KB ✅ PASSED
 
 ---
 
-### Supabase/Lovable Cloud - FULLY CONNECTED ✅
+### Supabase Project - FULLY CONNECTED ✅
 **Database**: fsqjgexjkjicwlzcgweu.supabase.co  
 **Status**: ✅ All tables, functions, and policies active  
 **Edge Functions**: ✅ All 3 functions deployed and ready  
@@ -336,7 +336,7 @@ Must create these 4 templates in HubSpot:
 #### 2. Create First Admin User (5 minutes)
 - [ ] Navigate to `/auth`
 - [ ] Sign up with admin email
-- [ ] Open backend via Lovable
+- [ ] Open Supabase dashboard (Table Editor / SQL Editor)
 - [ ] Insert row in `user_roles` table: 
   - user_id: (your user ID from profiles table)
   - role: 'admin'
@@ -473,7 +473,7 @@ The Indigenous Rising AI platform is **fully functional, secure, compliant, and 
 
 **Technical Issues**:
 - Hosting: support@vercel.com or support@netlify.com
-- Database: Lovable Support (via platform)
+- Database: support@supabase.com
 - HubSpot: support@hubspot.com
 
 **Reference Documentation**:

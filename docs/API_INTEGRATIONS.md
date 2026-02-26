@@ -542,7 +542,7 @@ All tables have RLS enabled with policies for:
 ```bash
 VITE_SUPABASE_PROJECT_ID="fsqjgexjkjicwlzcgweu"
 VITE_SUPABASE_URL="https://fsqjgexjkjicwlzcgweu.supabase.co"
-VITE_SUPABASE_PUBLISHABLE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+VITE_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
 ### Backend/Edge Functions (Supabase Secrets)
@@ -561,7 +561,7 @@ HUBSPOT_API_KEY="<hubspot-api-key>"
 
 ### Example 1: Create Checkout Session (Frontend)
 ```typescript
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/lib/supabase';
 
 const { data, error } = await supabase.functions.invoke('create-checkout', {
   body: {
@@ -761,7 +761,7 @@ npm test
 ## 17. CONTACT & SUPPORT
 
 ### Development Support
-- **Lovable Cloud Support**: For Supabase/deployment issues
+- **Project Platform Team**: For Supabase/deployment issues
 - **Stripe Support**: For payment processing issues
 - **HubSpot Support**: For CRM/email issues
 

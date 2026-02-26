@@ -2,12 +2,16 @@ import requests
 import json
 import sys
 from datetime import datetime
+import os
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+
+if not SUPABASE_URL:
+    print("❌ Missing SUPABASE_URL environment variable")
+    sys.exit(1)
 
 def test_submit_contact():
     """Test the submit-contact edge function"""
-    
-    # Configuration
-    SUPABASE_URL = "https://fsqjgexjkjicwlzcgweu.supabase.co"
     
     url = f"{SUPABASE_URL}/functions/v1/submit-contact"
     
@@ -95,8 +99,6 @@ def test_submit_contact():
 
 def test_missing_required_fields():
     """Test with missing required fields"""
-    
-    SUPABASE_URL = "https://fsqjgexjkjicwlzcgweu.supabase.co"
     url = f"{SUPABASE_URL}/functions/v1/submit-contact"
     
     # Missing required fields
@@ -123,8 +125,6 @@ def test_missing_required_fields():
 
 def test_field_length_validation():
     """Test field length validation"""
-    
-    SUPABASE_URL = "https://fsqjgexjkjicwlzcgweu.supabase.co"
     url = f"{SUPABASE_URL}/functions/v1/submit-contact"
     
     # Exceed maximum field length

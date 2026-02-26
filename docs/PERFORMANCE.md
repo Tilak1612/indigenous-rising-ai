@@ -150,7 +150,7 @@ const sanitize = async (input: string) => {
 };
 
 // Load Supabase client only when needed
-const { supabase } = await import('@/integrations/supabase/client');
+const { supabase } = await import('@/lib/supabase');
 ```
 
 ---

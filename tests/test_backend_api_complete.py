@@ -1,21 +1,25 @@
 import requests
 import json
+import os
 
 """
 COMPLETE BACKEND API TEST SUITE
 
 IMPORTANT URL DISTINCTION:
-- Frontend URL: https://9f734f43-7113-4d89-8e7f-88f44b6ccf24.lovableproject.com (Website)
-- Backend URL: https://fsqjgexjkjicwlzcgweu.supabase.co (API)
+- Frontend URL: configured via FRONTEND_URL (Website)
+- Backend URL: configured via SUPABASE_URL (API)
 
 Frontend URL serves the React application (HTML/CSS/JS)
 Backend URL serves the API endpoints (REST API + Edge Functions)
 """
 
 # Configuration
-BACKEND_BASE_URL = "https://fsqjgexjkjicwlzcgweu.supabase.co"
-FRONTEND_URL = "https://9f734f43-7113-4d89-8e7f-88f44b6ccf24.lovableproject.com"
-ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZzcWpnZXhqa2ppY3dsemNnd2V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3MjEyMzMsImV4cCI6MjA3ODI5NzIzM30.tApN-tvh9gu5zQ7KjywZRzgO7Y6m7VxthAcnPWqmzv0"
+BACKEND_BASE_URL = os.getenv("SUPABASE_URL")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+ANON_KEY = os.getenv("SUPABASE_ANON_KEY") or os.getenv("VITE_SUPABASE_ANON_KEY")
+
+if not BACKEND_BASE_URL or not ANON_KEY:
+    raise SystemExit("Missing SUPABASE_URL and/or SUPABASE_ANON_KEY environment variable")
 
 def test_public_endpoint_contact():
     """Test public endpoint - Contact form submission"""
