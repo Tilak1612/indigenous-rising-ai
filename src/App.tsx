@@ -531,42 +531,4 @@ const App = () => (
 );
 };
 
-import { useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import { trackPageView } from "./utils/analytics";
-
-const AppInner = () => {
-  const location = useLocation();
-  const isFirstLoad = useRef(true);
-  useEffect(() => {
-    if (isFirstLoad.current) {
-      isFirstLoad.current = false;
-      return;
-    }
-    trackPageView(location.pathname, document.title);
-  }, [location.pathname]);
-
-  return (
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              <Suspense fallback={<PageSkeleton variant="landing" />}>
-                <Index />
-              </Suspense>
-            } 
-          />
-          {/* ...existing code... */}
-        </Routes>
-        <AccessibilityToolbar />
-        <CookieConsent />
-        <ComplianceBanner />
-      </TooltipProvider>
-    </AuthProvider>
-  );
-};
 export default App;
