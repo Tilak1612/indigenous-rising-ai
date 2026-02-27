@@ -18,6 +18,13 @@ const FundingDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const opportunity = id ? getOpportunityById(id) : null;
+  // Track funding opportunity view
+  if (opportunity) {
+    import('@/utils/analytics').then(({ trackEvent }) => {
+      trackEvent('funding_opportunity_viewed', { opportunity_name: opportunity.name });
+    });
+  }
 
   if (!id) {
     return (
@@ -29,8 +36,6 @@ const FundingDetail = () => {
       </div>
     );
   }
-
-  const opportunity = getOpportunityById(id);
 
   if (!opportunity) {
     return (

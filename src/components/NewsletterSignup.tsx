@@ -17,6 +17,7 @@ import {
   getTimeUntilReset,
   formatTimeRemaining 
 } from '@/lib/rate-limiter';
+import { trackEvent } from '@/utils/analytics';
 
 const NewsletterSignup = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -104,16 +105,14 @@ const NewsletterSignup = () => {
       recordSubmission('newsletter');
 
       setIsSubmitted(true);
-      
+      trackEvent('newsletter_subscribe', { source: 'homepage' });
       const requiresConfirmation = response?.requiresConfirmation;
-      
       toast({
         title: 'Miigwech! Thank you!',
         description: requiresConfirmation 
           ? 'Please check your email to confirm your subscription.'
           : 'You\'ve been subscribed to funding alerts and updates.',
       });
-      
       reset();
     } catch (error: any) {
       console.error('Newsletter subscription error:', error);

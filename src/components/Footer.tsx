@@ -1,6 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
+import { trackEvent } from '@/utils/analytics';
 import { 
   Mail, Phone, MapPin, Twitter, Linkedin, 
   Youtube, Globe, Shield, Heart, BookOpen
@@ -153,6 +154,8 @@ const Footer = () => {
               </div>
 
               <NewsletterSignup />
+              {/* Footer newsletter subscribe event */}
+              {/* If you add a separate form for the footer, call trackEvent('newsletter_subscribe', { source: 'footer' }) on submit */}
 
               {/* Social links */}
               <div className="space-y-4 pt-4">

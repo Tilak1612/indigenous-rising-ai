@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { trackEvent } from '@/utils/analytics';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -32,6 +33,7 @@ const Training = () => {
   const [portalLoading, setPortalLoading] = useState(false);
 
   const handleSubscribe = async () => {
+    trackEvent('training_enrollment_start', { training_type: 'premium_training' });
     if (!user) {
       toast.error('Please log in to subscribe to the training program');
       navigate('/auth');

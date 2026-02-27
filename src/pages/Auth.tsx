@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { trackEvent } from '@/utils/analytics';
 import { useAuth } from '@/hooks/useAuth';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -80,6 +81,7 @@ export default function Auth() {
           }
         } else {
           setSuccess('Account created successfully! You can now sign in.');
+          trackEvent('sign_up', { plan: 'free' });
           setIsLogin(true);
           setPassword('');
           setConfirmPassword('');
