@@ -529,6 +529,5 @@ const App = () => (
     </HelmetProvider>
   </ErrorBoundary>
 );
-};
 
 export default App;
