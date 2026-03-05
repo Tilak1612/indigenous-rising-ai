@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Helmet } from 'react-helmet-async';
 
-const BASE_URL = 'https://indigenousrising.ai';
+const BASE_URL = 'https://www.indigenousrising.ai';
 
 // Organization Schema - main business info
 export const organizationSchema = {

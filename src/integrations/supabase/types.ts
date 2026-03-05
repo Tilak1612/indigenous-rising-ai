@@ -315,7 +315,7 @@ export type Database = {
         Args: {
           _ip_address: string
           _max_submissions?: number
-          _time_window?: unknown
+          _time_window?: string
         }
         Returns: boolean
       }
