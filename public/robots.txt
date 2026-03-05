@@ -1,12 +1,15 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
-
-# Block admin and private areas
-Disallow: /admin/
+Disallow: /dashboard
+Disallow: /dashboard/
 Disallow: /admin
-Disallow: /auth/
+Disallow: /admin/
+Disallow: /api/
 Disallow: /auth
+Disallow: /login
+Disallow: /signup
+Disallow: /profile
 Disallow: /test-subscription
 Disallow: /unsubscribe
 
@@ -24,7 +27,7 @@ Allow: /track-request
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://indigenousrising.ai/sitemap.xml
+Sitemap: https://www.indigenousrising.ai/sitemap.xml
 
 # Google specific
 User-agent: Googlebot
