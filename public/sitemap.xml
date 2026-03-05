@@ -1,61 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://indigenousrising.ai/</loc>
+    <loc>https://www.indigenousrising.ai/</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/training</loc>
+    <loc>https://www.indigenousrising.ai/funding</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/contact</loc>
+    <loc>https://www.indigenousrising.ai/learning</loc>
+    <lastmod>2025-12-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.indigenousrising.ai/training</loc>
+    <lastmod>2025-12-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.indigenousrising.ai/contact</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/privacy</loc>
+    <loc>https://www.indigenousrising.ai/success-stories</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/terms</loc>
+    <loc>https://www.indigenousrising.ai/pricing</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/cookies</loc>
+    <loc>https://www.indigenousrising.ai/privacy</loc>
+    <lastmod>2025-12-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.indigenousrising.ai/terms</loc>
+    <lastmod>2025-12-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.indigenousrising.ai/compliance</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/accessibility</loc>
+    <loc>https://www.indigenousrising.ai/accessibility</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/compliance</loc>
+    <loc>https://www.indigenousrising.ai/data-rights</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/data-rights</loc>
+    <loc>https://www.indigenousrising.ai/careers</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://indigenousrising.ai/track-request</loc>
+    <loc>https://www.indigenousrising.ai/track-request</loc>
     <lastmod>2025-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

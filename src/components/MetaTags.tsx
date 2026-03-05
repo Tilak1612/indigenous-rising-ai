@@ -13,7 +13,7 @@ interface MetaTagsProps {
   faqs?: { question: string; answer: string }[];
 }
 
-const BASE_URL = 'https://indigenousrising.ai';
+const BASE_URL = 'https://www.indigenousrising.ai';
 
 const MetaTags = ({
   title = 'Indigenous Rising AI - Business Support Platform',
