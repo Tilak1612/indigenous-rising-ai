@@ -1,11 +1,8 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { ArrowRight, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
-import heroAbstract from '@/assets/hero-bg-abstract.jpg';
-import heroHybrid from '@/assets/hero-bg-hybrid.jpg';
 import heroPhoto from '@/assets/hero-bg-photo.jpg';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 const heroBackgrounds = [
   { key: 'abstract', src: heroAbstract, label: 'Cultural Pattern' },
