@@ -152,26 +152,6 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Background switcher — bottom center */}
-        <div
-          className="flex justify-center gap-2 pb-6 opacity-0 translate-y-8"
-          style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1.3s forwards' }}
-        >
-          {heroBackgrounds.map((bg, i) => (
-            <button
-              key={bg.key}
-              onClick={() => setBgIndex(i)}
-              className={`text-xs font-geist px-3 py-1.5 rounded-full transition-all ${
-                i === bgIndex
-                  ? 'bg-white/25 text-white ring-1 ring-white/40'
-                  : 'bg-white/10 text-white/60 hover:bg-white/15 hover:text-white/80'
-              }`}
-              aria-label={`Switch to ${bg.label} background`}
-            >
-              {bg.label}
-            </button>
-          ))}
-        </div>
 
         {/* Scroll indicator */}
         <div
