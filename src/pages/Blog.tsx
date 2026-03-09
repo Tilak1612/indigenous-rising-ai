@@ -38,7 +38,7 @@ const Blog = () => {
     return posts;
   }, [searchQuery, selectedCategory]);
 
-  const featuredPost = blogPosts[0];
+  const featuredPost = getAllPosts()[0];
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-CA', {
