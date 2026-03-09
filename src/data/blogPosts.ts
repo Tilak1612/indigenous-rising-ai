@@ -2917,22 +2917,28 @@ export const getBlogBySlug = (slug: string): BlogPost | undefined => {
 };
 
 export const getRelatedPosts = (postIds: string[]): BlogPost[] => {
-  return blogPosts.filter(post => postIds.includes(post.id));
+  return allPosts.filter(post => postIds.includes(post.id));
 };
 
 export const getBlogsByCategory = (category: string): BlogPost[] => {
-  return blogPosts.filter(post => post.category === category);
+  return allPosts.filter(post => post.category === category);
 };
 
 export const getAllCategories = (): string[] => {
-  return [...new Set(blogPosts.map(post => post.category))];
+  return [...new Set(allPosts.map(post => post.category))];
 };
 
 export const searchBlogs = (query: string): BlogPost[] => {
   const lowerQuery = query.toLowerCase();
-  return blogPosts.filter(post => 
+  return allPosts.filter(post => 
     post.title.toLowerCase().includes(lowerQuery) ||
     post.summary.toLowerCase().includes(lowerQuery) ||
     post.keywords.some(kw => kw.toLowerCase().includes(lowerQuery))
   );
+};
+
+export const getAllPosts = (): BlogPost[] => allPosts;
+
+export const getPostImage = (postId: string): string => {
+  return allPostImages[postId] || fundingGuidesImage;
 };
