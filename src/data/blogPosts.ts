@@ -1,3 +1,4 @@
+import { extraBlogPosts, extraPostImages } from './blogPostsExtra';
 import fundingGuidesImage from '@/assets/blog/funding-guides.jpg';
 import howToGuidesImage from '@/assets/blog/how-to-guides.jpg';
 import provincialGuidesImage from '@/assets/blog/provincial-guides.jpg';
