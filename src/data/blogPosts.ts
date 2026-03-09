@@ -2908,8 +2908,12 @@ Maintain connections with regional organizations even while operating in urban c
   }
 ];
 
+// Merge all posts
+const allPosts = [...blogPosts, ...extraBlogPosts];
+const allPostImages = { ...postImages, ...extraPostImages };
+
 export const getBlogBySlug = (slug: string): BlogPost | undefined => {
-  return blogPosts.find(post => post.slug === slug);
+  return allPosts.find(post => post.slug === slug);
 };
 
 export const getRelatedPosts = (postIds: string[]): BlogPost[] => {
