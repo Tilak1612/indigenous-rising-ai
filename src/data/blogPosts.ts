@@ -72,9 +72,7 @@ export const getCategoryImage = (category: string): string => {
   return categoryImages[category] || fundingGuidesImage;
 };
 
-export const getPostImage = (postId: string): string => {
-  return postImages[postId] || fundingGuidesImage;
-};
+// getPostImage is defined at the bottom after merging extra posts
 
 export interface BlogPost {
   id: string;
