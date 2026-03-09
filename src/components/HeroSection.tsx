@@ -101,7 +101,7 @@ const HeroSection = () => {
 
           {/* CTAs */}
           <div
-            className="mt-8 flex flex-wrap items-center gap-4 opacity-0 translate-y-8"
+            className="mt-16 flex flex-wrap items-center gap-4 opacity-0 translate-y-8"
             style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1s forwards' }}
           >
             <ShinyButton onClick={() => navigate('/auth')} className="group">
