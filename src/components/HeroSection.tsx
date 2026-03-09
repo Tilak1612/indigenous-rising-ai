@@ -4,15 +4,8 @@ import InteractiveQuiz from './InteractiveQuiz';
 import heroPhoto from '@/assets/hero-bg-photo.jpg';
 import { useNavigate } from 'react-router-dom';
 
-const heroBackgrounds = [
-  { key: 'abstract', src: heroAbstract, label: 'Cultural Pattern' },
-  { key: 'hybrid', src: heroHybrid, label: 'Platform Preview' },
-  { key: 'photo', src: heroPhoto, label: 'Entrepreneurs' },
-] as const;
-
 const HeroSection = () => {
   const navigate = useNavigate();
-  const [bgIndex, setBgIndex] = useState(2);
 
   const scrollToFunding = () => {
     document.querySelector('#funding')?.scrollIntoView({ behavior: 'smooth' });
