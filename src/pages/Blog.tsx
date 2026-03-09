@@ -25,7 +25,7 @@ const Blog = () => {
   const categories = getAllCategories();
 
   const filteredPosts = useMemo(() => {
-    let posts = blogPosts;
+    let posts = getAllPosts();
     
     if (searchQuery) {
       posts = searchBlogs(searchQuery);
