@@ -11,7 +11,7 @@ import {
   Search, Calendar, Clock, ArrowRight, BookOpen, 
   TrendingUp, Filter, ChevronDown 
 } from 'lucide-react';
-import { blogPosts, getAllCategories, searchBlogs, getPostImage } from '@/data/blogPosts';
+import { getAllPosts, getAllCategories, searchBlogs, getPostImage } from '@/data/blogPosts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +25,7 @@ const Blog = () => {
   const categories = getAllCategories();
 
   const filteredPosts = useMemo(() => {
-    let posts = blogPosts;
+    let posts = getAllPosts();
     
     if (searchQuery) {
       posts = searchBlogs(searchQuery);
@@ -38,7 +38,7 @@ const Blog = () => {
     return posts;
   }, [searchQuery, selectedCategory]);
 
-  const featuredPost = blogPosts[0];
+  const featuredPost = getAllPosts()[0];
 
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-CA', {
@@ -77,7 +77,7 @@ const Blog = () => {
                 "url": "https://indigenousrising.ai/logo-icon.png"
               }
             },
-            "blogPost": blogPosts.slice(0, 10).map(post => ({
+            "blogPost": getAllPosts().slice(0, 10).map(post => ({
               "@type": "BlogPosting",
               "headline": post.title,
               "description": post.summary,
@@ -261,7 +261,7 @@ const Blog = () => {
             <h2 className="text-2xl font-display font-bold mb-6">Browse by Category</h2>
             <div className="flex flex-wrap gap-3">
               {categories.map(category => {
-                const count = blogPosts.filter(p => p.category === category).length;
+                const count = getAllPosts().filter(p => p.category === category).length;
                 return (
                   <Button
                     key={category}

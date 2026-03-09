@@ -1,3 +1,4 @@
+import { extraBlogPosts, extraPostImages } from './blogPostsExtra';
 import fundingGuidesImage from '@/assets/blog/funding-guides.jpg';
 import howToGuidesImage from '@/assets/blog/how-to-guides.jpg';
 import provincialGuidesImage from '@/assets/blog/provincial-guides.jpg';
@@ -71,9 +72,7 @@ export const getCategoryImage = (category: string): string => {
   return categoryImages[category] || fundingGuidesImage;
 };
 
-export const getPostImage = (postId: string): string => {
-  return postImages[postId] || fundingGuidesImage;
-};
+// getPostImage is defined at the bottom after merging extra posts
 
 export interface BlogPost {
   id: string;
@@ -2907,27 +2906,37 @@ Maintain connections with regional organizations even while operating in urban c
   }
 ];
 
+// Merge all posts
+const allPosts = [...blogPosts, ...extraBlogPosts];
+const allPostImages = { ...postImages, ...extraPostImages };
+
 export const getBlogBySlug = (slug: string): BlogPost | undefined => {
-  return blogPosts.find(post => post.slug === slug);
+  return allPosts.find(post => post.slug === slug);
 };
 
 export const getRelatedPosts = (postIds: string[]): BlogPost[] => {
-  return blogPosts.filter(post => postIds.includes(post.id));
+  return allPosts.filter(post => postIds.includes(post.id));
 };
 
 export const getBlogsByCategory = (category: string): BlogPost[] => {
-  return blogPosts.filter(post => post.category === category);
+  return allPosts.filter(post => post.category === category);
 };
 
 export const getAllCategories = (): string[] => {
-  return [...new Set(blogPosts.map(post => post.category))];
+  return [...new Set(allPosts.map(post => post.category))];
 };
 
 export const searchBlogs = (query: string): BlogPost[] => {
   const lowerQuery = query.toLowerCase();
-  return blogPosts.filter(post => 
+  return allPosts.filter(post => 
     post.title.toLowerCase().includes(lowerQuery) ||
     post.summary.toLowerCase().includes(lowerQuery) ||
     post.keywords.some(kw => kw.toLowerCase().includes(lowerQuery))
   );
+};
+
+export const getAllPosts = (): BlogPost[] => allPosts;
+
+export const getPostImage = (postId: string): string => {
+  return allPostImages[postId] || fundingGuidesImage;
 };
