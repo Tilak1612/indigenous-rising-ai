@@ -48,7 +48,7 @@ const HeroSection = () => {
 
       {/* Content — left-aligned split layout */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="pt-28 pb-16 sm:pt-32 md:pt-36 lg:pt-40 sm:pb-20 lg:pb-24 lg:max-w-[55%]">
+        <div className="pt-44 pb-16 sm:pt-52 md:pt-56 lg:pt-64 sm:pb-20 lg:pb-24 lg:max-w-[55%]">
           {/* Brand badge */}
           <div
             className="flex flex-col gap-2 sm:gap-3 lg:gap-4 opacity-0 translate-y-8"
