@@ -261,7 +261,7 @@ const Blog = () => {
             <h2 className="text-2xl font-display font-bold mb-6">Browse by Category</h2>
             <div className="flex flex-wrap gap-3">
               {categories.map(category => {
-                const count = blogPosts.filter(p => p.category === category).length;
+                const count = getAllPosts().filter(p => p.category === category).length;
                 return (
                   <Button
                     key={category}
