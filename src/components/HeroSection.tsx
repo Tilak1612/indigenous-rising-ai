@@ -17,20 +17,16 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="relative isolate min-h-screen" aria-label="Welcome to Indigenous Rising AI">
-      {/* Background image with crossfade */}
+      {/* Background image */}
       <div className="absolute inset-0 -z-10">
-        {heroBackgrounds.map((bg, i) => (
-          <img
-            key={bg.key}
-            src={bg.src}
-            alt="Indigenous Rising AI hero background"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-            style={{ opacity: i === bgIndex ? 1 : 0 }}
-            loading={i === 0 ? 'eager' : 'lazy'}
-            fetchPriority={i === 0 ? 'high' : 'auto'}
-            decoding="async"
-          />
-        ))}
+        <img
+          src={heroPhoto}
+          alt="Indigenous entrepreneurs collaborating in a bright workspace"
+          className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
         {/* Gradient overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30 lg:to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
