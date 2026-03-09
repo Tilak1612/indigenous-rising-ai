@@ -11,7 +11,7 @@ import {
   Search, Calendar, Clock, ArrowRight, BookOpen, 
   TrendingUp, Filter, ChevronDown 
 } from 'lucide-react';
-import { blogPosts, getAllCategories, searchBlogs, getPostImage } from '@/data/blogPosts';
+import { getAllPosts, getAllCategories, searchBlogs, getPostImage } from '@/data/blogPosts';
 import {
   DropdownMenu,
   DropdownMenuContent,
