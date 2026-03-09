@@ -1,21 +1,11 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { ArrowRight, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
-import heroAbstract from '@/assets/hero-bg-abstract.jpg';
-import heroHybrid from '@/assets/hero-bg-hybrid.jpg';
 import heroPhoto from '@/assets/hero-bg-photo.jpg';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-
-const heroBackgrounds = [
-  { key: 'abstract', src: heroAbstract, label: 'Cultural Pattern' },
-  { key: 'hybrid', src: heroHybrid, label: 'Platform Preview' },
-  { key: 'photo', src: heroPhoto, label: 'Entrepreneurs' },
-] as const;
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const [bgIndex, setBgIndex] = useState(2);
 
   const scrollToFunding = () => {
     document.querySelector('#funding')?.scrollIntoView({ behavior: 'smooth' });
@@ -27,20 +17,16 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="relative isolate min-h-screen" aria-label="Welcome to Indigenous Rising AI">
-      {/* Background image with crossfade */}
+      {/* Background image */}
       <div className="absolute inset-0 -z-10">
-        {heroBackgrounds.map((bg, i) => (
-          <img
-            key={bg.key}
-            src={bg.src}
-            alt="Indigenous Rising AI hero background"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-            style={{ opacity: i === bgIndex ? 1 : 0 }}
-            loading={i === 0 ? 'eager' : 'lazy'}
-            fetchPriority={i === 0 ? 'high' : 'auto'}
-            decoding="async"
-          />
-        ))}
+        <img
+          src={heroPhoto}
+          alt="Indigenous entrepreneurs collaborating in a bright workspace"
+          className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
         {/* Gradient overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30 lg:to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
@@ -166,26 +152,6 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Background switcher — bottom center */}
-        <div
-          className="flex justify-center gap-2 pb-6 opacity-0 translate-y-8"
-          style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1.3s forwards' }}
-        >
-          {heroBackgrounds.map((bg, i) => (
-            <button
-              key={bg.key}
-              onClick={() => setBgIndex(i)}
-              className={`text-xs font-geist px-3 py-1.5 rounded-full transition-all ${
-                i === bgIndex
-                  ? 'bg-white/25 text-white ring-1 ring-white/40'
-                  : 'bg-white/10 text-white/60 hover:bg-white/15 hover:text-white/80'
-              }`}
-              aria-label={`Switch to ${bg.label} background`}
-            >
-              {bg.label}
-            </button>
-          ))}
-        </div>
 
         {/* Scroll indicator */}
         <div
