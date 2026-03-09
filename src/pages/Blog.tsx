@@ -77,7 +77,7 @@ const Blog = () => {
                 "url": "https://indigenousrising.ai/logo-icon.png"
               }
             },
-            "blogPost": blogPosts.slice(0, 10).map(post => ({
+            "blogPost": getAllPosts().slice(0, 10).map(post => ({
               "@type": "BlogPosting",
               "headline": post.title,
               "description": post.summary,
