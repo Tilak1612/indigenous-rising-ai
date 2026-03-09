@@ -15,7 +15,7 @@ const heroBackgrounds = [
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const [bgIndex, setBgIndex] = useState(0);
+  const [bgIndex, setBgIndex] = useState(2);
 
   const scrollToFunding = () => {
     document.querySelector('#funding')?.scrollIntoView({ behavior: 'smooth' });
