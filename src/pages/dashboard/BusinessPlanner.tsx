@@ -79,7 +79,7 @@ export default function BusinessPlannerPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [hasError, setHasError] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
-  const autoSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const autoSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-save logic
   const saveAnswers = useCallback(async (newAnswers: Record<string, string>, createVersion = false) => {
