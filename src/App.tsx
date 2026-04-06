@@ -494,21 +494,13 @@ const App = () => (
                   </Suspense>
                 } 
               />
-              <Route 
-                path="/learning" 
+              <Route
+                path="/learning"
                 element={
                   <Suspense fallback={<PageSkeleton variant="landing" />}>
                     <PublicLearning />
                   </Suspense>
-                } 
-              />
-              <Route 
-                path="/success-stories" 
-                element={
-                  <Suspense fallback={<PageSkeleton variant="landing" />}>
-                    <SuccessStories />
-                  </Suspense>
-                } 
+                }
               />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route
