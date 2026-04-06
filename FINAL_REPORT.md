@@ -96,3 +96,42 @@ npm run build       → ✓ built in 6.10s
 ```
 
 All checks pass. The application is ready for deployment.
+
+---
+
+## Phase 2 Security Hardening (2026-04-06)
+
+A second audit pass was performed covering security, reliability, data integrity, billing safety, and abuse prevention. See [PHASE_2_SECURITY_REPORT.md](PHASE_2_SECURITY_REPORT.md) for full findings.
+
+### Phase 2 Fixes
+
+| ID | File | Issue | Fix |
+|---|---|---|---|
+| SEC-1 | `BusinessPlanner.tsx` | Stored XSS: `innerHTML` from localStorage unescaped | DOMPurify sanitization on both input and load |
+| SEC-2 | `Auth.tsx` | Password recovery link had no handler — users couldn't reset | Added `type=recovery` hash detection + Set New Password form |
+| SEC-3 | `customer-portal` | Empty Stripe key passed to SDK on missing env var | 503 early return guard |
+| SEC-4 | `create-checkout`, `customer-portal` | Attacker-controlled `Origin` used in Stripe redirect URLs | ALLOWED_ORIGINS allowlist validation |
+| REL-1 | `useSubscription.tsx` | Stripe API polled every 60s per user (100 users = 6000 calls/hr) | 5-minute polling + visibilitychange refresh |
+| REL-2 | `newsletter-subscribe` | Confirmation tokens never expired | 48-hour expiry with HTTP 410 |
+
+### Phase 2 — Known Remaining Risks (Architecture Decisions Required)
+
+| Risk | Severity | Notes |
+|---|---|---|
+| Webhook `auth.admin.listUsers()` misses users >1000 | HIGH | Replace with `profiles` table email lookup |
+| BusinessPlanner data in localStorage only | HIGH | Migrate to Supabase `business_plans` table |
+| react-router XSS CVE (v6) | HIGH | Schedule upgrade to v7 |
+| Admin page: no loading guard before role confirmed | MEDIUM | Gate on `!loading && isAdmin` |
+| webhook_events stores full Stripe PII payload | MEDIUM | Store summary only + 30-day retention |
+| Edge functions: wildcard CORS on authenticated endpoints | LOW | Lock to production domain |
+| Fake notification/privacy/language save handlers | MEDIUM | Persist to Supabase user_preferences |
+| Session not invalidated after password change | LOW | Call `signOut({ scope: 'others' })` post-updateUser |
+
+### Phase 2 QA Gate
+
+```
+npx tsc --noEmit    → 0 errors
+npm test -- --run   → 76/76 passing
+npm run lint        → 0 warnings
+npm run build       → ✓ built in 6.52s
+```

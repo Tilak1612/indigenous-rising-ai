@@ -1,7 +1,49 @@
-# Changelog — Production Hardening Audit
+# Changelog — Production Hardening Audit (Phase 1 + Phase 2)
 **Session dates:** 2026-04-05 / 2026-04-06  
 **Branch:** main  
 **All changes committed; no force-push performed.**
+
+---
+
+## [7f0093b] security: Phase 2 hardening — XSS, auth recovery, Stripe safety
+
+### `src/pages/dashboard/BusinessPlanner.tsx`
+- Added `import DOMPurify from 'dompurify'`
+- `handleEditorInput`: sanitize `editorRef.current.innerHTML` with DOMPurify (allowlist: `b,i,u,strong,em,br,p,ul,ol,li`, no attributes) before storing to localStorage
+- Step-change useEffect: sanitize `currentAnswer` with DOMPurify before `editor.innerHTML = ...`
+
+### `src/pages/Auth.tsx`
+- Added `isRecovery: boolean` state
+- Added useEffect: detect `type=recovery` in `window.location.hash` on mount
+- Modified dashboard redirect useEffect: suppress redirect when `isRecovery` is true
+- Added `handleSetNewPassword()`: validates password length + match, calls `supabase.auth.updateUser({ password })`, clears hash via `window.history.replaceState` on success
+- Added recovery form UI (conditionally rendered when `isRecovery`)
+- Title/subtitle updated to reflect recovery state
+- Main login/signup form guarded with `!isRecovery`
+- Bottom link section: hidden during recovery state
+
+### `supabase/functions/create-checkout/index.ts`
+- Added `ALLOWED_ORIGINS` allowlist (`www.indigenousrising.ai`, `indigenousrising.ai`, localhost variants)
+- `origin` variable derived from allowlist check; falls back to production domain if Origin not in allowlist
+
+### `supabase/functions/customer-portal/index.ts`
+- Added `503` early return guard when `STRIPE_SECRET_KEY` not set
+- Changed `new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '')` → `new Stripe(stripeKey)`
+- Added same `ALLOWED_ORIGINS` allowlist for `return_url`
+
+### `src/hooks/useSubscription.tsx`
+- Changed `setInterval(checkSubscription, 60000)` → `setInterval(checkSubscription, 300000)` (60s → 5min)
+- Added `visibilitychange` event listener: calls `checkSubscription()` when tab becomes visible
+- Cleanup: `removeEventListener` added to effect cleanup
+
+### `supabase/functions/newsletter-subscribe/index.ts`
+- Added 48-hour expiry check on `action=confirm` path
+- If `subscribed_at` is >48h ago and token unconfirmed → HTTP 410 Gone with human-readable message
+
+### `PHASE_2_SECURITY_REPORT.md` (new file)
+- Full security audit report with all findings, RLS table audit, npm audit assessment, top 10 risks, top 10 next improvements
+
+---
 
 ---
 
