@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
+import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { 
   Settings as SettingsIcon, 
@@ -122,26 +123,45 @@ export default function Settings() {
 
   const handlePasswordChange = async () => {
     setPasswordErrors({});
-    
+
     try {
       passwordSchema.parse(passwordData);
-      setSaving(true);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast.success('Password updated successfully');
-      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Record<string, string> = {};
         error.errors.forEach(err => {
-          if (err.path[0]) {
-            errors[err.path[0] as string] = err.message;
-          }
+          if (err.path[0]) errors[err.path[0] as string] = err.message;
         });
         setPasswordErrors(errors);
       }
+      return;
+    }
+
+    setSaving(true);
+    try {
+      // Re-authenticate with current password to verify identity
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: user?.email ?? '',
+        password: passwordData.currentPassword,
+      });
+      if (authError) {
+        setPasswordErrors({ currentPassword: 'Current password is incorrect' });
+        return;
+      }
+
+      // Update to new password
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: passwordData.newPassword,
+      });
+      if (updateError) {
+        toast.error(updateError.message);
+        return;
+      }
+
+      toast.success('Password updated successfully');
+      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch {
+      toast.error('An unexpected error occurred');
     } finally {
       setSaving(false);
     }

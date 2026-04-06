@@ -57,20 +57,31 @@ interface FundingOpportunity {
   saved: boolean;
 }
 
+// Derive status from deadline date so it stays accurate over time
+const deriveStatus = (deadline: string): FundingOpportunity['status'] => {
+  if (deadline === 'Ongoing') return 'open';
+  const deadlineDate = new Date(deadline);
+  const now = new Date();
+  const daysUntil = Math.floor((deadlineDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  if (daysUntil < 0) return 'closed';
+  if (daysUntil <= 30) return 'closing_soon';
+  return 'open';
+};
+
 const fundingData: FundingOpportunity[] = [
   {
     id: '1',
     name: 'Indigenous Business Development Program',
     organization: 'Indigenous Services Canada',
     amount: { min: 10000, max: 99999 },
-    deadline: '2024-03-31',
+    deadline: '2026-09-30',
     category: 'Business Development',
     region: ['All Provinces'],
     eligibility: ['Indigenous-owned', 'Registered Business'],
     matchScore: 95,
     description: 'Funding to support Indigenous entrepreneurs in starting, expanding, or acquiring a business.',
     website: 'https://www.isc.gc.ca',
-    status: 'open',
+    status: deriveStatus('2026-09-30'),
     saved: true,
   },
   {
@@ -78,14 +89,14 @@ const fundingData: FundingOpportunity[] = [
     name: 'Aboriginal Business Financing Program',
     organization: 'Business Development Bank of Canada',
     amount: { min: 25000, max: 250000 },
-    deadline: '2024-06-30',
+    deadline: '2026-12-31',
     category: 'Loans & Financing',
     region: ['All Provinces'],
     eligibility: ['Indigenous-owned', '51% Indigenous ownership'],
     matchScore: 88,
     description: 'Flexible financing solutions for Indigenous entrepreneurs with favorable terms.',
     website: 'https://www.bdc.ca',
-    status: 'open',
+    status: deriveStatus('2026-12-31'),
     saved: false,
   },
   {
@@ -93,14 +104,14 @@ const fundingData: FundingOpportunity[] = [
     name: 'Indigenous Tourism Grant',
     organization: 'Indigenous Tourism Association of Canada',
     amount: { min: 5000, max: 50000 },
-    deadline: '2024-02-28',
+    deadline: '2026-08-31',
     category: 'Tourism',
     region: ['British Columbia', 'Alberta', 'Ontario'],
     eligibility: ['Tourism Business', 'Indigenous-owned'],
     matchScore: 72,
     description: 'Grants to support Indigenous tourism businesses and experiences.',
     website: 'https://indigenoustourism.ca',
-    status: 'closing_soon',
+    status: deriveStatus('2026-08-31'),
     saved: false,
   },
   {
@@ -108,14 +119,14 @@ const fundingData: FundingOpportunity[] = [
     name: 'Women Entrepreneurship Strategy',
     organization: 'Innovation, Science and Economic Development Canada',
     amount: { min: 10000, max: 100000 },
-    deadline: '2024-04-15',
+    deadline: '2026-10-15',
     category: 'Women Entrepreneurs',
     region: ['All Provinces'],
     eligibility: ['Woman-owned', 'Indigenous-owned'],
     matchScore: 85,
     description: 'Support for women entrepreneurs including Indigenous women in business.',
     website: 'https://ised-isde.canada.ca',
-    status: 'open',
+    status: deriveStatus('2026-10-15'),
     saved: true,
   },
   {
@@ -123,14 +134,14 @@ const fundingData: FundingOpportunity[] = [
     name: 'Northern Ontario Heritage Fund',
     organization: 'NOHFC',
     amount: { min: 5000, max: 500000 },
-    deadline: '2024-05-31',
+    deadline: '2026-11-30',
     category: 'Regional Development',
     region: ['Ontario'],
     eligibility: ['Northern Ontario', 'Indigenous Communities'],
     matchScore: 68,
     description: 'Economic development funding for projects in Northern Ontario.',
     website: 'https://nohfc.ca',
-    status: 'open',
+    status: deriveStatus('2026-11-30'),
     saved: false,
   },
   {
@@ -145,7 +156,7 @@ const fundingData: FundingOpportunity[] = [
     matchScore: 75,
     description: 'Loans and support for small business development in rural and Indigenous communities.',
     website: 'https://communityfutures.ca',
-    status: 'open',
+    status: deriveStatus('Ongoing'),
     saved: false,
   },
 ];

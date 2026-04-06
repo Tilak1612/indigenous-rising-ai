@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { trackEvent } from '@/utils/analytics';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -28,6 +29,7 @@ const signupSchema = z.object({
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -101,8 +103,34 @@ export default function Auth() {
 
   const switchMode = () => {
     setIsLogin(!isLogin);
+    setIsForgotPassword(false);
     setError('');
     setSuccess('');
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    if (!email) {
+      setError('Please enter your email address');
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+      if (error) {
+        setError(error.message);
+      } else {
+        setSuccess('Password reset email sent. Please check your inbox.');
+      }
+    } catch {
+      setError('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -119,14 +147,39 @@ export default function Auth() {
               <div className="bg-card p-8 rounded-lg shadow-lg border">
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-foreground mb-2">
-                    {isLogin ? 'Welcome Back' : 'Create an Account'}
+                    {isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create an Account'}
                   </h1>
                   <p className="text-muted-foreground">
-                    {isLogin ? 'Sign in to your account' : 'Join our community today'}
+                    {isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Join our community today'}
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                {isForgotPassword ? (
+                  <form onSubmit={handleForgotPassword}>
+                    <div className="space-y-5">
+                      <div>
+                        <Label htmlFor="reset-email" className="block text-sm font-medium text-foreground mb-1">
+                          Email Address
+                        </Label>
+                        <Input
+                          type="email"
+                          id="reset-email"
+                          placeholder="john@example.com"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                      {error && <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>}
+                      {success && <Alert><AlertDescription>{success}</AlertDescription></Alert>}
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? 'Sending...' : 'Send Reset Link'}
+                      </Button>
+                    </div>
+                  </form>
+                ) : null}
+
+                {!isForgotPassword && <form onSubmit={handleSubmit}>
                   <div className="space-y-5">
                     {!isLogin && (
                       <div>
@@ -234,24 +287,48 @@ export default function Auth() {
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-4 rounded-md transition duration-200"
                       disabled={loading}
                     >
-                      {loading 
-                        ? (isLogin ? 'Signing in...' : 'Creating Account...') 
+                      {loading
+                        ? (isLogin ? 'Signing in...' : 'Creating Account...')
                         : (isLogin ? 'Sign In' : 'Create Account')
                       }
                     </Button>
+
+                    {isLogin && (
+                      <div className="text-center">
+                        <button
+                          type="button"
+                          onClick={() => { setIsForgotPassword(true); setError(''); setSuccess(''); }}
+                          className="text-sm text-primary hover:text-primary/80"
+                        >
+                          Forgot your password?
+                        </button>
+                      </div>
+                    )}
                   </div>
-                </form>
+                </form>}
 
                 <div className="mt-6 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    {isLogin ? "Don't have an account? " : 'Already have an account? '}
-                    <button 
-                      onClick={switchMode} 
-                      className="text-primary hover:text-primary/80 font-medium"
-                    >
-                      {isLogin ? 'Sign up' : 'Sign in'}
-                    </button>
-                  </p>
+                  {isForgotPassword ? (
+                    <p className="text-sm text-muted-foreground">
+                      Remember it?{' '}
+                      <button
+                        onClick={() => { setIsForgotPassword(false); setError(''); setSuccess(''); }}
+                        className="text-primary hover:text-primary/80 font-medium"
+                      >
+                        Back to sign in
+                      </button>
+                    </p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">
+                      {isLogin ? "Don't have an account? " : 'Already have an account? '}
+                      <button
+                        onClick={switchMode}
+                        className="text-primary hover:text-primary/80 font-medium"
+                      >
+                        {isLogin ? 'Sign up' : 'Sign in'}
+                      </button>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
