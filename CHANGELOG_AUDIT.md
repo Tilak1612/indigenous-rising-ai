@@ -1,7 +1,48 @@
-# Changelog — Production Hardening Audit (Phase 1 + Phase 2)
+# Changelog — Production Hardening Audit (Phase 1 + Phase 2 + Phase 3)
 **Session dates:** 2026-04-05 / 2026-04-06  
 **Branch:** main  
 **All changes committed; no force-push performed.**
+
+---
+
+## [50d0b50] perf/scale: Phase 3 — React Query subscription, admin pagination, env guard
+
+### `src/App.tsx`
+- Removed `TestSubscription` lazy import and `/test-subscription` route (debug page exposed JWT tokens to authenticated users)
+- Added `QueryClient` default options: `retry: 1`, `staleTime: 2 * 60 * 1000` — prevents hammering failing services and avoids unnecessary re-fetches on mount
+
+### `src/hooks/useSubscription.tsx`
+- Complete rewrite from `setInterval(60000)` + `visibilitychange` to React Query `useQuery`
+- Stable query key: `['subscription-status', user.id]` — React Query deduplicates all concurrent requests with the same key across all components
+- `staleTime: 5 * 60 * 1000` — serves cached result for 5 minutes
+- `refetchOnWindowFocus: true` — refreshes when tab becomes visible (post-checkout flow)
+- `retry: 1` — one retry on edge function failure; safe default of `{ subscribed: false }` on error
+- Exported `SUBSCRIPTION_QUERY_KEY` constant for cache invalidation from Stripe success handlers
+
+### `src/main.tsx`
+- Added startup environment variable validation for `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+- Missing vars render a human-readable error page and throw before React mounts — prevents silent 404s from an empty Supabase URL
+
+### `src/components/admin/NewsletterManagement.tsx`
+- Complete rewrite from unbounded `SELECT *` to paginated queries
+- `PAGE_SIZE = 50`, `.range(from, to)`, `{ count: 'exact' }` for server-side pagination
+- Search moved from client-side `Array.filter()` to `.ilike('email', '%term%')` — server-side, uses index
+- 400ms debounce on search input to avoid per-keystroke queries
+- Separate CSV export query bypasses pagination to export all matching rows
+- Pagination controls (prev/next buttons) with result count display
+
+### `src/components/admin/DataRequestsManagement.tsx`
+- Complete rewrite from unbounded `SELECT *` to paginated queries
+- `PAGE_SIZE = 50`, `.range(from, to)`, `{ count: 'exact' }` for data_requests
+- Profiles query replaced: was `SELECT id, full_name, email FROM profiles` (all users) → now `user_roles JOIN profiles` filtered to `role IN ('admin', 'team_member')` — O(team) not O(users)
+- `updates: any` type annotation changed to `Record<string, unknown>`
+- Pagination controls with result count display
+
+### `PHASE_3_SCALING_REPORT.md` (new file)
+- Full Phase 3 audit: multi-tenant safety, performance bottlenecks, cost leaks, AI safety, subscription enforcement, failure resilience, data growth readiness, UX reliability, engineering quality, scaling readiness
+- 14-row summary table of all findings with status and severity
+
+---
 
 ---
 

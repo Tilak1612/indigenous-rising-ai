@@ -135,3 +135,43 @@ npm test -- --run   → 76/76 passing
 npm run lint        → 0 warnings
 npm run build       → ✓ built in 6.52s
 ```
+
+---
+
+## Phase 3 Scaling & Reliability (2026-04-06)
+
+A third audit pass covered performance bottlenecks, cost leaks, multi-tenant safety, subscription enforcement, failure resilience, and data growth readiness. See [PHASE_3_SCALING_REPORT.md](PHASE_3_SCALING_REPORT.md) for full findings.
+
+### Phase 3 Fixes
+
+| ID | File | Issue | Fix |
+|---|---|---|---|
+| B-1 | `useSubscription.tsx` | Stripe API polled every 60s per component instance — N×60s at scale | Rewrote to React Query with 5-min cache and shared query key; deduplicates concurrent calls |
+| B-2 | `NewsletterManagement.tsx` | `SELECT *` no LIMIT — loads all rows; client-side search | Server-side pagination (50/page), `.range()`, `.ilike()` server-side search, 400ms debounce |
+| B-2 | `DataRequestsManagement.tsx` | `SELECT *` data_requests + all profiles (O(users)) | Server-side pagination + scoped `user_roles` JOIN for team members only |
+| F-1 | `main.tsx` | Missing env vars caused confusing runtime 404s | Startup validation: fail loudly with human-readable error before React mounts |
+| F-2 | `App.tsx` | React Query defaults: 3 retries, staleTime 0 — hammers failing services | `retry: 1`, `staleTime: 2min` defaults on QueryClient |
+| H-1 | `App.tsx` | `/test-subscription` debug route exposed JWT tokens to authenticated users | Route removed |
+
+### Phase 3 — Known Remaining Risks (Architecture Decisions Required)
+
+| Risk | Severity | Notes |
+|---|---|---|
+| Webhook `auth.admin.listUsers()` misses users >1000 | HIGH | Replace with `profiles` table email lookup |
+| BusinessPlanner data in localStorage only | HIGH | OCAP violation — migrate to Supabase `business_plans` table |
+| react-router v6 XSS CVE | HIGH (CVE) / LOW (not triggered) | Schedule upgrade to v7 |
+| Settings: notification/privacy/language handlers are fake | MEDIUM | Persist to `user_preferences` table |
+| Profile: all 3 save handlers are fake | MEDIUM | Wire to `profiles.update()` |
+| webhook_events stores full Stripe PII, no TTL | MEDIUM | Store summary only + 30-day cleanup |
+| CORS wildcard on authenticated edge functions | LOW | Lock to production domain |
+| Session not invalidated after password change | LOW | Call `signOut({ scope: 'others' })` post-updateUser |
+| Admin page: no loading guard before role confirmed | LOW | Gate on `!roleLoading && isAdmin` |
+
+### Phase 3 QA Gate
+
+```
+npx tsc --noEmit    → 0 errors
+npm test -- --run   → 76/76 passing
+npm run lint        → 0 warnings
+npm run build       → ✓ built clean
+```
