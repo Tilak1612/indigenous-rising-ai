@@ -1,0 +1,33 @@
+{
+  "// INFO": "Claude Code settings for Indigenous Rising AI",
+  "permissions": {
+    "allow": [
+      "Read", "Edit", "MultiEdit", "Write",
+      "Bash(npm run lint)", "Bash(npm run typecheck)",
+      "Bash(npm run test)", "Bash(npm run build)",
+      "Bash(npx supabase gen types typescript*)",
+      "Bash(npx supabase db diff*)",
+      "Bash(git status)", "Bash(git diff*)", "Bash(git log*)",
+      "Bash(git branch*)", "Bash(git add*)", "Bash(git commit*)",
+      "Bash(ls*)", "Bash(cat*)", "Bash(find*)", "Bash(grep*)"
+    ],
+    "deny": [
+      "Bash(git push*)", "Bash(git merge*)", "Bash(rm -rf*)",
+      "Bash(supabase db push*)", "Bash(npx supabase db reset*)",
+      "Bash(vercel --prod*)", "Bash(stripe*)"
+    ]
+  },
+  "context": {
+    "files": ["CLAUDE.md", "SKILL.md", "docs/brand-context-pack.md"]
+  },
+  "model": {
+    "default": "claude-sonnet-4-20250514"
+  },
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server"],
+      "env": { "SUPABASE_ACCESS_TOKEN": "{GITHUB_TOKEN}" }
+    }
+  }
+}
