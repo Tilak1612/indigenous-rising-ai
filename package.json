@@ -1,5 +1,5 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "indigenous-rising-ai",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,6 +9,7 @@
     "test:watch": "vitest --watch",
     "build": "vite build",
     "build:dev": "vite build --mode development",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "preview": "vite preview"
   },
