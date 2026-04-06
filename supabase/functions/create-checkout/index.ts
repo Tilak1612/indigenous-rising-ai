@@ -28,6 +28,15 @@ serve(async (req) => {
   try {
     console.log('[CREATE-CHECKOUT] Function started');
 
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+    if (!stripeKey) {
+      console.error('[CREATE-CHECKOUT] STRIPE_SECRET_KEY not configured');
+      return new Response(
+        JSON.stringify({ error: 'Payment service not configured' }),
+        { headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' }, status: 503 }
+      );
+    }
+
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       throw new Error('No authorization header provided');
@@ -52,7 +61,7 @@ serve(async (req) => {
 
     console.log('[CREATE-CHECKOUT] Price ID:', priceId);
 
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+    const stripe = new Stripe(stripeKey, {
       apiVersion: '2025-08-27.basil',
     });
 
