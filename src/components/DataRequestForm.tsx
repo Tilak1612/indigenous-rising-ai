@@ -62,12 +62,6 @@ const DataRequestForm = () => {
     }
   }, [emailValue]);
 
-  // Debug: log validation errors during tests
-  useEffect(() => {
-     
-    console.debug('DATA_REQUEST_ERRORS', errors);
-  }, [errors]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -103,10 +97,7 @@ const DataRequestForm = () => {
     // Manual fallback validation for email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
-      // @ts-ignore
-      if (setError) {
-        (setError as any)('email', { type: 'manual', message: 'Please enter a valid email' });
-      }
+      setError('email', { type: 'manual', message: 'Please enter a valid email' });
       setEmailError('Please enter a valid email');
       return;
     }
@@ -137,7 +128,7 @@ const DataRequestForm = () => {
       const formData = new FormData();
       formData.append('fullName', data.fullName);
       formData.append('email', data.email);
-      formData.append('requestType', data.requestType.replace('-', '_'));
+      formData.append('requestType', data.requestType);
       formData.append('details', data.details);
       formData.append('phone', data.phone || '');
       formData.append('verificationMethod', uploadedFile ? 'document_upload' : 'email_only');
@@ -247,7 +238,7 @@ const DataRequestForm = () => {
       description: 'Request your data in a structured, machine-readable format'
     },
     {
-      value: 'withdraw-consent',
+      value: 'consent_withdrawal',
       label: 'Withdraw Consent',
       description: 'Withdraw your consent for specific data processing activities'
     }

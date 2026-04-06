@@ -124,7 +124,7 @@ describe('Data Request Schema', () => {
   });
 
   it('validates all request types', () => {
-    const requestTypes = ['access', 'correction', 'deletion', 'portability', 'withdraw-consent'];
+    const requestTypes = ['access', 'correction', 'deletion', 'portability', 'consent_withdrawal'];
     
     requestTypes.forEach(type => {
       const data = { ...validData, requestType: type as any };

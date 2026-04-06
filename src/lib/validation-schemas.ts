@@ -25,7 +25,7 @@ export const dataRequestSchema = z.object({
     .max(100, "Name is too long")
     .regex(/^[a-zA-Z\s-']+$/, "Name contains invalid characters"),
   email: z.string().email("Please enter a valid email"),
-  requestType: z.enum(['access', 'correction', 'deletion', 'portability', 'withdraw-consent']),
+  requestType: z.enum(['access', 'correction', 'deletion', 'portability', 'consent_withdrawal']),
   details: z
     .string()
     .min(10, "Please provide more details")
