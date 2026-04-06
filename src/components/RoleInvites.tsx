@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const RoleInvites: React.FC = () => {
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('Advisor');
 
   const sendInvite = () => {
+    if (!email.trim()) {
+      toast.error('Please enter an email address');
+      return;
+    }
     // Placeholder: in production, call API to send invite and manage roles
-    alert(`Invite sent to ${email} as ${role} (placeholder)`);
+    toast.info(`Invite sent to ${email} as ${role}. Full invite system coming soon.`);
     setEmail('');
   };
 

@@ -40,36 +40,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Set up auth state listener FIRST
+    // Await role check before setting loading=false — prevents ProtectedRoute
+    // from redirecting admins during the brief window before roles are confirmed
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
-        // Defer role checking to avoid blocking
+
         if (session?.user) {
-          setTimeout(() => {
-            checkUserRole(session.user.id);
-          }, 0);
+          await checkUserRole(session.user.id);
         } else {
           setIsAdmin(false);
           setIsTeamMember(false);
         }
-        
+
         setLoading(false);
       }
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
-        setTimeout(() => {
-          checkUserRole(session.user.id);
-        }, 0);
+        await checkUserRole(session.user.id);
       }
-      
+
       setLoading(false);
     });
 

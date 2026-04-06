@@ -2,10 +2,23 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+const ALLOWED_ORIGINS = [
+  'https://www.indigenousrising.ai',
+  'https://indigenousrising.ai',
+  'http://localhost:8080',
+  'http://localhost:5173',
+];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get('origin') || '';
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin)
+    ? origin
+    : 'https://www.indigenousrising.ai';
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  };
+}
 
 const logStep = (step: string, details?: unknown) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : "";
@@ -14,7 +27,7 @@ const logStep = (step: string, details?: unknown) => {
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: getCorsHeaders(req) });
   }
 
   try {
@@ -25,7 +38,7 @@ serve(async (req) => {
       logStep("STRIPE_SECRET_KEY not set - returning unsubscribed");
       return new Response(
         JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+        { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
 
@@ -40,7 +53,7 @@ serve(async (req) => {
       logStep("No authorization header");
       return new Response(
         JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+        { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
 
@@ -51,7 +64,7 @@ serve(async (req) => {
       logStep("Auth error or no email", { error: userError?.message });
       return new Response(
         JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+        { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
 
@@ -65,7 +78,7 @@ serve(async (req) => {
       logStep("No Stripe customer found");
       return new Response(
         JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+        { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
 
@@ -93,14 +106,14 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ subscribed: hasActiveSub, product_id: productId, subscription_end: subscriptionEnd }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+      { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     logStep("ERROR", { message });
     return new Response(
       JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+      { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
     );
   }
 });

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import DOMPurify from 'dompurify';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -55,6 +57,7 @@ const activeCollaborators = [
 ];
 
 export default function BusinessPlannerPage() {
+  const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>(() => {
     try {
@@ -82,16 +85,44 @@ export default function BusinessPlannerPage() {
   const editorRef = useRef<HTMLDivElement>(null);
   const autoSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Auto-save logic
+  // Load plan from Supabase on mount — overrides localStorage (Supabase is source of truth)
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('business_plans')
+      .select('steps')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.steps && Object.keys(data.steps as Record<string, string>).length > 0) {
+          const steps = data.steps as Record<string, string>;
+          setAnswers(steps);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(steps));
+        }
+      });
+  }, [user]);
+
+  // Auto-save logic — write-through to Supabase for OCAP Possession compliance
   const saveAnswers = useCallback(async (newAnswers: Record<string, string>, createVersion = false) => {
     setIsSaving(true);
     setHasError(false);
-    
+
     try {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 300));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newAnswers));
-      
+
+      // Persist to Supabase (Canada region) — data owned and accessible by user
+      if (user) {
+        const { error: dbError } = await supabase
+          .from('business_plans')
+          .upsert({ user_id: user.id, steps: newAnswers }, { onConflict: 'user_id' });
+        if (dbError) {
+          console.error('Failed to sync business plan to Supabase:', dbError);
+          setHasError(true);
+          toast.error('Failed to save');
+          return;
+        }
+      }
+
       if (createVersion) {
         const completedSections = STEPS.filter(step => newAnswers[step.id]?.trim().length > 0);
         const newVersion: Version = {
@@ -104,7 +135,7 @@ export default function BusinessPlannerPage() {
         setVersions(updatedVersions);
         localStorage.setItem(VERSIONS_KEY, JSON.stringify(updatedVersions));
       }
-      
+
       setLastSaved(new Date());
     } catch {
       setHasError(true);
@@ -112,7 +143,7 @@ export default function BusinessPlannerPage() {
     } finally {
       setIsSaving(false);
     }
-  }, [versions]);
+  }, [versions, user]);
 
   // Auto-save on content change
   useEffect(() => {

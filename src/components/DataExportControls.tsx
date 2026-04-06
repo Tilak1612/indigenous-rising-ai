@@ -1,20 +1,38 @@
 import React from 'react';
+import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
 
 const DataExportControls: React.FC = () => {
-  const exportData = () => {
-    const data = { message: 'This is a placeholder export of your data.' };
+  const exportData = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('You must be signed in to export data');
+      return;
+    }
+
+    const [profileResult, subResult] = await Promise.all([
+      supabase.from('profiles').select('id, email, full_name, created_at, updated_at').eq('id', user.id).single(),
+      supabase.from('subscriptions').select('stripe_product_id, status, current_period_start, current_period_end').eq('user_id', user.id).maybeSingle(),
+    ]);
+
+    const data = {
+      exportDate: new Date().toISOString(),
+      profile: profileResult.data ?? { email: user.email },
+      subscription: subResult.data ?? null,
+    };
+
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'exported-data.json';
+    a.download = 'indigenous-rising-data-export.json';
     a.click();
     URL.revokeObjectURL(url);
+    toast.success('Data exported successfully');
   };
 
   const requestDeletion = () => {
-    // In production this would create a request for admins and follow a compliance flow.
-    alert('Data deletion request submitted (placeholder)');
+    toast.info('To request account deletion, please contact help@indigenousrising.ai with subject "Data Deletion Request".');
   };
 
   return (

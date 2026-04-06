@@ -2,8 +2,10 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@18.5.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
+// stripe-webhook is called server-to-server by Stripe — CORS not enforced by browsers here,
+// but lock origin anyway for defence-in-depth
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://www.indigenousrising.ai',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, stripe-signature',
 };
 
@@ -66,13 +68,18 @@ serve(async (req) => {
 
     logStep("Processing event", { type: event.type, id: event.id });
 
-    // Store webhook event
+    // Store webhook event summary only — avoid persisting full Stripe PII payload
     const { error: webhookError } = await supabaseClient
       .from('webhook_events')
       .insert({
         stripe_event_id: event.id,
         event_type: event.type,
-        payload: event as any,
+        payload: {
+          id: event.id,
+          type: event.type,
+          created: event.created,
+          livemode: event.livemode,
+        },
         processed: false,
       });
 
@@ -90,14 +97,18 @@ serve(async (req) => {
           const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
           const customerId = session.customer as string;
           
-          // Find user by customer email
+          // Find user by customer email — use profiles table (scales beyond 1000 users)
           const customer = await stripe.customers.retrieve(customerId);
           const email = (customer as Stripe.Customer).email;
-          
+
           if (email) {
-            const { data: userData } = await supabaseClient.auth.admin.listUsers();
-            const user = userData.users.find(u => u.email === email);
-            
+            const { data: profileData } = await supabaseClient
+              .from('profiles')
+              .select('id')
+              .eq('email', email)
+              .single();
+            const user = profileData ? { id: profileData.id } : null;
+
             if (user) {
               const { error: subError } = await supabaseClient
                 .from('subscriptions')

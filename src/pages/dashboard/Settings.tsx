@@ -121,6 +121,26 @@ export default function Settings() {
   const tierLabel = product_id?.toLowerCase().includes('enterprise') ? 'Gimishoomis (Enterprise)' :
                     subscribed ? 'Ogichidaakwe (Pro)' : 'Maadaadiziwin (Free)';
 
+  // Load saved preferences from Supabase on mount
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('user_preferences')
+      .select('notifications, privacy, language')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!data) return;
+        if (data.notifications && Object.keys(data.notifications as object).length > 0) {
+          setNotifications(prev => ({ ...prev, ...(data.notifications as NotificationSettings) }));
+        }
+        if (data.privacy && Object.keys(data.privacy as object).length > 0) {
+          setPrivacy(prev => ({ ...prev, ...(data.privacy as PrivacySettings) }));
+        }
+        if (data.language) setSelectedLanguage(data.language);
+      });
+  }, [user]);
+
   const handlePasswordChange = async () => {
     setPasswordErrors({});
 
@@ -159,6 +179,8 @@ export default function Settings() {
       }
 
       toast.success('Password updated successfully');
+      // Invalidate all other active sessions — prevents stolen sessions remaining valid
+      await supabase.auth.signOut({ scope: 'others' });
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch {
       toast.error('An unexpected error occurred');
@@ -169,24 +191,48 @@ export default function Settings() {
 
   const handleSaveNotifications = async () => {
     setSaving(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
-    toast.success('Notification preferences saved');
-    setSaving(false);
+    try {
+      const { error } = await supabase
+        .from('user_preferences')
+        .upsert({ user_id: user!.id, notifications }, { onConflict: 'user_id' });
+      if (error) throw error;
+      toast.success('Notification preferences saved');
+    } catch {
+      toast.error('Failed to save notification preferences');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSavePrivacy = async () => {
     setSaving(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
-    toast.success('Privacy settings saved');
-    setSaving(false);
+    try {
+      const { error } = await supabase
+        .from('user_preferences')
+        .upsert({ user_id: user!.id, privacy }, { onConflict: 'user_id' });
+      if (error) throw error;
+      toast.success('Privacy settings saved');
+    } catch {
+      toast.error('Failed to save privacy settings');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSaveLanguage = async () => {
     setSaving(true);
-    localStorage.setItem('preferred-language', selectedLanguage);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    toast.success(`Language changed to ${languages.find(l => l.code === selectedLanguage)?.name}`);
-    setSaving(false);
+    try {
+      localStorage.setItem('preferred-language', selectedLanguage);
+      const { error } = await supabase
+        .from('user_preferences')
+        .upsert({ user_id: user!.id, language: selectedLanguage }, { onConflict: 'user_id' });
+      if (error) throw error;
+      toast.success(`Language changed to ${languages.find(l => l.code === selectedLanguage)?.name}`);
+    } catch {
+      toast.error('Failed to save language preference');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleExportData = async () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
+import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import {
@@ -128,27 +129,72 @@ export default function Profile() {
   const tierLabel = product_id?.toLowerCase().includes('enterprise') ? 'Gimishoomis (Enterprise)' :
                     subscribed ? 'Ogichidaakwe (Pro)' : 'Maadaadiziwin (Free)';
 
+  // Load existing profile from Supabase on mount
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('profiles')
+      .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links')
+      .eq('id', user.id)
+      .single()
+      .then(({ data }) => {
+        if (!data) return;
+        const parts = (data.full_name || '').split(' ');
+        const firstName = parts[0] || '';
+        const lastName = parts.slice(1).join(' ');
+        setProfileData({
+          firstName,
+          lastName,
+          phone: data.phone || '',
+          location: data.location || '',
+          territory: data.territory || '',
+          bio: data.bio || '',
+        });
+        setBusinessData({
+          businessName: data.business_name || '',
+          industry: data.industry || '',
+          website: data.website || '',
+          yearFounded: data.year_founded || '',
+          description: data.business_description || '',
+          employees: data.employees || '',
+        });
+        const sl = (data.social_links as Record<string, string>) || {};
+        setSocialLinks({
+          twitter: sl.twitter || '',
+          linkedin: sl.linkedin || '',
+          facebook: sl.facebook || '',
+          instagram: sl.instagram || '',
+        });
+      });
+  }, [user]);
+
   const handleSaveProfile = async () => {
     setProfileErrors({});
-    
     try {
       profileSchema.parse(profileData);
       setSavingProfile(true);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          full_name: `${profileData.firstName} ${profileData.lastName}`.trim(),
+          phone: profileData.phone || null,
+          location: profileData.location || null,
+          territory: profileData.territory || null,
+          bio: profileData.bio || null,
+        })
+        .eq('id', user!.id);
+      if (error) throw error;
       toast.success('Profile updated successfully');
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Record<string, string> = {};
         error.errors.forEach(err => {
-          if (err.path[0]) {
-            errors[err.path[0] as string] = err.message;
-          }
+          if (err.path[0]) errors[err.path[0] as string] = err.message;
         });
         setProfileErrors(errors);
         toast.error('Please fix the errors in the form');
+      } else {
+        toast.error('Failed to update profile');
       }
     } finally {
       setSavingProfile(false);
@@ -157,24 +203,32 @@ export default function Profile() {
 
   const handleSaveBusiness = async () => {
     setBusinessErrors({});
-    
     try {
       businessSchema.parse(businessData);
       setSavingBusiness(true);
-      
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          business_name: businessData.businessName || null,
+          industry: businessData.industry || null,
+          website: businessData.website || null,
+          year_founded: businessData.yearFounded || null,
+          business_description: businessData.description || null,
+          employees: businessData.employees || null,
+        })
+        .eq('id', user!.id);
+      if (error) throw error;
       toast.success('Business information updated');
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Record<string, string> = {};
         error.errors.forEach(err => {
-          if (err.path[0]) {
-            errors[err.path[0] as string] = err.message;
-          }
+          if (err.path[0]) errors[err.path[0] as string] = err.message;
         });
         setBusinessErrors(errors);
         toast.error('Please fix the errors in the form');
+      } else {
+        toast.error('Failed to update business information');
       }
     } finally {
       setSavingBusiness(false);
@@ -183,9 +237,18 @@ export default function Profile() {
 
   const handleSaveSocial = async () => {
     setSavingSocial(true);
-    await new Promise(resolve => setTimeout(resolve, 800));
-    toast.success('Social links updated');
-    setSavingSocial(false);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ social_links: socialLinks })
+        .eq('id', user!.id);
+      if (error) throw error;
+      toast.success('Social links updated');
+    } catch {
+      toast.error('Failed to update social links');
+    } finally {
+      setSavingSocial(false);
+    }
   };
 
   const handleAvatarUpload = () => {
