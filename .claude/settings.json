@@ -21,7 +21,7 @@
     "files": ["CLAUDE.md", "SKILL.md", "docs/brand-context-pack.md"]
   },
   "model": {
-    "default": "claude-sonnet-4-20250514"
+    "default": "claude-sonnet-4-6"
   },
   "mcpServers": {
     "supabase": {
