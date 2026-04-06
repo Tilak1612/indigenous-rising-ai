@@ -93,6 +93,11 @@ supabase/
 - CAD pricing only
 - Webhook handlers verify signatures
 
+### Package Manager
+- Project ships a `bun.lockb` lockfile — use `bun install` when bun is available
+- If bun is not installed, fall back to `npm install --legacy-peer-deps` (`.npmrc` sets `legacy-peer-deps=true`)
+- Never use `yarn` or switch lockfile formats
+
 ### Git Workflow
 - Conventional commits
 - Claude Code does NOT push
