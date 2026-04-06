@@ -53,16 +53,7 @@ const NewsletterSignup = () => {
     }
   }, [emailValue]);
 
-  // Debug: log validation errors during tests
-  useEffect(() => {
-     
-    console.debug('NEWSLETTER_ERRORS', errors);
-  }, [errors]);
-
   const onSubmit = async (data: NewsletterFormData) => {
-    // debug
-     
-    console.debug('NEWSLETTER_ONSUBMIT', data);
     // Manual fallback validation for email (ensures tests catch invalid format)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
