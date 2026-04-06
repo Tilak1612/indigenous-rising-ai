@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { CheckCircle, Clock, FileText } from 'lucide-react';
+import { CheckCircle, Clock, FileText, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DataRequest {
   id: string;
@@ -24,55 +24,72 @@ interface DataRequest {
   assigned_to: string | null;
 }
 
-interface Profile {
+interface TeamMember {
   id: string;
-  full_name: string;
+  full_name: string | null;
   email: string;
 }
 
+const PAGE_SIZE = 50;
+
 export default function DataRequestsManagement() {
   const [requests, setRequests] = useState<DataRequest[]>([]);
-  const [teamMembers, setTeamMembers] = useState<Profile[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState<DataRequest | null>(null);
+  const [page, setPage] = useState(0);
   const { toast } = useToast();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (pageIndex: number) => {
     try {
+      setLoading(true);
+      const from = pageIndex * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+
       const [requestsRes, teamRes] = await Promise.all([
         supabase
           .from('data_requests')
-          .select('*')
-          .order('submitted_at', { ascending: false }),
+          .select('id, tracking_number, full_name, email, request_type, status, submitted_at, description, assigned_to', { count: 'exact' })
+          .order('submitted_at', { ascending: false })
+          .range(from, to),
+        // Only fetch profiles of users with admin or team_member roles — not all users
         supabase
-          .from('profiles')
-          .select('id, full_name, email')
+          .from('user_roles')
+          .select('user_id, profiles:user_id(id, full_name, email)')
+          .in('role', ['admin', 'team_member']),
       ]);
 
       if (requestsRes.error) throw requestsRes.error;
       if (teamRes.error) throw teamRes.error;
 
       setRequests(requestsRes.data || []);
-      setTeamMembers(teamRes.data || []);
+      setTotalCount(requestsRes.count ?? 0);
+
+      // Flatten the join result into a TeamMember list
+      const members: TeamMember[] = (teamRes.data || [])
+        .map((row: any) => row.profiles)
+        .filter(Boolean)
+        .reduce((acc: TeamMember[], p: TeamMember) => {
+          if (!acc.find(m => m.id === p.id)) acc.push(p);
+          return acc;
+        }, []);
+      setTeamMembers(members);
     } catch (error) {
       console.error('Error fetching data:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load data requests',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Failed to load data requests', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
   }, [toast]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData(page);
+  }, [fetchData, page]);
 
   const updateStatus = async (id: string, status: string) => {
     try {
-      const updates: any = { status };
+      const updates: Record<string, unknown> = { status };
       if (status === 'completed') {
         updates.completed_at = new Date().toISOString();
       }
@@ -84,18 +101,11 @@ export default function DataRequestsManagement() {
 
       if (error) throw error;
 
-      await fetchData();
-      toast({
-        title: 'Success',
-        description: 'Request status updated',
-      });
+      await fetchData(page);
+      toast({ title: 'Success', description: 'Request status updated' });
     } catch (error) {
       console.error('Error updating status:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update status',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Failed to update status', variant: 'destructive' });
     }
   };
 
@@ -108,26 +118,17 @@ export default function DataRequestsManagement() {
 
       if (error) throw error;
 
-      await fetchData();
-      toast({
-        title: 'Success',
-        description: 'Request assigned',
-      });
+      await fetchData(page);
+      toast({ title: 'Success', description: 'Request assigned' });
     } catch (error) {
       console.error('Error assigning request:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to assign request',
-        variant: 'destructive',
-      });
+      toast({ title: 'Error', description: 'Failed to assign request', variant: 'destructive' });
     }
   };
 
-  const stats = {
-    total: requests.length,
-    pending: requests.filter(r => r.status === 'pending').length,
-    completed: requests.filter(r => r.status === 'completed').length,
-  };
+  const pendingCount = requests.filter(r => r.status === 'pending').length;
+  const completedCount = requests.filter(r => r.status === 'completed').length;
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -142,7 +143,7 @@ export default function DataRequestsManagement() {
     }
   };
 
-  if (loading) {
+  if (loading && requests.length === 0) {
     return <div className="text-center py-8">Loading...</div>;
   }
 
@@ -152,19 +153,19 @@ export default function DataRequestsManagement() {
         <Card>
           <CardHeader className="pb-3">
             <CardDescription>Total Requests</CardDescription>
-            <CardTitle className="text-3xl">{stats.total}</CardTitle>
+            <CardTitle className="text-3xl">{totalCount}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardDescription>Pending</CardDescription>
-            <CardTitle className="text-3xl">{stats.pending}</CardTitle>
+            <CardDescription>Pending (this page)</CardDescription>
+            <CardTitle className="text-3xl">{pendingCount}</CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-3">
-            <CardDescription>Completed</CardDescription>
-            <CardTitle className="text-3xl">{stats.completed}</CardTitle>
+            <CardDescription>Completed (this page)</CardDescription>
+            <CardTitle className="text-3xl">{completedCount}</CardTitle>
           </CardHeader>
         </Card>
       </div>
@@ -189,7 +190,11 @@ export default function DataRequestsManagement() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {requests.map((request) => (
+                {loading ? (
+                  <TableRow><TableCell colSpan={7} className="text-center py-8">Loading...</TableCell></TableRow>
+                ) : requests.length === 0 ? (
+                  <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No requests found</TableCell></TableRow>
+                ) : requests.map((request) => (
                   <TableRow key={request.id}>
                     <TableCell className="font-mono text-sm">{request.tracking_number}</TableCell>
                     <TableCell>{request.full_name}</TableCell>
@@ -275,6 +280,22 @@ export default function DataRequestsManagement() {
               </TableBody>
             </Table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mt-4">
+              <p className="text-sm text-muted-foreground">
+                Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, totalCount)} of {totalCount}
+              </p>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => setPage(p => p - 1)} disabled={page === 0}>
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => setPage(p => p + 1)} disabled={page >= totalPages - 1}>
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

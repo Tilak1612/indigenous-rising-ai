@@ -36,7 +36,6 @@ const Training = lazy(() => import("./pages/Training"));
 const FundingDetail = lazy(() => import("./pages/FundingDetail"));
 const FeatureDetail = lazy(() => import("./pages/FeatureDetail"));
 const OnboardingPage = lazy(() => import("./pages/Onboarding"));
-const TestSubscription = lazy(() => import("./pages/TestSubscription"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
@@ -68,7 +67,16 @@ const Support = lazy(() => import("./pages/dashboard/Support"));
 const Profile = lazy(() => import("./pages/dashboard/Profile"));
 const Settings = lazy(() => import("./pages/dashboard/Settings"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Retry once on failure — avoids hammering failing services 3x by default
+      retry: 1,
+      // Don't re-fetch on every mount; use cached data for 2 minutes
+      staleTime: 2 * 60 * 1000,
+    },
+  },
+});
 
 const App = () => (
   <ErrorBoundary>
@@ -200,16 +208,6 @@ const App = () => (
                   <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requireAdmin>
                       <Admin />
-                    </ProtectedRoute>
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/test-subscription" 
-                element={
-                  <Suspense fallback={<PageSkeleton />}>
-                    <ProtectedRoute>
-                      <TestSubscription />
                     </ProtectedRoute>
                   </Suspense>
                 } 
