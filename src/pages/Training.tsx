@@ -201,7 +201,7 @@ const Training = () => {
                           {portalLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                           Manage Subscription
                         </Button>
-                        <Button onClick={refreshSubscription} variant="ghost" size="sm">
+                        <Button onClick={() => refreshSubscription()} variant="ghost" size="sm">
                           Refresh Status
                         </Button>
                       </div>
