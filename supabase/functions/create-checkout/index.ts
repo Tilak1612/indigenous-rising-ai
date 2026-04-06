@@ -76,8 +76,17 @@ serve(async (req) => {
       console.log('[CREATE-CHECKOUT] No existing customer, will create during checkout');
     }
 
-    // Create checkout session
-    const origin = req.headers.get('origin') || 'http://localhost:8080';
+    // Validate origin against known production domains to prevent redirect hijacking
+    const ALLOWED_ORIGINS = [
+      'https://www.indigenousrising.ai',
+      'https://indigenousrising.ai',
+      'http://localhost:8080',
+      'http://localhost:5173',
+    ];
+    const requestOrigin = req.headers.get('origin') || '';
+    const origin = ALLOWED_ORIGINS.includes(requestOrigin)
+      ? requestOrigin
+      : 'https://www.indigenousrising.ai';
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : user.email,

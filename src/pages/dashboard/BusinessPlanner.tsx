@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import DOMPurify from 'dompurify';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -149,7 +150,12 @@ export default function BusinessPlannerPage() {
 
   const handleEditorInput = () => {
     if (editorRef.current) {
-      handleAnswerChange(STEPS[currentStep].id, editorRef.current.innerHTML);
+      // Sanitize HTML before storing — prevents stored XSS via localStorage
+      const sanitized = DOMPurify.sanitize(editorRef.current.innerHTML, {
+        ALLOWED_TAGS: ['b', 'i', 'u', 'strong', 'em', 'br', 'p', 'ul', 'ol', 'li'],
+        ALLOWED_ATTR: [],
+      });
+      handleAnswerChange(STEPS[currentStep].id, sanitized);
     }
   };
 
@@ -171,11 +177,14 @@ export default function BusinessPlannerPage() {
   const progress = (completedSteps / STEPS.length) * 100;
   const currentAnswer = answers[STEPS[currentStep].id] || '';
 
-  // Update editor content when step changes
+  // Update editor content when step changes — sanitize before injecting into DOM
   useEffect(() => {
     const editor = editorRef.current;
     if (editor && editor.innerHTML !== currentAnswer) {
-      editor.innerHTML = currentAnswer;
+      editor.innerHTML = DOMPurify.sanitize(currentAnswer, {
+        ALLOWED_TAGS: ['b', 'i', 'u', 'strong', 'em', 'br', 'p', 'ul', 'ol', 'li'],
+        ALLOWED_ATTR: [],
+      });
     }
   }, [currentStep, currentAnswer]);
 

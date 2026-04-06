@@ -73,11 +73,22 @@ export const useSubscription = () => {
 
   useEffect(() => {
     checkSubscription();
-    
-    // Refresh subscription status every minute
-    const interval = setInterval(checkSubscription, 60000);
-    
-    return () => clearInterval(interval);
+
+    // Poll every 5 minutes — avoids hammering Stripe API with a call per user per minute
+    const interval = setInterval(checkSubscription, 300000);
+
+    // Refresh immediately when the user returns to this tab (e.g. after completing checkout)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        checkSubscription();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, [checkSubscription]);
 
   return {

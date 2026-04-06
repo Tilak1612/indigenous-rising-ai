@@ -59,6 +59,16 @@ const handler = async (req: Request): Promise<Response> => {
         );
       }
 
+      // Expire tokens older than 48 hours
+      const tokenAge = Date.now() - new Date(subscription.subscribed_at).getTime();
+      const FORTY_EIGHT_HOURS = 48 * 60 * 60 * 1000;
+      if (tokenAge > FORTY_EIGHT_HOURS && !subscription.confirmed_at) {
+        return new Response(
+          JSON.stringify({ error: 'Confirmation link has expired. Please subscribe again.' }),
+          { status: 410, headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       if (subscription.confirmed_at) {
         return new Response(
           JSON.stringify({ message: 'Email already confirmed' }),

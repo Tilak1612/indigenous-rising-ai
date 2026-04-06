@@ -28,6 +28,15 @@ serve(async (req) => {
   try {
     console.log('[CUSTOMER-PORTAL] Function started');
 
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+    if (!stripeKey) {
+      console.error('[CUSTOMER-PORTAL] STRIPE_SECRET_KEY not configured');
+      return new Response(
+        JSON.stringify({ error: 'Payment service not configured' }),
+        { headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' }, status: 503 }
+      );
+    }
+
     const authHeader = req.headers.get('Authorization');
     if (!authHeader) {
       throw new Error('No authorization header provided');
@@ -47,7 +56,7 @@ serve(async (req) => {
 
     console.log('[CUSTOMER-PORTAL] User authenticated:', user.email);
 
-    const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
+    const stripe = new Stripe(stripeKey, {
       apiVersion: '2025-08-27.basil',
     });
 
@@ -60,7 +69,16 @@ serve(async (req) => {
     const customerId = customers.data[0].id;
     console.log('[CUSTOMER-PORTAL] Customer found:', customerId);
 
-    const origin = req.headers.get('origin') || 'http://localhost:8080';
+    const ALLOWED_ORIGINS = [
+      'https://www.indigenousrising.ai',
+      'https://indigenousrising.ai',
+      'http://localhost:8080',
+      'http://localhost:5173',
+    ];
+    const requestOrigin = req.headers.get('origin') || '';
+    const origin = ALLOWED_ORIGINS.includes(requestOrigin)
+      ? requestOrigin
+      : 'https://www.indigenousrising.ai';
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: customerId,
       return_url: `${origin}/training`,

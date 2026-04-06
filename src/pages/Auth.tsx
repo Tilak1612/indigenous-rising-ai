@@ -30,6 +30,7 @@ const signupSchema = z.object({
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [isRecovery, setIsRecovery] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -41,11 +42,19 @@ export default function Auth() {
   const { signIn, signUp, user } = useAuth();
   const navigate = useNavigate();
 
+  // Detect password-recovery token in URL hash (Supabase sends #access_token=...&type=recovery)
   useEffect(() => {
-    if (user) {
+    const hash = window.location.hash;
+    if (hash.includes('type=recovery')) {
+      setIsRecovery(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user && !isRecovery) {
       navigate('/dashboard');
     }
-  }, [user, navigate]);
+  }, [user, navigate, isRecovery]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,6 +117,38 @@ export default function Auth() {
     setSuccess('');
   };
 
+  const handleSetNewPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords don't match");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) {
+        setError(error.message);
+      } else {
+        setSuccess('Password updated successfully. You can now sign in.');
+        setIsRecovery(false);
+        setPassword('');
+        setConfirmPassword('');
+        // Clear the hash so the recovery state doesn't re-trigger
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    } catch {
+      setError('An unexpected error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -147,14 +188,53 @@ export default function Auth() {
               <div className="bg-card p-8 rounded-lg shadow-lg border">
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-foreground mb-2">
-                    {isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create an Account'}
+                    {isRecovery ? 'Set New Password' : isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create an Account'}
                   </h1>
                   <p className="text-muted-foreground">
-                    {isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Join our community today'}
+                    {isRecovery ? 'Choose a new password for your account' : isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Join our community today'}
                   </p>
                 </div>
 
-                {isForgotPassword ? (
+                {isRecovery ? (
+                  <form onSubmit={handleSetNewPassword}>
+                    <div className="space-y-5">
+                      <div>
+                        <Label htmlFor="new-password" className="block text-sm font-medium text-foreground mb-1">
+                          New Password
+                        </Label>
+                        <Input
+                          type="password"
+                          id="new-password"
+                          placeholder="••••••••"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">At least 8 characters</p>
+                      </div>
+                      <div>
+                        <Label htmlFor="confirm-new-password" className="block text-sm font-medium text-foreground mb-1">
+                          Confirm New Password
+                        </Label>
+                        <Input
+                          type="password"
+                          id="confirm-new-password"
+                          placeholder="••••••••"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          required
+                        />
+                      </div>
+                      {error && <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>}
+                      {success && <Alert><AlertDescription>{success}</AlertDescription></Alert>}
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? 'Updating...' : 'Set New Password'}
+                      </Button>
+                    </div>
+                  </form>
+                ) : null}
+
+                {isForgotPassword && !isRecovery ? (
                   <form onSubmit={handleForgotPassword}>
                     <div className="space-y-5">
                       <div>
@@ -179,7 +259,7 @@ export default function Auth() {
                   </form>
                 ) : null}
 
-                {!isForgotPassword && <form onSubmit={handleSubmit}>
+                {!isForgotPassword && !isRecovery && <form onSubmit={handleSubmit}>
                   <div className="space-y-5">
                     {!isLogin && (
                       <div>
@@ -308,7 +388,7 @@ export default function Auth() {
                 </form>}
 
                 <div className="mt-6 text-center">
-                  {isForgotPassword ? (
+                  {isRecovery ? null : isForgotPassword ? (
                     <p className="text-sm text-muted-foreground">
                       Remember it?{' '}
                       <button
