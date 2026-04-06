@@ -147,12 +147,13 @@ const handler = async (req: Request): Promise<Response> => {
                      'unknown';
 
     // Rate limiting: Check submissions per minute (3 per minute)
+    // Column is `subscribed_at` (not `created_at`) per the schema
     const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
     const { data: recentMinute } = await supabase
       .from('newsletter_subscriptions')
       .select('id')
       .eq('ip_address', clientIp)
-      .gte('created_at', oneMinuteAgo);
+      .gte('subscribed_at', oneMinuteAgo);
 
     if (recentMinute && recentMinute.length >= 3) {
       console.warn('Rate limit exceeded (per minute):', clientIp);
@@ -168,7 +169,7 @@ const handler = async (req: Request): Promise<Response> => {
       .from('newsletter_subscriptions')
       .select('id')
       .eq('ip_address', clientIp)
-      .gte('created_at', oneHourAgo);
+      .gte('subscribed_at', oneHourAgo);
 
     if (recentHour && recentHour.length >= 10) {
       console.warn('Rate limit exceeded (per hour):', clientIp);
