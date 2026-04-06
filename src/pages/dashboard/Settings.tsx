@@ -191,33 +191,45 @@ export default function Settings() {
 
   const handleExportData = async () => {
     setExporting(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Create mock data export
-    const data = {
-      profile: {
-        email: user?.email,
+    try {
+      const uid = user?.id;
+      if (!uid) {
+        toast.error('You must be signed in to export data');
+        return;
+      }
+
+      const [profileResult, subscriptionResult] = await Promise.all([
+        supabase.from('profiles').select('id, email, full_name, created_at, updated_at').eq('id', uid).single(),
+        supabase.from('subscriptions').select('stripe_product_id, status, current_period_start, current_period_end, cancel_at_period_end, created_at').eq('user_id', uid).maybeSingle(),
+      ]);
+
+      const data = {
         exportDate: new Date().toISOString(),
-      },
-      settings: {
-        notifications,
-        privacy,
-        language: selectedLanguage,
-      },
-    };
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'indigenous-rising-data-export.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    toast.success('Data exported successfully');
-    setExporting(false);
+        profile: profileResult.data ?? { email: user?.email },
+        subscription: subscriptionResult.data ?? null,
+        preferences: {
+          notifications,
+          privacy,
+          language: selectedLanguage,
+        },
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'indigenous-rising-data-export.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast.success('Data exported successfully');
+    } catch {
+      toast.error('Failed to export data. Please try again.');
+    } finally {
+      setExporting(false);
+    }
   };
 
   const handleDeleteAccount = async () => {

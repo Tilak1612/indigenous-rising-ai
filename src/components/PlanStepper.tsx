@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useAICopilot from '@/hooks/useAICopilot';
-import { trackEvent } from '@/lib/analytics';
+import { trackEvent } from '@/utils/analytics';
 import { exportBankReadyPDF } from '@/lib/planExport';
 
 const STEPS = [

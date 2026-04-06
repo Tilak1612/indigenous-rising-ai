@@ -66,7 +66,6 @@ const CookieConsent: React.FC = () => {
   const saveConsent = (prefs: CookiePreferences) => {
     localStorage.setItem('cookie-consent', JSON.stringify(prefs));
     localStorage.setItem('cookie-consent-date', new Date().toISOString());
-    console.log('Cookie preferences saved:', prefs);
   };
 
   const updatePreference = (key: keyof CookiePreferences, value: boolean) => {

@@ -19,11 +19,7 @@ export const trackEvent = (event: string, properties: Record<string, any> = {}) 
     // ignore
   }
 
-  // lightweight sender (non-blocking)
-  try {
-    // In production, replace with real analytics endpoint or SDK call
-    console.info('TRACK_EVENT', payload);
-  } catch {}
+  // lightweight sender (non-blocking): in production, replace with real analytics SDK call
 };
 
 export const flushEvents = async () => {
@@ -32,7 +28,6 @@ export const flushEvents = async () => {
     const arr = JSON.parse(raw);
     if (!arr.length) return;
     // Placeholder: in production POST to analytics endpoint
-    console.info('FLUSHING_EVENTS', arr);
     localStorage.removeItem(QUEUE_KEY);
   } catch (e) {
     // ignore

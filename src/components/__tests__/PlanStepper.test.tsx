@@ -1,11 +1,15 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, vi, beforeEach } from 'vitest';
 import PlanStepper from '@/components/PlanStepper';
 
 describe('PlanStepper', () => {
+  beforeEach(() => {
+    // Provide a gtag stub so @/utils/analytics calls don't silently no-op
+    window.gtag = vi.fn();
+  });
+
   test('uses AI co-pilot and records progress event', async () => {
-    localStorage.clear();
     render(<PlanStepper />);
 
     // initial step textarea
@@ -18,14 +22,15 @@ describe('PlanStepper', () => {
 
     await waitFor(() => expect((textarea as HTMLTextAreaElement).value).toContain('Edited by AI co-pilot'));
 
-    // click Next to complete section (should record analytics)
+    // click Next to complete section (should record analytics via GA4)
     const next = screen.getByText('Next');
     fireEvent.click(next);
 
     await waitFor(() => {
-      const raw = localStorage.getItem('analytics-queue-v1') || '[]';
-      const arr = JSON.parse(raw);
-      expect(arr.some((e: any) => e.event === 'plan_section_completed' || e.event === 'ai_copilot_used')).toBe(true);
+      const calls = (window.gtag as ReturnType<typeof vi.fn>).mock.calls;
+      expect(
+        calls.some(([, name]) => name === 'plan_section_completed' || name === 'ai_copilot_used')
+      ).toBe(true);
     });
   });
 });
