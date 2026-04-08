@@ -32,78 +32,76 @@ const Navigation = () => {
     <header className="absolute inset-x-0 top-0 z-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-5">
-          {/* Logo and Nav Links */}
-          <div className="flex items-center gap-12">
-            <Link to="/" className="text-lg font-semibold text-white tracking-tight font-geist">
-              <img 
-                src={logoFull} 
-                alt="Indigenous Rising AI - Business Support Platform for Indigenous Entrepreneurs" 
-                className="h-10 w-auto"
-                width={120}
-                height={40}
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-              />
-            </Link>
-            
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8 text-white/90">
-              {(user ? appNavItems : navItems).map((item) => {
-                if (item.isAnchor) {
-                  return (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="hover:text-white transition text-sm font-medium font-geist"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (location.pathname !== '/') {
-                          navigate(`/${item.href}`);
-                          return;
-                        }
-                        const element = document.querySelector(item.href);
-                        element?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                    >
-                      {item.name}
-                    </a>
-                  );
-                }
-                
+          {/* Logo — left */}
+          <Link to="/" className="shrink-0 text-lg font-semibold text-white tracking-tight font-geist">
+            <img
+              src={logoFull}
+              alt="Indigenous Rising AI - Business Support Platform for Indigenous Entrepreneurs"
+              className="h-10 w-auto"
+              width={120}
+              height={40}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+          </Link>
+
+          {/* Desktop Navigation — centered */}
+          <nav className="hidden md:flex items-center gap-8 text-white/90 absolute left-1/2 -translate-x-1/2">
+            {(user ? appNavItems : navItems).map((item) => {
+              if (item.isAnchor) {
                 return (
-                  <Link
+                  <a
                     key={item.name}
-                    to={item.href}
-                    className="hover:text-white transition text-sm font-medium font-geist"
+                    href={item.href}
+                    className="hover:text-white transition text-sm font-medium font-geist whitespace-nowrap"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (location.pathname !== '/') {
+                        navigate(`/${item.href}`);
+                        return;
+                      }
+                      const element = document.querySelector(item.href);
+                      element?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                   >
                     {item.name}
-                  </Link>
+                  </a>
                 );
-              })}
-            </nav>
-          </div>
+              }
 
-          {/* Right side - CTA */}
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="hover:text-white transition text-sm font-medium font-geist whitespace-nowrap"
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Right side — Login / Logout + mobile menu */}
           <div className="flex items-center gap-6">
             {user ? (
-              <button 
+              <button
                 onClick={() => signOut()}
-                className="inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90 font-geist"
+                className="hidden md:inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90 font-geist"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
               </button>
             ) : (
-              <Link 
+              <Link
                 to="/auth"
-                className="inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90 font-geist"
+                className="hidden md:inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90 font-geist"
               >
                 Login
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
             )}
-            
+
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
