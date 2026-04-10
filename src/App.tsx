@@ -59,6 +59,7 @@ const Forum = lazy(() => import("./pages/dashboard/Forum"));
 const Compliance = lazy(() => import("./pages/dashboard/Compliance"));
 const DashboardFunding = lazy(() => import("./pages/dashboard/Funding"));
 const DashboardFundingMatches = lazy(() => import("./pages/dashboard/FundingMatches"));
+const DashboardSavedMatches = lazy(() => import("./pages/dashboard/SavedMatches"));
 const Analytics = lazy(() => import("./pages/dashboard/Analytics"));
 const Network = lazy(() => import("./pages/dashboard/Network"));
 const Certifications = lazy(() => import("./pages/dashboard/Certifications"));
@@ -263,6 +264,16 @@ const App = () => (
                   <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute>
                       <DashboardFundingMatches />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/funding/saved"
+                element={
+                  <Suspense fallback={<DashboardSkeleton />}>
+                    <ProtectedRoute requirePaid>
+                      <DashboardSavedMatches />
                     </ProtectedRoute>
                   </Suspense>
                 }
