@@ -53,7 +53,18 @@ const businessSchema = z.object({
   yearFounded: z.string().optional(),
   description: z.string().max(1000, 'Description too long').optional(),
   employees: z.string().optional(),
+  businessStage: z.string().optional(),
+  targetFundingAmount: z.string().optional(),
+  fundingPurpose: z.string().max(500, 'Must be 500 characters or fewer').optional(),
 });
+
+const businessStages = [
+  { value: 'ideation', label: 'Ideation — exploring a concept' },
+  { value: 'startup', label: 'Startup — just getting started' },
+  { value: 'early-stage', label: 'Early stage — first customers' },
+  { value: 'growth', label: 'Growth — scaling operations' },
+  { value: 'established', label: 'Established — proven business' },
+];
 
 const territories = [
   'Alberta',
@@ -117,6 +128,9 @@ export default function Profile() {
     yearFounded: '',
     description: '',
     employees: '',
+    businessStage: '',
+    targetFundingAmount: '',
+    fundingPurpose: '',
   });
   
   const [socialLinks, setSocialLinks] = useState({
@@ -134,7 +148,7 @@ export default function Profile() {
     if (!user) return;
     supabase
       .from('profiles')
-      .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links')
+      .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links, business_stage, target_funding_amount, funding_purpose')
       .eq('id', user.id)
       .single()
       .then(({ data }) => {
@@ -157,6 +171,9 @@ export default function Profile() {
           yearFounded: data.year_founded || '',
           description: data.business_description || '',
           employees: data.employees || '',
+          businessStage: data.business_stage || '',
+          targetFundingAmount: data.target_funding_amount != null ? String(data.target_funding_amount) : '',
+          fundingPurpose: data.funding_purpose || '',
         });
         const sl = (data.social_links as Record<string, string>) || {};
         setSocialLinks({
@@ -206,6 +223,14 @@ export default function Profile() {
     try {
       businessSchema.parse(businessData);
       setSavingBusiness(true);
+      const targetAmount = businessData.targetFundingAmount.trim();
+      const parsedAmount = targetAmount === '' ? null : parseInt(targetAmount, 10);
+      if (parsedAmount !== null && (Number.isNaN(parsedAmount) || parsedAmount < 0)) {
+        setBusinessErrors({ targetFundingAmount: 'Enter a positive whole number or leave blank' });
+        setSavingBusiness(false);
+        return;
+      }
+
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -215,6 +240,9 @@ export default function Profile() {
           year_founded: businessData.yearFounded || null,
           business_description: businessData.description || null,
           employees: businessData.employees || null,
+          business_stage: businessData.businessStage || null,
+          target_funding_amount: parsedAmount,
+          funding_purpose: businessData.fundingPurpose || null,
         })
         .eq('id', user!.id);
       if (error) throw error;
@@ -535,8 +563,8 @@ export default function Profile() {
 
                 <div>
                   <label className="text-sm font-medium">Number of Employees</label>
-                  <Select 
-                    value={businessData.employees} 
+                  <Select
+                    value={businessData.employees}
                     onValueChange={(value) => setBusinessData(prev => ({ ...prev, employees: value }))}
                   >
                     <SelectTrigger className="mt-1">
@@ -551,6 +579,60 @@ export default function Profile() {
                       <SelectItem value="51+">51+ employees</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div className="pt-4 mt-4 border-t">
+                  <p className="text-sm font-semibold text-foreground mb-1">Funding preferences</p>
+                  <p className="text-xs text-muted-foreground mb-4">Used to personalise AI funding matches. All fields optional except business stage.</p>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium">Business Stage</label>
+                  <Select
+                    value={businessData.businessStage}
+                    onValueChange={(value) => setBusinessData(prev => ({ ...prev, businessStage: value }))}
+                  >
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select business stage" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {businessStages.map(stage => (
+                        <SelectItem key={stage.value} value={stage.value}>{stage.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium">Target Funding Amount (CAD)</label>
+                  <Input
+                    type="number"
+                    value={businessData.targetFundingAmount}
+                    onChange={(e) => setBusinessData(prev => ({ ...prev, targetFundingAmount: e.target.value }))}
+                    placeholder="e.g., 50000"
+                    className="mt-1"
+                    min="0"
+                  />
+                  {businessErrors.targetFundingAmount && (
+                    <p className="text-xs text-destructive mt-1">{businessErrors.targetFundingAmount}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Approximate amount you are seeking. Used to filter grants by range.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium">Funding Purpose</label>
+                  <Textarea
+                    value={businessData.fundingPurpose}
+                    onChange={(e) => setBusinessData(prev => ({ ...prev, fundingPurpose: e.target.value }))}
+                    placeholder="Briefly describe what you would use the funding for..."
+                    className="mt-1 min-h-20"
+                    maxLength={500}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {businessData.fundingPurpose.length}/500 characters
+                  </p>
                 </div>
 
                 <div>
