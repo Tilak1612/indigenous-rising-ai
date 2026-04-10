@@ -234,7 +234,7 @@ const Training = () => {
               <Card className="max-w-2xl mx-auto mb-8 border-primary/20">
                 <CardContent className="pt-6 text-center">
                   <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">Login Required</h3>
+                  <p className="text-lg font-semibold mb-2">Login Required</p>
                   <p className="text-muted-foreground mb-4">
                     Please log in to subscribe to the training program
                   </p>
