@@ -691,8 +691,8 @@ const Careers = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="cover_letter_story">Cover Letter or 1-Page Story <span className="text-muted-foreground">(optional)</span></Label>
-                      <Input id="cover_letter_story" type="file" accept=".pdf,.doc,.docx" aria-describedby="cover-letter-hint" ref={coverLetterRef} />
+                      <Label htmlFor="cover_letter">Cover Letter or 1-Page Story <span className="text-muted-foreground">(optional)</span></Label>
+                      <Input id="cover_letter" type="file" accept=".pdf,.doc,.docx" aria-describedby="cover-letter-hint" ref={coverLetterRef} />
                       <p id="cover-letter-hint" className="text-xs text-muted-foreground">You are welcome to upload a traditional cover letter, or something less conventional — a 1-page story about why this work matters to you, a letter of support from a community member, or whatever feels most authentic.</p>
                     </div>
                   </div>
