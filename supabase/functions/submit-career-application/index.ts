@@ -196,7 +196,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Indigenous Rising AI <help@indigenousrising.ai>',
+        from: 'Indigenous Rising AI Careers <careers@indigenousrising.ai>',
         to: ['help@indigenousrising.ai'],
         reply_to: applicationData.email_address,
         subject: `New Application: ${applicationData.role_applying_for} — ${applicationData.full_name}`,
