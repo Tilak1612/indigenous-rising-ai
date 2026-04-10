@@ -23,10 +23,10 @@ const NotFound = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/404" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/404" />
         <meta property="og:title" content="404 - Page Not Found" />
         <meta property="og:description" content="The page you are looking for does not exist." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-home.jpg" />
+        <meta property="og:image" content="https://www.indigenousrising.ai/og-home.jpg" />
       </Helmet>
       
       <Navigation />

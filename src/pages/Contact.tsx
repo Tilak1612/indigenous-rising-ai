@@ -89,8 +89,7 @@ const Contact = () => {
       <MetaTags
         title="Contact Us | Get Support | Indigenous Rising AI"
         description="Get in touch with Indigenous Rising AI. We're here to help Indigenous entrepreneurs succeed. Email, phone, and contact form available."
-        url="https://indigenousrising.ai/contact"
-        ogImage="https://indigenousrising.ai/og-contact.jpg"
+        ogImage="https://www.indigenousrising.ai/og-contact.jpg"
       />
       
       <Navigation />

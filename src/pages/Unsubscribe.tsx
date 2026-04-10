@@ -60,15 +60,15 @@ const Unsubscribe = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/unsubscribe" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/unsubscribe" />
         <meta property="og:title" content="Unsubscribe - Indigenous Rising AI" />
         <meta property="og:description" content="Manage your newsletter preferences." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-home.jpg" />
+        <meta property="og:image" content="https://www.indigenousrising.ai/og-home.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://indigenousrising.ai/unsubscribe" />
+        <link rel="canonical" href="https://www.indigenousrising.ai/unsubscribe" />
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">

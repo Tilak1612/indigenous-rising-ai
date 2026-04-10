@@ -15,22 +15,22 @@ const TermsOfService: React.FC = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/terms" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/terms" />
         <meta property="og:title" content="Terms of Service - Indigenous Rising AI" />
         <meta property="og:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-terms.jpg" />
+        <meta property="og:image" content="https://www.indigenousrising.ai/og-terms.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://indigenousrising.ai/terms" />
+        <meta name="twitter:url" content="https://www.indigenousrising.ai/terms" />
         <meta name="twitter:title" content="Terms of Service - Indigenous Rising AI" />
         <meta name="twitter:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
-        <meta name="twitter:image" content="https://indigenousrising.ai/og-terms.jpg" />
+        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-terms.jpg" />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://indigenousrising.ai/terms" />
+        <link rel="canonical" href="https://www.indigenousrising.ai/terms" />
       </Helmet>
       <Navigation />
       

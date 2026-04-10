@@ -15,22 +15,22 @@ const CanadianCompliance = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/compliance" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/compliance" />
         <meta property="og:title" content="Canadian Compliance Framework - Indigenous Rising AI" />
         <meta property="og:description" content="PIPEDA, CASL, and AIA compliant platform for Indigenous entrepreneurs in Canada." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-compliance.jpg" />
+        <meta property="og:image" content="https://www.indigenousrising.ai/og-compliance.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://indigenousrising.ai/compliance" />
+        <meta name="twitter:url" content="https://www.indigenousrising.ai/compliance" />
         <meta name="twitter:title" content="Canadian Compliance Framework" />
         <meta name="twitter:description" content="PIPEDA, CASL, and AIA compliant for Indigenous businesses." />
-        <meta name="twitter:image" content="https://indigenousrising.ai/og-compliance.jpg" />
+        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-compliance.jpg" />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://indigenousrising.ai/compliance" />
+        <link rel="canonical" href="https://www.indigenousrising.ai/compliance" />
       </Helmet>
       <Navigation />
       

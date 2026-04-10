@@ -26,22 +26,22 @@ const AccessibilityStatement: React.FC = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/accessibility" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/accessibility" />
         <meta property="og:title" content="Accessibility Statement - Indigenous Rising AI" />
         <meta property="og:description" content="WCAG 2.1 compliant platform for Indigenous entrepreneurs across Canada." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-home.jpg" />
+        <meta property="og:image" content="https://www.indigenousrising.ai/og-home.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://indigenousrising.ai/accessibility" />
+        <meta name="twitter:url" content="https://www.indigenousrising.ai/accessibility" />
         <meta name="twitter:title" content="Accessibility Statement - Indigenous Rising AI" />
         <meta name="twitter:description" content="WCAG 2.1 compliant platform for Indigenous entrepreneurs." />
-        <meta name="twitter:image" content="https://indigenousrising.ai/og-home.jpg" />
+        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-home.jpg" />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://indigenousrising.ai/accessibility" />
+        <link rel="canonical" href="https://www.indigenousrising.ai/accessibility" />
       </Helmet>
       <Navigation />
       

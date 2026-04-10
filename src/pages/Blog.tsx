@@ -54,12 +54,12 @@ const Blog = () => {
         <title>Indigenous Business Funding Blog | Indigenous Rising AI</title>
         <meta name="description" content="Expert guides on Indigenous business grants, First Nations funding, Métis entrepreneur programs, and Inuit business support. Learn how to access funding for your Indigenous business." />
         <meta name="keywords" content="Indigenous business grants Canada, First Nations funding, Métis entrepreneur grants, Inuit business support, Indigenous small business" />
-        <link rel="canonical" href="https://indigenousrising.ai/blog" />
+        <link rel="canonical" href="https://www.indigenousrising.ai/blog" />
         
         <meta property="og:title" content="Indigenous Business Funding Blog | Indigenous Rising AI" />
         <meta property="og:description" content="Expert guides on Indigenous business grants, First Nations funding, Métis entrepreneur programs, and Inuit business support." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/blog" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/blog" />
         <meta property="og:image" content="/og-home.jpg" />
         
         <script type="application/ld+json">
@@ -68,20 +68,20 @@ const Blog = () => {
             "@type": "Blog",
             "name": "Indigenous Business Funding Blog",
             "description": "Expert guides on Indigenous business funding in Canada",
-            "url": "https://indigenousrising.ai/blog",
+            "url": "https://www.indigenousrising.ai/blog",
             "publisher": {
               "@type": "Organization",
               "name": "Indigenous Rising AI",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://indigenousrising.ai/logo-icon.png"
+                "url": "https://www.indigenousrising.ai/logo-icon.png"
               }
             },
             "blogPost": getAllPosts().slice(0, 10).map(post => ({
               "@type": "BlogPosting",
               "headline": post.title,
               "description": post.summary,
-              "url": `https://indigenousrising.ai/blog/${post.slug}`,
+              "url": `https://www.indigenousrising.ai/blog/${post.slug}`,
               "datePublished": post.publishedAt,
               "dateModified": post.updatedAt,
               "author": {

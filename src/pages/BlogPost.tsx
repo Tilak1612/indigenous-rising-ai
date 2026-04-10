@@ -59,7 +59,7 @@ const BlogPost = () => {
     });
   };
 
-  const shareUrl = `https://indigenousrising.ai/blog/${post.slug}`;
+  const shareUrl = `https://www.indigenousrising.ai/blog/${post.slug}`;
   
   const handleShare = async (platform?: string) => {
     const shareData = {
@@ -134,7 +134,7 @@ const BlogPost = () => {
               "name": "Indigenous Rising AI",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://indigenousrising.ai/logo-icon.png"
+                "url": "https://www.indigenousrising.ai/logo-icon.png"
               }
             },
             "mainEntityOfPage": {

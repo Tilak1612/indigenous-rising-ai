@@ -140,7 +140,7 @@ const Training = () => {
       <MetaTags
         title="AI Training Program | Indigenous Rising AI"
         description="Join our comprehensive AI training program designed for Indigenous communities. Learn AI ethics, data sovereignty, and practical implementation."
-        url="https://indigenousrising.ai/training"
+
       />
 
       <Navigation />

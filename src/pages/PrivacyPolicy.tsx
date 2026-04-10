@@ -12,8 +12,7 @@ const PrivacyPolicy: React.FC = () => {
       <MetaTags
         title="Privacy Policy | PIPEDA Compliant | Indigenous Rising AI"
         description="Our commitment to protecting your privacy in accordance with Canadian privacy laws, including PIPEDA. Learn how we collect, use, and protect your personal information."
-        url="https://indigenousrising.ai/privacy"
-        ogImage="https://indigenousrising.ai/og-privacy.jpg"
+        ogImage="https://www.indigenousrising.ai/og-privacy.jpg"
       />
       <Navigation />
       

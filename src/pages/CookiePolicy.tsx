@@ -152,7 +152,7 @@ const CookiePolicy = () => {
       <MetaTags
         title="Cookie Policy | Indigenous Rising AI"
         description="Learn about the cookies we use on Indigenous Rising AI. Detailed information about necessary, functional, analytics, and marketing cookies in compliance with PIPEDA."
-        url="https://indigenousrising.ai/cookies"
+
       />
       <Navigation />
       <div className="pt-16">

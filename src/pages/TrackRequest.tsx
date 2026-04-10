@@ -118,15 +118,15 @@ const TrackRequest = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/track-request" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/track-request" />
         <meta property="og:title" content="Track Your Data Request" />
         <meta property="og:description" content="Check the status of your PIPEDA data rights request." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-data-rights.jpg" />
+        <meta property="og:image" content="https://www.indigenousrising.ai/og-data-rights.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://indigenousrising.ai/track-request" />
+        <link rel="canonical" href="https://www.indigenousrising.ai/track-request" />
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">

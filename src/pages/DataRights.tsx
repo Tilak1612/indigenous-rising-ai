@@ -53,22 +53,22 @@ const DataRights = () => {
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://indigenousrising.ai/data-rights" />
+        <meta property="og:url" content="https://www.indigenousrising.ai/data-rights" />
         <meta property="og:title" content="Your Data Rights - PIPEDA Compliance" />
         <meta property="og:description" content="Exercise your data rights under PIPEDA. Access, correct, or delete your personal information." />
-        <meta property="og:image" content="https://indigenousrising.ai/og-data-rights.jpg" />
+        <meta property="og:image" content="https://www.indigenousrising.ai/og-data-rights.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://indigenousrising.ai/data-rights" />
+        <meta name="twitter:url" content="https://www.indigenousrising.ai/data-rights" />
         <meta name="twitter:title" content="Your Data Rights - PIPEDA Compliance" />
         <meta name="twitter:description" content="Exercise your data rights under PIPEDA." />
-        <meta name="twitter:image" content="https://indigenousrising.ai/og-data-rights.jpg" />
+        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-data-rights.jpg" />
         
         {/* Canonical URL */}
-        <link rel="canonical" href="https://indigenousrising.ai/data-rights" />
+        <link rel="canonical" href="https://www.indigenousrising.ai/data-rights" />
       </Helmet>
 
       <Navigation />
