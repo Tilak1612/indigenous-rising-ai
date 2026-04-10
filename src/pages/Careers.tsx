@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { supabase } from '@/lib/supabase';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
@@ -391,18 +392,55 @@ const Careers = () => {
     },
   });
 
+  const resumeRef = useRef<HTMLInputElement>(null);
+  const coverLetterRef = useRef<HTMLInputElement>(null);
+
   const selectedRole = watch('role_applying_for');
   const isEngineeringOrProduct = engineeringAndProductRoles.includes(selectedRole);
   const isCommunityOrPartnership = communityAndPartnershipRoles.includes(selectedRole);
 
   const hiringNowRoles = useMemo(() => allRoles.filter((role) => role.hiringNowReason), []);
 
-  const onSubmit = async () => {
-    toast({
-      title: 'Application received',
-      description: 'Thank you for applying. Our hiring team will follow up by email.',
-    });
-    reset();
+  const onSubmit = async (data: CareersFormData) => {
+    try {
+      const body = new FormData();
+
+      // Append all text fields
+      for (const [key, value] of Object.entries(data)) {
+        if (key === 'privacy_consent') continue;
+        if (value !== undefined && value !== null && value !== '') {
+          body.append(key, String(value));
+        }
+      }
+
+      // Append files
+      const resumeFile = resumeRef.current?.files?.[0];
+      if (resumeFile) body.append('resume_cv', resumeFile);
+
+      const coverFile = coverLetterRef.current?.files?.[0];
+      if (coverFile) body.append('cover_letter', coverFile);
+
+      const { error } = await supabase.functions.invoke('submit-career-application', {
+        body,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Application received',
+        description: 'Thank you for applying. Our hiring team will follow up by email.',
+      });
+      reset();
+      if (resumeRef.current) resumeRef.current.value = '';
+      if (coverLetterRef.current) coverLetterRef.current.value = '';
+    } catch (err) {
+      console.error('Career application error:', err);
+      toast({
+        title: 'Submission failed',
+        description: 'Please try again or email careers@indigenousrising.ai directly.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -648,13 +686,13 @@ const Careers = () => {
 
                     <div className="space-y-2">
                       <Label htmlFor="resume_cv">CV / Resume <span className="text-destructive">*</span></Label>
-                      <Input id="resume_cv" type="file" accept=".pdf,.doc,.docx" required aria-required="true" aria-describedby="resume-hint" />
+                      <Input id="resume_cv" type="file" accept=".pdf,.doc,.docx" required aria-required="true" aria-describedby="resume-hint" ref={resumeRef} />
                       <p id="resume-hint" className="text-xs text-muted-foreground">Please upload your most current CV or resume in PDF or Word format (max 5MB).</p>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="cover_letter_story">Cover Letter or 1-Page Story <span className="text-muted-foreground">(optional)</span></Label>
-                      <Input id="cover_letter_story" type="file" accept=".pdf,.doc,.docx" aria-describedby="cover-letter-hint" />
+                      <Input id="cover_letter_story" type="file" accept=".pdf,.doc,.docx" aria-describedby="cover-letter-hint" ref={coverLetterRef} />
                       <p id="cover-letter-hint" className="text-xs text-muted-foreground">You are welcome to upload a traditional cover letter, or something less conventional — a 1-page story about why this work matters to you, a letter of support from a community member, or whatever feels most authentic.</p>
                     </div>
                   </div>
