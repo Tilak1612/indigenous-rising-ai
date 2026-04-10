@@ -138,7 +138,7 @@ const PricingSection = () => {
         { text: "Multi-language interface (EN, FR — more rolling out)", available: true },
         { text: "Full data export at any time", available: true },
         { text: "Email support", available: true },
-        { text: "3 AI funding matches per month", available: false },
+        { text: "3 AI funding matches per month", available: true },
         { text: "Business health score", available: false },
       ],
       ctaText: "Start Free",
@@ -160,7 +160,7 @@ const PricingSection = () => {
         { text: "Priority email support", available: true },
         { text: "Cultural competency training programs", available: true },
         { text: "Profile listing in partner directory", available: true },
-        { text: "AI-powered funding navigator (500+ programs)", available: false },
+        { text: "AI-powered funding navigator (unlimited matches)", available: true },
         { text: "Grant writing assistant", available: false },
         { text: "Funding deadline alerts (email + SMS)", available: false },
         { text: "Quarterly impact report PDF", available: false },
@@ -401,7 +401,7 @@ const PricingSection = () => {
                     { feature: 'Cultural competency training', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Partner directory listing', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Priority support', free: 'Email', growth: 'Email', pro: 'Phone+Chat (soon)', enterprise: '24/7 (soon)' },
-                    { feature: 'AI funding matching', free: 'soon', growth: 'soon', pro: 'soon', enterprise: 'soon' },
+                    { feature: 'AI funding matching', free: '3/mo', growth: '50/mo', pro: 'Unlimited', enterprise: 'Unlimited' },
                     { feature: 'Grant writing assistant', free: '—', growth: 'soon', pro: 'soon', enterprise: 'soon' },
                     { feature: 'Multi-entity support', free: '—', growth: '—', pro: 'soon', enterprise: 'soon' },
                     { feature: 'IFI Connection Engine', free: '—', growth: '—', pro: 'soon', enterprise: 'soon' },
@@ -429,8 +429,9 @@ const PricingSection = () => {
               On the roadmap
             </h4>
             <p className="text-sm text-muted-foreground mb-4">
-              AI funding matching, grant writing assistance, IFI connections, and OCAP™ governance console
-              are in active development. We will announce launch dates as features ship.
+              Grant writing assistance, IFI Connection Engine, quarterly impact reports, and
+              the OCAP™ governance console are in active development. AI funding matching
+              is live today — try it from your dashboard.
             </p>
             <ShinyButton size="sm" onClick={handleAddonsClick}>
               Talk to us

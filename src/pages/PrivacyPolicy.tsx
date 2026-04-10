@@ -118,8 +118,25 @@ const PrivacyPolicy: React.FC = () => {
               <div className="p-4 bg-muted rounded-lg">
                 <h3 className="font-semibold text-foreground mb-2">Legal Compliance</h3>
                 <p className="text-muted-foreground">
-                  To comply with Canadian laws, respond to legal requests, protect our rights, 
+                  To comply with Canadian laws, respond to legal requests, protect our rights,
                   and prevent fraud or misuse of our platform.
+                </p>
+              </div>
+
+              <div className="p-4 bg-muted rounded-lg">
+                <h3 className="font-semibold text-foreground mb-2">Third-Party Processors for AI Features</h3>
+                <p className="text-muted-foreground">
+                  When you explicitly request AI-powered features such as funding matching, we send
+                  relevant portions of your business profile (territory, industry, business stage,
+                  description, and funding purpose) to OpenAI's API (GPT-4o-mini model) to generate
+                  recommendations. This happens only when you click "Find my matches" — never passively.
+                  OpenAI does not retain data sent via their API for training purposes.
+                  No personally identifying information such as your name, email, or phone number is
+                  sent. You can read OpenAI's enterprise privacy policy at{' '}
+                  <a className="text-primary underline" href="https://openai.com/enterprise-privacy" target="_blank" rel="noopener noreferrer">
+                    openai.com/enterprise-privacy
+                  </a>
+                  .
                 </p>
               </div>
             </div>
