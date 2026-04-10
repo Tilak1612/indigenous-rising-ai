@@ -223,9 +223,9 @@ const PrivacyPolicy: React.FC = () => {
                   <h3 className="font-semibold text-foreground mb-2">Privacy Officer</h3>
                   <p className="text-muted-foreground">
                     Indigenous Rising AI Business Support Platform<br />
-                    Email: privacy@indigenousrising.ai<br />
-                    Phone: 1-800-XXX-XXXX<br />
-                    Address: [Physical Address]<br />
+                    Email: help@indigenousrising.ai<br />
+                    Phone: 1-800-INDIGENOUS (1-800-463-4436)<br />
+                    Traditional Territory of the Anishinaabe, Toronto, ON<br />
                     Canada
                   </p>
                 </div>

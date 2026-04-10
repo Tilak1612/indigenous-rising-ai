@@ -298,9 +298,9 @@ const TermsOfService: React.FC = () => {
             <div className="p-4 bg-muted rounded-lg">
               <p className="text-muted-foreground">
                 Indigenous Rising AI Business Support Platform<br />
-                Email: legal@indigenousrising.ai<br />
-                Phone: 1-800-XXX-XXXX<br />
-                Address: [Physical Address]<br />
+                Email: help@indigenousrising.ai<br />
+                Phone: 1-800-INDIGENOUS (1-800-463-4436)<br />
+                Traditional Territory of the Anishinaabe, Toronto, ON<br />
                 Canada
               </p>
             </div>

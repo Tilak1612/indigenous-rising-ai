@@ -363,8 +363,8 @@ const AccessibilityStatement: React.FC = () => {
                 <div className="p-4 bg-muted rounded-lg">
                   <h3 className="font-semibold text-foreground mb-2">Accessibility Coordinator</h3>
                   <p className="text-muted-foreground text-sm">
-                    Email: accessibility@indigenousrising.ai<br />
-                    Phone: 1-800-XXX-XXXX (TTY available)<br />
+                    Email: help@indigenousrising.ai<br />
+                    Phone: 1-800-INDIGENOUS (1-800-463-4436) (TTY available)<br />
                     Response time: Within 2 business days
                   </p>
                 </div>
