@@ -53,7 +53,7 @@ function formatDeadline(grant: Grant): string {
 }
 
 function buildDigestHtml(subscriber: Subscriber, grants: Grant[]): string {
-  const unsubUrl = `https://upxojfcdtmqtcvgbjsym.supabase.co/functions/v1/unsubscribe-funding-alerts?token=${subscriber.unsubscribe_token}`;
+  const unsubUrl = `https://www.indigenousrising.ai/funding/unsubscribe?token=${subscriber.unsubscribe_token}`;
   const todayFormatted = new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
 
   const grantBlocks = grants.map((g) => `

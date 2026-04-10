@@ -43,6 +43,9 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const PublicFunding = lazy(() => import("./pages/PublicFunding"));
+const FundingAlerts = lazy(() => import("./pages/FundingAlerts"));
+const FundingAlertConfirm = lazy(() => import("./pages/FundingAlertConfirm"));
+const FundingAlertUnsubscribe = lazy(() => import("./pages/FundingAlertUnsubscribe"));
 const PublicPlan = lazy(() => import("./pages/PublicPlan"));
 const PublicImpact = lazy(() => import("./pages/PublicImpact"));
 const PublicLearning = lazy(() => import("./pages/PublicLearning"));
@@ -479,16 +482,40 @@ const App = () => (
                   </Suspense>
                 } 
               />
-              <Route 
-                path="/funding" 
+              <Route
+                path="/funding"
                 element={
                   <Suspense fallback={<PageSkeleton variant="landing" />}>
                     <PublicFunding />
                   </Suspense>
-                } 
+                }
               />
-              <Route 
-                path="/plan" 
+              <Route
+                path="/funding/alerts"
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <FundingAlerts />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/funding/confirm"
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <FundingAlertConfirm />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/funding/unsubscribe"
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <FundingAlertUnsubscribe />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/plan"
                 element={
                   <Suspense fallback={<PageSkeleton variant="landing" />}>
                     <PublicPlan />
