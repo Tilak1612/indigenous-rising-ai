@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
-import { trackEvent } from '@/utils/analytics';
+import { trackEvent as _trackEvent } from '@/utils/analytics';
 import { 
   Mail, Phone, MapPin, Twitter, Linkedin, 
   Youtube, Globe, Shield, Heart, BookOpen
@@ -45,8 +45,7 @@ const Footer = () => {
         { name: "Cultural Partners", href: "#partnerships" },
         { name: "Careers", href: "/careers" },
         { name: "Success Stories", href: "/success-stories" },
-        { name: "Contact Us", href: "/contact" },
-        { name: "Admin Portal", href: "/auth" }
+        { name: "Contact Us", href: "/contact" }
       ]
     },
     {

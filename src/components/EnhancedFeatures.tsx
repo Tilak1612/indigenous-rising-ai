@@ -147,12 +147,15 @@ const EnhancedFeatures = () => {
                       
                               <div className="flex items-center gap-3">
                                 <Button
+                                  asChild
                                   variant="ghost"
                                   size="sm"
                                   className="group/btn text-primary hover:text-primary hover:bg-primary/10 -ml-2"
                                 >
-                                  Learn More
-                                  <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                  <Link to="/contact">
+                                    Learn More
+                                    <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                  </Link>
                                 </Button>
                                 {feature.title === 'Funding Navigator' && (
                                   <Button asChild size="sm" variant="outline">

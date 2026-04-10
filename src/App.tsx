@@ -3,9 +3,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { trackPageView } from "./utils/analytics";
 import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
@@ -78,11 +79,21 @@ const queryClient = new QueryClient({
   },
 });
 
+/** Track SPA page views on every route change */
+function RouteChangeTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    trackPageView(location.pathname, document.title);
+  }, [location.pathname]);
+  return null;
+}
+
 const App = () => (
   <ErrorBoundary>
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <RouteChangeTracker />
           <AuthProvider>
             <TooltipProvider>
             <Toaster />

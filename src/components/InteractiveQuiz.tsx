@@ -64,9 +64,9 @@ const InteractiveQuiz = ({ onClose }: InteractiveQuizProps) => {
         <X className="w-5 h-5" />
       </button>
       
-      <h3 className="font-display text-xl font-bold text-foreground mb-4">
+      <h2 className="font-display text-xl font-bold text-foreground mb-4">
         Choose your path
-      </h3>
+      </h2>
       
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {quizOptions.map((option) => {

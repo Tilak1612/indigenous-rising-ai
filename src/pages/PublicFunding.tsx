@@ -38,7 +38,7 @@ const fundingTypes = [
 
 const features = [
   'AI-powered funding matching based on your business profile',
-  'Personalized eligibility assessments for 200+ programs',
+  'Personalized eligibility assessments for 500+ programs',
   'Application tracking and deadline reminders',
   'Document preparation assistance',
   'Direct links to application portals',
@@ -71,7 +71,7 @@ const PublicFunding: React.FC = () => {
                 <span className="text-white/90">Indigenous Business</span>
               </h1>
               <p className="text-xl text-white/80 max-w-3xl mx-auto">
-                Access our comprehensive database of 200+ funding opportunities. Our AI matches you 
+                Access our comprehensive database of 500+ funding opportunities. Our AI matches you 
                 with grants, loans, and investment options based on your unique business profile.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
@@ -90,7 +90,7 @@ const PublicFunding: React.FC = () => {
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
-                    <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10">
+                    <Button asChild variant="outline" size="lg" className="border-primary/40 text-primary bg-white hover:bg-primary/5">
                       <Link to="/pricing">View Plans</Link>
                     </Button>
                   </>
@@ -156,7 +156,7 @@ const PublicFunding: React.FC = () => {
                   <p className="text-muted-foreground mb-6">in funding opportunities tracked</p>
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div>
-                      <div className="text-2xl font-bold text-foreground">200+</div>
+                      <div className="text-2xl font-bold text-foreground">500+</div>
                       <p className="text-sm text-muted-foreground">Programs</p>
                     </div>
                     <div>

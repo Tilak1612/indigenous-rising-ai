@@ -1,4 +1,5 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, ChevronDown, Sparkles, Shield, Globe } from 'lucide-react';
 import InteractiveQuiz from './InteractiveQuiz';
 import heroPhoto from '@/assets/hero-bg-photo.jpg';
@@ -23,6 +24,8 @@ const HeroSection = () => {
           src={heroPhoto}
           alt="Indigenous entrepreneurs collaborating in a bright workspace"
           className="w-full h-full object-cover"
+          width={1920}
+          height={1080}
           loading="eager"
           fetchPriority="high"
           decoding="async"
@@ -168,20 +171,14 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <style>{`
-        @keyframes fadeSlideBlurIn {
-          0% {
-            opacity: 0;
-            transform: translateY(32px);
-            filter: blur(8px);
+      <Helmet>
+        <style>{`
+          @keyframes fadeSlideBlurIn {
+            0% { opacity: 0; transform: translateY(32px); filter: blur(8px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
           }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-            filter: blur(0px);
-          }
-        }
-      `}</style>
+        `}</style>
+      </Helmet>
     </section>
   );
 };

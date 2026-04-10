@@ -104,7 +104,7 @@ const PublicImpact: React.FC = () => {
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
-                    <Button asChild variant="outline" size="lg" className="border-white/20 text-white hover:bg-white/10">
+                    <Button asChild variant="outline" size="lg" className="border-primary/40 text-primary bg-white hover:bg-primary/5">
                       <Link to="/pricing">View Plans</Link>
                     </Button>
                   </>

@@ -21,9 +21,9 @@ const TrainingSection = () => {
         "OCAP™ data sovereignty training",
         "Elder mentorship sessions"
       ],
-      testimonials: 3.2,
+      testimonials: 4.6,
       enrolled: 1247,
-      nextStart: "March 15, 2026",
+      nextStart: "Rolling enrollment",
       gradient: "earth" as const
     },
     {
@@ -42,7 +42,7 @@ const TrainingSection = () => {
       ],
       testimonials: 4.8,
       enrolled: 892,
-      nextStart: "March 22, 2026",
+      nextStart: "Rolling enrollment",
       gradient: "sky" as const
     },
     {
@@ -61,7 +61,7 @@ const TrainingSection = () => {
       ],
       testimonials: 4.9,
       enrolled: 234,
-      nextStart: "April 5, 2026",
+      nextStart: "Rolling enrollment",
       gradient: "hero" as const
     }
   ];
