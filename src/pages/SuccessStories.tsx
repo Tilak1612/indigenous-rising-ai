@@ -16,6 +16,7 @@ const SuccessStories = () => {
       <main className="pt-24">
         <div className="container mx-auto px-4 py-8">
           <Breadcrumbs />
+          <h1 className="sr-only">Success Stories — Indigenous Entrepreneurs Thriving Across Turtle Island</h1>
         </div>
         <SuccessGallery showCta={false} />
       </main>
