@@ -9,25 +9,11 @@ const Pricing = () => {
     <>
       <Helmet>
         <title>Pricing Plans | Indigenous Rising AI - Business Support for Indigenous Entrepreneurs</title>
-        <meta 
-          name="description" 
-          content="Choose the right plan for your Indigenous business journey. Free starter tools, professional plans at $49/month, and custom enterprise solutions. OCAP™ compliant." 
+        <meta
+          name="description"
+          content="Four plans for every stage of the Indigenous business journey: Free, Growth ($49/mo), Professional ($149/mo), and Enterprise (custom). All OCAP™ compliant, all data stored in Canada."
         />
         <meta name="keywords" content="Indigenous business pricing, First Nations entrepreneur tools, Aboriginal business support plans, OCAP compliant platform pricing" />
-        <link rel="canonical" href="https://www.indigenousrising.ai/pricing" />
-        
-        {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.indigenousrising.ai/pricing" />
-        <meta property="og:title" content="Pricing Plans | Indigenous Rising AI" />
-        <meta property="og:description" content="Flexible pricing plans for Indigenous entrepreneurs. Free to enterprise solutions with OCAP™ compliance." />
-        <meta property="og:image" content="https://www.indigenousrising.ai/og-home.jpg" />
-        
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Pricing Plans | Indigenous Rising AI" />
-        <meta name="twitter:description" content="Flexible pricing plans for Indigenous entrepreneurs. Free to enterprise solutions." />
-        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-home.jpg" />
       </Helmet>
       
       <StructuredData 
