@@ -158,7 +158,7 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="mailto:hello@indigenousrising.ai"
+                href="mailto:help@indigenousrising.ai"
                 className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               >
                 Email Us

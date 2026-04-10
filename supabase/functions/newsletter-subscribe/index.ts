@@ -129,7 +129,7 @@ const handler = async (req: Request): Promise<Response> => {
             emailId: 'welcome-newsletter', // You'll need to create this template in HubSpot
             message: {
               to: subscription.email,
-              from: 'hello@indigenousrising.ai',
+              from: 'help@indigenousrising.ai',
             },
           }),
         });
@@ -230,7 +230,7 @@ const handler = async (req: Request): Promise<Response> => {
               emailId: 'confirm-newsletter', // You'll need to create this template in HubSpot
               message: {
                 to: email,
-                from: 'hello@indigenousrising.ai',
+                from: 'help@indigenousrising.ai',
               },
               customProperties: {
                 confirmation_link: `${confirmationUrl}&token=${existing.confirmation_token}`,
@@ -286,7 +286,7 @@ const handler = async (req: Request): Promise<Response> => {
           emailId: 'confirm-newsletter', // Create this template in HubSpot
           message: {
             to: email,
-            from: 'hello@indigenousrising.ai',
+            from: 'help@indigenousrising.ai',
           },
           customProperties: {
             confirmation_link: `${confirmationUrl}&token=${confirmationToken}`,

@@ -110,8 +110,8 @@ const Contact = () => {
               <CardTitle>Email</CardTitle>
             </CardHeader>
             <CardContent>
-              <a href="mailto:hello@indigenousrising.ai" className="text-muted-foreground hover:text-primary transition-smooth">
-                hello@indigenousrising.ai
+              <a href="mailto:help@indigenousrising.ai" className="text-muted-foreground hover:text-primary transition-smooth">
+                help@indigenousrising.ai
               </a>
             </CardContent>
           </Card>

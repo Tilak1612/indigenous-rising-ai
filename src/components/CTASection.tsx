@@ -52,7 +52,7 @@ const CTASection = () => {
             <ShinyButton 
               className="group"
               onClick={() => {
-                window.open('mailto:hello@indigenousrising.ai?subject=Demo Request&body=I would like to schedule a demo of the Indigenous Rising AI Business Support Platform.', '_blank');
+                window.open('mailto:help@indigenousrising.ai?subject=Demo Request&body=I would like to schedule a demo of the Indigenous Rising AI Business Support Platform.', '_blank');
               }}
             >
               Schedule Demo

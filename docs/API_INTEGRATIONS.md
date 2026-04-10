@@ -450,7 +450,7 @@ https://api.stripe.com/v1/
     "emailId": "template-name",
     "message": {
       "to": "user@example.com",
-      "from": "hello@indigenousrising.ai"
+      "from": "help@indigenousrising.ai"
     }
   }
   ```
