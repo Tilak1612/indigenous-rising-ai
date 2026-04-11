@@ -143,16 +143,29 @@ export default function Profile() {
   const tierLabel = product_id?.toLowerCase().includes('enterprise') ? 'Gimishoomis (Enterprise)' :
                     subscribed ? 'Ogichidaakwe (Pro)' : 'Maadaadiziwin (Free)';
 
-  // Load existing profile from Supabase on mount
+  // Load existing profile from Supabase on mount.
+  // Uses maybeSingle() so a missing profile row (e.g. a user who signed up
+  // before the handle_new_user trigger was wired) returns null instead of
+  // throwing. Errors are logged but never propagate — the user still sees
+  // the form, just with empty defaults.
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from('profiles')
-      .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links, business_stage, target_funding_amount, funding_purpose')
-      .eq('id', user.id)
-      .single()
-      .then(({ data }) => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links, business_stage, target_funding_amount, funding_purpose')
+          .eq('id', user.id)
+          .maybeSingle();
+
+        if (cancelled) return;
+        if (error) {
+          console.error('[Profile] failed to load profile:', error.message);
+          return;
+        }
         if (!data) return;
+
         const parts = (data.full_name || '').split(' ');
         const firstName = parts[0] || '';
         const lastName = parts.slice(1).join(' ');
@@ -182,7 +195,11 @@ export default function Profile() {
           facebook: sl.facebook || '',
           instagram: sl.instagram || '',
         });
-      });
+      } catch (err) {
+        if (!cancelled) console.error('[Profile] profile load threw:', err);
+      }
+    })();
+    return () => { cancelled = true; };
   }, [user]);
 
   const handleSaveProfile = async () => {

@@ -29,15 +29,30 @@ export interface ShinyButtonProps
 
 const ShinyButton = React.forwardRef<HTMLButtonElement, ShinyButtonProps>(
   ({ className, size, asChild = false, children, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+    // When asChild is true, Radix Slot merges our props into the single
+    // React element child (e.g. a <Link>). We must NOT wrap the child in
+    // a <span> in that case — Slot would then try to merge into the
+    // <span> instead of the intended element, breaking router links and
+    // throwing "React.Children.only expected to receive a single child".
+    if (asChild) {
+      return (
+        <Slot
+          className={cn(shinyButtonVariants({ size, className }))}
+          ref={ref}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
+    }
     return (
-      <Comp
+      <button
         className={cn(shinyButtonVariants({ size, className }))}
         ref={ref}
         {...props}
       >
         <span>{children}</span>
-      </Comp>
+      </button>
     );
   }
 );
