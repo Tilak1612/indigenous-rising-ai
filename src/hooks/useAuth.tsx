@@ -55,6 +55,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
+    // Safety net: if neither getSession() nor the auth listener has resolved
+    // the loading state within 8 seconds (pathological network / SDK hang),
+    // force-unblock the app. Users will land on /auth and can retry.
+    const safetyTimeout = setTimeout(() => {
+      if (mounted) {
+        console.warn('[useAuth] loading state did not resolve within 8s — forcing loading=false');
+        setLoading(false);
+      }
+    }, 8000);
+
     // Set up auth state listener FIRST
     // Await role check before setting loading=false — prevents ProtectedRoute
     // from redirecting admins during the brief window before roles are confirmed
@@ -117,6 +127,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       mounted = false;
+      clearTimeout(safetyTimeout);
       subscription.unsubscribe();
     };
   }, []);
