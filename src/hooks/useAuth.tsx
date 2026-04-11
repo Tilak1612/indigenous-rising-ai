@@ -67,7 +67,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Set up auth state listener FIRST
     // Await role check before setting loading=false — prevents ProtectedRoute
-    // from redirecting admins during the brief window before roles are confirmed
+    // from redirecting admins during the brief window before roles are confirmed.
+    //
+    // IMPORTANT: On first app load, Supabase fires an INITIAL_SESSION event
+    // on the listener very early — sometimes before the SDK has finished
+    // hydrating the cached session from localStorage. If that event arrives
+    // with nextSession=null and we set loading=false, ProtectedRoute will
+    // redirect to /auth before the real session is restored a few ms later.
+    // Race observed on hard refresh of protected sub-routes.
+    //
+    // Fix: ignore the loading-flag side effect on INITIAL_SESSION. The
+    // getSession() call below is the authoritative source for the initial
+    // state and its finally block always runs, so we never hang.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, nextSession) => {
         if (!mounted) return;
@@ -81,7 +92,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setIsTeamMember(false);
         }
 
-        setLoading(false);
+        // Only the getSession() IIFE below sets loading=false on INITIAL_SESSION.
+        // All subsequent events (SIGNED_IN, SIGNED_OUT, TOKEN_REFRESHED, etc.)
+        // safely resolve loading here.
+        if (event !== 'INITIAL_SESSION') {
+          setLoading(false);
+        }
       }
     );
 
