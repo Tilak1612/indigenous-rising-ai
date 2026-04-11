@@ -65,6 +65,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }, 8000);
 
+    // DIAGNOSTIC: inspect what's actually in localStorage at boot time
+    try {
+      const keys = Object.keys(localStorage).filter(k => k.startsWith('sb-') || k.includes('supabase'));
+      console.log('[useAuth] localStorage keys:', keys);
+      for (const k of keys) {
+        const val = localStorage.getItem(k);
+        console.log(`[useAuth] localStorage[${k}] length:`, val?.length ?? 0);
+      }
+    } catch (e) {
+      console.error('[useAuth] localStorage access threw:', e);
+    }
+
     // Set up auth state listener FIRST
     // Await role check before setting loading=false — prevents ProtectedRoute
     // from redirecting admins during the brief window before roles are confirmed.
@@ -81,6 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // state and its finally block always runs, so we never hang.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, nextSession) => {
+        console.log('[useAuth] onAuthStateChange event:', event, 'hasSession:', !!nextSession);
         if (!mounted) return;
         setSession(nextSession);
         setUser(nextSession?.user ?? null);
