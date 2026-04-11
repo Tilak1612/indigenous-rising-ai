@@ -141,12 +141,22 @@ const FundingMatches: React.FC = () => {
         return;
       }
 
-      const { data, error } = await supabase.functions.invoke<MatchResponse>('match-funding-opportunities', {
+      // Hard timeout so a hung edge function can never leave the user
+      // stuck on an infinite spinner — they'll see an error after 30s.
+      const invokePromise = supabase.functions.invoke<MatchResponse>('match-funding-opportunities', {
         body: {},
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      const timeoutPromise = new Promise<{ data: null; error: Error }>((resolve) => {
+        setTimeout(
+          () => resolve({ data: null, error: new Error('Request timed out after 30 seconds. Please try again.') }),
+          30000
+        );
+      });
+      const result = await Promise.race([invokePromise, timeoutPromise]);
+      const { data, error } = result as { data: MatchResponse | null; error: Error | null };
 
       // Handle HTTP-level errors returned by functions.invoke
       if (error) {
