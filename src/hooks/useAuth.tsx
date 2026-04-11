@@ -25,30 +25,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Role lookup must never throw out of the auth flow — if user_roles table
+  // is missing, the user is unauthenticated, or the network is flaky, we
+  // fall back to "no special roles" rather than hanging the whole app.
   const checkUserRole = async (userId: string) => {
-    const { data: roles } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId);
+    try {
+      const { data: roles, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId);
 
-    if (roles) {
-      const roleList = roles.map(r => r.role);
+      if (error) {
+        console.error('[useAuth] user_roles query failed:', error.message);
+        setIsAdmin(false);
+        setIsTeamMember(false);
+        return;
+      }
+
+      const roleList = (roles ?? []).map(r => r.role);
       setIsAdmin(roleList.includes('admin'));
       setIsTeamMember(roleList.includes('team_member') || roleList.includes('admin'));
+    } catch (err) {
+      console.error('[useAuth] user_roles threw:', err);
+      setIsAdmin(false);
+      setIsTeamMember(false);
     }
   };
 
   useEffect(() => {
+    let mounted = true;
+
     // Set up auth state listener FIRST
     // Await role check before setting loading=false — prevents ProtectedRoute
     // from redirecting admins during the brief window before roles are confirmed
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+      async (event, nextSession) => {
+        if (!mounted) return;
+        setSession(nextSession);
+        setUser(nextSession?.user ?? null);
 
-        if (session?.user) {
-          await checkUserRole(session.user.id);
+        if (nextSession?.user) {
+          await checkUserRole(nextSession.user.id);
         } else {
           setIsAdmin(false);
           setIsTeamMember(false);
@@ -58,19 +75,50 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    // THEN check for existing session.
+    // Wrapped in try/catch + guaranteed setLoading(false) so a corrupted
+    // token, network error, or Supabase outage can never leave the app
+    // stuck on an infinite spinner. Users hit the auth page instead.
+    (async () => {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (!mounted) return;
 
-      if (session?.user) {
-        await checkUserRole(session.user.id);
+        if (error) {
+          console.error('[useAuth] getSession error:', error.message);
+          // Clear any corrupted local session state and force re-auth
+          try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* ignore */ }
+          setSession(null);
+          setUser(null);
+          setIsAdmin(false);
+          setIsTeamMember(false);
+          return;
+        }
+
+        const existing = data.session;
+        setSession(existing);
+        setUser(existing?.user ?? null);
+
+        if (existing?.user) {
+          await checkUserRole(existing.user.id);
+        }
+      } catch (err) {
+        if (!mounted) return;
+        console.error('[useAuth] getSession threw:', err);
+        try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* ignore */ }
+        setSession(null);
+        setUser(null);
+        setIsAdmin(false);
+        setIsTeamMember(false);
+      } finally {
+        if (mounted) setLoading(false);
       }
+    })();
 
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
