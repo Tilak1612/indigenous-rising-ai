@@ -90,8 +90,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // token, network error, or Supabase outage can never leave the app
     // stuck on an infinite spinner. Users hit the auth page instead.
     (async () => {
+      console.log('[useAuth] calling getSession');
       try {
         const { data, error } = await supabase.auth.getSession();
+        console.log('[useAuth] getSession resolved, has session:', !!data?.session);
         if (!mounted) return;
 
         if (error) {
