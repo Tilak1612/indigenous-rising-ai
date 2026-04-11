@@ -55,15 +55,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    // Safety net: if nothing resolves loading within 6 seconds (pathological
-    // case), force-unblock. The synchronous localStorage path below should
-    // normally resolve in single-digit milliseconds.
+    // Safety net: hydration is synchronous and should resolve loading in
+    // single-digit milliseconds. This timeout is only for the pathological
+    // case where neither the localStorage read nor the auth listener fires.
+    // Set to 10s — if it ever triggers in production, something is genuinely
+    // wrong and we want a console.warn so we know to investigate.
     const safetyTimeout = setTimeout(() => {
       if (mounted) {
-        console.warn('[useAuth] loading state did not resolve within 6s — forcing loading=false');
+        console.warn('[useAuth] safety timeout fired — neither hydration nor auth listener resolved loading');
         setLoading(false);
       }
-    }, 6000);
+    }, 10000);
 
     // ------------------------------------------------------------------
     // SYNCHRONOUS SESSION HYDRATION FROM LOCALSTORAGE
@@ -99,8 +101,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       };
     }
 
-    // Returns the hydrated user id if successful, null otherwise.
-    function hydrateFromLocalStorage(): string | null {
+    // Returns the parsed StoredSession if successful, null otherwise.
+    function hydrateFromLocalStorage(): StoredSession | null {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) {
@@ -133,30 +135,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(hydratedSession);
         setUser(hydratedUser);
         console.log('[useAuth] hydrated from localStorage, user:', stored.user.email);
-        return stored.user.id!;
+        return stored;
       } catch (err) {
         console.error('[useAuth] localStorage hydration failed:', err);
         return null;
       }
     }
 
-    const hydratedUserId = hydrateFromLocalStorage();
+    const hydratedSession = hydrateFromLocalStorage();
 
-    // If hydration succeeded, resolve loading immediately and fire off the
-    // role check in the background. We don't await the role check — it
-    // only affects isAdmin/isTeamMember, not basic auth, so it's safe
-    // to let it populate a few ms later.
-    if (hydratedUserId) {
+    // If hydration succeeded, resolve loading immediately, fire off the
+    // role check in the background, and CRUCIALLY restore the SDK's
+    // internal session via setSession() so that supabase.functions.invoke()
+    // and other SDK calls correctly attach the Bearer token.
+    if (hydratedSession) {
       setLoading(false);
       // Fire-and-forget role check (pass the id directly — React state
       // updates are async so `user` is still null at this point)
-      checkUserRole(hydratedUserId).catch(err => {
+      checkUserRole(hydratedSession.user!.id!).catch(err => {
         console.error('[useAuth] role check failed:', err);
       });
-      // Also fire a background getSession() to give the SDK a chance to
-      // sync its internal state. We don't wait for it and we don't care
-      // if it hangs — the auth state is already populated from localStorage.
-      supabase.auth.getSession().catch(() => { /* ignore */ });
+
+      // CRITICAL: restore the SDK's internal session so functions.invoke()
+      // and database queries correctly attach the user's Bearer token.
+      // We race against a 3s timeout because setSession() is part of the
+      // same async machinery as getSession() and may also hang in this
+      // environment. If it does, we proceed without the SDK session — but
+      // FundingMatches.tsx and useSubscription.tsx already read the token
+      // directly from localStorage and pass it explicitly, so functions
+      // still work even if setSession is dead.
+      if (hydratedSession.access_token && hydratedSession.refresh_token) {
+        const setSessionPromise = supabase.auth.setSession({
+          access_token: hydratedSession.access_token,
+          refresh_token: hydratedSession.refresh_token,
+        });
+        const setSessionTimeout = new Promise((resolve) => setTimeout(() => resolve('timeout'), 3000));
+        Promise.race([setSessionPromise, setSessionTimeout])
+          .then((result) => {
+            if (result === 'timeout') {
+              console.warn('[useAuth] setSession() timed out — SDK internal session not synced; using explicit Bearer headers');
+            } else {
+              console.log('[useAuth] setSession() succeeded — SDK internal session synced');
+            }
+          })
+          .catch((err) => {
+            console.error('[useAuth] setSession() threw:', err);
+          });
+      }
     } else {
       // No cached session — mark as anonymous and resolve loading
       setSession(null);
