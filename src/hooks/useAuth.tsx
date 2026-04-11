@@ -55,46 +55,132 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
 
-    // Safety net: if neither getSession() nor the auth listener has resolved
-    // the loading state within 8 seconds (pathological network / SDK hang),
-    // force-unblock the app. Users will land on /auth and can retry.
+    // Safety net: if nothing resolves loading within 6 seconds (pathological
+    // case), force-unblock. The synchronous localStorage path below should
+    // normally resolve in single-digit milliseconds.
     const safetyTimeout = setTimeout(() => {
       if (mounted) {
-        console.warn('[useAuth] loading state did not resolve within 8s — forcing loading=false');
+        console.warn('[useAuth] loading state did not resolve within 6s — forcing loading=false');
         setLoading(false);
       }
-    }, 8000);
+    }, 6000);
 
-    // DIAGNOSTIC: inspect what's actually in localStorage at boot time
-    try {
-      const keys = Object.keys(localStorage).filter(k => k.startsWith('sb-') || k.includes('supabase'));
-      console.log('[useAuth] localStorage keys:', keys);
-      for (const k of keys) {
-        const val = localStorage.getItem(k);
-        console.log(`[useAuth] localStorage[${k}] length:`, val?.length ?? 0);
-      }
-    } catch (e) {
-      console.error('[useAuth] localStorage access threw:', e);
+    // ------------------------------------------------------------------
+    // SYNCHRONOUS SESSION HYDRATION FROM LOCALSTORAGE
+    // ------------------------------------------------------------------
+    // We can't rely on supabase.auth.getSession() — in supabase-js@2.80.0
+    // on this project, it returns a Promise that never resolves and never
+    // throws. Observed via Test B diagnostic logs with bundle CNgh3ZC9:
+    // - localStorage key is present (2276 bytes)
+    // - supabase.auth.getSession() is called
+    // - neither getSession nor onAuthStateChange ever fires
+    // - the 5s timeout always fires
+    //
+    // Workaround: read the session directly from localStorage, decode the
+    // access_token JWT to extract expiry and user claims, and populate our
+    // React state synchronously. This bypasses the SDK's broken async
+    // machinery entirely for the initial load.
+    //
+    // The SDK is still responsible for fresh sign-ins (via signInWithPassword
+    // which DOES work — confirmed by the fact that users can sign in), and
+    // onAuthStateChange is still registered for future events. Only the
+    // initial hydration is bypassed.
+    const STORAGE_KEY = 'sb-upxojfcdtmqtcvgbjsym-auth-token';
+
+    interface StoredSession {
+      access_token?: string;
+      refresh_token?: string;
+      expires_at?: number; // unix seconds
+      token_type?: string;
+      user?: {
+        id?: string;
+        email?: string;
+        [key: string]: unknown;
+      };
     }
 
-    // Set up auth state listener FIRST
-    // Await role check before setting loading=false — prevents ProtectedRoute
-    // from redirecting admins during the brief window before roles are confirmed.
-    //
-    // IMPORTANT: On first app load, Supabase fires an INITIAL_SESSION event
-    // on the listener very early — sometimes before the SDK has finished
-    // hydrating the cached session from localStorage. If that event arrives
-    // with nextSession=null and we set loading=false, ProtectedRoute will
-    // redirect to /auth before the real session is restored a few ms later.
-    // Race observed on hard refresh of protected sub-routes.
-    //
-    // Fix: ignore the loading-flag side effect on INITIAL_SESSION. The
-    // getSession() call below is the authoritative source for the initial
-    // state and its finally block always runs, so we never hang.
+    // Returns the hydrated user id if successful, null otherwise.
+    function hydrateFromLocalStorage(): string | null {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          console.log('[useAuth] no cached session in localStorage');
+          return null;
+        }
+        const parsed = JSON.parse(raw) as StoredSession | { currentSession?: StoredSession };
+        // Some supabase-js versions wrap the session under currentSession
+        const stored: StoredSession = (parsed as { currentSession?: StoredSession }).currentSession
+          ?? (parsed as StoredSession);
+
+        if (!stored?.access_token || !stored?.user?.id) {
+          console.log('[useAuth] cached session missing required fields');
+          return null;
+        }
+
+        // Check expiry — if expired, we can't use it locally (would need refresh)
+        const nowSeconds = Math.floor(Date.now() / 1000);
+        if (stored.expires_at && stored.expires_at < nowSeconds) {
+          console.log('[useAuth] cached session is expired, skipping local hydration');
+          return null;
+        }
+
+        // Construct Session-shaped object. We trust the cached user claims
+        // — this is the same trust model the SDK uses when reading its own
+        // cache. The JWT is still verified server-side on every API call.
+        const hydratedSession = stored as unknown as Session;
+        const hydratedUser = stored.user as unknown as User;
+
+        setSession(hydratedSession);
+        setUser(hydratedUser);
+        console.log('[useAuth] hydrated from localStorage, user:', stored.user.email);
+        return stored.user.id!;
+      } catch (err) {
+        console.error('[useAuth] localStorage hydration failed:', err);
+        return null;
+      }
+    }
+
+    const hydratedUserId = hydrateFromLocalStorage();
+
+    // If hydration succeeded, resolve loading immediately and fire off the
+    // role check in the background. We don't await the role check — it
+    // only affects isAdmin/isTeamMember, not basic auth, so it's safe
+    // to let it populate a few ms later.
+    if (hydratedUserId) {
+      setLoading(false);
+      // Fire-and-forget role check (pass the id directly — React state
+      // updates are async so `user` is still null at this point)
+      checkUserRole(hydratedUserId).catch(err => {
+        console.error('[useAuth] role check failed:', err);
+      });
+      // Also fire a background getSession() to give the SDK a chance to
+      // sync its internal state. We don't wait for it and we don't care
+      // if it hangs — the auth state is already populated from localStorage.
+      supabase.auth.getSession().catch(() => { /* ignore */ });
+    } else {
+      // No cached session — mark as anonymous and resolve loading
+      setSession(null);
+      setUser(null);
+      setIsAdmin(false);
+      setIsTeamMember(false);
+      setLoading(false);
+    }
+
+    // Register the auth state change listener for future events
+    // (sign-in, sign-out, token refresh). Even if INITIAL_SESSION fires
+    // late or not at all, this handles all subsequent user actions.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, nextSession) => {
         console.log('[useAuth] onAuthStateChange event:', event, 'hasSession:', !!nextSession);
         if (!mounted) return;
+
+        // Skip INITIAL_SESSION entirely — we already hydrated from localStorage
+        // and we don't want this event to overwrite our hydrated state with
+        // null if the SDK's internal state is broken.
+        if (event === 'INITIAL_SESSION') {
+          return;
+        }
+
         setSession(nextSession);
         setUser(nextSession?.user ?? null);
 
@@ -105,77 +191,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setIsTeamMember(false);
         }
 
-        // Only the getSession() IIFE below sets loading=false on INITIAL_SESSION.
-        // All subsequent events (SIGNED_IN, SIGNED_OUT, TOKEN_REFRESHED, etc.)
-        // safely resolve loading here.
-        if (event !== 'INITIAL_SESSION') {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     );
-
-    // THEN check for existing session.
-    // Wrapped in try/catch + guaranteed setLoading(false) so a corrupted
-    // token, network error, or Supabase outage can never leave the app
-    // stuck on an infinite spinner. Users hit the auth page instead.
-    //
-    // Additional protection: race getSession() against a 5-second timeout
-    // so we never wait the full 8s safety net before giving up. This
-    // catches the known Supabase SDK hang where getSession() returns a
-    // Promise that never resolves.
-    (async () => {
-      console.log('[useAuth] calling getSession');
-      try {
-        type SessionResult = Awaited<ReturnType<typeof supabase.auth.getSession>>;
-        const timeoutResult: SessionResult = {
-          data: { session: null },
-          error: { name: 'TimeoutError', message: 'getSession timed out after 5s', status: 0 } as unknown as SessionResult['error'],
-        };
-        const getSessionPromise = supabase.auth.getSession() as Promise<SessionResult>;
-        const timeoutPromise = new Promise<SessionResult>((resolve) => {
-          setTimeout(() => resolve(timeoutResult), 5000);
-        });
-        const { data, error } = await Promise.race([getSessionPromise, timeoutPromise]);
-        console.log('[useAuth] getSession resolved, has session:', !!data?.session, 'error:', error?.message ?? 'none');
-        if (!mounted) return;
-
-        if (error) {
-          console.error('[useAuth] getSession error:', error.message);
-          // On a timeout, DO NOT clear the session — a hang can be transient
-          // and the onAuthStateChange listener may still fire later with the
-          // real session. Just leave loading=false so ProtectedRoute can
-          // redirect the user to /auth, where they can sign in again.
-          // On a real corrupted-token error, also don't clear it unless we
-          // know the token is actually bad — safer to redirect to /auth and
-          // let the user log in normally.
-          setSession(null);
-          setUser(null);
-          setIsAdmin(false);
-          setIsTeamMember(false);
-          return;
-        }
-
-        const existing = data.session;
-        setSession(existing);
-        setUser(existing?.user ?? null);
-
-        if (existing?.user) {
-          await checkUserRole(existing.user.id);
-        }
-      } catch (err) {
-        if (!mounted) return;
-        console.error('[useAuth] getSession threw:', err);
-        // Don't destroy the session — the user may still be valid. Just
-        // mark them anonymous for now; a page reload or explicit sign-in
-        // can recover. The localStorage entry stays intact.
-        setSession(null);
-        setUser(null);
-        setIsAdmin(false);
-        setIsTeamMember(false);
-      } finally {
-        if (mounted) setLoading(false);
-      }
-    })();
 
     return () => {
       mounted = false;

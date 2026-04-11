@@ -120,8 +120,22 @@ const FundingMatches: React.FC = () => {
     setState({ kind: 'loading' });
 
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const accessToken = sessionData.session?.access_token;
+      // Read access token directly from localStorage — supabase.auth.getSession()
+      // is known to hang in this project (see useAuth.tsx for the full story).
+      // The SDK's functions.invoke() also doesn't reliably auto-attach the
+      // token in our environment, so we pass it explicitly via headers.
+      let accessToken: string | undefined;
+      try {
+        const raw = localStorage.getItem('sb-upxojfcdtmqtcvgbjsym-auth-token');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          const stored = parsed?.currentSession ?? parsed;
+          accessToken = stored?.access_token;
+        }
+      } catch (e) {
+        console.error('[FundingMatches] could not read session token:', e);
+      }
+
       if (!accessToken) {
         setState({ kind: 'error', message: 'Sign-in session expired. Please sign in again.' });
         return;
@@ -129,6 +143,9 @@ const FundingMatches: React.FC = () => {
 
       const { data, error } = await supabase.functions.invoke<MatchResponse>('match-funding-opportunities', {
         body: {},
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       });
 
       // Handle HTTP-level errors returned by functions.invoke

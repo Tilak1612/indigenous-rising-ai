@@ -16,9 +16,22 @@ interface SubscriptionData {
 // function's own fallback behaviour.
 const SUBSCRIPTION_TIMEOUT_MS = 6000;
 
+function readAccessTokenFromStorage(): string | null {
+  try {
+    const raw = localStorage.getItem('sb-upxojfcdtmqtcvgbjsym-auth-token');
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    const stored = parsed?.currentSession ?? parsed;
+    return stored?.access_token ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function fetchSubscriptionStatus(): Promise<SubscriptionData> {
-  const { data: sessionData } = await supabase.auth.getSession();
-  const accessToken = sessionData.session?.access_token;
+  // Read token directly from localStorage instead of calling
+  // supabase.auth.getSession() which is known to hang in this project.
+  const accessToken = readAccessTokenFromStorage();
 
   if (!accessToken) {
     return { subscribed: false, product_id: null, subscription_end: null };
