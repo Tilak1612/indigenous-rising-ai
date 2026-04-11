@@ -70,6 +70,7 @@ const LANG_KEY = 'preferred-language';
 
 const freeNavItems: NavItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: Home, tier: 'free' },
+  { title: 'Funding Matches', href: '/dashboard/funding/matches', icon: Target, tier: 'free', badge: 'AI' },
   { title: 'Business Planner', href: '/dashboard/plan', icon: FileText, tier: 'free' },
   { title: 'Resources', href: '/dashboard/resources', icon: BookOpen, tier: 'free' },
   { title: 'Community Forum', href: '/dashboard/forum', icon: MessageSquare, tier: 'free' },
