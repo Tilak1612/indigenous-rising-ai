@@ -118,17 +118,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Wrapped in try/catch + guaranteed setLoading(false) so a corrupted
     // token, network error, or Supabase outage can never leave the app
     // stuck on an infinite spinner. Users hit the auth page instead.
+    //
+    // Additional protection: race getSession() against a 5-second timeout
+    // so we never wait the full 8s safety net before giving up. This
+    // catches the known Supabase SDK hang where getSession() returns a
+    // Promise that never resolves.
     (async () => {
       console.log('[useAuth] calling getSession');
       try {
-        const { data, error } = await supabase.auth.getSession();
-        console.log('[useAuth] getSession resolved, has session:', !!data?.session);
+        type SessionResult = Awaited<ReturnType<typeof supabase.auth.getSession>>;
+        const timeoutResult: SessionResult = {
+          data: { session: null },
+          error: { name: 'TimeoutError', message: 'getSession timed out after 5s', status: 0 } as unknown as SessionResult['error'],
+        };
+        const getSessionPromise = supabase.auth.getSession() as Promise<SessionResult>;
+        const timeoutPromise = new Promise<SessionResult>((resolve) => {
+          setTimeout(() => resolve(timeoutResult), 5000);
+        });
+        const { data, error } = await Promise.race([getSessionPromise, timeoutPromise]);
+        console.log('[useAuth] getSession resolved, has session:', !!data?.session, 'error:', error?.message ?? 'none');
         if (!mounted) return;
 
         if (error) {
           console.error('[useAuth] getSession error:', error.message);
-          // Clear any corrupted local session state and force re-auth
-          try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* ignore */ }
+          // On a timeout, DO NOT clear the session — a hang can be transient
+          // and the onAuthStateChange listener may still fire later with the
+          // real session. Just leave loading=false so ProtectedRoute can
+          // redirect the user to /auth, where they can sign in again.
+          // On a real corrupted-token error, also don't clear it unless we
+          // know the token is actually bad — safer to redirect to /auth and
+          // let the user log in normally.
           setSession(null);
           setUser(null);
           setIsAdmin(false);
@@ -146,7 +165,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch (err) {
         if (!mounted) return;
         console.error('[useAuth] getSession threw:', err);
-        try { await supabase.auth.signOut({ scope: 'local' }); } catch { /* ignore */ }
+        // Don't destroy the session — the user may still be valid. Just
+        // mark them anonymous for now; a page reload or explicit sign-in
+        // can recover. The localStorage entry stays intact.
         setSession(null);
         setUser(null);
         setIsAdmin(false);
