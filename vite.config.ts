@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
     react(),
     mode === 'development' && componentTagger(),
     mode === 'production' && visualizer({
-      open: true,
+      open: false,
       filename: 'dist/stats.html',
       gzipSize: true,
       brotliSize: true,
