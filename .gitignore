@@ -26,3 +26,15 @@ dist-ssr
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Test output
+test-output.txt
+
+# Lock files (using npm)
+bun.lock
+bun.lockb
