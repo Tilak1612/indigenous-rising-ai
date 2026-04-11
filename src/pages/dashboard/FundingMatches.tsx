@@ -141,63 +141,77 @@ const FundingMatches: React.FC = () => {
         return;
       }
 
-      // Hard timeout so a hung edge function can never leave the user
-      // stuck on an infinite spinner — they'll see an error after 30s.
-      const invokePromise = supabase.functions.invoke<MatchResponse>('match-funding-opportunities', {
-        body: {},
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const timeoutPromise = new Promise<{ data: null; error: Error }>((resolve) => {
-        setTimeout(
-          () => resolve({ data: null, error: new Error('Request timed out after 30 seconds. Please try again.') }),
-          30000
-        );
-      });
-      const result = await Promise.race([invokePromise, timeoutPromise]);
-      const { data, error } = result as { data: MatchResponse | null; error: Error | null };
+      // Bypass supabase.functions.invoke() entirely. The SDK wraps errors in
+      // a way where the response body is a ReadableStream that can't be
+      // parsed synchronously, and our error handler was failing silently
+      // on quota_exceeded and rate_limited responses. Going direct to fetch
+      // gives us clean access to response.json() for any status code.
+      const FUNCTION_URL = 'https://upxojfcdtmqtcvgbjsym.supabase.co/functions/v1/match-funding-opportunities';
+      const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9qZmNkdG1xdGN2Z2Jqc3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NzAwMDgsImV4cCI6MjA4NzU0NjAwOH0.tAaSqKPPy8nfj6u8lby5Fmuqdiy1CezxnSUpWfA2yP0';
 
-      // Handle HTTP-level errors returned by functions.invoke
-      if (error) {
-        const errBody = (error as { context?: { body?: string } })?.context?.body;
-        if (errBody) {
-          try {
-            const parsed = JSON.parse(errBody) as MatchResponse;
-            if (parsed.missing_fields && parsed.missing_fields.length > 0) {
-              setState({ kind: 'profile-incomplete', missing: parsed.missing_fields });
-              return;
-            }
-            if (parsed.quota_exceeded) {
-              setState({
-                kind: 'quota-exceeded',
-                message: parsed.error || 'Monthly quota exceeded',
-                upgradeUrl: parsed.upgrade_url || '/pricing',
-              });
-              return;
-            }
-            if (parsed.rate_limited) {
-              setState({ kind: 'rate-limited', message: parsed.error || 'Slow down' });
-              return;
-            }
-            setState({ kind: 'error', message: parsed.error || 'Failed to compute matches' });
-            return;
-          } catch {
-            // fall through to generic error
-          }
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+      let response: Response;
+      try {
+        response = await fetch(FUNCTION_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+            'apikey': ANON_KEY,
+          },
+          body: JSON.stringify({}),
+          signal: controller.signal,
+        });
+      } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        if ((fetchErr as Error).name === 'AbortError') {
+          setState({ kind: 'error', message: 'Request timed out after 30 seconds. Please try again.' });
+        } else {
+          console.error('[FundingMatches] fetch failed:', fetchErr);
+          setState({ kind: 'error', message: 'Could not reach matching service. Check your connection.' });
         }
-        setState({ kind: 'error', message: 'Failed to compute matches. Please try again.' });
+        return;
+      }
+      clearTimeout(timeoutId);
+
+      // Parse the response body as JSON regardless of status code.
+      let parsed: MatchResponse;
+      try {
+        parsed = await response.json();
+      } catch (parseErr) {
+        console.error('[FundingMatches] failed to parse response JSON:', parseErr, 'status:', response.status);
+        setState({ kind: 'error', message: `Matching service returned an unreadable response (HTTP ${response.status}).` });
         return;
       }
 
-      if (!data) {
-        setState({ kind: 'error', message: 'No response from matching engine' });
+      // Handle non-success statuses with specific UI states based on parsed body
+      if (!response.ok) {
+        if (parsed.missing_fields && parsed.missing_fields.length > 0) {
+          setState({ kind: 'profile-incomplete', missing: parsed.missing_fields });
+          return;
+        }
+        if (parsed.quota_exceeded) {
+          setState({
+            kind: 'quota-exceeded',
+            message: parsed.error || 'Monthly quota exceeded',
+            upgradeUrl: parsed.upgrade_url || '/pricing',
+          });
+          return;
+        }
+        if (parsed.rate_limited) {
+          setState({ kind: 'rate-limited', message: parsed.error || 'Slow down — 3 matches per minute max' });
+          return;
+        }
+        setState({ kind: 'error', message: parsed.error || `Matching failed (HTTP ${response.status})` });
         return;
       }
 
-      setState({ kind: 'results', data });
+      // 2xx success path
+      setState({ kind: 'results', data: parsed });
     } catch (err) {
-      console.error('Matching error:', err);
+      console.error('[FundingMatches] runMatching threw:', err);
       setState({ kind: 'error', message: 'Something went wrong. Please try again.' });
     }
   };
