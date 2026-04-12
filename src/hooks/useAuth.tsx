@@ -102,94 +102,171 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Returns the parsed StoredSession if successful, null otherwise.
-    function hydrateFromLocalStorage(): StoredSession | null {
+    function readStoredSession(): StoredSession | null {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) {
-          console.log('[useAuth] no cached session in localStorage');
-          return null;
-        }
+        if (!raw) return null;
         const parsed = JSON.parse(raw) as StoredSession | { currentSession?: StoredSession };
-        // Some supabase-js versions wrap the session under currentSession
         const stored: StoredSession = (parsed as { currentSession?: StoredSession }).currentSession
           ?? (parsed as StoredSession);
-
-        if (!stored?.access_token || !stored?.user?.id) {
-          console.log('[useAuth] cached session missing required fields');
-          return null;
-        }
-
-        // Check expiry — if expired, we can't use it locally (would need refresh)
-        const nowSeconds = Math.floor(Date.now() / 1000);
-        if (stored.expires_at && stored.expires_at < nowSeconds) {
-          console.log('[useAuth] cached session is expired, skipping local hydration');
-          return null;
-        }
-
-        // Construct Session-shaped object. We trust the cached user claims
-        // — this is the same trust model the SDK uses when reading its own
-        // cache. The JWT is still verified server-side on every API call.
-        const hydratedSession = stored as unknown as Session;
-        const hydratedUser = stored.user as unknown as User;
-
-        setSession(hydratedSession);
-        setUser(hydratedUser);
-        console.log('[useAuth] hydrated from localStorage, user:', stored.user.email);
+        if (!stored?.access_token || !stored?.user?.id) return null;
         return stored;
-      } catch (err) {
-        console.error('[useAuth] localStorage hydration failed:', err);
+      } catch {
         return null;
       }
     }
 
-    const hydratedSession = hydrateFromLocalStorage();
+    function writeStoredSession(next: StoredSession) {
+      try {
+        // Match the shape supabase-js writes — top-level access_token etc.
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch (err) {
+        console.error('[useAuth] failed to write refreshed session:', err);
+      }
+    }
 
-    // If hydration succeeded, resolve loading immediately, fire off the
-    // role check in the background, and CRUCIALLY restore the SDK's
-    // internal session via setSession() so that supabase.functions.invoke()
-    // and other SDK calls correctly attach the Bearer token.
-    if (hydratedSession) {
-      setLoading(false);
-      // Fire-and-forget role check (pass the id directly — React state
-      // updates are async so `user` is still null at this point)
-      checkUserRole(hydratedSession.user!.id!).catch(err => {
-        console.error('[useAuth] role check failed:', err);
+    // Bypass the SDK's hung refreshSession() by hitting the Supabase auth REST
+    // endpoint directly. Returns the new StoredSession on success or null.
+    async function refreshAccessToken(refreshToken: string): Promise<StoredSession | null> {
+      try {
+        const res = await fetch(
+          'https://upxojfcdtmqtcvgbjsym.supabase.co/auth/v1/token?grant_type=refresh_token',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9qZmNkdG1xdGN2Z2Jqc3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NzAwMDgsImV4cCI6MjA4NzU0NjAwOH0.tAaSqKPPy8nfj6u8lby5Fmuqdiy1CezxnSUpWfA2yP0',
+            },
+            body: JSON.stringify({ refresh_token: refreshToken }),
+          }
+        );
+        if (!res.ok) {
+          console.warn('[useAuth] refresh failed:', res.status, await res.text().catch(() => ''));
+          return null;
+        }
+        const data = await res.json() as StoredSession;
+        if (!data?.access_token || !data?.user?.id) {
+          console.warn('[useAuth] refresh response missing fields');
+          return null;
+        }
+        writeStoredSession(data);
+        console.log('[useAuth] token refreshed via direct REST, new expiry:', data.expires_at);
+        return data;
+      } catch (err) {
+        console.error('[useAuth] refresh threw:', err);
+        return null;
+      }
+    }
+
+    // Hydrate the user state from a known-good StoredSession.
+    function applyStoredSession(stored: StoredSession) {
+      const hydratedSession = stored as unknown as Session;
+      const hydratedUser = stored.user as unknown as User;
+      setSession(hydratedSession);
+      setUser(hydratedUser);
+    }
+
+    // High-level: read cache, refresh if expired/near-expired, return usable
+    // session or null. We refresh proactively when within 60s of expiry so we
+    // don't ship the user a JWT that's about to die before their next click.
+    async function hydrateFromLocalStorage(): Promise<StoredSession | null> {
+      const stored = readStoredSession();
+      if (!stored) {
+        console.log('[useAuth] no cached session in localStorage');
+        return null;
+      }
+
+      const nowSeconds = Math.floor(Date.now() / 1000);
+      const expiresIn = (stored.expires_at ?? 0) - nowSeconds;
+
+      if (expiresIn > 60) {
+        // Healthy — use as-is
+        applyStoredSession(stored);
+        console.log('[useAuth] hydrated from localStorage, user:', stored.user?.email, 'expires in', expiresIn, 's');
+        return stored;
+      }
+
+      // Expired or about to expire — refresh via REST
+      if (!stored.refresh_token) {
+        console.log('[useAuth] cached session expired and has no refresh_token');
+        return null;
+      }
+      console.log('[useAuth] cached session expired/near-expired, refreshing via REST');
+      const refreshed = await refreshAccessToken(stored.refresh_token);
+      if (!refreshed) return null;
+      applyStoredSession(refreshed);
+      return refreshed;
+    }
+
+    // Hydration is async because we may need to refresh the access token
+    // via REST first. We resolve `loading` only after the hydration promise
+    // settles so the ProtectedRoute doesn't bounce a still-valid user to /auth.
+    hydrationPromise
+      .then((hydratedSession) => {
+        if (!mounted) return;
+        if (!hydratedSession) {
+          setSession(null);
+          setUser(null);
+          setIsAdmin(false);
+          setIsTeamMember(false);
+          setLoading(false);
+          return;
+        }
+
+        setLoading(false);
+        // Fire-and-forget role check (pass the id directly — React state
+        // updates are async so `user` is still null at this point)
+        checkUserRole(hydratedSession.user!.id!).catch(err => {
+          console.error('[useAuth] role check failed:', err);
+        });
+
+        // CRITICAL: restore the SDK's internal session so functions.invoke()
+        // and database queries correctly attach the user's Bearer token.
+        // We race against a 3s timeout because setSession() is part of the
+        // same async machinery as getSession() and may also hang in this
+        // environment. If it does, we proceed without the SDK session — but
+        // FundingMatches.tsx and useSubscription.tsx already read the token
+        // directly from localStorage and pass it explicitly, so functions
+        // still work even if setSession is dead.
+        if (hydratedSession.access_token && hydratedSession.refresh_token) {
+          const setSessionPromise = supabase.auth.setSession({
+            access_token: hydratedSession.access_token,
+            refresh_token: hydratedSession.refresh_token,
+          });
+          const setSessionTimeout = new Promise((resolve) => setTimeout(() => resolve('timeout'), 3000));
+          Promise.race([setSessionPromise, setSessionTimeout])
+            .then((result) => {
+              if (result === 'timeout') {
+                console.warn('[useAuth] setSession() timed out — SDK internal session not synced; using explicit Bearer headers');
+              } else {
+                console.log('[useAuth] setSession() succeeded — SDK internal session synced');
+              }
+            })
+            .catch((err) => {
+              console.error('[useAuth] setSession() threw:', err);
+            });
+        }
+      })
+      .catch((err) => {
+        console.error('[useAuth] hydration promise rejected:', err);
+        if (mounted) setLoading(false);
       });
 
-      // CRITICAL: restore the SDK's internal session so functions.invoke()
-      // and database queries correctly attach the user's Bearer token.
-      // We race against a 3s timeout because setSession() is part of the
-      // same async machinery as getSession() and may also hang in this
-      // environment. If it does, we proceed without the SDK session — but
-      // FundingMatches.tsx and useSubscription.tsx already read the token
-      // directly from localStorage and pass it explicitly, so functions
-      // still work even if setSession is dead.
-      if (hydratedSession.access_token && hydratedSession.refresh_token) {
-        const setSessionPromise = supabase.auth.setSession({
-          access_token: hydratedSession.access_token,
-          refresh_token: hydratedSession.refresh_token,
-        });
-        const setSessionTimeout = new Promise((resolve) => setTimeout(() => resolve('timeout'), 3000));
-        Promise.race([setSessionPromise, setSessionTimeout])
-          .then((result) => {
-            if (result === 'timeout') {
-              console.warn('[useAuth] setSession() timed out — SDK internal session not synced; using explicit Bearer headers');
-            } else {
-              console.log('[useAuth] setSession() succeeded — SDK internal session synced');
-            }
-          })
-          .catch((err) => {
-            console.error('[useAuth] setSession() threw:', err);
-          });
-      }
-    } else {
-      // No cached session — mark as anonymous and resolve loading
-      setSession(null);
-      setUser(null);
-      setIsAdmin(false);
-      setIsTeamMember(false);
-      setLoading(false);
-    }
+    // Background refresh loop: every 60s, check if the cached token is
+    // within 5 minutes of expiry and refresh proactively. This is what
+    // supabase-js's autoRefreshToken would normally do, but it's broken on
+    // this project. Without this, users get logged out after 1 hour mid-audit.
+    const refreshIntervalId = setInterval(async () => {
+      if (!mounted) return;
+      const stored = readStoredSession();
+      if (!stored?.refresh_token || !stored.expires_at) return;
+      const nowSeconds = Math.floor(Date.now() / 1000);
+      const expiresIn = stored.expires_at - nowSeconds;
+      if (expiresIn > 300) return; // > 5 min, nothing to do
+      console.log('[useAuth] background refresh: token expires in', expiresIn, 's');
+      const refreshed = await refreshAccessToken(stored.refresh_token);
+      if (refreshed && mounted) applyStoredSession(refreshed);
+    }, 60_000);
 
     // Register the auth state change listener for future events
     // (sign-in, sign-out, token refresh). Even if INITIAL_SESSION fires
@@ -223,6 +300,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       mounted = false;
       clearTimeout(safetyTimeout);
+      clearInterval(refreshIntervalId);
       subscription.unsubscribe();
     };
   }, []);
