@@ -132,7 +132,7 @@ const PublicFunding: React.FC = () => {
   useEffect(() => {
     (async () => {
       const today = new Date().toISOString().split('T')[0];
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('grants')
         .select('*')
         .eq('is_published', true)

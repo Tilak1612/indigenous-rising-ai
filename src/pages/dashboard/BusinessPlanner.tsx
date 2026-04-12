@@ -88,7 +88,7 @@ export default function BusinessPlannerPage() {
   // Load plan from Supabase on mount — overrides localStorage (Supabase is source of truth)
   useEffect(() => {
     if (!user) return;
-    supabase
+    (supabase as any)
       .from('business_plans')
       .select('steps')
       .eq('user_id', user.id)
@@ -112,7 +112,7 @@ export default function BusinessPlannerPage() {
 
       // Persist to Supabase (Canada region) — data owned and accessible by user
       if (user) {
-        const { error: dbError } = await supabase
+        const { error: dbError } = await (supabase as any)
           .from('business_plans')
           .upsert({ user_id: user.id, steps: newAnswers }, { onConflict: 'user_id' });
         if (dbError) {

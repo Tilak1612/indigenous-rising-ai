@@ -201,6 +201,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Hydration is async because we may need to refresh the access token
     // via REST first. We resolve `loading` only after the hydration promise
     // settles so the ProtectedRoute doesn't bounce a still-valid user to /auth.
+    const hydrationPromise = hydrateFromLocalStorage();
     hydrationPromise
       .then((hydratedSession) => {
         if (!mounted) return;
