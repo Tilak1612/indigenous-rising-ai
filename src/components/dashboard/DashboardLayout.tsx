@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { getString } from '@/lib/i18n';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
 import {
   SidebarProvider,
   Sidebar,
@@ -102,22 +110,32 @@ function getTierFromSubscription(subscribed: boolean, productId: string | null):
   return 'paid';
 }
 
-function NavItemLink({ item, currentPath, userTier }: { item: NavItem; currentPath: string; userTier: SubscriptionTier }) {
+function NavItemLink({
+  item,
+  currentPath,
+  userTier,
+  onLockedClick,
+}: {
+  item: NavItem;
+  currentPath: string;
+  userTier: SubscriptionTier;
+  onLockedClick: (item: NavItem) => void;
+}) {
   const isActive = currentPath === item.href;
-  const isLocked = (item.tier === 'paid' && userTier === 'free') || 
+  const isLocked = (item.tier === 'paid' && userTier === 'free') ||
                    (item.tier === 'enterprise' && userTier !== 'enterprise');
 
-  return (
-    <SidebarMenuItem>
-      <SidebarMenuButton
-        asChild
-        isActive={isActive}
-        className={cn(
-          "transition-all",
-          isLocked && "opacity-60"
-        )}
-      >
-        <Link to={isLocked ? '#' : item.href} className="flex items-center gap-3">
+  // Locked items render a button that opens the upgrade dialog instead of a
+  // dead <Link to="#"> which previously caused a silent redirect to /dashboard
+  // and bypassed the upsell entirely.
+  if (isLocked) {
+    return (
+      <SidebarMenuItem>
+        <SidebarMenuButton
+          isActive={false}
+          className="transition-all opacity-70"
+          onClick={() => onLockedClick(item)}
+        >
           <item.icon className="h-4 w-4" />
           <span className="flex-1">{item.title}</span>
           {item.badge && (
@@ -125,10 +143,73 @@ function NavItemLink({ item, currentPath, userTier }: { item: NavItem; currentPa
               {item.badge}
             </Badge>
           )}
-          {isLocked && <Lock className="h-3 w-3 text-muted-foreground" />}
+          <Lock className="h-3 w-3 text-muted-foreground" />
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    );
+  }
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={isActive} className="transition-all">
+        <Link to={item.href} className="flex items-center gap-3">
+          <item.icon className="h-4 w-4" />
+          <span className="flex-1">{item.title}</span>
+          {item.badge && (
+            <Badge variant="secondary" className="text-xs bg-primary/10 text-primary">
+              {item.badge}
+            </Badge>
+          )}
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
+  );
+}
+
+function UpgradeDialog({
+  item,
+  open,
+  onOpenChange,
+}: {
+  item: NavItem | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  if (!item) return null;
+  const isEnterprise = item.tier === 'enterprise';
+  const planName = isEnterprise ? 'Gimishoomis (Enterprise)' : 'Ogichidaakwe (Pro — $49/mo CAD)';
+  const ctaText = isEnterprise ? 'Contact Sales' : 'View Pricing';
+  const ctaHref = isEnterprise ? '/contact' : '/pricing';
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Lock className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <DialogTitle>{item.title} is locked</DialogTitle>
+              <DialogDescription className="mt-1">
+                Upgrade to the {planName} plan to unlock this feature.
+              </DialogDescription>
+            </div>
+          </div>
+        </DialogHeader>
+        <DialogFooter className="gap-2 sm:gap-2">
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Maybe later
+          </Button>
+          <Button asChild>
+            <Link to={ctaHref} onClick={() => onOpenChange(false)}>
+              <Crown className="h-4 w-4 mr-2" />
+              {ctaText}
+            </Link>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -137,15 +218,16 @@ function DashboardSidebar() {
   const { user, signOut } = useAuth();
   const { subscribed, product_id } = useSubscription();
   const userTier = getTierFromSubscription(subscribed, product_id);
+  const [upgradeItem, setUpgradeItem] = useState<NavItem | null>(null);
 
   const preferredLang = (() => {
     try { return localStorage.getItem(LANG_KEY) || 'en'; }
     catch { return 'en'; }
   })();
 
-  const tierLabel = userTier === 'enterprise' ? 'Gimishoomis' : 
+  const tierLabel = userTier === 'enterprise' ? 'Gimishoomis' :
                     userTier === 'paid' ? 'Ogichidaakwe' : 'Maadaadiziwin';
-  const tierColor = userTier === 'enterprise' ? 'bg-amber-500' : 
+  const tierColor = userTier === 'enterprise' ? 'bg-amber-500' :
                     userTier === 'paid' ? 'bg-primary' : 'bg-muted';
 
   return (
@@ -174,6 +256,7 @@ function DashboardSidebar() {
                   item={item}
                   currentPath={location.pathname}
                   userTier={userTier}
+                  onLockedClick={setUpgradeItem}
                 />
               ))}
             </SidebarMenu>
@@ -196,6 +279,7 @@ function DashboardSidebar() {
                   item={item}
                   currentPath={location.pathname}
                   userTier={userTier}
+                  onLockedClick={setUpgradeItem}
                 />
               ))}
             </SidebarMenu>
@@ -218,6 +302,7 @@ function DashboardSidebar() {
                   item={item}
                   currentPath={location.pathname}
                   userTier={userTier}
+                  onLockedClick={setUpgradeItem}
                 />
               ))}
             </SidebarMenu>
@@ -250,6 +335,11 @@ function DashboardSidebar() {
           </Button>
         </div>
       </SidebarFooter>
+      <UpgradeDialog
+        item={upgradeItem}
+        open={!!upgradeItem}
+        onOpenChange={(open) => !open && setUpgradeItem(null)}
+      />
     </Sidebar>
   );
 }
