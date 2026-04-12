@@ -5,10 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Shield, 
-  CheckCircle2, 
-  AlertCircle, 
+import {
+  Shield,
+  CheckCircle2,
+  AlertCircle,
   Info,
   ExternalLink,
   FileText,
@@ -19,8 +19,10 @@ import {
   Award,
   ChevronRight,
   Users,
+  RefreshCw,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 import OCAPRequirementModal from '@/components/dashboard/OCAPRequirementModal';
 import ComplianceCertificate from '@/components/dashboard/ComplianceCertificate';
 
@@ -127,11 +129,31 @@ const statusStyles = {
 export default function CompliancePage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showCertificate, setShowCertificate] = useState(false);
-  
+  const { toast } = useToast();
+
   const completeCount = complianceItems.filter(i => i.status === 'complete').length;
   const totalCount = complianceItems.length;
   const complianceScore = Math.round((completeCount / totalCount) * 100);
   const communityBenchmark = 68;
+
+  // Re-assessment opens the first incomplete category in the requirement modal,
+  // letting the user walk through outstanding items. When everything is complete
+  // we just confirm the standing — there is nothing left to re-assess.
+  const handleReassess = () => {
+    const firstIncomplete = complianceItems.find(i => i.status !== 'complete');
+    if (!firstIncomplete) {
+      toast({
+        title: 'Re-assessment complete',
+        description: 'All OCAP™ requirements are already marked complete.',
+      });
+      return;
+    }
+    setSelectedCategory(firstIncomplete.category);
+    toast({
+      title: 'Re-assessment started',
+      description: `Reviewing outstanding ${categoryInfo[firstIncomplete.category].title} requirements.`,
+    });
+  };
 
   return (
     <DashboardLayout>
@@ -174,37 +196,19 @@ export default function CompliancePage() {
                   Good Standing
                 </Badge>
                 <p className="text-sm text-muted-foreground">Last reviewed: Today</p>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1 text-sm text-muted-foreground justify-end">
                   <Users className="h-4 w-4" />
                   <span>Community avg: {communityBenchmark}%</span>
                 </div>
-              </div>
-            </div>
-            <Progress value={complianceScore} className="mt-6 h-3" />
-          </CardContent>
-        </Card>
-
-        {/* Overall Score Card */}
-        <Card className="bg-gradient-to-br from-primary/10 via-background to-green-500/10 border-primary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Shield className="h-8 w-8 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">OCAP™ Compliance Score</p>
-                  <p className="text-4xl font-bold">{complianceScore}%</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {completeCount} of {totalCount} requirements complete
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <Badge variant="secondary" className="bg-green-500/10 text-green-600">
-                  Good Standing
-                </Badge>
-                <p className="text-sm text-muted-foreground mt-2">Last reviewed: Today</p>
+                <Button
+                  size="sm"
+                  variant="default"
+                  onClick={handleReassess}
+                  className="mt-2"
+                >
+                  <RefreshCw className="h-3.5 w-3.5 mr-2" />
+                  Re-assess Score
+                </Button>
               </div>
             </div>
             <Progress value={complianceScore} className="mt-6 h-3" />
