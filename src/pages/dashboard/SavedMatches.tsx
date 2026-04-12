@@ -85,7 +85,7 @@ const SavedMatches: React.FC = () => {
     if (!user) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('funding_saved_matches')
         .select('id, grant_id, status, notes, saved_at, updated_at, grants (name, funder, amount_min, amount_max, amount_currency, deadline, is_recurring, application_url)')
         .eq('user_id', user.id)
@@ -108,7 +108,7 @@ const SavedMatches: React.FC = () => {
   const updateStatus = async (id: string, status: Status) => {
     setUpdatingId(id);
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('funding_saved_matches')
         .update({ status })
         .eq('id', id);
@@ -126,7 +126,7 @@ const SavedMatches: React.FC = () => {
   const deleteRow = async (id: string) => {
     setUpdatingId(id);
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('funding_saved_matches')
         .delete()
         .eq('id', id);

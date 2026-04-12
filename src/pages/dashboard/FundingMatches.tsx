@@ -220,7 +220,7 @@ const FundingMatches: React.FC = () => {
     if (!user) return;
     setSavingId(grantId);
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('funding_saved_matches')
         .upsert(
           { user_id: user.id, grant_id: grantId, status: 'interested' },
