@@ -230,21 +230,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // directly from localStorage and pass it explicitly, so functions
         // still work even if setSession is dead.
         if (hydratedSession.access_token && hydratedSession.refresh_token) {
+          // Attempt to restore the SDK's internal session. setSession() may
+          // hang or reject due to the broken async machinery in this SDK version.
+          // We race against a 3s timeout and swallow ALL errors — the app works
+          // without the SDK session because FundingMatches and useSubscription
+          // read the token directly from localStorage.
           const setSessionPromise = supabase.auth.setSession({
             access_token: hydratedSession.access_token,
             refresh_token: hydratedSession.refresh_token,
-          });
-          const setSessionTimeout = new Promise((resolve) => setTimeout(() => resolve('timeout'), 3000));
+          }).catch(() => ({ data: null, error: new Error('sdk-error') }));
+          const setSessionTimeout = new Promise<'timeout'>((resolve) => setTimeout(() => resolve('timeout'), 3000));
           Promise.race([setSessionPromise, setSessionTimeout])
             .then((result) => {
               if (result === 'timeout') {
-                console.warn('[useAuth] setSession() timed out — SDK internal session not synced; using explicit Bearer headers');
+                console.warn('[useAuth] setSession() timed out — SDK session not synced');
               } else {
-                console.log('[useAuth] setSession() succeeded — SDK internal session synced');
+                console.log('[useAuth] setSession() completed');
               }
             })
-            .catch((err) => {
-              console.error('[useAuth] setSession() threw:', err);
+            .catch(() => {
+              // Swallow — the SDK can throw in unexpected places
             });
         }
       })
