@@ -4,7 +4,6 @@ import CulturalWelcome from '@/components/dashboard/CulturalWelcome';
 import StatCard from '@/components/dashboard/StatCard';
 import JourneyProgress from '@/components/dashboard/JourneyProgress';
 import QuickActions from '@/components/dashboard/QuickActions';
-import ActivityFeed from '@/components/dashboard/ActivityFeed';
 import GettingStartedChecklist from '@/components/dashboard/GettingStartedChecklist';
 import RecentActivity from '@/components/dashboard/RecentActivity';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -78,10 +77,8 @@ const Dashboard: React.FC = () => {
             <RecentActivity />
           </div>
 
-          {/* Right Column - Activity & Upgrade */}
+          {/* Right Column - Upgrade */}
           <div className="space-y-6">
-            <ActivityFeed />
-            
             {!subscribed && (
               <Card className="bg-gradient-to-br from-primary/10 via-background to-amber-500/10 border-primary/30">
                 <CardHeader className="pb-3">
