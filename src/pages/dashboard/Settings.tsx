@@ -124,7 +124,7 @@ export default function Settings() {
   // Load saved preferences from Supabase on mount
   useEffect(() => {
     if (!user) return;
-    (supabase as any)
+    supabase
       .from('user_preferences')
       .select('notifications, privacy, language')
       .eq('user_id', user.id)
@@ -192,7 +192,7 @@ export default function Settings() {
   const handleSaveNotifications = async () => {
     setSaving(true);
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('user_preferences')
         .upsert({ user_id: user!.id, notifications }, { onConflict: 'user_id' });
       if (error) throw error;
@@ -207,7 +207,7 @@ export default function Settings() {
   const handleSavePrivacy = async () => {
     setSaving(true);
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('user_preferences')
         .upsert({ user_id: user!.id, privacy }, { onConflict: 'user_id' });
       if (error) throw error;
@@ -223,7 +223,7 @@ export default function Settings() {
     setSaving(true);
     try {
       localStorage.setItem('preferred-language', selectedLanguage);
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('user_preferences')
         .upsert({ user_id: user!.id, language: selectedLanguage }, { onConflict: 'user_id' });
       if (error) throw error;

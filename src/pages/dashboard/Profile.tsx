@@ -153,7 +153,7 @@ export default function Profile() {
     let cancelled = false;
     (async () => {
       try {
-        const { data, error } = await (supabase as any)
+        const { data, error } = await supabase
           .from('profiles')
           .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links, business_stage, target_funding_amount, funding_purpose')
           .eq('id', user.id)
@@ -207,7 +207,7 @@ export default function Profile() {
     try {
       profileSchema.parse(profileData);
       setSavingProfile(true);
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({
           full_name: `${profileData.firstName} ${profileData.lastName}`.trim(),
@@ -248,7 +248,7 @@ export default function Profile() {
         return;
       }
 
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({
           business_name: businessData.businessName || null,
@@ -283,7 +283,7 @@ export default function Profile() {
   const handleSaveSocial = async () => {
     setSavingSocial(true);
     try {
-      const { error } = await (supabase as any)
+      const { error } = await supabase
         .from('profiles')
         .update({ social_links: socialLinks })
         .eq('id', user!.id);

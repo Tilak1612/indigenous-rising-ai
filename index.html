@@ -115,6 +115,29 @@
 
   <body>
     <div id="root"></div>
+    <!-- Diagnostic: catch unhandled errors before React mounts, display on screen -->
+    <script>
+      window.onerror = function(msg, src, line, col, err) {
+        var el = document.getElementById('__diag');
+        if (!el) {
+          el = document.createElement('pre');
+          el.id = '__diag';
+          el.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#1a0000;color:#ff4444;padding:16px;font-size:12px;max-height:40vh;overflow:auto;white-space:pre-wrap;';
+          document.body.appendChild(el);
+        }
+        el.textContent += msg + '\n' + (src || '') + ':' + line + ':' + col + '\n' + (err && err.stack ? err.stack : '') + '\n---\n';
+      };
+      window.addEventListener('unhandledrejection', function(e) {
+        var el = document.getElementById('__diag');
+        if (!el) {
+          el = document.createElement('pre');
+          el.id = '__diag';
+          el.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#1a0000;color:#ff4444;padding:16px;font-size:12px;max-height:40vh;overflow:auto;white-space:pre-wrap;';
+          document.body.appendChild(el);
+        }
+        el.textContent += 'Unhandled rejection: ' + (e.reason && e.reason.stack ? e.reason.stack : e.reason) + '\n---\n';
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
