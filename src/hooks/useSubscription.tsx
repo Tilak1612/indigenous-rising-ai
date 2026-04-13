@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from './useAuth';
+import { readAccessToken } from '@/lib/auth-storage';
 
 // Stable query key — shared across all components calling useSubscription
 export const SUBSCRIPTION_QUERY_KEY = 'subscription-status';
@@ -16,22 +17,10 @@ interface SubscriptionData {
 // function's own fallback behaviour.
 const SUBSCRIPTION_TIMEOUT_MS = 6000;
 
-function readAccessTokenFromStorage(): string | null {
-  try {
-    const raw = localStorage.getItem('sb-upxojfcdtmqtcvgbjsym-auth-token');
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    const stored = parsed?.currentSession ?? parsed;
-    return stored?.access_token ?? null;
-  } catch {
-    return null;
-  }
-}
-
 async function fetchSubscriptionStatus(): Promise<SubscriptionData> {
   // Read token directly from localStorage instead of calling
   // supabase.auth.getSession() which is known to hang in this project.
-  const accessToken = readAccessTokenFromStorage();
+  const accessToken = readAccessToken();
 
   if (!accessToken) {
     return { subscribed: false, product_id: null, subscription_end: null };

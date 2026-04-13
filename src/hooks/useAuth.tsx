@@ -1,8 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useNavigate } from 'react-router-dom';
+import {
+  SUPABASE_STORAGE_KEY,
+  readStoredSession,
+  writeStoredSession,
+  type StoredSession,
+} from '@/lib/auth-storage';
 
 interface AuthContextType {
   user: User | null;
@@ -10,8 +16,8 @@ interface AuthContextType {
   isAdmin: boolean;
   isTeamMember: boolean;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signUp: (email: string, password: string, fullName: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -87,43 +93,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // which DOES work — confirmed by the fact that users can sign in), and
     // onAuthStateChange is still registered for future events. Only the
     // initial hydration is bypassed.
-    const STORAGE_KEY = 'sb-upxojfcdtmqtcvgbjsym-auth-token';
-
-    interface StoredSession {
-      access_token?: string;
-      refresh_token?: string;
-      expires_at?: number; // unix seconds
-      token_type?: string;
-      user?: {
-        id?: string;
-        email?: string;
-        [key: string]: unknown;
-      };
-    }
-
-    // Returns the parsed StoredSession if successful, null otherwise.
-    function readStoredSession(): StoredSession | null {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return null;
-        const parsed = JSON.parse(raw) as StoredSession | { currentSession?: StoredSession };
-        const stored: StoredSession = (parsed as { currentSession?: StoredSession }).currentSession
-          ?? (parsed as StoredSession);
-        if (!stored?.access_token || !stored?.user?.id) return null;
-        return stored;
-      } catch {
-        return null;
-      }
-    }
-
-    function writeStoredSession(next: StoredSession) {
-      try {
-        // Match the shape supabase-js writes — top-level access_token etc.
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch (err) {
-        console.error('[useAuth] failed to write refreshed session:', err);
-      }
-    }
+    // readStoredSession, writeStoredSession, StoredSession, and
+    // SUPABASE_STORAGE_KEY are now imported from @/lib/auth-storage
+    // (single source of truth shared with useSubscription + FundingMatches).
 
     // Bypass the SDK's hung refreshSession() by hitting the Supabase auth REST
     // endpoint directly. Returns the new StoredSession on success or null.
@@ -141,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         );
         if (!res.ok) {
-          console.warn('[useAuth] refresh failed:', res.status, await res.text().catch(() => ''));
+          console.warn('[useAuth] refresh failed:', res.status);
           return null;
         }
         const data = await res.json() as StoredSession;
@@ -150,7 +122,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return null;
         }
         writeStoredSession(data);
-        console.log('[useAuth] token refreshed via direct REST, new expiry:', data.expires_at);
         return data;
       } catch (err) {
         console.error('[useAuth] refresh threw:', err);
@@ -203,7 +174,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // settles so the ProtectedRoute doesn't bounce a still-valid user to /auth.
     const hydrationPromise = hydrateFromLocalStorage();
     hydrationPromise
-      .then((hydratedSession) => {
+      .then(async (hydratedSession) => {
         if (!mounted) return;
         if (!hydratedSession) {
           setSession(null);
@@ -214,12 +185,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        setLoading(false);
-        // Fire-and-forget role check (pass the id directly — React state
-        // updates are async so `user` is still null at this point)
-        checkUserRole(hydratedSession.user!.id!).catch(err => {
+        // Await role check before resolving loading — otherwise ProtectedRoute
+        // may briefly render with isAdmin=false for admin users (audit #4).
+        await checkUserRole(hydratedSession.user!.id!).catch(err => {
           console.error('[useAuth] role check failed:', err);
         });
+        if (!mounted) return;
+        setLoading(false);
 
         // CRITICAL: restore the SDK's internal session so functions.invoke()
         // and database queries correctly attach the user's Bearer token.
