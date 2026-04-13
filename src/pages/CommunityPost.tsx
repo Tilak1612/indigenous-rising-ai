@@ -44,7 +44,7 @@ const CommunityPost = () => {
 
   const fetchComments = useCallback(async () => {
     if (!postId) return;
-    const { data } = await supabase
+    const { data } = await (supabase as any)
       .from('community_comments')
       .select('*')
       .eq('post_id', postId)
@@ -59,7 +59,7 @@ const CommunityPost = () => {
     const load = async () => {
       setLoading(true);
 
-      const { data: postData, error } = await supabase
+      const { data: postData, error } = await (supabase as any)
         .from('community_posts')
         .select('*')
         .eq('id', postId)
@@ -78,7 +78,7 @@ const CommunityPost = () => {
       await fetchComments();
 
       if (user) {
-        const { data: vote } = await supabase
+        const { data: vote } = await (supabase as any)
           .from('community_votes')
           .select('*')
           .eq('post_id', postId)
@@ -104,7 +104,7 @@ const CommunityPost = () => {
     if (hasVoted) {
       setHasVoted(false);
       setLocalUpvotes((prev) => prev - 1);
-      await supabase
+      await (supabase as any)
         .from('community_votes')
         .delete()
         .eq('post_id', postId)
@@ -112,7 +112,7 @@ const CommunityPost = () => {
     } else {
       setHasVoted(true);
       setLocalUpvotes((prev) => prev + 1);
-      await supabase
+      await (supabase as any)
         .from('community_votes')
         .insert({ post_id: postId, user_id: user.id });
     }
@@ -125,7 +125,7 @@ const CommunityPost = () => {
     const displayName =
       user.user_metadata?.full_name || user.email || 'Community Member';
 
-    await supabase.from('community_comments').insert({
+    await (supabase as any).from('community_comments').insert({
       user_id: user.id,
       post_id: postId,
       display_name: displayName,

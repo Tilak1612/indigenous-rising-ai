@@ -218,7 +218,9 @@ const Footer = () => {
                           onClick={(e) => {
                             e.preventDefault();
                             if (location.pathname !== '/') {
-                              navigate(`/${link.href}`);
+                              // Navigate to homepage with hash — use window.location
+                              // because React Router navigate() doesn't scroll to anchors
+                              window.location.href = `/${link.href}`;
                               return;
                             }
                             const element = document.querySelector(link.href);

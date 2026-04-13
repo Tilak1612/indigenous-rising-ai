@@ -56,20 +56,30 @@ const Community = () => {
 
   const fetchPosts = async () => {
     setLoading(true);
-    let query = supabase
-      .from('community_posts')
-      .select('*')
-      .eq('is_approved', true)
-      .order('is_pinned', { ascending: false })
-      .order('created_at', { ascending: false });
+    try {
+      // Cast to any because community_posts isn't in the generated Database type yet.
+      // The table exists in production (created via migration). Regenerate types
+      // with `supabase gen types typescript` to remove this cast.
+      const client = supabase as any;
+      let query = client
+        .from('community_posts')
+        .select('*')
+        .eq('is_approved', true)
+        .order('is_pinned', { ascending: false })
+        .order('created_at', { ascending: false });
 
-    if (activeCategory !== 'All') {
-      query = query.eq('category', activeCategory);
-    }
+      if (activeCategory !== 'All') {
+        query = query.eq('category', activeCategory);
+      }
 
-    const { data, error } = await query;
-    if (!error && data) {
-      setPosts(data as CommunityPost[]);
+      const { data, error } = await query;
+      if (error) {
+        console.error('[Community] fetch error:', error.message);
+      }
+      setPosts((data ?? []) as CommunityPost[]);
+    } catch (err) {
+      console.error('[Community] fetch threw:', err);
+      setPosts([]);
     }
     setLoading(false);
   };
@@ -88,7 +98,7 @@ const Community = () => {
     setSubmitting(true);
     const displayName = user.user_metadata?.full_name || user.email || 'Community Member';
 
-    const { error } = await supabase.from('community_posts').insert({
+    const { error } = await (supabase as any).from('community_posts').insert({
       user_id: user.id,
       display_name: displayName,
       title,
