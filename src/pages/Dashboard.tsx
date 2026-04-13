@@ -34,33 +34,31 @@ const Dashboard: React.FC = () => {
         {/* Cultural Welcome */}
         <CulturalWelcome />
 
-        {/* Stats Grid */}
+        {/* Stats Grid — values are placeholders until real tracking is wired.
+             Zeros are honest; fake numbers erode trust. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             title="Funding Matches"
-            value="3"
+            value="0"
             icon={Target}
-            trend={{ value: 12, label: 'this month' }}
             color="success"
           />
           <StatCard
-            title="Impact Score"
-            value="72%"
+            title="OCAP™ Score"
+            value="50%"
             icon={TrendingUp}
-            trend={{ value: 5, label: 'from last month' }}
             color="primary"
           />
           <StatCard
             title="Active Courses"
-            value="2"
+            value="0"
             icon={BookOpen}
             color="warning"
           />
           <StatCard
             title="Network Connections"
-            value="15"
+            value="0"
             icon={Users}
-            trend={{ value: 3, label: 'new this week' }}
             color="default"
           />
         </div>

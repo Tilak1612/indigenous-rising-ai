@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import LoadingAnimation from './LoadingAnimation';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -12,6 +12,7 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children, requireAdmin = false, requirePaid = false }: ProtectedRouteProps) {
   const { user, isAdmin, loading } = useAuth();
   const { subscribed, loading: subLoading } = useSubscription();
+  const location = useLocation();
 
   if (loading || (requirePaid && subLoading)) {
     return (
@@ -26,11 +27,11 @@ export function ProtectedRoute({ children, requireAdmin = false, requirePaid = f
   }
 
   if (requireAdmin && !isAdmin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   if (requirePaid && !subscribed) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/pricing" state={{ from: location.pathname }} replace />;
   }
 
   return <>{children}</>;
