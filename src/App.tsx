@@ -51,6 +51,8 @@ const PublicImpact = lazy(() => import("./pages/PublicImpact"));
 const PublicLearning = lazy(() => import("./pages/PublicLearning"));
 const SuccessStories = lazy(() => import("./pages/SuccessStories"));
 const Careers = lazy(() => import("./pages/Careers"));
+const Community = lazy(() => import("./pages/Community"));
+const CommunityPost = lazy(() => import("./pages/CommunityPost"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
 const BusinessPlanner = lazy(() => import("./pages/dashboard/BusinessPlanner"));
@@ -471,6 +473,22 @@ const App = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <Careers />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/community"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <Community />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/community/:postId"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <CommunityPost />
                   </Suspense>
                 }
               />

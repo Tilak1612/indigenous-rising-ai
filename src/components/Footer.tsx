@@ -32,6 +32,7 @@ const Footer = () => {
         { name: "Training Programs", href: "/training" },
         { name: "Data Rights Guide", href: "/data-rights" },
         { name: "Track Your Request", href: "/track-request" },
+        { name: "Community Forum", href: "/community" },
         { name: "Contact Support", href: "/contact" },
         { name: "FAQ", href: "/faq" }
       ]
