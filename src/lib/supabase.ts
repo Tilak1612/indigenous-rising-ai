@@ -1,11 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
-// Read from environment variables (VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY).
-// The anon key is client-safe (designed to be public) but using env vars
-// allows rotation without a code deploy.
-const EXTERNAL_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const EXTERNAL_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Read from environment variables with fallbacks. The anon key is client-safe
+// (designed to be public, present in every user's browser bundle). Fallbacks
+// ensure the app works even if Vercel env vars aren't configured — Vite bakes
+// import.meta.env values at build time, so missing vars = undefined in the bundle.
+const EXTERNAL_SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://upxojfcdtmqtcvgbjsym.supabase.co';
+const EXTERNAL_SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9qZmNkdG1xdGN2Z2Jqc3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NzAwMDgsImV4cCI6MjA4NzU0NjAwOH0.tAaSqKPPy8nfj6u8lby5Fmuqdiy1CezxnSUpWfA2yP0';
 
 // Do NOT pass `storage: localStorage` here — referencing localStorage at module-eval
 // time can throw in non-browser contexts (SSR, workers, restricted incognito modes),
