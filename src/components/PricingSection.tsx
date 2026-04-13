@@ -39,8 +39,14 @@ const PricingSection = () => {
       return;
     }
 
-    // Enterprise + Professional → contact sales (Professional Stripe product not yet provisioned)
-    if (planName === "Gimishoomis" || planName === "Bimaadiziwin") {
+    // Bimaadiziwin → waitlist (features not yet available)
+    if (planName === "Bimaadiziwin") {
+      toast.success("We'll notify you when Bimaadiziwin launches. Thank you for your interest!");
+      return;
+    }
+
+    // Enterprise → contact sales
+    if (planName === "Gimishoomis") {
       navigate('/contact');
       toast.info("Redirecting to contact form...");
       return;
@@ -190,7 +196,7 @@ const PricingSection = () => {
         { text: "Grant Success Predictor", available: false },
         { text: "7-generation planning canvas", available: false },
       ],
-      ctaText: "Contact Sales",
+      ctaText: "Join Waitlist",
       icon: Briefcase,
       gradient: "sky",
     },
@@ -335,6 +341,11 @@ const PricingSection = () => {
                       <p className="text-xs text-muted-foreground">
                         ${plan.annualTotal} billed annually
                       </p>
+                    )}
+                    {plan.name === 'Bimaadiziwin' && (
+                      <Badge variant="outline" className="mt-2 text-xs border-primary/40 text-primary">
+                        Coming Soon
+                      </Badge>
                     )}
                   </div>
                 </CardHeader>

@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense, useEffect } from "react";
 import { trackPageView } from "./utils/analytics";
@@ -330,13 +330,7 @@ const App = () => (
               />
               <Route
                 path="/dashboard/community"
-                element={
-                  <Suspense fallback={<DashboardSkeleton />}>
-                    <ProtectedRoute>
-                      <Forum />
-                    </ProtectedRoute>
-                  </Suspense>
-                }
+                element={<Navigate to="/dashboard/forum" replace />}
               />
               <Route
                 path="/dashboard/compliance"

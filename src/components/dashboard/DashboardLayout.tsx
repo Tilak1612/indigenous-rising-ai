@@ -129,12 +129,14 @@ function NavItemLink({
   // dead <Link to="#"> which previously caused a silent redirect to /dashboard
   // and bypassed the upsell entirely.
   if (isLocked) {
+    const requiredPlan = item.tier === 'enterprise' ? 'Gimishoomis' : 'Ogichidaakwe';
     return (
       <SidebarMenuItem>
         <SidebarMenuButton
           isActive={false}
           className="transition-all opacity-70"
           onClick={() => onLockedClick(item)}
+          aria-label={`${item.title} — requires ${requiredPlan} plan`}
         >
           <item.icon className="h-4 w-4" />
           <span className="flex-1">{item.title}</span>
