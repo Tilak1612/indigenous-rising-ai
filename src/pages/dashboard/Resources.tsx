@@ -61,8 +61,7 @@ const resources: Resource[] = [
     description: 'Comprehensive guide to launching your first business with cultural considerations',
     category: 'guide',
     type: 'PDF Guide',
-    rating: 4.8,
-    downloads: 1250,
+    rating: 0,
     featured: true,
     region: 'National',
     stage: 'Startup',
@@ -74,8 +73,7 @@ const resources: Resource[] = [
     description: 'Understanding Ownership, Control, Access, and Possession principles',
     category: 'guide',
     type: 'Article',
-    rating: 4.9,
-    downloads: 890,
+    rating: 0,
     region: 'National',
     stage: 'All Stages',
     language: 'English',
@@ -86,8 +84,7 @@ const resources: Resource[] = [
     description: 'Pre-formatted template with community impact sections',
     category: 'template',
     type: 'Word Document',
-    rating: 4.7,
-    downloads: 2100,
+    rating: 0,
     featured: true,
     region: 'National',
     stage: 'Startup',
@@ -99,8 +96,7 @@ const resources: Resource[] = [
     description: 'Excel template for revenue forecasting and budgeting',
     category: 'template',
     type: 'Excel',
-    rating: 4.5,
-    downloads: 1800,
+    rating: 0,
     region: 'National',
     stage: 'Growth',
     language: 'English',
@@ -111,7 +107,7 @@ const resources: Resource[] = [
     description: 'How to incorporate traditional knowledge while protecting IP',
     category: 'video',
     type: 'Video',
-    rating: 4.6,
+    rating: 0,
     duration: '45 min',
     region: 'National',
     stage: 'All Stages',
@@ -123,7 +119,7 @@ const resources: Resource[] = [
     description: 'Access loans, grants, and business support services',
     category: 'partner',
     type: 'Partner Organization',
-    rating: 4.8,
+    rating: 0,
     region: 'Ontario',
     stage: 'All Stages',
     language: 'English',
@@ -335,11 +331,13 @@ export default function ResourcesPage() {
                               <h3 className="font-semibold">{resource.title}</h3>
                               <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
                               <div className="flex items-center gap-4 mt-3">
-                                <span className="text-sm flex items-center gap-1">
-                                  <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
-                                  {resource.rating}
-                                </span>
-                                {resource.downloads && (
+                                {resource.rating > 0 && (
+                                  <span className="text-sm flex items-center gap-1">
+                                    <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+                                    {resource.rating}
+                                  </span>
+                                )}
+                                {resource.downloads && resource.downloads > 0 && (
                                   <span className="text-sm text-muted-foreground flex items-center gap-1">
                                     <Download className="h-4 w-4" />
                                     {resource.downloads.toLocaleString()}
@@ -393,10 +391,12 @@ export default function ResourcesPage() {
                           <h3 className="font-medium text-sm leading-tight">{resource.title}</h3>
                           <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{resource.description}</p>
                           <div className="flex items-center gap-3 mt-3">
-                            <span className="text-xs flex items-center gap-1">
-                              <Star className="h-3 w-3 text-amber-500 fill-amber-500" />
-                              {resource.rating}
-                            </span>
+                            {resource.rating > 0 && (
+                              <span className="text-xs flex items-center gap-1">
+                                <Star className="h-3 w-3 text-amber-500 fill-amber-500" />
+                                {resource.rating}
+                              </span>
+                            )}
                             {resource.duration && (
                               <span className="text-xs text-muted-foreground flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
