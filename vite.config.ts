@@ -28,22 +28,30 @@ export default defineConfig(({ mode }) => {
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-select'
-          ],
-          'form-vendor': ['react-hook-form', 'zod', '@hookform/resolvers'],
-          'query-vendor': ['@tanstack/react-query']
-        }
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react-dom') || id.includes('react-router-dom') || id.match(/\/react\//)) {
+              return 'react-vendor';
+            }
+            if (id.includes('@radix-ui/')) {
+              return 'ui-vendor';
+            }
+            if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+              return 'form-vendor';
+            }
+            if (id.includes('@tanstack/react-query')) {
+              return 'query-vendor';
+            }
+          }
+        },
       }
     },
     chunkSizeWarningLimit: 1000,
-    minify: 'esbuild', // esbuild is faster and built-in (no extra dependency)
-    sourcemap: false
+    minify: 'esbuild',
+    sourcemap: 'hidden', // generate sourcemaps for error tracking (not publicly exposed)
+  },
+  esbuild: {
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
   },
   resolve: {
     alias: {
