@@ -37,6 +37,10 @@ const BlogPost = () => {
   if (!post) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
+        <Helmet>
+          <meta name="robots" content="noindex, nofollow" />
+          <title>Article Not Found | Indigenous Rising AI</title>
+        </Helmet>
         <div className="text-center">
           <BookOpen className="w-16 h-16 mx-auto text-muted-foreground/30 mb-4" />
           <h1 className="text-2xl font-bold mb-2">Article Not Found</h1>
@@ -59,7 +63,9 @@ const BlogPost = () => {
     });
   };
 
-  const shareUrl = `https://www.indigenousrising.ai/blog/${post.slug}`;
+  const BASE_URL = 'https://www.indigenousrising.ai';
+  const shareUrl = `${BASE_URL}/blog/${post.slug}`;
+  const absoluteImage = `${BASE_URL}${getPostImage(post.id)}`;
   
   const handleShare = async (platform?: string) => {
     const shareData = {
@@ -102,7 +108,7 @@ const BlogPost = () => {
         <meta property="og:description" content={post.summary} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={shareUrl} />
-        <meta property="og:image" content={getPostImage(post.id)} />
+        <meta property="og:image" content={absoluteImage} />
         <meta property="article:published_time" content={post.publishedAt} />
         <meta property="article:modified_time" content={post.updatedAt} />
         <meta property="article:author" content={post.author.name} />
@@ -118,10 +124,21 @@ const BlogPost = () => {
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
+              { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${BASE_URL}/blog` },
+              { "@type": "ListItem", "position": 3, "name": post.title, "item": shareUrl }
+            ]
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
             "@type": "BlogPosting",
             "headline": post.title,
             "description": post.summary,
-            "image": getPostImage(post.id),
+            "image": absoluteImage,
             "url": shareUrl,
             "datePublished": post.publishedAt,
             "dateModified": post.updatedAt,
@@ -143,8 +160,10 @@ const BlogPost = () => {
             },
             "keywords": post.keywords.join(', '),
             "articleSection": post.category,
-            "wordCount": post.introduction.split(' ').length + 
-              post.sections.reduce((acc, s) => acc + s.content.split(' ').length, 0)
+            "wordCount": post.introduction.split(' ').length +
+              post.sections.reduce((acc, s) =>
+                acc + s.content.split(' ').length +
+                (s.subsections?.reduce((a, sub) => a + sub.content.split(' ').length, 0) ?? 0), 0)
           })}
         </script>
       </Helmet>
