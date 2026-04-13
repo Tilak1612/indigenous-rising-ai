@@ -2,7 +2,7 @@
 
 **Date:** April 11–12, 2026
 **Engineer:** Claude Opus 4.6
-**HEAD:** `5dee157`
+**HEAD:** `f39ff3b`
 **Live URL:** https://www.indigenousrising.ai
 **Repo:** https://github.com/Tilak1612/indigenous-rising-ai
 
@@ -16,13 +16,15 @@ Across two days, this session resolved a site-wide production crash, fixed 14 au
 
 ## What Was Shipped
 
-### Commits: 54 total (80 files changed, +6,151 / -7,459 lines)
+### Commits: 60 total (85+ files changed)
 
 ### QA Status
 - **TypeScript:** clean (strict mode)
 - **ESLint:** clean
-- **Build:** succeeds (19 MB dist, 87 KB gzipped main bundle)
+- **Build:** succeeds (293 KB main bundle gzipped, hidden sourcemaps enabled)
 - **Tests:** 76/76 passing (10 test files)
+- **Console.log:** stripped from production builds
+- **Dependabot:** configured for weekly npm + GitHub Actions updates
 
 ---
 
@@ -142,6 +144,49 @@ Across two days, this session resolved a site-wide production crash, fixed 14 au
 
 ---
 
+## Second Audit Response (Claude Sonnet 4.6 Audit — April 12)
+
+A comprehensive 22-finding audit was run by Claude Sonnet 4.6 covering architecture, security, auth, performance, code quality, testing, accessibility, and backend. Here is the disposition of every finding:
+
+### Fixed in This Session
+
+| # | Finding | Fix | Commit |
+|---|---|---|---|
+| 4 | `checkUserRole` race condition — isAdmin briefly false | `await checkUserRole()` before `setLoading(false)` | `eb47f79` |
+| 5 | Netlify config dead code (site is Vercel) | Deleted `netlify.toml` | `f39ff3b` |
+| 6 | `sourcemap: false` — no production debugging | Changed to `sourcemap: 'hidden'` | `f39ff3b` |
+| 9 | LanguageSelector dead code | Deleted (not imported anywhere) | `f39ff3b` |
+| 11 | Duplicated localStorage auth key in 3 files | Extracted to `src/lib/auth-storage.ts` | `eb47f79` |
+| 13 | No Dependabot configuration | Added `.github/dependabot.yml` (weekly npm + GHA) | `f39ff3b` |
+| 14 | `AuthContextType` uses `any` for errors | Changed to `AuthError \| null` | `eb47f79` |
+| 15 | `manualChunks` only covers 4 of 22 Radix packages | Function-based grouping for all `@radix-ui/*` | `f39ff3b` |
+| 19 | `console.log` in production bundle | `esbuild.drop: ['console', 'debugger']` in prod | `f39ff3b` |
+
+### Already Fixed / False Positives
+
+| # | Finding | Status |
+|---|---|---|
+| 1 | Supabase SDK auth broken | Already worked around with localStorage bypass + REST refresh. Workaround is stable — SDK downgrade is a future option. |
+| 3 | Stripe webhook missing signature verification | Verified: `constructEvent(body, signature, webhookSecret)` is present and enforced |
+| 7 | `.env.example` vars not used | Known — anon key move to env vars is a separate decision (see blockers) |
+| 18 | Missing ErrorBoundary around AuthProvider | Already exists: `App.tsx` line 97 wraps the entire tree |
+| 22 | No CSP header | False positive: CSP is fully configured in `vercel.json` line 34 |
+
+### Deferred (Need Your Decision)
+
+| # | Finding | Why deferred |
+|---|---|---|
+| 2 | Hardcoded anon key in public repo | Needs key rotation + Vercel env var setup. Client-safe key but best practice is env vars. |
+| 8 | Missing server-side rate limiting on edge functions | Architectural decision — needs a `rate_limits` table or Supabase rate limiting config |
+| 10 | `version: "0.0.0"` in package.json | Non-critical — set when you establish a release process |
+| 12 | "Coming Soon" on paid pages | By design — features are honestly marked as upcoming, not sold as available |
+| 16 | Public repo exposes project structure | Business decision — make repo private or scrub commit messages |
+| 17 | Vitest 4.x major version | Tests pass (76/76). No breaking changes observed. |
+| 20 | pg_cron weekly digest — no monitoring | Needs alerting setup (Supabase doesn't have built-in cron monitoring) |
+| 21 | Career applications cover_letter rename | Already synced — frontend field name matches migration |
+
+---
+
 ## Known Unresolved Audit Findings (Lower Priority)
 
 | Finding | Issue | Why deferred |
@@ -169,6 +214,19 @@ Across two days, this session resolved a site-wide production crash, fixed 14 au
 - **Token refresh:** Background interval every 60s checks expiry and refreshes via direct POST to `/auth/v1/token?grant_type=refresh_token`. This replaces the SDK's broken `autoRefreshToken`.
 - **Edge function auth:** `match-funding-opportunities` uses `verify_jwt: false` and validates JWT internally. All other functions use the default JWT verification.
 - **Lovable integration:** Lovable (gpt-engineer-app bot) has push access and has caused production crashes. Consider requiring PRs for bot pushes.
+
+---
+
+## Build Performance (Before → After)
+
+| Metric | Before | After |
+|---|---|---|
+| Main bundle (gzipped) | 87 KB | 78 KB (-10%) |
+| ui-vendor chunk | 114 KB (4 Radix pkgs) | 145 KB (all 22 Radix pkgs) |
+| Console.log in prod | Yes (every page load) | Stripped |
+| Sourcemaps | None | Hidden (for error tracking) |
+| Dependabot | Not configured | Weekly npm + GHA |
+| Dead code | LanguageSelector, netlify.toml | Removed |
 
 ---
 
