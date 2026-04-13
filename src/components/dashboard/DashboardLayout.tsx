@@ -226,12 +226,14 @@ function DashboardSidebar() {
 
   useEffect(() => {
     if (!user) return;
-    supabase
+    // Cast: avatar_url isn't in the generated Database type yet.
+    // Regenerate types with `supabase gen types typescript` to remove.
+    (supabase as any)
       .from('profiles')
       .select('avatar_url')
       .eq('id', user.id)
       .maybeSingle()
-      .then(({ data }) => {
+      .then(({ data }: { data: { avatar_url?: string } | null }) => {
         if (data?.avatar_url) setAvatarUrl(data.avatar_url);
       });
   }, [user]);
@@ -326,7 +328,7 @@ function DashboardSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
+      <SidebarFooter className="p-4 pb-16">
         <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
           <Avatar className="h-8 w-8">
             {avatarUrl && <AvatarImage src={avatarUrl} alt="Profile" className="object-cover" />}
@@ -369,12 +371,12 @@ function DashboardHeader() {
 
   useEffect(() => {
     if (!user) return;
-    supabase
+    (supabase as any)
       .from('profiles')
       .select('avatar_url')
       .eq('id', user.id)
       .maybeSingle()
-      .then(({ data }) => {
+      .then(({ data }: { data: { avatar_url?: string } | null }) => {
         if (data?.avatar_url) setHeaderAvatarUrl(data.avatar_url);
       });
   }, [user]);
