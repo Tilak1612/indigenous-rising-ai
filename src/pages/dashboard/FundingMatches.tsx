@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { SUPABASE_STORAGE_KEY } from '@/lib/auth-storage';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import {
@@ -126,7 +127,7 @@ const FundingMatches: React.FC = () => {
       // token in our environment, so we pass it explicitly via headers.
       let accessToken: string | undefined;
       try {
-        const raw = localStorage.getItem('sb-upxojfcdtmqtcvgbjsym-auth-token');
+        const raw = localStorage.getItem(SUPABASE_STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
           const stored = parsed?.currentSession ?? parsed;
@@ -146,8 +147,7 @@ const FundingMatches: React.FC = () => {
       // parsed synchronously, and our error handler was failing silently
       // on quota_exceeded and rate_limited responses. Going direct to fetch
       // gives us clean access to response.json() for any status code.
-      const FUNCTION_URL = 'https://upxojfcdtmqtcvgbjsym.supabase.co/functions/v1/match-funding-opportunities';
-      const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9qZmNkdG1xdGN2Z2Jqc3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NzAwMDgsImV4cCI6MjA4NzU0NjAwOH0.tAaSqKPPy8nfj6u8lby5Fmuqdiy1CezxnSUpWfA2yP0';
+      const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/match-funding-opportunities`;
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
@@ -159,7 +159,7 @@ const FundingMatches: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`,
-            'apikey': ANON_KEY,
+            'apikey': SUPABASE_ANON_KEY,
           },
           body: JSON.stringify({}),
           signal: controller.signal,

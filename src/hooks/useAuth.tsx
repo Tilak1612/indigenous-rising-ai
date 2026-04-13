@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import {
   SUPABASE_STORAGE_KEY,
@@ -102,12 +102,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function refreshAccessToken(refreshToken: string): Promise<StoredSession | null> {
       try {
         const res = await fetch(
-          'https://upxojfcdtmqtcvgbjsym.supabase.co/auth/v1/token?grant_type=refresh_token',
+          `${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`,
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9qZmNkdG1xdGN2Z2Jqc3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NzAwMDgsImV4cCI6MjA4NzU0NjAwOH0.tAaSqKPPy8nfj6u8lby5Fmuqdiy1CezxnSUpWfA2yP0',
+              apikey: SUPABASE_ANON_KEY,
             },
             body: JSON.stringify({ refresh_token: refreshToken }),
           }
