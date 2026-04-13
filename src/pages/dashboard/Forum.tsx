@@ -49,62 +49,7 @@ interface ForumPost {
   trending?: boolean;
 }
 
-const posts: ForumPost[] = [
-  {
-    id: '1',
-    title: 'Tips for First-Time Grant Applications',
-    content: 'I recently received my first grant and wanted to share some tips that helped me through the process...',
-    author: { name: 'Sarah Crow Feather', badges: ['funding_expert', 'top_contributor'] },
-    category: 'Funding',
-    likes: 24,
-    replies: 12,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
-    pinned: true,
-  },
-  {
-    id: '2',
-    title: 'How to Balance Traditional Knowledge with Modern Business',
-    content: 'Starting a business while honoring our traditions can be challenging. Here is what I have learned...',
-    author: { name: 'James Running Bear', badges: ['elder_advisor', 'founding_member'] },
-    category: 'Culture',
-    likes: 45,
-    replies: 28,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
-    pinned: true,
-    trending: true,
-  },
-  {
-    id: '3',
-    title: 'Looking for Mentorship in E-commerce',
-    content: 'I am launching an online store for Indigenous crafts. Would love to connect with someone who has experience...',
-    author: { name: 'Maria Two Rivers', badges: ['mentor', 'verified_business'] },
-    category: 'Mentorship',
-    likes: 8,
-    replies: 5,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48),
-  },
-  {
-    id: '4',
-    title: 'Success Story: From Idea to $100K Revenue',
-    content: 'Three years ago I started with just an idea. Today I want to share my journey and what I learned...',
-    author: { name: 'Robert White Eagle', badges: ['verified_business', 'community_builder'] },
-    category: 'Success Stories',
-    likes: 89,
-    replies: 34,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72),
-    trending: true,
-  },
-  {
-    id: '5',
-    title: 'OCAP™ Compliance Questions',
-    content: 'Can someone explain how OCAP principles apply to customer data in an e-commerce context?',
-    author: { name: 'Lisa Deer', badges: ['moderator'] },
-    category: 'Compliance',
-    likes: 12,
-    replies: 7,
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 96),
-  },
-];
+const posts: ForumPost[] = [];
 
 const categories = ['All', 'Funding', 'Culture', 'Mentorship', 'Success Stories', 'Compliance'];
 
@@ -283,7 +228,7 @@ export default function ForumPage() {
                 <Users className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold">1,250</p>
+                <p className="text-2xl font-bold">0</p>
                 <p className="text-sm text-muted-foreground">Community Members</p>
               </div>
             </CardContent>
@@ -294,7 +239,7 @@ export default function ForumPage() {
                 <MessageSquare className="h-5 w-5 text-green-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold">324</p>
+                <p className="text-2xl font-bold">0</p>
                 <p className="text-sm text-muted-foreground">Active Discussions</p>
               </div>
             </CardContent>
@@ -305,7 +250,7 @@ export default function ForumPage() {
                 <TrendingUp className="h-5 w-5 text-amber-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold">89</p>
+                <p className="text-2xl font-bold">0</p>
                 <p className="text-sm text-muted-foreground">Posts This Week</p>
               </div>
             </CardContent>
@@ -388,8 +333,20 @@ export default function ForumPage() {
         </div>
 
         {filteredPosts.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No discussions found matching your search.</p>
+          <div className="text-center py-12 space-y-3">
+            <MessageSquare className="h-10 w-10 mx-auto text-muted-foreground/50" />
+            <h3 className="text-lg font-semibold">No discussions yet</h3>
+            <p className="text-muted-foreground">
+              {search || activeCategory !== 'All'
+                ? 'No discussions found matching your search.'
+                : 'Be the first to start a conversation in the community forum.'}
+            </p>
+            {!search && activeCategory === 'All' && (
+              <Button onClick={() => setShowNewPost(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Start a Discussion
+              </Button>
+            )}
           </div>
         )}
       </div>
