@@ -9,6 +9,7 @@ const EnhancedFeatures = () => {
     {
       icon: Feather,
       title: 'Business Planning Assistant',
+      slug: 'business-planning',
       ojibwe: 'Oshki-Kijiganan Naadamaage',
       description: 'OCAP™ compliant AI tools that connect traditional knowledge with modern business strategy.',
       benefits: [
@@ -22,6 +23,7 @@ const EnhancedFeatures = () => {
     {
       icon: Compass,
       title: 'Funding Navigator',
+      slug: 'funding-navigator',
       ojibwe: 'Tebwewin Naadamaage',
       description: 'AI-powered grant matching aligned with your community goals.',
       benefits: [
@@ -35,6 +37,7 @@ const EnhancedFeatures = () => {
     {
       icon: TreePine,
       title: 'Community Impact Tracker',
+      slug: 'impact-tracker',
       ojibwe: 'Biidaasige Gibaakwa\'iganan',
       description: 'Measure community wellbeing and environmental stewardship.',
       benefits: [
@@ -48,6 +51,7 @@ const EnhancedFeatures = () => {
     {
       icon: GraduationCap,
       title: 'Training & Certification',
+      slug: 'training-certification',
       ojibwe: 'Gikinoo\'amaage miinawaa Dibendaagoziwinikazo',
       description: 'Learning programs blending cultural competency and core business skills.',
       benefits: [
@@ -61,6 +65,7 @@ const EnhancedFeatures = () => {
     {
       icon: Network,
       title: 'Partnership Network',
+      slug: 'partnership-network',
       ojibwe: 'Wiidookodaadwin Mazina\'igan',
       description: 'Access to established networks and regional Indigenous councils.',
       benefits: [
@@ -74,6 +79,7 @@ const EnhancedFeatures = () => {
     {
       icon: Users,
       title: 'Data Sovereignty Tools',
+      slug: 'subscription-plans',
       ojibwe: 'Gibaakwa\'iganan Dibendaagoziwining',
       description: 'Built on OCAP™ principles so communities control their data.',
       benefits: [
@@ -152,7 +158,7 @@ const EnhancedFeatures = () => {
                                   size="sm"
                                   className="group/btn text-primary hover:text-primary hover:bg-primary/10 -ml-2"
                                 >
-                                  <Link to="/contact">
+                                  <Link to={`/features/${feature.slug}`}>
                                     Learn More
                                     <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                                   </Link>

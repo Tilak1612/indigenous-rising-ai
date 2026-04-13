@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Feather } from 'lucide-react';
@@ -157,11 +158,14 @@ const ElderWisdom = () => {
 
           <div className="text-center mt-8">
             <Button
+              asChild
               variant="outline"
               size="lg"
               className="border-2 border-white text-white hover:bg-white hover:text-emerald-800"
             >
-              Access Elder Knowledge Sessions
+              <Link to="/contact">
+                Access Elder Knowledge Sessions
+              </Link>
             </Button>
           </div>
         </div>

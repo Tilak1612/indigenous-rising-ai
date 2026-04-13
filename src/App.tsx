@@ -154,7 +154,10 @@ const App = () => (
                   </Suspense>
                 } 
               />
-              <Route 
+              <Route path="/about" element={<Navigate to="/" replace />} />
+              <Route path="/mission" element={<Navigate to="/" replace />} />
+              <Route path="/partnerships" element={<Navigate to="/" replace />} />
+              <Route
                 path="/unsubscribe" 
                 element={
                   <Suspense fallback={<PageSkeleton />}>
