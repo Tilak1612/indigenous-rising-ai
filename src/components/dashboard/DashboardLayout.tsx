@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/lib/supabase';
 import { useSubscription } from '@/hooks/useSubscription';
 import { getString } from '@/lib/i18n';
 import {
@@ -53,7 +54,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -221,6 +222,19 @@ function DashboardSidebar() {
   const { subscribed, product_id } = useSubscription();
   const userTier = getTierFromSubscription(subscribed, product_id);
   const [upgradeItem, setUpgradeItem] = useState<NavItem | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('profiles')
+      .select('avatar_url')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+      });
+  }, [user]);
 
   const preferredLang = (() => {
     try { return localStorage.getItem(LANG_KEY) || 'en'; }
@@ -315,6 +329,7 @@ function DashboardSidebar() {
       <SidebarFooter className="p-4">
         <div className="flex items-center gap-3 group-data-[collapsible=icon]:justify-center">
           <Avatar className="h-8 w-8">
+            {avatarUrl && <AvatarImage src={avatarUrl} alt="Profile" className="object-cover" />}
             <AvatarFallback className="bg-primary/10 text-primary text-xs">
               {user?.email?.charAt(0).toUpperCase() || 'U'}
             </AvatarFallback>
@@ -350,6 +365,19 @@ function DashboardHeader() {
   const { user } = useAuth();
   const { subscribed, product_id } = useSubscription();
   const userTier = getTierFromSubscription(subscribed, product_id);
+  const [headerAvatarUrl, setHeaderAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    supabase
+      .from('profiles')
+      .select('avatar_url')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.avatar_url) setHeaderAvatarUrl(data.avatar_url);
+      });
+  }, [user]);
 
   return (
     <header className="h-14 border-b border-border flex items-center justify-between px-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
@@ -423,6 +451,7 @@ function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
               <Avatar className="h-8 w-8">
+                {headerAvatarUrl && <AvatarImage src={headerAvatarUrl} alt="Profile" className="object-cover" />}
                 <AvatarFallback className="bg-primary/10 text-primary text-sm">
                   {user?.email?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>

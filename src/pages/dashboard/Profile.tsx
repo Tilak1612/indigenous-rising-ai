@@ -109,8 +109,12 @@ export default function Profile() {
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingBusiness, setSavingBusiness] = useState(false);
   const [savingSocial, setSavingSocial] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
   const [businessErrors, setBusinessErrors] = useState<Record<string, string>>({});
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
   
   const [profileData, setProfileData] = useState({
     firstName: '',
@@ -155,7 +159,7 @@ export default function Profile() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links, business_stage, target_funding_amount, funding_purpose')
+          .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links, business_stage, target_funding_amount, funding_purpose, avatar_url')
           .eq('id', user.id)
           .maybeSingle();
 
@@ -195,6 +199,7 @@ export default function Profile() {
           facebook: sl.facebook || '',
           instagram: sl.instagram || '',
         });
+        if (data.avatar_url) setAvatarUrl(data.avatar_url);
       } catch (err) {
         if (!cancelled) console.error('[Profile] profile load threw:', err);
       }
@@ -296,8 +301,80 @@ export default function Profile() {
     }
   };
 
-  const handleAvatarUpload = () => {
-    toast.info('Avatar upload coming soon');
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error('Please select a JPEG, PNG, WebP, or GIF image');
+      return;
+    }
+    if (file.size > MAX_SIZE) {
+      toast.error('Image must be smaller than 2 MB');
+      return;
+    }
+
+    // Show preview immediately
+    const reader = new FileReader();
+    reader.onload = () => setAvatarPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleAvatarUpload = async () => {
+    const file = fileInputRef.current?.files?.[0];
+    if (!file || !user) return;
+
+    setUploadingAvatar(true);
+    try {
+      const ext = file.name.split('.').pop() || 'jpg';
+      const filePath = `${user.id}/avatar.${ext}`;
+
+      // Upload to Supabase Storage (overwrites previous avatar)
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Get the public URL
+      const { data: urlData } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      // Bust browser cache by appending timestamp
+      const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+
+      // Save to profiles table
+      const { error: dbError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', user.id);
+
+      if (dbError) throw dbError;
+
+      setAvatarUrl(publicUrl);
+      setAvatarPreview(null);
+      toast.success('Profile picture updated');
+    } catch (err) {
+      console.error('[Profile] avatar upload failed:', err);
+      toast.error('Failed to upload profile picture');
+    } finally {
+      setUploadingAvatar(false);
+      // Reset file input
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleCancelPreview = () => {
+    setAvatarPreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const displayName = profileData.firstName && profileData.lastName 
@@ -318,21 +395,58 @@ export default function Profile() {
           {/* Profile Card */}
           <Card className="lg:col-span-1 h-fit">
             <CardContent className="p-6 text-center">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="hidden"
+                onChange={handleFileSelect}
+              />
               <div className="relative inline-block">
                 <Avatar className="h-24 w-24 mx-auto">
+                  <AvatarImage
+                    src={avatarPreview || avatarUrl || undefined}
+                    alt={displayName}
+                    className="object-cover"
+                  />
                   <AvatarFallback className="bg-primary/10 text-primary text-2xl">
                     {displayName.split(' ').map(n => n[0]).join('').toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <Button 
-                  size="icon" 
-                  variant="outline" 
-                  className="absolute bottom-0 right-0 h-8 w-8 rounded-full"
-                  onClick={handleAvatarUpload}
-                >
-                  <Camera className="h-4 w-4" />
-                </Button>
+                {!avatarPreview && (
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="absolute bottom-0 right-0 h-8 w-8 rounded-full"
+                    onClick={handleAvatarClick}
+                  >
+                    <Camera className="h-4 w-4" />
+                  </Button>
+                )}
               </div>
+              {avatarPreview && (
+                <div className="flex gap-2 justify-center mt-3">
+                  <Button
+                    size="sm"
+                    onClick={handleAvatarUpload}
+                    disabled={uploadingAvatar}
+                  >
+                    {uploadingAvatar ? (
+                      <><Loader2 className="h-3 w-3 mr-1 animate-spin" /> Uploading...</>
+                    ) : (
+                      <><Save className="h-3 w-3 mr-1" /> Save Photo</>
+                    )}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleCancelPreview}
+                    disabled={uploadingAvatar}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
               <h3 className="font-semibold text-lg mt-4">{displayName}</h3>
               <p className="text-sm text-muted-foreground">{user?.email}</p>
               <Badge className="mt-2">{tierLabel}</Badge>
