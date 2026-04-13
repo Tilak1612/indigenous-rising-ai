@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import { MessageSquare, ThumbsUp, Pin, Plus, Users } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import { sanitizeInput } from '@/lib/sanitize';
 
@@ -28,7 +28,7 @@ interface CommunityPost {
   title: string;
   body: string;
   category: string;
-  upvote_count: number;
+  upvotes: number;
   reply_count: number;
   is_pinned: boolean;
   is_approved: boolean;
@@ -57,28 +57,35 @@ const Community = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      // Cast to any because community_posts isn't in the generated Database type yet.
-      // The table exists in production (created via migration). Regenerate types
-      // with `supabase gen types typescript` to remove this cast.
-      const client = supabase as any;
-      let query = client
-        .from('community_posts')
-        .select('*')
-        .eq('is_approved', true)
-        .order('is_pinned', { ascending: false })
-        .order('created_at', { ascending: false });
-
+      // Bypass the Supabase JS client entirely for this public read.
+      // The SDK's internal auth state can hang (known issue with getSession
+      // in supabase-js@2.80.0 on this project), which blocks even anon
+      // queries. Direct fetch is reliable and doesn't depend on SDK state.
+      const params = new URLSearchParams({
+        select: '*',
+        is_approved: 'eq.true',
+        order: 'is_pinned.desc,created_at.desc',
+      });
       if (activeCategory !== 'All') {
-        query = query.eq('category', activeCategory);
+        params.set('category', `eq.${activeCategory}`);
       }
 
-      const { data, error } = await query;
-      if (error) {
-        console.error('[Community] fetch error:', error.message);
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/community_posts?${params}`, {
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        },
+      });
+
+      if (!res.ok) {
+        setPosts([]);
+        setLoading(false);
+        return;
       }
+
+      const data = await res.json();
       setPosts((data ?? []) as CommunityPost[]);
-    } catch (err) {
-      console.error('[Community] fetch threw:', err);
+    } catch {
       setPosts([]);
     }
     setLoading(false);
@@ -303,7 +310,7 @@ const Community = () => {
                             </Badge>
                             <span className="flex items-center gap-1">
                               <ThumbsUp className="w-3 h-3" />
-                              {post.upvote_count ?? 0}
+                              {post.upvotes ?? 0}
                             </span>
                             <span className="flex items-center gap-1">
                               <MessageSquare className="w-3 h-3" />

@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -42,16 +42,24 @@ const CommunityPost = () => {
   const [submitting, setSubmitting] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
 
+  // Direct fetch headers — bypass the Supabase JS client which can hang
+  // due to the getSession bug in supabase-js@2.80.0 on this project.
+  // useMemo avoids recreating on every render (fixes exhaustive-deps warning).
+  const headers = useMemo(() => ({ apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` }), []);
+
   const fetchComments = useCallback(async () => {
     if (!postId) return;
-    const { data } = await (supabase as any)
-      .from('community_comments')
-      .select('*')
-      .eq('post_id', postId)
-      .eq('is_approved', true)
-      .order('created_at', { ascending: true });
-    if (data) setComments(data);
-  }, [postId]);
+    try {
+      const params = new URLSearchParams({
+        select: '*',
+        post_id: `eq.${postId}`,
+        is_approved: 'eq.true',
+        order: 'created_at.asc',
+      });
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/community_comments?${params}`, { headers });
+      if (res.ok) setComments(await res.json());
+    } catch { /* swallow */ }
+  }, [postId, headers]);
 
   useEffect(() => {
     if (!postId) return;
@@ -59,38 +67,53 @@ const CommunityPost = () => {
     const load = async () => {
       setLoading(true);
 
-      const { data: postData, error } = await (supabase as any)
-        .from('community_posts')
-        .select('*')
-        .eq('id', postId)
-        .eq('is_approved', true)
-        .single();
+      try {
+        const params = new URLSearchParams({
+          select: '*',
+          id: `eq.${postId}`,
+          is_approved: 'eq.true',
+        });
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/community_posts?${params}`, {
+          headers: { ...headers, Accept: 'application/vnd.pgrst.object+json' },
+        });
 
-      if (error || !postData) {
+        if (!res.ok) {
+          setNotFound(true);
+          setLoading(false);
+          return;
+        }
+
+        const postData = await res.json();
+        setPost(postData);
+        setLocalUpvotes(postData.upvotes ?? 0);
+      } catch {
         setNotFound(true);
         setLoading(false);
         return;
       }
 
-      setPost(postData);
-      setLocalUpvotes(postData.upvotes ?? 0);
-
       await fetchComments();
 
       if (user) {
-        const { data: vote } = await (supabase as any)
-          .from('community_votes')
-          .select('*')
-          .eq('post_id', postId)
-          .eq('user_id', user.id)
-          .maybeSingle();
-        setHasVoted(!!vote);
+        try {
+          const voteParams = new URLSearchParams({
+            select: '*',
+            post_id: `eq.${postId}`,
+            user_id: `eq.${user.id}`,
+          });
+          const vRes = await fetch(`${SUPABASE_URL}/rest/v1/community_votes?${voteParams}`, { headers });
+          if (vRes.ok) {
+            const votes = await vRes.json();
+            setHasVoted(votes.length > 0);
+          }
+        } catch { /* swallow */ }
       }
 
       setLoading(false);
     };
 
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId, user, fetchComments]);
 
   const handleVote = async () => {
