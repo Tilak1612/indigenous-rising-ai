@@ -284,7 +284,7 @@ const Training = () => {
                           {module.title}
                         </CardTitle>
                         <CardDescription className="mt-2">
-                          <div className="flex gap-4 text-sm">
+                          <span className="flex gap-4 text-sm">
                             <span className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
                               {module.duration}
@@ -293,7 +293,7 @@ const Training = () => {
                               <BookOpen className="w-4 h-4" />
                               {module.lessons} lessons
                             </span>
-                          </div>
+                          </span>
                         </CardDescription>
                       </div>
                     </div>

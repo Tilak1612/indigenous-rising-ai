@@ -27,7 +27,7 @@ const HeroSection = () => {
           width={1920}
           height={1080}
           loading="eager"
-          fetchPriority="high"
+          {...{ fetchpriority: 'high' }}
           decoding="async"
         />
         {/* Gradient overlay for text readability */}
