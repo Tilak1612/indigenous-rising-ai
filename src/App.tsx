@@ -22,6 +22,7 @@ import {
 
 // Lazy load route components
 const Index = lazy(() => import("./pages/Index"));
+const LandingV2 = lazy(() => import("./pages/LandingV2"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -114,8 +115,16 @@ const App = () => (
                   </Suspense>
                 } 
               />
-              <Route 
-                path="/privacy" 
+              <Route
+                path="/landing-v2"
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <LandingV2 />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/privacy"
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <PrivacyPolicy />
