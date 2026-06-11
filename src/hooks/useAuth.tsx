@@ -31,28 +31,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Role lookup must never throw out of the auth flow — if user_roles table
-  // is missing, the user is unauthenticated, or the network is flaky, we
-  // fall back to "no special roles" rather than hanging the whole app.
+  // Role lookup must never throw OR hang out of the auth flow. We deliberately
+  // bypass the supabase-js SDK here: on this project (supabase-js@2.80.0) the
+  // SDK's query machinery shares the same broken async path as getSession()
+  // and can hang forever. Because the hydration path awaits this before calling
+  // setLoading(false), a hung SDK query left every dashboard page stuck on a
+  // spinner until the 10s safety timeout fired. Instead we hit PostgREST
+  // directly with the user's token (same workaround pattern used by
+  // useSubscription + FundingMatches), guarded by a hard abort timeout.
   const checkUserRole = async (userId: string) => {
     try {
-      const { data: roles, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId);
+      const stored = readStoredSession();
+      const token = stored?.access_token ?? SUPABASE_ANON_KEY;
 
-      if (error) {
-        console.error('[useAuth] user_roles query failed:', error.message);
+      const controller = new AbortController();
+      const abortId = setTimeout(() => controller.abort(), 5000);
+
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/user_roles?select=role&user_id=eq.${userId}`,
+        {
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        }
+      ).finally(() => clearTimeout(abortId));
+
+      if (!res.ok) {
+        console.error('[useAuth] user_roles query failed:', res.status);
         setIsAdmin(false);
         setIsTeamMember(false);
         return;
       }
 
+      const roles = (await res.json()) as Array<{ role: string }>;
       const roleList = (roles ?? []).map(r => r.role);
       setIsAdmin(roleList.includes('admin'));
       setIsTeamMember(roleList.includes('team_member') || roleList.includes('admin'));
     } catch (err) {
-      console.error('[useAuth] user_roles threw:', err);
+      console.error('[useAuth] user_roles fetch threw:', err);
       setIsAdmin(false);
       setIsTeamMember(false);
     }
