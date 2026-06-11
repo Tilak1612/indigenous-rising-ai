@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import {
+  PlusCircle, ArrowRight, Bell, BarChart3, CheckCircle2, ClipboardCheck,
+  FileText, Download, Menu, HandHeart, Leaf, Lock, TrendingUp, MapPin,
+  MinusCircle, Pencil, PlayCircle, Rocket, ShieldCheck, Store, GraduationCap,
+  Sparkles, Users, Wallet, type LucideIcon,
+} from 'lucide-react';
 import './landing-v2.css';
 
 /**
@@ -9,7 +15,39 @@ import './landing-v2.css';
  * Lives at /landing-v2 (non-destructive; the live homepage at / is unchanged).
  */
 
-// iconify-icon is a custom element; render via createElement to avoid JSX typing churn.
+// Map the prototype's solar:* icon names to bundled lucide-react components.
+// Bundled into the build (no CDN) so icons always render — the original iconify
+// web component fetched icon data from code.iconify.design at runtime and showed
+// empty boxes whenever that CDN was slow or returned 503.
+const ICONS: Record<string, LucideIcon> = {
+  'solar:add-circle-linear': PlusCircle,
+  'solar:arrow-right-linear': ArrowRight,
+  'solar:bell-bing-linear': Bell,
+  'solar:chart-2-linear': BarChart3,
+  'solar:check-circle-bold': CheckCircle2,
+  'solar:clipboard-check-linear': ClipboardCheck,
+  'solar:document-text-linear': FileText,
+  'solar:export-linear': Download,
+  'solar:hamburger-menu-linear': Menu,
+  'solar:hand-heart-linear': HandHeart,
+  'solar:leaf-linear': Leaf,
+  'solar:lock-keyhole-bold': Lock,
+  'solar:lock-keyhole-minimalistic-linear': Lock,
+  'solar:map-arrow-up-linear': TrendingUp,
+  'solar:map-point-bold': MapPin,
+  'solar:map-point-linear': MapPin,
+  'solar:minus-circle-linear': MinusCircle,
+  'solar:pen-2-linear': Pencil,
+  'solar:play-circle-linear': PlayCircle,
+  'solar:rocket-2-linear': Rocket,
+  'solar:shield-keyhole-linear': ShieldCheck,
+  'solar:shop-linear': Store,
+  'solar:square-academic-cap-linear': GraduationCap,
+  'solar:stars-minimalistic-linear': Sparkles,
+  'solar:users-group-rounded-linear': Users,
+  'solar:wallet-money-linear': Wallet,
+};
+
 const Icon = ({
   icon,
   size = 20,
@@ -20,14 +58,17 @@ const Icon = ({
   size?: number;
   style?: React.CSSProperties;
   className?: string;
-}) =>
-  React.createElement('iconify-icon', {
-    icon,
-    width: size,
-    height: size,
-    style: { display: 'inline-flex', ...style },
-    className,
-  });
+}) => {
+  const Cmp = ICONS[icon] ?? Sparkles;
+  return (
+    <Cmp
+      size={size}
+      className={className}
+      style={{ display: 'inline-flex', flexShrink: 0, ...style }}
+      aria-hidden="true"
+    />
+  );
+};
 
 type Tab = 'funding' | 'plan' | 'training' | 'growth';
 
@@ -201,7 +242,6 @@ const LandingV2 = () => {
           href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" async />
         <title>Indigenous Rising AI — The AI platform for Indigenous business growth</title>
       </Helmet>
 
