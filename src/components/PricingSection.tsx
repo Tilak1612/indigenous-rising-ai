@@ -4,12 +4,28 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Clock, Sparkles, Crown, Building, ArrowRight, Briefcase } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
+import { readStoredSession } from '@/lib/auth-storage';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 type Feature = { text: string; available: boolean };
+
+// ── Stripe price IDs (source of truth for paid-plan checkout) ───────────────
+// Keyed by plan.name; one price per billing cycle. Fill each value with the
+// "price_…" ID from the Stripe dashboard (Products → the price → API ID), in
+// the SAME mode (test/live) as STRIPE_SECRET_KEY in Supabase. Leave '' for any
+// price you haven't created yet — the card shows "Coming soon" and the button
+// no-ops gracefully instead of erroring or charging the wrong amount.
+//   Ogichidaakwe (Growth):     monthly $49/mo CAD   · annual $470/yr CAD
+//   Bimaadiziwin (Professional): monthly $149/mo CAD · annual $1,430/yr CAD
+const STRIPE_PRICES: Record<string, { monthly: string; annual: string }> = {
+  Ogichidaakwe: { monthly: 'price_1SSRqgS23MQcIdnrGDAHGF4C', annual: '' },
+  Bimaadiziwin: { monthly: '', annual: '' },
+};
+
+const PAID_PLAN_NAMES = Object.keys(STRIPE_PRICES);
 
 const PricingSection = () => {
   const { user } = useAuth();
@@ -27,7 +43,7 @@ const PricingSection = () => {
     navigate('/pricing#addons');
   };
 
-  const handleCheckout = async (planName: string, priceId?: string) => {
+  const handleCheckout = async (planName: string) => {
     // Free plan
     if (planName === "Maadaadiziwin") {
       if (!user) {
@@ -39,12 +55,6 @@ const PricingSection = () => {
       return;
     }
 
-    // Bimaadiziwin → waitlist (features not yet available)
-    if (planName === "Bimaadiziwin") {
-      toast.success("We'll notify you when Bimaadiziwin launches. Thank you for your interest!");
-      return;
-    }
-
     // Enterprise → contact sales
     if (planName === "Gimishoomis") {
       navigate('/contact');
@@ -52,24 +62,31 @@ const PricingSection = () => {
       return;
     }
 
-    // Paid plans
+    // Paid plans (Ogichidaakwe / Bimaadiziwin) — resolve the price for the
+    // currently selected billing cycle from the central STRIPE_PRICES map.
+    const priceId = STRIPE_PRICES[planName]?.[billingCycle];
+
+    // No price configured yet for this plan + cycle → graceful "coming soon".
+    // (Prevents charging the wrong amount when a cycle's price isn't wired.)
+    if (!priceId) {
+      toast.info("This plan is launching soon — we'll let you know when it's ready.");
+      return;
+    }
+
     if (!user) {
       toast.error("Please sign in to subscribe");
       navigate('/auth');
       return;
     }
 
-    if (!priceId) {
-      toast.error("Price information not available");
-      return;
-    }
-
     setLoadingPlan(planName);
 
     try {
-      const { data: sessionData, error } = await supabase.auth.getSession();
-
-      if (error || !sessionData.session) {
+      // Read the access token straight from localStorage rather than
+      // supabase.auth.getSession() — on this project (supabase-js@2.80.0)
+      // getSession() can hang forever, which would freeze the checkout button.
+      const stored = readStoredSession();
+      if (!stored?.access_token) {
         toast.error("Authentication error. Please sign in again.");
         navigate('/auth');
         return;
@@ -78,7 +95,7 @@ const PricingSection = () => {
       const { data, error: checkoutError } = await supabase.functions.invoke('create-checkout', {
         body: { priceId },
         headers: {
-          Authorization: `Bearer ${sessionData.session.access_token}`,
+          Authorization: `Bearer ${stored.access_token}`,
         },
       });
 
@@ -292,6 +309,10 @@ const PricingSection = () => {
               ? plan.annualPrice
               : plan.monthlyPrice;
 
+            // A paid plan with no Stripe price wired for the selected cycle is
+            // "coming soon" — the card/button reflect that honestly.
+            const isComingSoon = PAID_PLAN_NAMES.includes(plan.name) && !STRIPE_PRICES[plan.name]?.[billingCycle];
+
             return (
               <Card
                 key={plan.name}
@@ -342,7 +363,7 @@ const PricingSection = () => {
                         ${plan.annualTotal} billed annually
                       </p>
                     )}
-                    {plan.name === 'Bimaadiziwin' && (
+                    {isComingSoon && (
                       <Badge variant="outline" className="mt-2 text-xs border-primary/40 text-primary">
                         Coming Soon
                       </Badge>
@@ -369,10 +390,10 @@ const PricingSection = () => {
                   <ShinyButton
                     className="w-full group/btn"
                     size="lg"
-                    onClick={() => handleCheckout(plan.name, plan.priceId)}
+                    onClick={() => handleCheckout(plan.name)}
                     disabled={loadingPlan === plan.name}
                   >
-                    {loadingPlan === plan.name ? "Loading..." : plan.ctaText}
+                    {loadingPlan === plan.name ? "Loading..." : isComingSoon ? "Coming Soon" : plan.ctaText}
                     <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
                   </ShinyButton>
                 </CardFooter>
