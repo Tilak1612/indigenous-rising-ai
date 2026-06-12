@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Menu, X, Users, TrendingUp, Target, Award, BookOpen, LogIn, LogOut, ArrowUpRight, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import logoFull from '@/assets/logo-full.png';
 import { useAuth } from '@/hooks/useAuth';
 
 const Navigation = () => {
@@ -32,18 +31,14 @@ const Navigation = () => {
     <header className="absolute inset-x-0 top-0 z-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-5">
-          {/* Logo — left */}
-          <Link to="/" className="shrink-0 text-lg font-semibold text-white tracking-tight font-geist">
-            <img
-              src={logoFull}
-              alt="Indigenous Rising AI - Business Support Platform for Indigenous Entrepreneurs"
-              className="h-10 w-auto"
-              width={120}
-              height={40}
-              loading="eager"
-              {...{ fetchpriority: 'high' }}
-              decoding="async"
-            />
+          {/* Logo — IR monogram + wordmark (matches the homepage brand) */}
+          <Link to="/" className="shrink-0 flex items-center gap-2.5" aria-label="Indigenous Rising AI — home">
+            <span className="flex items-center justify-center w-8 h-8 rounded-[9px] bg-[#FAF6EF] text-primary font-display font-semibold text-lg leading-none">
+              IR
+            </span>
+            <span className="font-display font-semibold text-[19px] text-white tracking-tight">
+              Indigenous Rising
+            </span>
           </Link>
 
           {/* Desktop Navigation — centered */}
