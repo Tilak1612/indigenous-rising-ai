@@ -320,7 +320,7 @@ const LandingV2 = () => {
         <section id="top" style={{ position: 'relative', overflow: 'hidden' }}>
           <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />
           <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'radial-gradient(120% 80% at 50% 0%, rgba(250,246,239,.2) 0%, rgba(250,246,239,.7) 55%, #FAF6EF 100%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'relative', zIndex: 2, maxWidth: 1180, margin: '0 auto', padding: '88px 24px 0', textAlign: 'center' }}>
+          <div style={{ position: 'relative', zIndex: 2, maxWidth: 1180, margin: '0 auto', padding: 'clamp(52px,9vw,88px) 24px 0', textAlign: 'center' }}>
             <div data-reveal style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: 'rgba(62,107,79,.1)', border: '1px solid rgba(62,107,79,.22)', color: '#3E6B4F', fontSize: 13, fontWeight: 600, padding: '7px 15px', borderRadius: 100, marginBottom: 30 }}>
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#3E6B4F' }} />
               Built around Indigenous data sovereignty

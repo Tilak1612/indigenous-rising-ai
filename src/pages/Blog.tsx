@@ -193,11 +193,12 @@ const Blog = () => {
             {filteredPosts.map((post, idx) => (
               // Skip featured post in grid if not filtering
               (!searchQuery && !selectedCategory && idx === 0) ? null : (
-                <Link key={post.id} to={`/blog/${post.slug}`} className="group">
+                <article key={post.id}>
+                <Link to={`/blog/${post.slug}`} className="group">
                   <Card className="h-full hover:shadow-lg transition-all hover:border-primary/30 overflow-hidden">
                     <div className="aspect-video overflow-hidden">
-                      <img 
-                        src={getPostImage(post.id)} 
+                      <img
+                        src={getPostImage(post.id)}
                         alt={post.title}
                         className="w-full h-full object-cover transition-transform group-hover:scale-105"
                         loading="lazy"
@@ -233,6 +234,7 @@ const Blog = () => {
                     </CardContent>
                   </Card>
                 </Link>
+                </article>
               )
             ))}
           </div>
