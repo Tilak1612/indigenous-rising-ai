@@ -203,7 +203,7 @@ const NewsletterSignup = () => {
           
           <div className="space-y-1">
             <p className="text-xs text-muted-foreground text-center">
-              🔒 PIPEDA Compliant • Data stored in Canada
+              🔒 PIPEDA-aligned • Data stored in Canada
             </p>
             <p className="text-xs text-muted-foreground text-center">
               Questions? Contact our Privacy Officer at{' '}

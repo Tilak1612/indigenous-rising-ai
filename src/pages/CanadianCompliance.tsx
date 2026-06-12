@@ -9,15 +9,15 @@ const CanadianCompliance = () => {
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>Canadian Compliance - Indigenous Rising AI</title>
-        <meta name="description" content="Indigenous Rising AI adheres to all Canadian federal and provincial regulations. PIPEDA, CASL, AIA, and data sovereignty compliance for Indigenous businesses." />
+        <title>Canadian Regulatory Alignment - Indigenous Rising AI</title>
+        <meta name="description" content="How Indigenous Rising AI is built in alignment with Canadian federal and provincial regulations — PIPEDA-aligned, CASL-aligned, AODA-aligned, and designed around OCAP® data sovereignty. Not third-party certifications." />
         <meta name="robots" content="index, follow" />
         
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.indigenousrising.ai/compliance" />
-        <meta property="og:title" content="Canadian Compliance Framework - Indigenous Rising AI" />
-        <meta property="og:description" content="PIPEDA, CASL, and AIA compliant platform for Indigenous entrepreneurs in Canada." />
+        <meta property="og:title" content="Canadian Regulatory Alignment - Indigenous Rising AI" />
+        <meta property="og:description" content="PIPEDA-aligned, CASL-aligned, and AODA-aligned platform for Indigenous entrepreneurs in Canada — not third-party certifications." />
         <meta property="og:image" content="https://www.indigenousrising.ai/og-compliance.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -25,8 +25,8 @@ const CanadianCompliance = () => {
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content="https://www.indigenousrising.ai/compliance" />
-        <meta name="twitter:title" content="Canadian Compliance Framework" />
-        <meta name="twitter:description" content="PIPEDA, CASL, and AIA compliant for Indigenous businesses." />
+        <meta name="twitter:title" content="Canadian Regulatory Alignment" />
+        <meta name="twitter:description" content="PIPEDA-aligned, CASL-aligned, and AODA-aligned for Indigenous businesses." />
         <meta name="twitter:image" content="https://www.indigenousrising.ai/og-compliance.jpg" />
         
         {/* Canonical URL */}
@@ -41,19 +41,20 @@ const CanadianCompliance = () => {
             <div className="text-center mb-12 animate-fade-in-up">
               <div className="inline-flex items-center space-x-2 bg-primary/10 border border-primary/20 rounded-full px-4 py-2 mb-6">
                 <Shield className="w-5 h-5 text-primary" />
-                <span className="text-sm font-bold text-primary">🍁 Canadian Compliance</span>
+                <span className="text-sm font-bold text-primary">🍁 Built for Canada</span>
               </div>
-              
+
               <h1 className="font-display text-4xl md:text-5xl font-black text-foreground mb-6">
                 Canadian Regulatory
                 <span className="block gradient-earth bg-clip-text text-transparent">
-                  Compliance Framework
+                  Alignment Framework
                 </span>
               </h1>
-              
+
               <p className="text-lg text-muted-foreground">
-                Indigenous Rising AI adheres to all Canadian federal and provincial regulations 
-                governing data privacy, accessibility, and Indigenous rights.
+                Indigenous Rising AI is built in alignment with Canadian federal and provincial
+                regulations governing data privacy, accessibility, and respect for Indigenous rights.
+                These describe how we build and operate; they are not third-party certifications.
               </p>
               <p className="text-sm text-muted-foreground mt-4">
                 Last updated: {new Date().toLocaleDateString('en-CA')}
@@ -115,13 +116,14 @@ const CanadianCompliance = () => {
                   </div>
                   <div>
                     <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-                      AODA Compliance
+                      AODA-aligned
                     </h2>
                     <p className="text-sm text-secondary font-semibold mb-2">
                       Accessibility for Ontarians with Disabilities Act
                     </p>
                     <p className="text-muted-foreground">
-                      Our platform meets WCAG 2.1 Level AA standards and Ontario's accessibility requirements.
+                      We build toward WCAG 2.1 Level AA and Ontario's accessibility requirements. This
+                      describes how we operate; it is not a third-party certification.
                     </p>
                   </div>
                 </div>
@@ -223,7 +225,7 @@ const CanadianCompliance = () => {
                       'Multi-factor authentication for sensitive operations',
                       'Automated backup systems with disaster recovery',
                       'Role-based access controls and audit logging',
-                      'Compliance with provincial privacy laws',
+                      'Built in alignment with provincial privacy laws',
                       'No data transfer to foreign jurisdictions without consent',
                       'Annual third-party security assessments'
                     ].map((item, idx) => (
@@ -306,10 +308,10 @@ const CanadianCompliance = () => {
               {/* Contact & Reporting */}
               <Card className="p-8 bg-muted/30">
                 <h2 className="font-display text-xl font-bold text-foreground mb-4">
-                  Questions or Compliance Concerns?
+                  Questions about privacy or alignment?
                 </h2>
                 <p className="text-muted-foreground mb-6">
-                  Our Privacy Officer is available to address any questions or concerns about our compliance practices.
+                  Our Privacy Officer is available to address any questions or concerns about our privacy and data practices.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button variant="hero" onClick={() => window.open('mailto:privacy@indigenousrising.ai')}>
