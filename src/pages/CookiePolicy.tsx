@@ -132,7 +132,7 @@ const CookiePolicy = () => {
   const getCategoryColor = (type: CookieInfo['type']) => {
     switch (type) {
       case 'Necessary':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+        return 'bg-success/10 text-success dark:bg-success/20 dark:text-success';
       case 'Functional':
         return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
       case 'Analytics':
@@ -202,9 +202,9 @@ const CookiePolicy = () => {
               Cookie Categories
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg border border-green-200 dark:border-green-800">
+              <div className="p-4 bg-success/10 dark:bg-success/20 rounded-lg border border-success/30 dark:border-success/30">
                 <div className="flex items-center gap-2 mb-2">
-                  <Shield className="h-5 w-5 text-green-600" />
+                  <Shield className="h-5 w-5 text-success" />
                   <h3 className="font-semibold text-foreground">Strictly Necessary</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -257,7 +257,7 @@ const CookiePolicy = () => {
             {/* Necessary Cookies */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Shield className="h-5 w-5 text-green-600" />
+                <Shield className="h-5 w-5 text-success" />
                 Strictly Necessary Cookies
               </h3>
               <div className="overflow-x-auto">

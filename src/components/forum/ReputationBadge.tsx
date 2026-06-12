@@ -44,7 +44,7 @@ const badgeConfig: Record<BadgeType, {
   funding_expert: {
     label: 'Funding Expert',
     icon: TrendingUp,
-    className: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
+    className: 'bg-success/10 text-success border-success/20',
     description: 'Expertise in grants and funding applications',
   },
   moderator: {

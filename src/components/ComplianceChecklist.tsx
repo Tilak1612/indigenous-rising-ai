@@ -38,7 +38,7 @@ const ComplianceChecklist: React.FC = () => {
               <p className="font-medium">{c.label}</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded-full ${status[c.id] === 'green' ? 'bg-emerald-500' : status[c.id] === 'yellow' ? 'bg-yellow-400' : 'bg-red-500'}`} />
+              <div className={`w-3 h-3 rounded-full ${status[c.id] === 'green' ? 'bg-success' : status[c.id] === 'yellow' ? 'bg-yellow-400' : 'bg-red-500'}`} />
               <button onClick={() => cycle(c.id)} className="px-2 py-1 bg-white/6 rounded-md text-white/90 text-sm">Cycle status</button>
             </div>
           </div>

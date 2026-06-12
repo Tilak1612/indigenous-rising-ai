@@ -33,7 +33,7 @@ const ACTIVITIES: ActivityItem[] = [];
 
 const activityConfig = {
   plan: { icon: FileText, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-  forum: { icon: MessageCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
+  forum: { icon: MessageCircle, color: 'text-success', bg: 'bg-success/10' },
   compliance: { icon: Shield, color: 'text-purple-500', bg: 'bg-purple-500/10' },
   funding: { icon: DollarSign, color: 'text-amber-500', bg: 'bg-amber-500/10' },
   learning: { icon: BookOpen, color: 'text-pink-500', bg: 'bg-pink-500/10' },

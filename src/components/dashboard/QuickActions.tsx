@@ -35,7 +35,7 @@ const actions: QuickAction[] = [
     description: 'Discover matching opportunities',
     icon: Target,
     href: '/dashboard/funding',
-    color: 'bg-green-500/10 text-green-600',
+    color: 'bg-success/10 text-success',
   },
   {
     title: 'Log Impact',

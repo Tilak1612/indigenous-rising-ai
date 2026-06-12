@@ -67,7 +67,7 @@ const teamMembers: TeamMember[] = [
 const roleColors: Record<string, string> = {
   owner: 'bg-amber-500',
   admin: 'bg-blue-500',
-  member: 'bg-green-500',
+  member: 'bg-success',
   viewer: 'bg-gray-500',
 };
 
@@ -107,8 +107,8 @@ export default function Team() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center">
-                <Users className="h-6 w-6 text-green-500" />
+              <div className="h-12 w-12 rounded-lg bg-success/10 flex items-center justify-center">
+                <Users className="h-6 w-6 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{teamMembers.filter(m => m.status === 'active').length}</p>

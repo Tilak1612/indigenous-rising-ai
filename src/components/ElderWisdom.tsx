@@ -75,7 +75,7 @@ const ElderWisdom = () => {
   return (
     <section className="py-20 relative overflow-hidden">
       {/* Background with beadwork-inspired pattern */}
-      <div className="absolute inset-0 bg-emerald-800" />
+      <div className="absolute inset-0 bg-success" />
       <div className="absolute inset-0 pattern-geometric opacity-10" />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -161,7 +161,7 @@ const ElderWisdom = () => {
               asChild
               variant="outline"
               size="lg"
-              className="border-2 border-white text-white hover:bg-white hover:text-emerald-800"
+              className="border-2 border-white text-white hover:bg-white hover:text-success"
             >
               <Link to="/contact">
                 Access Elder Knowledge Sessions

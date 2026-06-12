@@ -87,7 +87,7 @@ const Unsubscribe = () => {
 
             {status === 'success' && (
               <div className="text-center space-y-4">
-                <CheckCircle className="w-16 h-16 text-green-600 mx-auto" />
+                <CheckCircle className="w-16 h-16 text-success mx-auto" />
                 <h1 className="font-display text-2xl font-bold text-foreground">
                   Unsubscribed
                 </h1>

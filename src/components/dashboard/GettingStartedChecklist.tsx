@@ -110,7 +110,7 @@ export default function GettingStartedChecklist() {
   return (
     <Card className={cn(
       "relative overflow-hidden",
-      allComplete && "bg-gradient-to-br from-primary/10 via-background to-green-500/10 border-primary/30"
+      allComplete && "bg-gradient-to-br from-primary/10 via-background to-success/10 border-primary/30"
     )}>
       <button 
         onClick={handleDismiss}
@@ -125,7 +125,7 @@ export default function GettingStartedChecklist() {
           <Rocket className="h-5 w-5 text-primary" />
           <CardTitle className="text-lg">Getting Started</CardTitle>
           {allComplete && (
-            <Badge variant="default" className="bg-green-500">Complete!</Badge>
+            <Badge variant="default" className="bg-success">Complete!</Badge>
           )}
         </div>
         <CardDescription>

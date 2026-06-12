@@ -40,7 +40,7 @@ const FundingProfile: React.FC = () => {
       <input type="number" value={profile.requestedAmount} onChange={(e) => setProfile({ ...profile, requestedAmount: Number(e.target.value) })} className="w-full mt-1 bg-transparent border border-white/10 rounded-md p-2" />
 
       <div className="flex items-center gap-2">
-        <button className="px-3 py-1 bg-emerald-500 rounded-md text-white text-sm" onClick={() => alert('Profile saved')}>Save profile</button>
+        <button className="px-3 py-1 bg-success rounded-md text-white text-sm" onClick={() => alert('Profile saved')}>Save profile</button>
         <button className="px-3 py-1 bg-white/6 rounded-md text-white/90 text-sm" onClick={() => { localStorage.removeItem(STORAGE_KEY); setProfile({ name: '', province: 'All', industry: 'All', requestedAmount: 10000 }); }}>Reset</button>
       </div>
     </div>

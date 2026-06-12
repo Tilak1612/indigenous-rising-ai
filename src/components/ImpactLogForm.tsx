@@ -34,7 +34,7 @@ const ImpactLogForm: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <button onClick={submit} className="px-3 py-2 bg-emerald-500 rounded-md text-white">Log this month</button>
+        <button onClick={submit} className="px-3 py-2 bg-success rounded-md text-white">Log this month</button>
         <button onClick={() => alert('Upload photos feature placeholder')} className="px-3 py-2 bg-white/6 rounded-md text-white/90">Add photos</button>
       </div>
     </section>

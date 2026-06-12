@@ -69,7 +69,7 @@ const tickets: Ticket[] = [
 const statusColors = {
   open: 'bg-blue-500',
   in_progress: 'bg-amber-500',
-  resolved: 'bg-green-500',
+  resolved: 'bg-success',
   closed: 'bg-gray-500',
 };
 
@@ -180,8 +180,8 @@ export default function Support() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-green-500" />
+              <div className="h-12 w-12 rounded-lg bg-success/10 flex items-center justify-center">
+                <CheckCircle2 className="h-6 w-6 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{tickets.filter(t => t.status === 'resolved').length}</p>

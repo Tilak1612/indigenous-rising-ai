@@ -18,7 +18,7 @@ const PlanTemplates: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <button className="px-3 py-1 bg-emerald-500 rounded-md text-white text-sm">Use template</button>
+            <button className="px-3 py-1 bg-success rounded-md text-white text-sm">Use template</button>
             <button className="px-3 py-1 bg-white/6 rounded-md text-white/90 text-sm">Preview</button>
           </div>
         </div>

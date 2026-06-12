@@ -10,12 +10,12 @@ const CourseCard: React.FC<{ course: { id: string; title: string; progress: numb
 
       <div className="w-40">
         <div className="bg-white/10 h-2 rounded-full overflow-hidden">
-          <div className="h-2 bg-emerald-500" style={{ width: `${course.progress}%` }} />
+          <div className="h-2 bg-success" style={{ width: `${course.progress}%` }} />
         </div>
 
         <div className="mt-3 flex items-center gap-2 justify-end">
           <button
-            className="px-3 py-1 bg-emerald-500 rounded-md text-white text-sm"
+            className="px-3 py-1 bg-success rounded-md text-white text-sm"
             onClick={() => {
               try { import('@/lib/analytics').then((m) => m.trackEvent('training_continue', { courseId: course.id })); } catch {}
             }}
