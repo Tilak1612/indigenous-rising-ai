@@ -26,7 +26,28 @@
     <meta name="language" content="English" />
     <meta name="theme-color" content="#059669" />
 
-    
+    <!-- Open Graph / Facebook (static defaults so non-JS social scrapers get a
+         valid preview; react-helmet/MetaTags refines these per route for crawlers
+         that execute JS). No static canonical here on purpose — this index.html is
+         served for every SPA route, so a hard-coded canonical would mis-canonicalize
+         all pages to the homepage. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Indigenous Rising AI" />
+    <meta property="og:url" content="https://www.indigenousrising.ai/" />
+    <meta property="og:title" content="Indigenous Rising AI — The AI platform for Indigenous business growth" />
+    <meta property="og:description" content="Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community." />
+    <meta property="og:image" content="https://www.indigenousrising.ai/og-home.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_CA" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@indigenous_ai" />
+    <meta name="twitter:title" content="Indigenous Rising AI — The AI platform for Indigenous business growth" />
+    <meta name="twitter:description" content="Find funding, build your business plan, access training, and manage your growth — all in one place." />
+    <meta name="twitter:image" content="https://www.indigenousrising.ai/og-home.jpg" />
+
     <!-- Organization JSON-LD -->
     <script type="application/ld+json">
     {
