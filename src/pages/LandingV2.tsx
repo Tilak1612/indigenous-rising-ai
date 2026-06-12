@@ -7,6 +7,7 @@ import {
   MinusCircle, Pencil, PlayCircle, Rocket, ShieldCheck, Store, GraduationCap,
   Sparkles, Users, Wallet, type LucideIcon,
 } from 'lucide-react';
+import MetaTags from '@/components/MetaTags';
 import './landing-v2.css';
 
 /**
@@ -267,8 +268,16 @@ const LandingV2 = () => {
           href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
-        <title>Indigenous Rising AI — The AI platform for Indigenous business growth</title>
       </Helmet>
+
+      {/* Homepage SEO: title, description, OpenGraph/Twitter, canonical, JSON-LD. */}
+      <MetaTags
+        isHomePage
+        title="Indigenous Rising AI — The AI platform for Indigenous business growth"
+        description="Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community."
+        faqs={FAQS.map((f) => ({ question: f.q, answer: f.a }))}
+      />
+
 
       <div className="irv2-root" ref={rootRef}>
         {/* ===== NAV ===== */}
