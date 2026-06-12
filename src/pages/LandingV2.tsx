@@ -663,7 +663,7 @@ const LandingV2 = () => {
               <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(30px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-.02em', color: '#2C1E12', margin: '14px 0 0' }}>Honest pricing. Start free.</h2>
               <p style={{ fontSize: 18, lineHeight: 1.65, color: '#6B5645', margin: '18px auto 0' }}>Nobody pays for a feature before it ships. Planned features are marked, never billed.</p>
             </div>
-            <div className="ir-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 22, marginTop: 50, alignItems: 'stretch' }}>
+            <div className="ir-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20, marginTop: 50, alignItems: 'stretch' }}>
               {/* Free */}
               <div data-reveal style={{ background: '#FFFDF9', border: '1px solid rgba(74,56,38,.12)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column' }}>
                 <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#2C1E12', margin: 0 }}>Free</h3>
@@ -689,6 +689,19 @@ const LandingV2 = () => {
                   <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#E7D8C5', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#8FBF9C', flexShrink: 0 }} /> Growth dashboard & goal tracking</li>
                   <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#B7A48F', lineHeight: 1.45 }}><span style={{ color: '#D9B45A', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Auto-filled application drafts <em style={{ color: '#D9B45A', fontStyle: 'normal' }}>· coming soon</em></li>
                   <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#B7A48F', lineHeight: 1.45 }}><span style={{ color: '#D9B45A', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Completion certificates <em style={{ color: '#D9B45A', fontStyle: 'normal' }}>· coming soon</em></li>
+                </ul>
+              </div>
+              {/* Professional */}
+              <div data-reveal style={{ background: '#FFFDF9', border: '1px solid rgba(74,56,38,.12)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#2C1E12', margin: 0 }}>Professional</h3>
+                <p style={{ fontSize: 14, color: '#8A7560', margin: '6px 0 18px' }}>For established businesses.</p>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#2C1E12' }}>$149</span><span style={{ fontSize: 15, color: '#8A7560' }}>/ month</span></div>
+                <LinkTo to="/pricing" className="irv2-hov-nations-btn" style={{ textAlign: 'center', background: '#FFFDF9', color: '#2C1E12', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24, border: '1px solid rgba(74,56,38,.2)' }}>Join the waitlist</LinkTo>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
+                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#4A3826', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#3E6B4F', flexShrink: 0 }} /> Everything in Growth</li>
+                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#8A7560', lineHeight: 1.45 }}><span style={{ color: '#A87A1E', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Multi-entity support <em style={{ color: '#A87A1E', fontStyle: 'normal' }}>· coming soon</em></li>
+                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#8A7560', lineHeight: 1.45 }}><span style={{ color: '#A87A1E', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Quarterly business review <em style={{ color: '#A87A1E', fontStyle: 'normal' }}>· coming soon</em></li>
+                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#8A7560', lineHeight: 1.45 }}><span style={{ color: '#A87A1E', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> IFI connection engine <em style={{ color: '#A87A1E', fontStyle: 'normal' }}>· coming soon</em></li>
                 </ul>
               </div>
               {/* Nations */}
