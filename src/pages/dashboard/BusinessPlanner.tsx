@@ -54,7 +54,7 @@ interface Version {
 
 // Mock active collaborators
 const activeCollaborators = [
-  { name: 'Sarah C.', color: 'bg-blue-500' },
+  { name: 'Sarah C.', color: 'bg-primary' },
 ];
 
 export default function BusinessPlannerPage() {

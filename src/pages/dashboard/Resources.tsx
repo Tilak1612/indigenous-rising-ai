@@ -123,10 +123,10 @@ const categoryIcons = {
 };
 
 const categoryColors = {
-  guide: 'bg-blue-500/10 text-blue-600',
+  guide: 'bg-primary/10 text-primary',
   template: 'bg-success/10 text-success',
-  video: 'bg-purple-500/10 text-purple-600',
-  partner: 'bg-amber-500/10 text-amber-600',
+  video: 'bg-primary/10 text-primary',
+  partner: 'bg-warning/10 text-warning',
 };
 
 const regions = ['All Regions', 'National', 'Ontario', 'British Columbia', 'Alberta', 'Quebec', 'Manitoba', 'Saskatchewan'];
@@ -312,7 +312,7 @@ export default function ResourcesPage() {
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-1">
                                 <Badge variant="secondary">{resource.type}</Badge>
-                                <Badge variant="outline" className="text-amber-500">
+                                <Badge variant="outline" className="text-warning">
                                   <Star className="h-3 w-3 mr-1 fill-current" />
                                   Featured
                                 </Badge>
@@ -322,7 +322,7 @@ export default function ResourcesPage() {
                               <div className="flex items-center gap-4 mt-3">
                                 {resource.rating > 0 && (
                                   <span className="text-sm flex items-center gap-1">
-                                    <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+                                    <Star className="h-4 w-4 text-warning fill-warning" />
                                     {resource.rating}
                                   </span>
                                 )}
@@ -338,7 +338,7 @@ export default function ResourcesPage() {
                                     variant="ghost"
                                     onClick={() => toggleFavorite(resource.id)}
                                   >
-                                    <Heart className={cn("h-4 w-4", isFavorite && "fill-red-500 text-red-500")} />
+                                    <Heart className={cn("h-4 w-4", isFavorite && "fill-destructive text-destructive")} />
                                   </Button>
                                   <Button 
                                     size="sm" 
@@ -382,7 +382,7 @@ export default function ResourcesPage() {
                           <div className="flex items-center gap-3 mt-3">
                             {resource.rating > 0 && (
                               <span className="text-xs flex items-center gap-1">
-                                <Star className="h-3 w-3 text-amber-500 fill-amber-500" />
+                                <Star className="h-3 w-3 text-warning fill-warning" />
                                 {resource.rating}
                               </span>
                             )}
@@ -399,7 +399,7 @@ export default function ResourcesPage() {
                                 className="h-7 w-7 p-0"
                                 onClick={() => toggleFavorite(resource.id)}
                               >
-                                <Heart className={cn("h-3 w-3", isFavorite && "fill-red-500 text-red-500")} />
+                                <Heart className={cn("h-3 w-3", isFavorite && "fill-destructive text-destructive")} />
                               </Button>
                               <Button 
                                 size="sm" 

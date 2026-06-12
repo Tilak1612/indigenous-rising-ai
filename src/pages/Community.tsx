@@ -39,10 +39,10 @@ const CATEGORIES = ['All', 'Feedback', 'Funding Tips', 'Business Advice', 'Succe
 type Category = (typeof CATEGORIES)[number];
 
 const categoryColors: Record<string, string> = {
-  'Feedback': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-  'Funding Tips': 'bg-success/10 text-success dark:bg-success/20 dark:text-success',
-  'Business Advice': 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300',
-  'Success Stories': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+  'Feedback': 'bg-primary/10 text-primary',
+  'Funding Tips': 'bg-success/10 text-success',
+  'Business Advice': 'bg-warning/10 text-warning',
+  'Success Stories': 'bg-primary/10 text-primary',
 };
 
 const Community = () => {
@@ -304,7 +304,7 @@ const Community = () => {
                             <span className="font-medium">{post.display_name}</span>
                             <Badge
                               variant="secondary"
-                              className={categoryColors[post.category] || 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'}
+                              className={categoryColors[post.category] || 'bg-muted text-muted-foreground'}
                             >
                               {post.category}
                             </Badge>

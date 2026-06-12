@@ -47,7 +47,7 @@ const OCAP_DATA: Record<string, OCAPCategory> = {
     title: 'Ownership',
     description: 'Your community owns its cultural knowledge and data. This principle establishes that a community or group owns information collectively.',
     icon: FileText,
-    color: 'bg-blue-500/10 text-blue-600',
+    color: 'bg-primary/10 text-primary',
     benchmark: 85,
     requirements: [
       {
@@ -123,7 +123,7 @@ const OCAP_DATA: Record<string, OCAPCategory> = {
     title: 'Access',
     description: 'Your community decides who can access data and under what conditions. This ensures the community controls external access.',
     icon: Eye,
-    color: 'bg-purple-500/10 text-purple-600',
+    color: 'bg-primary/10 text-primary',
     benchmark: 58,
     requirements: [
       {
@@ -163,7 +163,7 @@ const OCAP_DATA: Record<string, OCAPCategory> = {
     title: 'Possession',
     description: 'Your community physically holds and protects data. This ensures data remains within community control.',
     icon: Database,
-    color: 'bg-amber-500/10 text-amber-600',
+    color: 'bg-warning/10 text-warning',
     benchmark: 65,
     requirements: [
       {
@@ -268,7 +268,7 @@ export default function OCAPRequirementModal({
                   <div className={cn(
                     "h-6 w-6 rounded-full flex items-center justify-center shrink-0 mt-0.5",
                     req.status === 'complete' ? "bg-success text-white" :
-                    req.status === 'in_progress' ? "bg-amber-500 text-white" :
+                    req.status === 'in_progress' ? "bg-warning text-white" :
                     "bg-muted"
                   )}>
                     {req.status === 'complete' ? (
@@ -284,7 +284,7 @@ export default function OCAPRequirementModal({
                         variant={req.status === 'complete' ? 'default' : 'secondary'}
                         className={cn(
                           req.status === 'complete' && "bg-success",
-                          req.status === 'in_progress' && "bg-amber-500"
+                          req.status === 'in_progress' && "bg-warning"
                         )}
                       >
                         {req.status === 'complete' ? 'Complete' : 

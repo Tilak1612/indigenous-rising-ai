@@ -31,11 +31,11 @@ const TrackRequest = () => {
       case 'completed':
         return <CheckCircle className="w-6 h-6 text-success" />;
       case 'rejected':
-        return <XCircle className="w-6 h-6 text-red-600" />;
+        return <XCircle className="w-6 h-6 text-destructive" />;
       case 'in_progress':
-        return <Clock className="w-6 h-6 text-blue-600" />;
+        return <Clock className="w-6 h-6 text-primary" />;
       default:
-        return <AlertCircle className="w-6 h-6 text-yellow-600" />;
+        return <AlertCircle className="w-6 h-6 text-warning" />;
     }
   };
 
@@ -44,11 +44,11 @@ const TrackRequest = () => {
       case 'completed':
         return 'bg-success/10 text-success border-success/30';
       case 'rejected':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-destructive/10 text-destructive border-destructive/30';
       case 'in_progress':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-primary/10 text-primary border-primary/30';
       default:
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-warning/10 text-warning border-warning/30';
     }
   };
 

@@ -8,7 +8,7 @@ type Props = {
 
 const JourneyCard: React.FC<Props> = ({ stage, topActions, progress }) => {
   return (
-    <section className="bg-gradient-to-r from-indigo-600/30 to-success/20 p-6 rounded-lg">
+    <section className="bg-gradient-to-r from-primary/30 to-success/20 p-6 rounded-lg">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm text-white/80">Journey stage</p>

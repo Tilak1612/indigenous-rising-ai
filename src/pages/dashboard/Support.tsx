@@ -44,17 +44,17 @@ interface Ticket {
 }
 
 const statusColors: Record<TicketStatus, string> = {
-  open: 'bg-blue-500',
-  in_progress: 'bg-amber-500',
+  open: 'bg-primary',
+  in_progress: 'bg-warning',
   resolved: 'bg-success',
-  closed: 'bg-gray-500',
+  closed: 'bg-muted-foreground',
 };
 
 const priorityColors: Record<TicketPriority, string> = {
-  low: 'text-gray-500',
-  medium: 'text-blue-500',
-  high: 'text-amber-500',
-  urgent: 'text-red-500',
+  low: 'text-muted-foreground',
+  medium: 'text-primary',
+  high: 'text-warning',
+  urgent: 'text-destructive',
 };
 
 const shortId = (id: string) => `TKT-${id.slice(0, 8).toUpperCase()}`;
@@ -209,8 +209,8 @@ export default function Support() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[
             { icon: Headphones, iconWrap: 'bg-primary/10', iconColor: 'text-primary', value: counts.total, label: 'Total tickets' },
-            { icon: MessageSquare, iconWrap: 'bg-blue-500/10', iconColor: 'text-blue-500', value: counts.open, label: 'Open' },
-            { icon: Clock, iconWrap: 'bg-amber-500/10', iconColor: 'text-amber-500', value: counts.inProgress, label: 'In progress' },
+            { icon: MessageSquare, iconWrap: 'bg-primary/10', iconColor: 'text-primary', value: counts.open, label: 'Open' },
+            { icon: Clock, iconWrap: 'bg-warning/10', iconColor: 'text-warning', value: counts.inProgress, label: 'In progress' },
             { icon: CheckCircle2, iconWrap: 'bg-success/10', iconColor: 'text-success', value: counts.resolved, label: 'Resolved' },
           ].map((s) => {
             const Icon = s.icon;

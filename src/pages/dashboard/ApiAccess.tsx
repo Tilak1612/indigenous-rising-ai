@@ -83,8 +83,8 @@ export default function ApiAccess() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-12 w-12 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                <Code className="h-6 w-6 text-blue-500" />
+              <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Code className="h-6 w-6 text-primary" />
               </div>
               <div>
                 <p className="text-2xl font-bold">1,234</p>

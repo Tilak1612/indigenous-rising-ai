@@ -25,10 +25,10 @@ const SocialProof = () => {
                   index === 2 ? 'border-t border-neutral-200 pt-8 md:pt-0 md:border-t-0 md:border-l md:border-neutral-200 md:pl-8' : ''
                 }`}
               >
-                <div className="text-4xl sm:text-5xl font-geist font-medium text-primary tracking-tighter">
+                <div className="text-4xl sm:text-5xl font-medium text-primary tracking-tighter">
                   {stat.value}
                 </div>
-                <div className="mt-2 text-sm text-muted-foreground font-geist">
+                <div className="mt-2 text-sm text-muted-foreground">
                   {stat.label}
                 </div>
               </div>
