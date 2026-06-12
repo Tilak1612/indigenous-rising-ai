@@ -52,6 +52,7 @@ import {
   MessageSquare,
   Calendar,
   ListChecks,
+  Sparkles,
   Briefcase,
   FolderOpen,
 } from 'lucide-react';
@@ -84,6 +85,7 @@ const freeNavItems: NavItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: Home, tier: 'free' },
   { title: 'Funding Matches', href: '/dashboard/funding/matches', icon: Target, tier: 'free', badge: 'AI' },
   { title: 'Business Planner', href: '/dashboard/plan', icon: FileText, tier: 'free' },
+  { title: 'AI Assistant', href: '/dashboard/assistant', icon: Sparkles, tier: 'free', badge: 'AI' },
   { title: 'Tasks & Deadlines', href: '/dashboard/tasks', icon: ListChecks, tier: 'free' },
   { title: 'Resources', href: '/dashboard/resources', icon: BookOpen, tier: 'free' },
   { title: 'Documents', href: '/dashboard/documents', icon: FolderOpen, tier: 'free' },
