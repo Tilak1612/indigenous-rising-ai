@@ -14,6 +14,7 @@ Disallow: /signup
 Disallow: /profile
 Disallow: /test-subscription
 Disallow: /unsubscribe
+Disallow: /v1
 
 # Allow search engines to crawl public pages
 Allow: /privacy

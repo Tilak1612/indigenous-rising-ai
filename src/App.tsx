@@ -124,14 +124,9 @@ const App = () => (
                   </Suspense>
                 }
               />
-              <Route
-                path="/landing-v2"
-                element={
-                  <Suspense fallback={<PageSkeleton variant="landing" />}>
-                    <LandingV2 />
-                  </Suspense>
-                }
-              />
+              {/* /landing-v2 now serves the same content as the homepage —
+                  redirect it to / to avoid duplicate content. */}
+              <Route path="/landing-v2" element={<Navigate to="/" replace />} />
               <Route
                 path="/privacy"
                 element={
