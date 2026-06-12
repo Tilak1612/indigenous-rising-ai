@@ -1,226 +1,226 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Switch } from '@/components/ui/switch';
-import { Shield, Lock, Key, AlertTriangle, CheckCircle2, Clock, Globe, Smartphone } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import {
+  Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger,
+} from '@/components/ui/dialog';
+import { Shield, Lock, LogOut, Mail, Activity, Loader2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { readStoredSession } from '@/lib/auth-storage';
+import { toast } from 'sonner';
 
-interface SecuritySetting {
-  id: string;
-  title: string;
-  description: string;
-  enabled: boolean;
-  icon: React.ElementType;
-}
+// Security Center — honest and functional. No fabricated "security score",
+// fake 2FA toggles, or invented recovery codes / audit entries. Password change
+// and global sign-out go through the GoTrue auth endpoint via direct-fetch;
+// recent activity reads the real owner-scoped public.audit_logs table.
 
-const securitySettings: SecuritySetting[] = [
-  {
-    id: 'mfa',
-    title: 'Two-Factor Authentication',
-    description: 'Add an extra layer of security to your account',
-    enabled: true,
-    icon: Smartphone,
-  },
-  {
-    id: 'session',
-    title: 'Session Timeout',
-    description: 'Automatically log out after 30 minutes of inactivity',
-    enabled: true,
-    icon: Clock,
-  },
-  {
-    id: 'ip',
-    title: 'IP Allowlisting',
-    description: 'Restrict access to specific IP addresses',
-    enabled: false,
-    icon: Globe,
-  },
-  {
-    id: 'audit',
-    title: 'Audit Logging',
-    description: 'Track all account activities and changes',
-    enabled: true,
-    icon: Shield,
-  },
-];
+const REST = `${SUPABASE_URL}/rest/v1`;
+const AUTH = `${SUPABASE_URL}/auth/v1`;
+
+const authHeaders = (json = false): Record<string, string> => {
+  const token = readStoredSession()?.access_token ?? SUPABASE_ANON_KEY;
+  const h: Record<string, string> = { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` };
+  if (json) h['Content-Type'] = 'application/json';
+  return h;
+};
 
 interface AuditLog {
   id: string;
   action: string;
-  user: string;
-  timestamp: string;
-  ip: string;
-  status: 'success' | 'warning' | 'error';
+  entity_type: string | null;
+  created_at: string;
 }
 
-const auditLogs: AuditLog[] = [
-  {
-    id: '1',
-    action: 'Login successful',
-    user: 'sarah@company.com',
-    timestamp: '2024-01-20 14:32:00',
-    ip: '192.168.1.1',
-    status: 'success',
-  },
-  {
-    id: '2',
-    action: 'API key created',
-    user: 'michael@company.com',
-    timestamp: '2024-01-20 13:15:00',
-    ip: '192.168.1.2',
-    status: 'success',
-  },
-  {
-    id: '3',
-    action: 'Failed login attempt',
-    user: 'unknown@example.com',
-    timestamp: '2024-01-20 12:45:00',
-    ip: '45.33.22.11',
-    status: 'warning',
-  },
-  {
-    id: '4',
-    action: 'Permission changed',
-    user: 'sarah@company.com',
-    timestamp: '2024-01-20 11:00:00',
-    ip: '192.168.1.1',
-    status: 'success',
-  },
-];
-
-const statusIcons = {
-  success: CheckCircle2,
-  warning: AlertTriangle,
-  error: AlertTriangle,
-};
-
-const statusColors = {
-  success: 'text-success',
-  warning: 'text-amber-500',
-  error: 'text-red-500',
-};
+const fmt = (iso: string) =>
+  new Date(iso).toLocaleString('en-CA', { dateStyle: 'medium', timeStyle: 'short' });
 
 export default function Security() {
+  const { user } = useAuth();
+  const [logs, setLogs] = useState<AuditLog[]>([]);
+  const [loadingLogs, setLoadingLogs] = useState(true);
+
+  // password change
+  const [pwOpen, setPwOpen] = useState(false);
+  const [newPw, setNewPw] = useState('');
+  const [confirmPw, setConfirmPw] = useState('');
+  const [changing, setChanging] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+
+  const loadLogs = useCallback(async () => {
+    if (!user) return;
+    setLoadingLogs(true);
+    try {
+      const res = await fetch(
+        `${REST}/audit_logs?select=id,action,entity_type,created_at&user_id=eq.${user.id}&order=created_at.desc&limit=20`,
+        { headers: authHeaders() }
+      );
+      if (!res.ok) throw new Error('load failed');
+      setLogs((await res.json()) as AuditLog[]);
+    } catch {
+      // soft-fail; show empty state
+    } finally {
+      setLoadingLogs(false);
+    }
+  }, [user]);
+
+  useEffect(() => { loadLogs(); }, [loadLogs]);
+
+  const changePassword = async () => {
+    if (newPw.length < 8) {
+      toast.error('Password must be at least 8 characters');
+      return;
+    }
+    if (newPw !== confirmPw) {
+      toast.error('Passwords do not match');
+      return;
+    }
+    setChanging(true);
+    try {
+      // GoTrue: update the signed-in user's password (session is the auth).
+      const res = await fetch(`${AUTH}/user`, {
+        method: 'PUT',
+        headers: authHeaders(true),
+        body: JSON.stringify({ password: newPw }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.msg || body?.error_description || 'update failed');
+      }
+      setNewPw(''); setConfirmPw(''); setPwOpen(false);
+      toast.success('Password updated');
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Could not update password');
+    } finally {
+      setChanging(false);
+    }
+  };
+
+  const signOutEverywhere = async () => {
+    setSigningOut(true);
+    try {
+      await fetch(`${AUTH}/logout?scope=global`, { method: 'POST', headers: authHeaders() });
+      toast.success('Signed out of all sessions');
+      // clear local session and return to auth
+      const k = Object.keys(localStorage).find((x) => x.includes('auth-token'));
+      if (k) localStorage.removeItem(k);
+      window.location.href = '/auth';
+    } catch {
+      toast.error('Could not sign out of all sessions');
+      setSigningOut(false);
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Security Center</h1>
           <p className="text-muted-foreground mt-1">
-            Manage your account security and monitor activity
+            Manage your account security and review recent activity.
           </p>
         </div>
 
-        {/* Security Score */}
-        <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-full bg-primary/20 flex items-center justify-center">
-                  <Shield className="h-8 w-8 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">Security Score: 85%</h3>
-                  <p className="text-muted-foreground">Your account is well protected</p>
-                </div>
-              </div>
-              <Badge className="bg-success">Strong</Badge>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Security Settings */}
+        {/* Account security */}
         <Card>
           <CardHeader>
-            <CardTitle>Security Settings</CardTitle>
-            <CardDescription>
-              Configure your account security preferences
-            </CardDescription>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-primary" /> Account
+            </CardTitle>
+            <CardDescription>Your sign-in details and account-level actions.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {securitySettings.map(setting => (
-              <div key={setting.id} className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
-                    <setting.icon className="h-5 w-5 text-muted-foreground" />
+            <div className="flex items-center gap-3 text-sm">
+              <Mail className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Signed in as</span>
+              <span className="font-medium">{user?.email ?? '—'}</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Change password */}
+              <Dialog open={pwOpen} onOpenChange={setPwOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full gap-2">
+                    <Lock className="h-4 w-4" /> Change password
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Change password</DialogTitle>
+                    <DialogDescription>
+                      Choose a new password (at least 8 characters). You&apos;ll stay signed in on this device.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 pt-2">
+                    <div>
+                      <label className="text-sm font-medium" htmlFor="new-pw">New password</label>
+                      <Input id="new-pw" type="password" className="mt-1" value={newPw}
+                        onChange={(e) => setNewPw(e.target.value)} autoComplete="new-password" />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium" htmlFor="confirm-pw">Confirm password</label>
+                      <Input id="confirm-pw" type="password" className="mt-1" value={confirmPw}
+                        onChange={(e) => setConfirmPw(e.target.value)} autoComplete="new-password" />
+                    </div>
+                    <Button className="w-full" onClick={changePassword} disabled={changing}>
+                      {changing ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                      {changing ? 'Updating…' : 'Update password'}
+                    </Button>
                   </div>
-                  <div>
-                    <p className="font-medium">{setting.title}</p>
-                    <p className="text-sm text-muted-foreground">{setting.description}</p>
-                  </div>
-                </div>
-                <Switch defaultChecked={setting.enabled} />
-              </div>
-            ))}
+                </DialogContent>
+              </Dialog>
+
+              {/* Sign out everywhere */}
+              <Button variant="outline" className="w-full gap-2" onClick={signOutEverywhere} disabled={signingOut}>
+                {signingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}
+                Sign out of all sessions
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Signing out of all sessions ends your sign-in on every device, including this one.
+            </p>
           </CardContent>
         </Card>
 
-        {/* Password & Keys */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lock className="h-5 w-5" />
-                Password
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                Last changed 30 days ago
-              </p>
-              <Button variant="outline" className="w-full">
-                Change Password
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Key className="h-5 w-5" />
-                Recovery Codes
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                8 of 10 recovery codes remaining
-              </p>
-              <Button variant="outline" className="w-full">
-                View Recovery Codes
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Audit Log */}
+        {/* Recent activity (real audit_logs) */}
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>
-              Monitor security-related events on your account
-            </CardDescription>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="h-5 w-5" /> Recent activity
+            </CardTitle>
+            <CardDescription>Security-related events recorded on your account.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {auditLogs.map(log => {
-                const StatusIcon = statusIcons[log.status];
-                return (
+            {loadingLogs ? (
+              <div className="flex items-center justify-center py-10 text-muted-foreground">
+                <Loader2 className="h-5 w-5 animate-spin mr-2" /> Loading…
+              </div>
+            ) : logs.length === 0 ? (
+              <div className="text-center py-10 text-muted-foreground">
+                <Activity className="h-10 w-10 mx-auto mb-3 opacity-50" />
+                <p>No activity recorded yet.</p>
+                <p className="text-sm mt-1">Account events will appear here as they happen.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {logs.map((log) => (
                   <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      <StatusIcon className={`h-5 w-5 ${statusColors[log.status]}`} />
+                      <Shield className="h-5 w-5 text-muted-foreground" />
                       <div>
                         <p className="font-medium">{log.action}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {log.user} • {log.ip}
-                        </p>
+                        {log.entity_type && (
+                          <p className="text-xs text-muted-foreground">{log.entity_type}</p>
+                        )}
                       </div>
                     </div>
-                    <span className="text-xs text-muted-foreground">{log.timestamp}</span>
+                    <span className="text-xs text-muted-foreground">{fmt(log.created_at)}</span>
                   </div>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
