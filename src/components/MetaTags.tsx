@@ -19,7 +19,7 @@ const BASE_URL = 'https://www.indigenousrising.ai';
 const MetaTags = ({
   title = 'Indigenous Rising AI - Business Support Platform',
   description = 'Culturally respectful AI-powered platform supporting Indigenous entrepreneurs across Canada. Harmonizing traditional knowledge with modern business tools while honoring data sovereignty principles.',
-  keywords = 'Indigenous business, OCAP, First Nations entrepreneurship, Aboriginal business support, Indigenous AI, business funding, NACCA, Canadian Indigenous business, traditional knowledge, data sovereignty',
+  keywords = 'Indigenous business, OCAP, First Nations entrepreneurship, Aboriginal business support, Indigenous AI, business funding, Canadian Indigenous business, traditional knowledge, data sovereignty',
   ogImage = `${BASE_URL}/og-home.jpg`,
   twitterImage = `${BASE_URL}/og-home.jpg`,
   url,

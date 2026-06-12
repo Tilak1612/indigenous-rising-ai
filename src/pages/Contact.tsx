@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Clock } from 'lucide-react';
 import { contactSchema, type ContactFormData } from '@/lib/validation-schemas';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Navigation from '@/components/Navigation';
@@ -118,13 +118,11 @@ const Contact = () => {
 
           <Card>
             <CardHeader>
-              <Phone className="w-8 h-8 text-primary mb-2" />
-              <CardTitle>Phone</CardTitle>
+              <Clock className="w-8 h-8 text-primary mb-2" />
+              <CardTitle>Response time</CardTitle>
             </CardHeader>
             <CardContent>
-              <a href="tel:+18004634436" className="text-muted-foreground hover:text-primary transition-smooth">
-                1-800-INDIGENOUS (1-800-463-4436)
-              </a>
+              <p className="text-muted-foreground">We reply within 1 business day.</p>
             </CardContent>
           </Card>
 

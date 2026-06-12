@@ -47,7 +47,7 @@ export const extraBlogPosts: BlogPost[] = [
     id: "21",
     slug: "indigenous-ecommerce-guide-selling-online-canada-2025",
     title: "Indigenous E-Commerce Guide: How to Sell Online in Canada 2025",
-    summary: "Complete guide for Indigenous entrepreneurs to launch online stores, sell handmade goods, and grow digital businesses while protecting cultural intellectual property and maintaining OCAP™ principles.",
+    summary: "Complete guide for Indigenous entrepreneurs to launch online stores, sell handmade goods, and grow digital businesses while protecting cultural intellectual property and maintaining OCAP® principles.",
     keywords: ["Indigenous e-commerce Canada", "First Nations online store", "sell Indigenous art online", "Indigenous Shopify store", "Aboriginal handmade goods online", "Indigenous digital business"],
     searchIntent: "Transactional + Informational",
     category: "Business Development",
@@ -61,12 +61,12 @@ export const extraBlogPosts: BlogPost[] = [
       {
         id: "choosing-platform",
         title: "Choosing the Right E-Commerce Platform",
-        content: `**Platform Comparison for Indigenous Businesses:**\n\n- **Shopify**: Most popular, excellent for product-based businesses. Indigenous-owned themes available. Supports Canadian tax rules.\n- **Etsy**: Great for handmade and artisan goods. Large built-in audience searching for Indigenous art.\n- **WooCommerce**: Free WordPress plugin. Full control over your data (OCAP™ friendly).\n- **Indigenous Marketplaces**: Platforms like Beyond Buckskin, Indigenous Box, and other Indigenous-owned marketplaces.\n\n**Key Considerations:**\n- Data ownership and sovereignty\n- Payment processing fees (Stripe, PayPal, Square)\n- Shipping integration for remote communities\n- Mobile-friendly design\n- Multi-language support (French, Indigenous languages)`
+        content: `**Platform Comparison for Indigenous Businesses:**\n\n- **Shopify**: Most popular, excellent for product-based businesses. Indigenous-owned themes available. Supports Canadian tax rules.\n- **Etsy**: Great for handmade and artisan goods. Large built-in audience searching for Indigenous art.\n- **WooCommerce**: Free WordPress plugin. Full control over your data (OCAP® friendly).\n- **Indigenous Marketplaces**: Platforms like Beyond Buckskin, Indigenous Box, and other Indigenous-owned marketplaces.\n\n**Key Considerations:**\n- Data ownership and sovereignty\n- Payment processing fees (Stripe, PayPal, Square)\n- Shipping integration for remote communities\n- Mobile-friendly design\n- Multi-language support (French, Indigenous languages)`
       },
       {
         id: "protecting-cultural-ip",
         title: "Protecting Cultural Intellectual Property Online",
-        content: `**Why This Matters:**\nIndigenous designs, patterns, and traditional knowledge are frequently appropriated online. Protecting your cultural IP is essential.\n\n**Protection Strategies:**\n- Register trademarks for your brand and distinctive designs\n- Use watermarks on product images\n- Include clear copyright notices and cultural attribution\n- Consider the Canadian Intellectual Property Office (CIPO) registration\n- Document the cultural significance and provenance of designs\n- Use OCAP™ principles for any customer data collected\n\n**Legal Resources:**\n- Indigenous Intellectual Property Institute\n- Canadian Arts Council Indigenous programs\n- Pro bono legal services for Indigenous entrepreneurs`
+        content: `**Why This Matters:**\nIndigenous designs, patterns, and traditional knowledge are frequently appropriated online. Protecting your cultural IP is essential.\n\n**Protection Strategies:**\n- Register trademarks for your brand and distinctive designs\n- Use watermarks on product images\n- Include clear copyright notices and cultural attribution\n- Consider the Canadian Intellectual Property Office (CIPO) registration\n- Document the cultural significance and provenance of designs\n- Use OCAP® principles for any customer data collected\n\n**Legal Resources:**\n- Indigenous Intellectual Property Institute\n- Canadian Arts Council Indigenous programs\n- Pro bono legal services for Indigenous entrepreneurs`
       },
       {
         id: "tax-considerations",
@@ -630,7 +630,7 @@ export const extraBlogPosts: BlogPost[] = [
     id: "38",
     slug: "indigenous-intellectual-property-protection-canada-2025",
     title: "Protecting Indigenous Intellectual Property in Canada: Trademarks, Copyright & Traditional Knowledge",
-    summary: "Essential guide to intellectual property protection for Indigenous entrepreneurs. Covers trademarks, copyright, traditional knowledge protection, OCAP™ principles, and fighting cultural appropriation.",
+    summary: "Essential guide to intellectual property protection for Indigenous entrepreneurs. Covers trademarks, copyright, traditional knowledge protection, OCAP® principles, and fighting cultural appropriation.",
     keywords: ["Indigenous intellectual property Canada", "First Nations trademark", "protect Indigenous art", "traditional knowledge protection", "OCAP intellectual property", "Indigenous cultural appropriation legal"],
     searchIntent: "Informational",
     category: "Business Development",
@@ -649,7 +649,7 @@ export const extraBlogPosts: BlogPost[] = [
       {
         id: "traditional-knowledge",
         title: "Protecting Traditional Knowledge",
-        content: `**The Challenge:**\nCanadian IP law protects individual creations with limited timeframes. Traditional knowledge is collective, intergenerational, and ongoing.\n\n**Available Protections:**\n- OCAP™ principles (Ownership, Control, Access, Possession)\n- Contractual restrictions (NDAs, licensing agreements)\n- Community protocols and cultural laws\n- Sui generis protection through band bylaws\n- International declarations (UNDRIP Article 31)\n\n**Practical Steps:**\n1. Document traditional knowledge with community consent\n2. Establish community IP policies\n3. Use licensing agreements for commercial use\n4. Mark products with cultural attribution\n5. Monitor for unauthorized use and appropriation`
+        content: `**The Challenge:**\nCanadian IP law protects individual creations with limited timeframes. Traditional knowledge is collective, intergenerational, and ongoing.\n\n**Available Protections:**\n- OCAP® principles (Ownership, Control, Access, Possession)\n- Contractual restrictions (NDAs, licensing agreements)\n- Community protocols and cultural laws\n- Sui generis protection through band bylaws\n- International declarations (UNDRIP Article 31)\n\n**Practical Steps:**\n1. Document traditional knowledge with community consent\n2. Establish community IP policies\n3. Use licensing agreements for commercial use\n4. Mark products with cultural attribution\n5. Monitor for unauthorized use and appropriation`
       },
       {
         id: "fighting-appropriation",

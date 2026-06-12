@@ -46,7 +46,7 @@ export default function ComplianceCertificate({
     // Create a simple text certificate for now
     const certificateText = `
 ═══════════════════════════════════════════════════════════════
-                    OCAP™ COMPLIANCE CERTIFICATE
+                    OCAP® COMPLIANCE CERTIFICATE
 ═══════════════════════════════════════════════════════════════
 
 This certifies that
@@ -54,7 +54,7 @@ This certifies that
                          ${businessName}
 
 has demonstrated commitment to the First Nations principles of
-Ownership, Control, Access, and Possession (OCAP™) in their
+Ownership, Control, Access, and Possession (OCAP®) in their
 data governance practices.
 
 Compliance Score: ${score}%
@@ -91,12 +91,12 @@ Information Governance Centre (FNIGC).
               "h-6 w-6",
               isEligible ? "text-amber-500" : "text-muted-foreground"
             )} />
-            <DialogTitle>OCAP™ Compliance Certificate</DialogTitle>
+            <DialogTitle>OCAP® Compliance Certificate</DialogTitle>
           </div>
           <DialogDescription>
             {isEligible 
               ? "Congratulations! You're eligible for your compliance certificate."
-              : "Complete all OCAP™ requirements to earn your certificate."
+              : "Complete all OCAP® requirements to earn your certificate."
             }
           </DialogDescription>
         </DialogHeader>
@@ -120,7 +120,7 @@ Information Governance Centre (FNIGC).
 
                   <p className="text-sm text-muted-foreground">
                     has demonstrated commitment to First Nations principles of
-                    Ownership, Control, Access, and Possession (OCAP™)
+                    Ownership, Control, Access, and Possession (OCAP®)
                   </p>
 
                   <div className="flex items-center justify-center gap-2">
@@ -173,7 +173,7 @@ Information Governance Centre (FNIGC).
                   <div>
                     <h3 className="text-lg font-medium">Not Yet Eligible</h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Complete all OCAP™ requirements to earn your certificate
+                      Complete all OCAP® requirements to earn your certificate
                     </p>
                   </div>
 

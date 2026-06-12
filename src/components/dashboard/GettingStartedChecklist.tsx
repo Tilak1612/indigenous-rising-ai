@@ -53,8 +53,8 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
   },
   {
     id: 'compliance',
-    title: 'Check OCAP™ Score',
-    description: 'Review your data sovereignty status',
+    title: 'Review data & privacy',
+    description: 'See how your data is handled under OCAP®',
     link: '/dashboard/compliance',
     icon: Shield,
     checkKey: 'checklist-compliance',

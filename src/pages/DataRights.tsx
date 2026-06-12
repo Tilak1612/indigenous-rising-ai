@@ -192,7 +192,6 @@ const DataRights = () => {
             <div className="pl-4 border-l-2 border-primary">
               <p className="font-medium text-foreground">Privacy Officer</p>
               <p>Email: <a href="mailto:privacy@indigenousrising.ai" className="text-primary hover:underline">privacy@indigenousrising.ai</a></p>
-              <p>Phone: 1-800-463-4436</p>
               <p>Address: Traditional Territory of the Anishinaabe, Toronto, ON</p>
             </div>
           </div>

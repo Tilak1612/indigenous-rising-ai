@@ -18,7 +18,7 @@ const TrainingSection = () => {
       originalPrice: "$397",
       features: [
         "Traditional business planning methods",
-        "OCAP™ data sovereignty training",
+        "OCAP® data sovereignty training",
         "Elder mentorship sessions"
       ],
       testimonials: 4.6,

@@ -241,7 +241,7 @@ const CanadianCompliance = () => {
                   </div>
                   <div>
                     <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-                      OCAP™ Principles
+                      OCAP® Principles
                     </h2>
                     <p className="text-sm text-primary font-semibold mb-2">
                       Indigenous Data Sovereignty

@@ -627,7 +627,7 @@ export default function Settings() {
                 <CardHeader>
                   <CardTitle>Data Export</CardTitle>
                   <CardDescription>
-                    Download a copy of your data in compliance with OCAP™ principles
+                    Download a copy of your data in compliance with OCAP® principles
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">

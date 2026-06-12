@@ -157,7 +157,7 @@ const PricingSection = () => {
         { text: "Indigenous business planning assistant (auto-saved)", available: true },
         { text: "Funding opportunity browser", available: true },
         { text: "Community forum and resource library", available: true },
-        { text: "OCAP™ compliant data handling, stored in Canada", available: true },
+        { text: "OCAP® compliant data handling, stored in Canada", available: true },
         { text: "Multi-language interface (EN, FR — more rolling out)", available: true },
         { text: "Full data export at any time", available: true },
         { text: "Email support", available: true },
@@ -230,7 +230,7 @@ const PricingSection = () => {
         { text: "Everything in Bimaadiziwin", available: true },
         { text: "Unlimited business entities", available: false },
         { text: "White-label platform with your Nation's branding", available: false },
-        { text: "OCAP™ data governance console", available: false },
+        { text: "OCAP® data governance console", available: false },
         { text: "Government reporting module (ISC, AANDC formats)", available: false },
         { text: "Custom AI training on your community's data", available: false },
         { text: "Dedicated account manager", available: false },
@@ -263,7 +263,7 @@ const PricingSection = () => {
           </h2>
 
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            All plans include OCAP™ compliance, data residency in Canada, and respect for Indigenous data sovereignty.
+            All plans include OCAP® compliance, data residency in Canada, and respect for Indigenous data sovereignty.
             We are honest about what is available today and what is coming soon — no surprises.
           </p>
 
@@ -426,7 +426,7 @@ const PricingSection = () => {
                   {[
                     { feature: 'Business planning assistant', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Funding opportunity browser', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'OCAP™ compliant data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
+                    { feature: 'OCAP® compliant data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Community forum + resources', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Multi-language interface', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Full data export', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
@@ -437,7 +437,7 @@ const PricingSection = () => {
                     { feature: 'Grant writing assistant', free: '—', growth: 'soon', pro: 'soon', enterprise: 'soon' },
                     { feature: 'Multi-entity support', free: '—', growth: '—', pro: 'soon', enterprise: 'soon' },
                     { feature: 'IFI Connection Engine', free: '—', growth: '—', pro: 'soon', enterprise: 'soon' },
-                    { feature: 'OCAP™ governance console', free: '—', growth: '—', pro: '—', enterprise: 'soon' },
+                    { feature: 'OCAP® governance console', free: '—', growth: '—', pro: '—', enterprise: 'soon' },
                     { feature: 'White-label platform', free: '—', growth: '—', pro: '—', enterprise: 'soon' },
                     { feature: 'Dedicated account manager', free: '—', growth: '—', pro: '—', enterprise: 'soon' },
                   ].map((row, idx) => (
@@ -462,7 +462,7 @@ const PricingSection = () => {
             </h4>
             <p className="text-sm text-muted-foreground mb-4">
               Grant writing assistance, IFI Connection Engine, quarterly impact reports, and
-              the OCAP™ governance console are in active development. AI funding matching
+              the OCAP® governance console are in active development. AI funding matching
               is live today — try it from your dashboard.
             </p>
             <ShinyButton size="sm" onClick={handleAddonsClick}>
@@ -474,7 +474,7 @@ const PricingSection = () => {
               Indigenous values built in
             </h4>
             <p className="text-sm text-muted-foreground">
-              Indigenous-led, OCAP™ compliant, data stored in Canada (ca-central-1), and a portion of profits returned to communities.
+              Indigenous-led, OCAP® compliant, data stored in Canada (ca-central-1), and a portion of profits returned to communities.
             </p>
           </Card>
         </div>

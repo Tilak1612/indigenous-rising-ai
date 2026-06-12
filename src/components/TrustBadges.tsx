@@ -5,7 +5,7 @@ const TrustBadges = () => {
   const badges = [
     {
       icon: Shield,
-      title: 'OCAP™ Certified',
+      title: 'OCAP® Certified',
       description: 'Full data sovereignty compliance',
       color: 'primary'
     },

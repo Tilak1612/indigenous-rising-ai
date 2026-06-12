@@ -50,7 +50,7 @@ const mockResults: SearchResult[] = [
   { id: '1', title: 'Starting an Indigenous Business', description: 'Comprehensive guide to launching your first business', type: 'resource', url: '/dashboard/resources' },
   { id: '2', title: 'Tips for First-Time Grant Applications', description: 'Community discussion about grant applications', type: 'forum', url: '/dashboard/forum' },
   { id: '3', title: 'Business Plan Template', description: 'Indigenous-focused business plan template', type: 'resource', url: '/dashboard/resources' },
-  { id: '4', title: 'OCAP™ Principles Overview', description: 'Understanding data sovereignty principles', type: 'resource', url: '/dashboard/resources' },
+  { id: '4', title: 'OCAP® Principles Overview', description: 'Understanding data sovereignty principles', type: 'resource', url: '/dashboard/resources' },
   { id: '5', title: 'Vision & Mission Section', description: 'Your business plan draft', type: 'plan', url: '/dashboard/plan' },
   { id: '6', title: 'How to use the funding navigator', description: 'Help article about finding funding', type: 'help', url: '/faq' },
 ];

@@ -55,7 +55,7 @@ const PartnershipsSection = () => {
     {
       name: "Indigenous Data Alliance",
       type: "Data Sovereignty",
-      description: "Ensuring OCAP™ principles in all AI implementations"
+      description: "Ensuring OCAP® principles in all AI implementations"
     },
     {
       name: "Seven Generations Institute",

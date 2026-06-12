@@ -43,7 +43,7 @@ const FeaturesSection = () => {
             "We acknowledge that we are on the traditional territories of Indigenous peoples and commit to honoring Indigenous data sovereignty principles in all our operations."
           </p>
           <div className="flex flex-wrap justify-center gap-6 text-xs text-muted-foreground/70">
-            <span>OCAP™ Principles</span>
+            <span>OCAP® Principles</span>
             <span>•</span>
             <span>Truth and Reconciliation</span>
             <span>•</span>

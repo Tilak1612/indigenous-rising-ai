@@ -88,7 +88,7 @@ const freeNavItems: NavItem[] = [
   { title: 'Resources', href: '/dashboard/resources', icon: BookOpen, tier: 'free' },
   { title: 'Documents', href: '/dashboard/documents', icon: FolderOpen, tier: 'free' },
   { title: 'Community Forum', href: '/dashboard/forum', icon: MessageSquare, tier: 'free' },
-  { title: 'OCAP™ Compliance', href: '/dashboard/compliance', icon: Shield, tier: 'free' },
+  { title: 'OCAP® Compliance', href: '/dashboard/compliance', icon: Shield, tier: 'free' },
 ];
 
 const paidNavItems: NavItem[] = [

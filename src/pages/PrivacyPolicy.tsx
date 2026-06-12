@@ -241,7 +241,6 @@ const PrivacyPolicy: React.FC = () => {
                   <p className="text-muted-foreground">
                     Indigenous Rising AI Business Support Platform<br />
                     Email: help@indigenousrising.ai<br />
-                    Phone: 1-800-INDIGENOUS (1-800-463-4436)<br />
                     Traditional Territory of the Anishinaabe, Toronto, ON<br />
                     Canada
                   </p>

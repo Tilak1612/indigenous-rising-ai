@@ -6,19 +6,14 @@ import { Sparkles, Quote } from 'lucide-react';
 
 const LANG_KEY = 'preferred-language';
 
-const elderQuotes = [
-  {
-    quote: "We are all visitors to this time, this place. We are just passing through. Our purpose here is to observe, to learn, to grow, to love... and then we return home.",
-    elder: "Australian Aboriginal Proverb",
-  },
-  {
-    quote: "The greatest strength is gentleness.",
-    elder: "Iroquois Proverb",
-  },
-  {
-    quote: "When we show our respect for other living things, they respond with respect for us.",
-    elder: "Arapaho Proverb",
-  },
+// Practical platform tips in our own voice. We do NOT attribute generic
+// "proverbs" to Elders or to specific peoples — that would be fabricated and
+// pan-Indigenous. These are honest, useful prompts for getting value here.
+const tips = [
+  "Your data belongs to your community. You can export everything, anytime.",
+  "Start with a funding match, then build the plan to go after it.",
+  "Keep grant deadlines in Tasks & Deadlines so nothing slips.",
+  "Save the documents funders ask for in your Document Library.",
 ];
 
 export default function CulturalWelcome() {
@@ -28,7 +23,8 @@ export default function CulturalWelcome() {
     catch { return 'en'; }
   })();
 
-  const randomQuote = elderQuotes[Math.floor(Math.random() * elderQuotes.length)];
+  // Rotate by the day so it's stable within a session (no hydration flicker).
+  const tip = tips[new Date().getDate() % tips.length];
   const firstName = user?.user_metadata?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Friend';
 
   const getTimeGreeting = () => {
@@ -54,10 +50,10 @@ export default function CulturalWelcome() {
             <div className="flex items-start gap-3 p-4 rounded-lg bg-background/50 border border-primary/10">
               <Quote className="h-5 w-5 text-primary shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm italic text-foreground/80">"{randomQuote.quote}"</p>
+                <p className="text-sm text-foreground/80">{tip}</p>
                 <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
                   <Sparkles className="h-3 w-3" />
-                  Elder Wisdom — {randomQuote.elder}
+                  Tip
                 </p>
               </div>
             </div>

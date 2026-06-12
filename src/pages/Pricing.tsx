@@ -11,7 +11,7 @@ const Pricing = () => {
         <title>Pricing Plans | Indigenous Rising AI - Business Support for Indigenous Entrepreneurs</title>
         <meta
           name="description"
-          content="Four plans for every stage of the Indigenous business journey: Free, Growth ($49/mo), Professional ($149/mo), and Enterprise (custom). All OCAP™ compliant, all data stored in Canada."
+          content="Four plans for every stage of the Indigenous business journey: Free, Growth ($49/mo), Professional ($149/mo), and Enterprise (custom). All OCAP® compliant, all data stored in Canada."
         />
         <meta name="keywords" content="Indigenous business pricing, First Nations entrepreneur tools, Aboriginal business support plans, OCAP compliant platform pricing" />
       </Helmet>
@@ -20,7 +20,7 @@ const Pricing = () => {
         type="page" 
         pageData={{
           name: "Pricing Plans - Indigenous Rising AI",
-          description: "Flexible pricing plans for Indigenous entrepreneurs. From free starter tools to enterprise solutions with OCAP™ compliance and cultural competency features.",
+          description: "Flexible pricing plans for Indigenous entrepreneurs. From free starter tools to enterprise solutions with OCAP® compliance and cultural competency features.",
           url: "https://www.indigenousrising.ai/pricing"
         }}
       />

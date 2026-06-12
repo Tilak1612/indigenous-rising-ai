@@ -9,7 +9,7 @@ const FAQ = () => {
     <div className="min-h-screen bg-background">
       <MetaTags 
         title="Frequently Asked Questions | Indigenous Rising AI"
-        description="Find answers to common questions about Indigenous Rising AI, OCAP™ principles, funding opportunities, training programs, and how our platform supports Indigenous entrepreneurs."
+        description="Find answers to common questions about Indigenous Rising AI, OCAP® principles, funding opportunities, training programs, and how our platform supports Indigenous entrepreneurs."
         keywords="FAQ, Indigenous business questions, OCAP, funding help, training programs, Indigenous Rising AI"
       />
       <Navigation />

@@ -44,8 +44,8 @@ const Dashboard: React.FC = () => {
             color="primary"
           />
           <StatCard
-            title="OCAP™ Score"
-            value="50%"
+            title="Saved Funding"
+            value="0"
             icon={TrendingUp}
             color="primary"
           />

@@ -17,8 +17,8 @@ interface FAQSectionProps {
 const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
   const faqs = [
     {
-      question: 'What is OCAP™ and why does it matter?',
-      answer: 'OCAP™ stands for Ownership, Control, Access, and Possession. These are data governance principles that affirm First Nations control over data collection processes, and how information can be used. It ensures Indigenous communities maintain sovereignty over their own data, which is crucial for protecting cultural knowledge and maintaining self-determination in the digital age.'
+      question: 'What is OCAP® and why does it matter?',
+      answer: 'OCAP® stands for Ownership, Control, Access, and Possession. These are data governance principles that affirm First Nations control over data collection processes, and how information can be used. It ensures Indigenous communities maintain sovereignty over their own data, which is crucial for protecting cultural knowledge and maintaining self-determination in the digital age.'
     },
     {
       question: 'Is Indigenous Rising AI only for registered Indigenous businesses?',
@@ -53,8 +53,8 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
       answer: 'Cultural services include Elder Knowledge Sessions, Cultural Impact Assessments, and access to our network of Indigenous business mentors who can guide you in integrating traditional values with modern business practices.'
     },
     {
-      question: 'Is my data protected under OCAP™ principles?',
-      answer: 'Absolutely. All plans include OCAP™ compliant data handling. You maintain Ownership of your data, Control over how it is used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure.'
+      question: 'Is my data protected under OCAP® principles?',
+      answer: 'Absolutely. All plans include OCAP® compliant data handling. You maintain Ownership of your data, Control over how it is used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure.'
     },
     {
       question: 'Can I get help with grant applications?',
@@ -62,7 +62,7 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
     },
     {
       question: 'What makes this platform different from other business tools?',
-      answer: 'Indigenous Rising AI is built BY and FOR Indigenous entrepreneurs. Unlike generic business platforms, we integrate traditional values like the Seven Generations Principle into planning tools, measure success through community impact alongside profit, and ensure all features respect OCAP™ principles. Our platform understands that Indigenous business success includes cultural preservation and community wellbeing.'
+      answer: 'Indigenous Rising AI is built BY and FOR Indigenous entrepreneurs. Unlike generic business platforms, we integrate traditional values like the Seven Generations Principle into planning tools, measure success through community impact alongside profit, and ensure all features respect OCAP® principles. Our platform understands that Indigenous business success includes cultural preservation and community wellbeing.'
     },
     {
       question: 'How do the training programs work?',
@@ -157,17 +157,11 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
               Still have questions? We're here to help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
+              <a
                 href="mailto:help@indigenousrising.ai"
                 className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
               >
                 Email Us
-              </a>
-              <a 
-                href="tel:1-800-463-4436"
-                className="inline-flex items-center justify-center px-6 py-3 border-2 border-border rounded-lg font-semibold hover:bg-muted/50 transition-colors"
-              >
-                Call 1-800-INDIGENOUS
               </a>
             </div>
           </div>
