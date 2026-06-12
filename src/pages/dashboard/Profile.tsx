@@ -9,7 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { readStoredSession } from '@/lib/auth-storage';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import {
@@ -102,6 +103,30 @@ const industries = [
   'Other',
 ];
 
+// Profile reads/writes go through direct-fetch (the supabase-js query path can
+// hang on this project — see Documents/Settings). RLS scopes profiles to the
+// owner via id = auth.uid(). Storage (avatars) still uses the SDK; only the
+// PostgREST query path is affected by the hang.
+const REST = `${SUPABASE_URL}/rest/v1`;
+
+const authHeaders = (json = false): Record<string, string> => {
+  const token = readStoredSession()?.access_token ?? SUPABASE_ANON_KEY;
+  const h: Record<string, string> = { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` };
+  if (json) h['Content-Type'] = 'application/json';
+  return h;
+};
+
+// PATCH the signed-in user's profiles row. Throws on a non-2xx response so
+// callers can surface a toast.
+async function patchProfile(userId: string, patch: Record<string, unknown>): Promise<void> {
+  const res = await fetch(`${REST}/profiles?id=eq.${userId}`, {
+    method: 'PATCH',
+    headers: { ...authHeaders(true), Prefer: 'return=minimal' },
+    body: JSON.stringify(patch),
+  });
+  if (!res.ok) throw new Error(`profile update failed (${res.status})`);
+}
+
 export default function Profile() {
   const { user } = useAuth();
   const { subscribed, product_id } = useSubscription();
@@ -157,17 +182,25 @@ export default function Profile() {
     let cancelled = false;
     (async () => {
       try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('full_name, phone, location, territory, bio, business_name, industry, website, year_founded, business_description, employees, social_links, business_stage, target_funding_amount, funding_purpose, avatar_url')
-          .eq('id', user.id)
-          .maybeSingle();
-
+        const cols = 'full_name,phone,location,territory,bio,business_name,industry,website,year_founded,business_description,employees,social_links,business_stage,target_funding_amount,funding_purpose,avatar_url';
+        const res = await fetch(
+          `${REST}/profiles?select=${cols}&id=eq.${user.id}&limit=1`,
+          { headers: authHeaders() }
+        );
         if (cancelled) return;
-        if (error) {
-          console.error('[Profile] failed to load profile:', error.message);
+        if (!res.ok) {
+          console.error('[Profile] failed to load profile:', res.status);
           return;
         }
+        const rows = (await res.json()) as Array<Record<string, unknown>> | null;
+        const data = rows && rows.length ? (rows[0] as {
+          full_name?: string; phone?: string; location?: string; territory?: string; bio?: string;
+          business_name?: string; industry?: string; website?: string; year_founded?: string;
+          business_description?: string; employees?: string; social_links?: Record<string, string>;
+          business_stage?: string; target_funding_amount?: number | null; funding_purpose?: string;
+          avatar_url?: string;
+        }) : null;
+        if (cancelled) return;
         if (!data) return;
 
         const parts = (data.full_name || '').split(' ');
@@ -212,17 +245,13 @@ export default function Profile() {
     try {
       profileSchema.parse(profileData);
       setSavingProfile(true);
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          full_name: `${profileData.firstName} ${profileData.lastName}`.trim(),
-          phone: profileData.phone || null,
-          location: profileData.location || null,
-          territory: profileData.territory || null,
-          bio: profileData.bio || null,
-        })
-        .eq('id', user!.id);
-      if (error) throw error;
+      await patchProfile(user!.id, {
+        full_name: `${profileData.firstName} ${profileData.lastName}`.trim(),
+        phone: profileData.phone || null,
+        location: profileData.location || null,
+        territory: profileData.territory || null,
+        bio: profileData.bio || null,
+      });
       toast.success('Profile updated successfully');
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -253,21 +282,17 @@ export default function Profile() {
         return;
       }
 
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          business_name: businessData.businessName || null,
-          industry: businessData.industry || null,
-          website: businessData.website || null,
-          year_founded: businessData.yearFounded || null,
-          business_description: businessData.description || null,
-          employees: businessData.employees || null,
-          business_stage: businessData.businessStage || null,
-          target_funding_amount: parsedAmount,
-          funding_purpose: businessData.fundingPurpose || null,
-        })
-        .eq('id', user!.id);
-      if (error) throw error;
+      await patchProfile(user!.id, {
+        business_name: businessData.businessName || null,
+        industry: businessData.industry || null,
+        website: businessData.website || null,
+        year_founded: businessData.yearFounded || null,
+        business_description: businessData.description || null,
+        employees: businessData.employees || null,
+        business_stage: businessData.businessStage || null,
+        target_funding_amount: parsedAmount,
+        funding_purpose: businessData.fundingPurpose || null,
+      });
       toast.success('Business information updated');
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -288,11 +313,7 @@ export default function Profile() {
   const handleSaveSocial = async () => {
     setSavingSocial(true);
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({ social_links: socialLinks })
-        .eq('id', user!.id);
-      if (error) throw error;
+      await patchProfile(user!.id, { social_links: socialLinks });
       toast.success('Social links updated');
     } catch {
       toast.error('Failed to update social links');
@@ -351,13 +372,8 @@ export default function Profile() {
       // Bust browser cache by appending timestamp
       const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`;
 
-      // Save to profiles table
-      const { error: dbError } = await supabase
-        .from('profiles')
-        .update({ avatar_url: publicUrl })
-        .eq('id', user.id);
-
-      if (dbError) throw dbError;
+      // Save to profiles table (direct-fetch; storage upload above still uses the SDK)
+      await patchProfile(user.id, { avatar_url: publicUrl });
 
       setAvatarUrl(publicUrl);
       setAvatarPreview(null);
