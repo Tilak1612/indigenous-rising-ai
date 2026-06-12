@@ -144,7 +144,7 @@ export default function CompliancePage() {
     if (!firstIncomplete) {
       toast({
         title: 'Re-assessment complete',
-        description: 'All OCAP™ requirements are already marked complete.',
+        description: 'All OCAP® requirements are already marked complete.',
       });
       return;
     }
@@ -160,7 +160,7 @@ export default function CompliancePage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">OCAP™ Compliance Dashboard</h1>
+            <h1 className="text-2xl font-bold">OCAP® Compliance Dashboard</h1>
             <p className="text-muted-foreground">Ownership, Control, Access, and Possession principles</p>
           </div>
           <div className="flex gap-2">
@@ -184,7 +184,7 @@ export default function CompliancePage() {
                   <Shield className="h-8 w-8 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">OCAP™ Compliance Score</p>
+                  <p className="text-sm text-muted-foreground">OCAP® Compliance Score</p>
                   <p className="text-4xl font-bold">{complianceScore}%</p>
                   <p className="text-sm text-muted-foreground mt-1">
                     {completeCount} of {totalCount} requirements complete
@@ -257,7 +257,7 @@ export default function CompliancePage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Compliance Checklist</CardTitle>
-            <CardDescription>Track your progress across all OCAP™ requirements</CardDescription>
+            <CardDescription>Track your progress across all OCAP® requirements</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="all">
@@ -357,7 +357,7 @@ export default function CompliancePage() {
         {/* Resources */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">OCAP™ Resources</CardTitle>
+            <CardTitle className="text-lg">OCAP® Resources</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -369,7 +369,7 @@ export default function CompliancePage() {
               >
                 <Shield className="h-8 w-8 text-primary" />
                 <div className="flex-1">
-                  <h4 className="font-medium">OCAP™ Training</h4>
+                  <h4 className="font-medium">OCAP® Training</h4>
                   <p className="text-sm text-muted-foreground">Free online certification from FNIGC</p>
                 </div>
                 <ExternalLink className="h-4 w-4 text-muted-foreground" />
@@ -382,7 +382,7 @@ export default function CompliancePage() {
               >
                 <FileText className="h-8 w-8 text-primary" />
                 <div className="flex-1">
-                  <h4 className="font-medium">OCAP™ Principles</h4>
+                  <h4 className="font-medium">OCAP® Principles</h4>
                   <p className="text-sm text-muted-foreground">Learn about data governance</p>
                 </div>
                 <ExternalLink className="h-4 w-4 text-muted-foreground" />

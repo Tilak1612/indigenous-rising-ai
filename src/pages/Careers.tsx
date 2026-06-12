@@ -39,20 +39,20 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
         title: 'Product Manager — Indigenous Business Tools',
         team: 'Product & Engineering',
         mission:
-          "You will own the roadmap for core platform features — the Business Planning Assistant, Funding Navigator, and Community Impact Tracker — ensuring every product decision reflects Indigenous values, OCAP™ principles, and genuine community need. You will be the bridge between engineering, community partners, and Elders who help guide the platform's direction. This role is central to ensuring that what we build actually serves the communities it was made for.",
+          "You will own the roadmap for core platform features — the Business Planning Assistant, Funding Navigator, and Community Impact Tracker — ensuring every product decision reflects Indigenous values, OCAP® principles, and genuine community need. You will be the bridge between engineering, community partners, and Elders who help guide the platform's direction. This role is central to ensuring that what we build actually serves the communities it was made for.",
         responsibilities: [
           'Define and maintain the product roadmap across the Business Planning Assistant, Funding Navigator (500+ grants), Impact Tracker, and Training & Certification modules',
           'Lead discovery sessions with Indigenous entrepreneurs, community organizations, and Elders to identify and prioritize features',
           'Write clear, culturally-informed user stories and acceptance criteria for engineering sprints',
           'Partner with the Community Engagement Lead to run ongoing feedback loops with First Nations, Métis, and Inuit users',
-          'Ensure all product decisions are reviewed against OCAP™ principles and Indigenous data sovereignty guidelines',
+          'Ensure all product decisions are reviewed against OCAP® principles and Indigenous data sovereignty guidelines',
           'Track product usage metrics and translate them into community impact indicators (not just SaaS KPIs)',
           'Work with the Compliance & Data Stewardship Lead to document data flows and governance decisions',
         ],
         qualifications: [
           '2–5 years of product management experience, ideally in SaaS or mission-driven technology',
           'Direct experience working with or within First Nations, Métis, or Inuit communities — or demonstrated commitment to learning and relationship-building',
-          'Familiarity with OCAP™ principles, Indigenous data sovereignty, or community-based research methodologies',
+          'Familiarity with OCAP® principles, Indigenous data sovereignty, or community-based research methodologies',
           'Strong written communication and ability to translate complex technical concepts into plain language for community partners',
           'Comfortable in a remote, async-first startup environment and able to wear multiple hats',
         ],
@@ -68,7 +68,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
           'Implement PIPEDA-compliant data handling and storage, ensuring all user data remains in Canada',
           'Contribute to AODA accessibility compliance across all platform interfaces',
           'Collaborate with the ML Engineer on responsible AI feature integration',
-          'Participate in code reviews and help establish engineering standards aligned with OCAP™ data governance',
+          'Participate in code reviews and help establish engineering standards aligned with OCAP® data governance',
           'Support backend infrastructure on Lovable Cloud and maintain system reliability',
         ],
         qualifications: [
@@ -89,7 +89,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
         responsibilities: [
           'Build, fine-tune, and maintain the AI models powering the Business Planning Assistant and Funding Navigator recommendation engine',
           'Develop model documentation and explainability layers so communities can understand how recommendations are generated',
-          'Apply OCAP™ principles to all data collection, model training, and output pipelines — including community consent protocols',
+          'Apply OCAP® principles to all data collection, model training, and output pipelines — including community consent protocols',
           'Collaborate with the Compliance & Data Stewardship Lead to audit AI models for bias, cultural safety, and harm reduction',
           'Monitor model performance with community-defined success metrics, not just accuracy scores',
           'Stay current on Indigenous AI ethics frameworks and emerging best practices in responsible AI for marginalized communities',
@@ -98,12 +98,12 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
         qualifications: [
           '3+ years of ML engineering experience, including model deployment in production environments',
           'Familiarity with responsible AI frameworks, algorithmic fairness, and explainable AI methodologies',
-          'Experience with or strong interest in Indigenous data sovereignty, OCAP™, or community-based data governance',
+          'Experience with or strong interest in Indigenous data sovereignty, OCAP®, or community-based data governance',
           'Ability to communicate technical concepts clearly to non-technical community stakeholders',
           'Python proficiency; experience with NLP/LLM pipelines a strong asset',
         ],
         hiringNowReason:
-          'The Business Planning Assistant and Funding Navigator recommendation engine are the core AI differentiators of the platform. We need a responsible AI engineer who can build these systems in ways that are explainable, community-governed, and OCAP™-compliant from day one — before user scale makes course-correction difficult. Getting this right early is essential to community trust.',
+          'The Business Planning Assistant and Funding Navigator recommendation engine are the core AI differentiators of the platform. We need a responsible AI engineer who can build these systems in ways that are explainable, community-governed, and OCAP®-compliant from day one — before user scale makes course-correction difficult. Getting this right early is essential to community trust.',
       },
     ],
   },
@@ -195,12 +195,12 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
           'Represent community perspectives in internal product, policy, and communications decisions',
           'Lead the Cultural Safety Review process for new features, content, and partner onboarding',
           'Maintain a community engagement calendar that respects Indigenous protocols around timing, relationship-building, and reciprocity',
-          'Document community engagement processes in alignment with OCAP™ principles',
+          'Document community engagement processes in alignment with OCAP® principles',
         ],
         qualifications: [
           'First Nations, Métis, or Inuit identity strongly preferred — we encourage Indigenous peoples to apply',
           'Deep experience in community engagement, Indigenous program delivery, or cultural liaison work',
-          'Strong knowledge of OCAP™ principles, Indigenous governance models, and community-based research ethics',
+          'Strong knowledge of OCAP® principles, Indigenous governance models, and community-based research ethics',
           'Ability to navigate relationships with Elders, community leaders, and grassroots entrepreneurs with equal respect',
           'Comfortable working remotely with periodic travel to community partners across Canada',
         ],
@@ -215,7 +215,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
         responsibilities: [
           'Identify, cultivate, and close partnerships with Indigenous financial institutions, development corporations, and government economic development programs',
           'Manage the Corporate Partnership Matcher pipeline, vetting corporate partners for authenticity and alignment with Indigenous values',
-          'Develop partnership agreements that include OCAP™-aligned data sharing terms and community benefit clauses',
+          'Develop partnership agreements that include OCAP®-aligned data sharing terms and community benefit clauses',
           'Coordinate with the Community Engagement Lead to ensure all partnerships are reviewed by community representatives before finalization',
           'Represent Indigenous Rising AI at Indigenous business conferences, trade events, and economic development forums',
           'Track partnership outcomes and report impact metrics to community governance structures',
@@ -257,28 +257,28 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
         ],
       },
       {
-        title: 'Compliance & Data Stewardship Lead (OCAP™, PIPEDA)',
+        title: 'Compliance & Data Stewardship Lead (OCAP®, PIPEDA)',
         team: 'Operations & Governance',
         mission:
-          "You are the guardian of the trust Indigenous Rising AI's users place in us with their data. You ensure every data practice — from collection and storage to sharing and deletion — meets the highest standards of OCAP™ principles, PIPEDA compliance, and Indigenous data sovereignty. In a world where Indigenous data has historically been extracted and misused, your role is to make sure this platform is different.",
+          "You are the guardian of the trust Indigenous Rising AI's users place in us with their data. You ensure every data practice — from collection and storage to sharing and deletion — meets the highest standards of OCAP® principles, PIPEDA compliance, and Indigenous data sovereignty. In a world where Indigenous data has historically been extracted and misused, your role is to make sure this platform is different.",
         responsibilities: [
-          "Own and maintain the platform's data governance framework, grounded in OCAP™ principles and Canadian privacy law (PIPEDA)",
+          "Own and maintain the platform's data governance framework, grounded in OCAP® principles and Canadian privacy law (PIPEDA)",
           'Conduct regular data audits and impact assessments for platform features, partner integrations, and AI models',
           'Develop and maintain community-facing data sovereignty documentation, consent frameworks, and plain-language privacy policies',
-          'Work with the ML Engineer to review AI training data pipelines for OCAP™ compliance and community consent',
+          'Work with the ML Engineer to review AI training data pipelines for OCAP® compliance and community consent',
           'Train all team members on data stewardship practices and cultural safety obligations',
           'Serve as the primary point of contact for community questions or concerns about data use',
           'Stay current on evolving Indigenous data governance frameworks and emerging Canadian privacy legislation',
         ],
         qualifications: [
           'Experience in privacy law, data governance, compliance, or a related field — with PIPEDA knowledge strongly preferred',
-          'Familiarity with OCAP™ principles and Indigenous data sovereignty frameworks (FNIGC, FNPS, etc.)',
+          'Familiarity with OCAP® principles and Indigenous data sovereignty frameworks (FNIGC, FNPS, etc.)',
           'Experience working with Indigenous organizations or on programs that required Indigenous community consent and data governance',
           'Ability to translate complex compliance requirements into clear, accessible policies for community members',
           'Strong ethical grounding and comfort raising concerns about data practices at any level of the organization',
         ],
         hiringNowReason:
-          'Every new user, every partner integration, and every AI feature we ship carries data governance implications. Indigenous communities have legitimate reasons to be cautious about how their data is handled. Having a dedicated steward of OCAP™ compliance in place at launch — rather than retrofitting governance after the fact — is both an ethical obligation and a trust signal to the communities we serve.',
+          'Every new user, every partner integration, and every AI feature we ship carries data governance implications. Indigenous communities have legitimate reasons to be cautious about how their data is handled. Having a dedicated steward of OCAP® compliance in place at launch — rather than retrofitting governance after the fact — is both an ethical obligation and a trust signal to the communities we serve.',
       },
     ],
   },
@@ -447,7 +447,7 @@ const Careers = () => {
     <div className="min-h-screen bg-background">
       <MetaTags
         title="Careers | Indigenous Rising AI"
-        description="Explore careers at Indigenous Rising AI and apply to build OCAP™-aligned, community-driven technology with First Nations, Métis, and Inuit communities across Turtle Island."
+        description="Explore careers at Indigenous Rising AI and apply to build OCAP®-aligned, community-driven technology with First Nations, Métis, and Inuit communities across Turtle Island."
         keywords="Indigenous careers, OCAP, Indigenous data sovereignty, community-driven AI, Indigenous Rising AI jobs"
       />
       <Navigation />
@@ -458,7 +458,7 @@ const Careers = () => {
           <section className="mt-8 max-w-4xl mx-auto space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground">Bimaadiziwin — Living a Good Life Through Good Work</h1>
             <p className="text-lg text-muted-foreground">
-              We believe economic sovereignty for Indigenous entrepreneurs starts with the right people in the right roles. At Indigenous Rising AI, every team member is part of a movement — one rooted in OCAP™ principles, Elder-guided innovation, and the long-term prosperity of First Nations, Métis, and Inuit communities across Turtle Island.
+              We believe economic sovereignty for Indigenous entrepreneurs starts with the right people in the right roles. At Indigenous Rising AI, every team member is part of a movement — one rooted in OCAP® principles, Elder-guided innovation, and the long-term prosperity of First Nations, Métis, and Inuit communities across Turtle Island.
             </p>
             <p className="text-lg text-muted-foreground">
               We're building technology that serves communities, not the other way around. If that resonates with you, we want to hear from you.
@@ -715,7 +715,7 @@ const Careers = () => {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="ocap_aligned_ai_interest">Why are you interested in working on OCAP™-aligned, community-driven AI tools? <span className="text-destructive">*</span></Label>
+                      <Label htmlFor="ocap_aligned_ai_interest">Why are you interested in working on OCAP®-aligned, community-driven AI tools? <span className="text-destructive">*</span></Label>
                       <Textarea id="ocap_aligned_ai_interest" aria-required="true" aria-invalid={!!errors.ocap_aligned_ai_interest} aria-describedby="ocap-hint" {...register('ocap_aligned_ai_interest')} className="min-h-[140px]" />
                       <p id="ocap-hint" className="text-xs text-muted-foreground">Tell us what draws you to this specific kind of work — technically, ethically, or personally. (300 words or fewer)</p>
                       {errors.ocap_aligned_ai_interest && <p className="text-sm text-destructive" role="alert">{errors.ocap_aligned_ai_interest.message}</p>}

@@ -43,10 +43,10 @@ Learn the essential elements of business planning, including:
 - Financial planning and budgeting
 - Legal requirements and registration...`,
 
-  '2': `# OCAP™ Principles Overview
+  '2': `# OCAP® Principles Overview
 
-## What is OCAP™?
-OCAP™ stands for Ownership, Control, Access, and Possession. These are principles developed by the First Nations Information Governance Centre to guide how Indigenous communities manage their own information and data.
+## What is OCAP®?
+OCAP® stands for Ownership, Control, Access, and Possession. These are principles developed by the First Nations Information Governance Centre to guide how Indigenous communities manage their own information and data.
 
 ## The Four Pillars
 

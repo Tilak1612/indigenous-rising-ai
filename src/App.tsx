@@ -21,7 +21,6 @@ import {
 } from "./components/skeletons";
 
 // Lazy load route components
-const Index = lazy(() => import("./pages/Index"));
 const LandingV2 = lazy(() => import("./pages/LandingV2"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Auth = lazy(() => import("./pages/Auth"));
@@ -117,17 +116,10 @@ const App = () => (
                   </Suspense>
                 }
               />
-              {/* Previous homepage, kept reachable for reference / rollback */}
-              <Route
-                path="/v1"
-                element={
-                  <Suspense fallback={<PageSkeleton variant="landing" />}>
-                    <Index />
-                  </Suspense>
-                }
-              />
-              {/* /landing-v2 now serves the same content as the homepage —
-                  redirect it to / to avoid duplicate content. */}
+              {/* The previous homepage (Index) carried unverified endorsements,
+                  fabricated quotes, and placeholder content. It is retired:
+                  /v1 and /landing-v2 both redirect to the canonical homepage. */}
+              <Route path="/v1" element={<Navigate to="/" replace />} />
               <Route path="/landing-v2" element={<Navigate to="/" replace />} />
               <Route
                 path="/privacy"

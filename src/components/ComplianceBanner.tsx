@@ -44,7 +44,7 @@ const ComplianceBanner = () => {
           <Shield className="w-3.5 h-3.5 text-[#a5d6a7] shrink-0" aria-hidden="true" />
           <p className="text-[11px] sm:text-xs text-[#e8f5e9] leading-tight">
             Cookies enabled. Compliant with{' '}
-            <span className="font-semibold text-white">PIPEDA · CASL · AODA · OCAP™</span>.
+            <span className="font-semibold text-white">PIPEDA · CASL · AODA · OCAP®</span>.
             Data stored in Canada.
           </p>
         </div>

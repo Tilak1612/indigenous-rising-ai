@@ -41,7 +41,7 @@ const certifications: Certification[] = [
   },
   {
     id: '3',
-    title: 'OCAP™ Principles Certification',
+    title: 'OCAP® Principles Certification',
     description: 'Master the Ownership, Control, Access, and Possession principles for data sovereignty.',
     modules: 5,
     completedModules: 0,

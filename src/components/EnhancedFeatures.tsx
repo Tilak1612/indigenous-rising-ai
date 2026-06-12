@@ -11,7 +11,7 @@ const EnhancedFeatures = () => {
       title: 'Business Planning Assistant',
       slug: 'business-planning',
       ojibwe: 'Oshki-Kijiganan Naadamaage',
-      description: 'OCAP™ compliant AI tools that connect traditional knowledge with modern business strategy.',
+      description: 'OCAP® compliant AI tools that connect traditional knowledge with modern business strategy.',
       benefits: [
         'Cultural business templates',
         'Community impact forecasting',
@@ -81,7 +81,7 @@ const EnhancedFeatures = () => {
       title: 'Data Sovereignty Tools',
       slug: 'subscription-plans',
       ojibwe: 'Gibaakwa\'iganan Dibendaagoziwining',
-      description: 'Built on OCAP™ principles so communities control their data.',
+      description: 'Built on OCAP® principles so communities control their data.',
       benefits: [
         'Secure, encrypted storage',
         'Community-controlled access',

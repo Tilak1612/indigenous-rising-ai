@@ -21,7 +21,7 @@ export const features: FeatureEntry[] = [
     description: "Intelligent tools that respect Indigenous data sovereignty while providing AI-powered business insights and traditional knowledge integration.",
     icon: TrendingUp,
     features: [
-      "OCAP™ compliant data handling",
+      "OCAP® compliant data handling",
       "Traditional knowledge integration",
       "Cultural business model guidance",
       "Community impact forecasting",

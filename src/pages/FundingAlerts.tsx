@@ -292,7 +292,7 @@ const FundingAlerts: React.FC = () => {
                       </ShinyButton>
 
                       <p className="text-xs text-muted-foreground text-center">
-                        Your data is stored in Canada (Supabase ca-central-1) under OCAP™ principles. We never sell or share your email.
+                        Your data is stored in Canada (Supabase ca-central-1) under OCAP® principles. We never sell or share your email.
                       </p>
                     </form>
                   </CardContent>

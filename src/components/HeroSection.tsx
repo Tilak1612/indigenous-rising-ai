@@ -65,7 +65,7 @@ const HeroSection = () => {
               textShadow: '0 2px 12px rgba(0,0,0,0.5)',
             }}
           >
-            AI-powered business support for Indigenous entrepreneurs across Canada, built on OCAP™ and traditional knowledge.
+            AI-powered business support for Indigenous entrepreneurs across Canada, built on OCAP® and traditional knowledge.
           </p>
 
           {/* Key features badges */}
@@ -74,7 +74,7 @@ const HeroSection = () => {
             style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.8s forwards' }}
           >
             {[
-              { icon: Shield, label: 'OCAP™ Compliant' },
+              { icon: Shield, label: 'OCAP® Compliant' },
               { icon: Sparkles, label: 'AI-Powered Matching' },
               { icon: Globe, label: 'Multi-Language Support' },
             ].map(({ icon: Icon, label }) => (

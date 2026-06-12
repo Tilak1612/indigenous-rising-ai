@@ -81,7 +81,7 @@ export default function RecentActivity() {
             </div>
             <p className="text-sm font-medium">No activity yet</p>
             <p className="text-xs text-muted-foreground mt-1 max-w-xs">
-              Save a business plan, request a funding match, or complete an OCAP™
+              Save a business plan, request a funding match, or complete an OCAP®
               requirement and your recent actions will show up here.
             </p>
             <Button size="sm" variant="outline" asChild className="mt-4">

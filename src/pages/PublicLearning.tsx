@@ -210,7 +210,7 @@ const PublicLearning: React.FC = () => {
                   </li>
                   <li className="flex items-center gap-3 text-foreground">
                     <Award className="w-5 h-5 text-primary" />
-                    OCAP™ Compliance Training
+                    OCAP® Compliance Training
                   </li>
                 </ul>
               </div>
