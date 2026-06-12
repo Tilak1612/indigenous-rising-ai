@@ -70,14 +70,15 @@ const CanadianCompliance = () => {
                   </div>
                   <div>
                     <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-                      PIPEDA Compliance
+                      PIPEDA-aligned
                     </h2>
                     <p className="text-sm text-primary font-semibold mb-2">
                       Personal Information Protection and Electronic Documents Act
                     </p>
                     <p className="text-muted-foreground">
-                      We comply with Canada's federal privacy law governing how private sector organizations 
-                      collect, use, and disclose personal information.
+                      We build and operate in alignment with Canada's federal privacy law governing how
+                      private sector organizations collect, use, and disclose personal information. This
+                      describes how we operate; it is not a third-party certification.
                     </p>
                   </div>
                 </div>
@@ -157,13 +158,15 @@ const CanadianCompliance = () => {
                   </div>
                   <div>
                     <h2 className="font-display text-2xl font-bold text-foreground mb-2">
-                      CASL Compliance
+                      CASL-aligned
                     </h2>
                     <p className="text-sm text-accent font-semibold mb-2">
                       Canadian Anti-Spam Legislation
                     </p>
                     <p className="text-muted-foreground">
-                      We strictly adhere to Canada's laws governing commercial electronic messages and consent.
+                      We build our messaging and consent flows in alignment with Canada's laws governing
+                      commercial electronic messages. This describes how we operate; it is not a third-party
+                      certification.
                     </p>
                   </div>
                 </div>

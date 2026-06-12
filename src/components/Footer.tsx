@@ -2,6 +2,7 @@ import { Separator } from '@/components/ui/separator';
 import { Link } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
 import { Mail, Twitter, Linkedin, Youtube, Leaf } from 'lucide-react';
+import { ComplianceBadge, DataResidencyNote } from '@/components/trust';
 
 // Single canonical footer used on every route (marketing + inner pages + the
 // homepage). New brand (IR monogram + terracotta tokens). Claims kept factual
@@ -96,13 +97,14 @@ const Footer = () => {
               </a>
             </div>
 
+            {/* Trust badges now link to /compliance for the full explanation */}
             <div className="flex flex-wrap gap-2">
-              {['Built around OCAP®', 'Data stored in Canada', 'PIPEDA-aligned'].map((b) => (
-                <span key={b} className="inline-flex items-center rounded-full border border-border/60 bg-muted/30 px-3 py-1 text-xs text-muted-foreground">
-                  {b}
-                </span>
-              ))}
+              <ComplianceBadge label="Built around OCAP®" />
+              <ComplianceBadge label="PIPEDA-aligned" />
+              <ComplianceBadge label="Data stored in Canada" />
             </div>
+
+            <DataResidencyNote className="max-w-md" />
 
             <div className="flex gap-3 pt-1">
               {SOCIAL.map((s) => {

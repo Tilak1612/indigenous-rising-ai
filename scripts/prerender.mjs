@@ -25,7 +25,12 @@ const OG_DEFAULT = `${BASE}/og-home.jpg`;
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // ── Static marketing routes (unique title + description per page) ───────────
+const HOME_TITLE = 'Indigenous Rising AI — The AI platform for Indigenous business growth';
+const HOME_DESC = 'Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.';
+
 const MARKETING = [
+  { p: '/', t: HOME_TITLE, d: HOME_DESC },
+  { p: '/auth', t: 'Sign in | Indigenous Rising AI', d: 'Sign in to your Indigenous Rising AI account.', robots: 'noindex, nofollow' },
   { p: '/pricing', t: 'Pricing — Free, Growth & Nations plans | Indigenous Rising AI', d: 'Honest, transparent pricing for Indigenous entrepreneurs. Start free; Growth is $49/mo. OCAP®-aligned, data stored in Canada, and you are never billed for a feature before it ships.' },
   { p: '/blog', t: 'Blog — Indigenous business funding & growth | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications, business planning, and growth across Canada — written for First Nations, Métis, and Inuit entrepreneurs.' },
   { p: '/contact', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
@@ -71,10 +76,13 @@ async function loadBlogPosts() {
   }
 }
 
-function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd }) {
+function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd, robots }) {
   let out = html;
   const T = esc(title), D = esc(description), U = esc(url), I = esc(ogImage);
   out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${T}</title>`);
+  if (robots) {
+    out = out.replace(/(<meta\s+name="robots"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${esc(robots)}$2`);
+  }
   out = out.replace(/(<meta\s+name="description"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${D}$2`);
   out = out.replace(/(<meta\s+property="og:title"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${T}$2`);
   out = out.replace(/(<meta\s+property="og:description"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${D}$2`);
@@ -110,7 +118,8 @@ async function main() {
 
   for (const m of MARKETING) {
     try {
-      await writeRoute(template, { p: m.p, url: `${BASE}${m.p}`, title: m.t, description: m.d });
+      const url = m.p === '/' ? `${BASE}/` : `${BASE}${m.p}`;
+      await writeRoute(template, { p: m.p, url, title: m.t, description: m.d, robots: m.robots });
       count++;
     } catch (e) { console.warn('[prerender] route failed', m.p, e.message); }
   }
@@ -121,18 +130,29 @@ async function main() {
     const url = `${BASE}/blog/${post.slug}`;
     const title = `${post.title} | Indigenous Rising AI`;
     const description = post.summary || post.excerpt || '';
-    const jsonLd = {
-      '@context': 'https://schema.org',
-      '@type': 'BlogPosting',
-      headline: post.title,
-      description,
-      url,
-      datePublished: post.publishedAt || post.date,
-      dateModified: post.updatedAt || post.publishedAt || post.date,
-      author: { '@type': 'Organization', name: post.author?.name || 'Indigenous Rising AI' },
-      publisher: { '@type': 'Organization', name: 'Indigenous Rising AI' },
-      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    };
+    const jsonLd = [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description,
+        url,
+        datePublished: post.publishedAt || post.date,
+        dateModified: post.updatedAt || post.publishedAt || post.date,
+        author: { '@type': 'Organization', name: post.author?.name || 'Indigenous Rising AI' },
+        publisher: { '@type': 'Organization', name: 'Indigenous Rising AI' },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
+          { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BASE}/blog` },
+          { '@type': 'ListItem', position: 3, name: post.title, item: url },
+        ],
+      },
+    ];
     try {
       await writeRoute(template, { p: `/blog/${post.slug}`, url, title, description, jsonLd });
       count++;
