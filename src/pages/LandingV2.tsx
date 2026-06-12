@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import {
   PlusCircle, ArrowRight, Bell, BarChart3, CheckCircle2, ClipboardCheck,
   FileText, Download, Menu, HandHeart, Leaf, Lock, TrendingUp, MapPin,
@@ -69,6 +70,30 @@ const Icon = ({
     />
   );
 };
+
+// Render a real react-router Link for internal routes ("/auth", "/contact", …)
+// and a plain anchor for in-page section links ("#pricing", …). Lets the
+// landing page's CTAs navigate for real when it's used as the homepage.
+const LinkTo = ({
+  to,
+  children,
+  className,
+  style,
+}: {
+  to: string;
+  children: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+}) =>
+  to.startsWith('/') ? (
+    <Link to={to} className={className} style={style}>
+      {children}
+    </Link>
+  ) : (
+    <a href={to} className={className} style={style}>
+      {children}
+    </a>
+  );
 
 type Tab = 'funding' | 'plan' | 'training' | 'growth';
 
@@ -265,8 +290,8 @@ const LandingV2 = () => {
               ))}
             </nav>
             <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-              <a href="#" className="ir-login-link" style={{ fontSize: 14.5, color: '#6B5645', textDecoration: 'none', fontWeight: 500 }}>Log in</a>
-              <a href="#start" className="irv2-hov-cta" style={{ background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 14, fontWeight: 600, padding: '11px 20px', borderRadius: 10, boxShadow: '0 2px 10px rgba(196,90,51,.28)' }}>Start free account</a>
+              <LinkTo to="/auth" className="ir-login-link" style={{ fontSize: 14.5, color: '#6B5645', textDecoration: 'none', fontWeight: 500 }}>Log in</LinkTo>
+              <LinkTo to="/auth" className="irv2-hov-cta" style={{ background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 14, fontWeight: 600, padding: '11px 20px', borderRadius: 10, boxShadow: '0 2px 10px rgba(196,90,51,.28)' }}>Start free account</LinkTo>
               <button onClick={() => setMenuOpen((v) => !v)} aria-label="Menu" className="ir-burger" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#2C1E12', padding: 4 }}>
                 <Icon icon="solar:hamburger-menu-linear" size={26} />
               </button>
@@ -297,10 +322,10 @@ const LandingV2 = () => {
               Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.
             </p>
             <div data-reveal style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', alignItems: 'center', marginTop: 38 }}>
-              <a href="#start" className="irv2-hov-cta-lift" style={{ background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 30px', borderRadius: 12, boxShadow: '0 6px 20px rgba(196,90,51,.3)', display: 'inline-flex', alignItems: 'center', gap: 9 }}>
+              <LinkTo to="/auth" className="irv2-hov-cta-lift" style={{ background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 30px', borderRadius: 12, boxShadow: '0 6px 20px rgba(196,90,51,.3)', display: 'inline-flex', alignItems: 'center', gap: 9 }}>
                 Start free account
                 <Icon icon="solar:arrow-right-linear" size={19} />
-              </a>
+              </LinkTo>
               <a href="#platform" className="irv2-hov-link" style={{ color: '#2C1E12', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 14px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                 See the platform
                 <Icon icon="solar:play-circle-linear" size={19} />
@@ -634,7 +659,7 @@ const LandingV2 = () => {
                 <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#2C1E12', margin: 0 }}>Free</h3>
                 <p style={{ fontSize: 14, color: '#8A7560', margin: '6px 0 18px' }}>For getting started.</p>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#2C1E12' }}>$0</span><span style={{ fontSize: 15, color: '#8A7560' }}>/ forever</span></div>
-                <a href="#start" className="irv2-hov-free-btn" style={{ textAlign: 'center', background: '#2C1E12', color: '#FAF6EF', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 }}>Start free account</a>
+                <LinkTo to="/auth" className="irv2-hov-free-btn" style={{ textAlign: 'center', background: '#2C1E12', color: '#FAF6EF', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 }}>Start free account</LinkTo>
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
                   {['Funding Navigator search & deadline reminders', '1 guided business plan', 'Full training library', 'Data export anytime'].map((f) => (
                     <li key={f} style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#4A3826', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#3E6B4F', flexShrink: 0 }} /> {f}</li>
@@ -647,7 +672,7 @@ const LandingV2 = () => {
                 <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#FBF5EC', margin: 0 }}>Growth</h3>
                 <p style={{ fontSize: 14, color: '#C8B6A2', margin: '6px 0 18px' }}>For businesses that are scaling.</p>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#FBF5EC' }}>$24</span><span style={{ fontSize: 15, color: '#C8B6A2' }}>/ month</span></div>
-                <a href="#start" className="irv2-hov-growth-btn" style={{ textAlign: 'center', background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 }}>Start free account</a>
+                <LinkTo to="/auth" className="irv2-hov-growth-btn" style={{ textAlign: 'center', background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 }}>Start free account</LinkTo>
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
                   <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#E7D8C5', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#8FBF9C', flexShrink: 0 }} /> Everything in Free</li>
                   <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#E7D8C5', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#8FBF9C', flexShrink: 0 }} /> Unlimited business plans</li>
@@ -661,7 +686,7 @@ const LandingV2 = () => {
                 <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#2C1E12', margin: 0 }}>Nations & Organizations</h3>
                 <p style={{ fontSize: 14, color: '#8A7560', margin: '6px 0 18px' }}>For communities & support orgs.</p>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 38, color: '#2C1E12' }}>Let's talk</span></div>
-                <a href="#start" className="irv2-hov-nations-btn" style={{ textAlign: 'center', background: '#FFFDF9', color: '#2C1E12', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24, border: '1px solid rgba(74,56,38,.2)' }}>Talk to our team</a>
+                <LinkTo to="/contact" className="irv2-hov-nations-btn" style={{ textAlign: 'center', background: '#FFFDF9', color: '#2C1E12', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24, border: '1px solid rgba(74,56,38,.2)' }}>Talk to our team</LinkTo>
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
                   {['Seats for your members & clients', 'Role-based access you manage', 'Data governance support', 'Onboarding for your team'].map((f) => (
                     <li key={f} style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#4A3826', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#3E6B4F', flexShrink: 0 }} /> {f}</li>
@@ -704,12 +729,12 @@ const LandingV2 = () => {
               <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(32px,4.5vw,54px)', lineHeight: 1.06, letterSpacing: '-.02em', color: '#FFF7F0', margin: '0 auto', maxWidth: 680 }}>Start building your business today.</h2>
               <p style={{ fontSize: 18, lineHeight: 1.6, color: '#FCE3D6', margin: '20px auto 0', maxWidth: 480 }}>Free to start. Your data stays in Canada, and stays yours.</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', marginTop: 34 }}>
-                <a href="#" className="irv2-hov-lift" style={{ background: '#FFF7F0', color: '#C45A33', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 32px', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 9, boxShadow: '0 8px 24px rgba(36,25,16,.2)' }}>
+                <LinkTo to="/auth" className="irv2-hov-lift" style={{ background: '#FFF7F0', color: '#C45A33', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 32px', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 9, boxShadow: '0 8px 24px rgba(36,25,16,.2)' }}>
                   Start free account <Icon icon="solar:arrow-right-linear" size={19} />
-                </a>
-                <a href="#" className="irv2-hov-soft" style={{ background: 'rgba(255,255,255,.14)', color: '#FFF7F0', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 28px', borderRadius: 12, border: '1px solid rgba(255,255,255,.3)' }}>
+                </LinkTo>
+                <LinkTo to="/contact" className="irv2-hov-soft" style={{ background: 'rgba(255,255,255,.14)', color: '#FFF7F0', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 28px', borderRadius: 12, border: '1px solid rgba(255,255,255,.3)' }}>
                   Talk to our team
-                </a>
+                </LinkTo>
               </div>
             </div>
           </div>
@@ -737,8 +762,8 @@ const LandingV2 = () => {
               <div>
                 <h4 style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '.1em', color: '#8A7560', margin: '0 0 16px' }}>Company</h4>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
-                  {[['Data sovereignty', '#sovereignty'], ['Trust & security', '#'], ['FAQ', '#faq'], ['Contact', '#']].map(([l, h]) => (
-                    <a key={l} href={h} className="irv2-hov-foot" style={{ fontSize: 14.5, color: '#C8B6A2', textDecoration: 'none' }}>{l}</a>
+                  {[['Data sovereignty', '#sovereignty'], ['Trust & security', '/compliance'], ['FAQ', '#faq'], ['Contact', '/contact']].map(([l, h]) => (
+                    <LinkTo key={l} to={h} className="irv2-hov-foot" style={{ fontSize: 14.5, color: '#C8B6A2', textDecoration: 'none' }}>{l}</LinkTo>
                   ))}
                 </div>
               </div>
@@ -752,8 +777,8 @@ const LandingV2 = () => {
             <div style={{ marginTop: 36, paddingTop: 24, borderTop: '1px solid rgba(243,233,219,.1)', display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'space-between', alignItems: 'center' }}>
               <p style={{ fontSize: 13, color: '#8A7560', margin: 0 }}>© 2026 Indigenous Rising. OCAP® is a registered trademark of the First Nations Information Governance Centre.</p>
               <div style={{ display: 'flex', gap: 22 }}>
-                {['Privacy', 'Terms', 'Trust'].map((l) => (
-                  <a key={l} href="#" className="irv2-hov-foot" style={{ fontSize: 13, color: '#8A7560', textDecoration: 'none' }}>{l}</a>
+                {[['Privacy', '/privacy'], ['Terms', '/terms'], ['Trust', '/compliance']].map(([l, h]) => (
+                  <LinkTo key={l} to={h} className="irv2-hov-foot" style={{ fontSize: 13, color: '#8A7560', textDecoration: 'none' }}>{l}</LinkTo>
                 ))}
               </div>
             </div>
