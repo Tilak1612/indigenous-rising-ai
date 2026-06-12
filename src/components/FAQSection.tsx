@@ -26,7 +26,7 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
     },
     {
       question: 'How do I access funding opportunities?',
-      answer: 'All members can browse our funding database. Free accounts get 5 AI-powered matches per month, while Growing Strong members get unlimited access. Our AI analyzes your business profile, community impact goals, and eligibility criteria to match you with the most relevant funding opportunities from federal, provincial, and private sources.'
+      answer: 'All members can browse our funding database. Free accounts get 3 AI-powered matches per month, while paid plans (Growth and up) get significantly more. Our AI analyzes your business profile, community impact goals, and eligibility criteria to match you with the most relevant funding opportunities from federal, provincial, and private sources.'
     },
     {
       question: 'Is my business data stored in Canada?',
@@ -58,7 +58,7 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
     },
     {
       question: 'Can I get help with grant applications?',
-      answer: 'Yes! Growing Strong and Elder Wisdom members have access to grant writing templates, application review services, and can book sessions with our funding specialists who understand the unique needs of Indigenous businesses. We also offer workshops on effective grant writing throughout the year.'
+      answer: 'Yes! Growth and Professional members have access to grant writing templates, application review services, and can book sessions with our funding specialists who understand the unique needs of Indigenous businesses. We also offer workshops on effective grant writing throughout the year.'
     },
     {
       question: 'What makes this platform different from other business tools?',

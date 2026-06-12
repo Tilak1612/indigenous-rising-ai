@@ -680,7 +680,7 @@ const LandingV2 = () => {
                 <span style={{ position: 'absolute', top: 18, right: 18, fontSize: 11.5, fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', background: '#C45A33', color: '#FAF6EF', padding: '5px 11px', borderRadius: 100 }}>Most popular</span>
                 <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#FBF5EC', margin: 0 }}>Growth</h3>
                 <p style={{ fontSize: 14, color: '#C8B6A2', margin: '6px 0 18px' }}>For businesses that are scaling.</p>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#FBF5EC' }}>$24</span><span style={{ fontSize: 15, color: '#C8B6A2' }}>/ month</span></div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#FBF5EC' }}>$49</span><span style={{ fontSize: 15, color: '#C8B6A2' }}>/ month</span></div>
                 <LinkTo to="/auth" className="irv2-hov-growth-btn" style={{ textAlign: 'center', background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 }}>Start free account</LinkTo>
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
                   <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#E7D8C5', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#8FBF9C', flexShrink: 0 }} /> Everything in Free</li>
