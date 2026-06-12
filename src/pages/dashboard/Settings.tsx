@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
-import { supabase } from '@/lib/supabase';
+import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { readStoredSession } from '@/lib/auth-storage';
 import { toast } from 'sonner';
 import { 
   Settings as SettingsIcon, 
@@ -121,24 +122,52 @@ export default function Settings() {
   const tierLabel = product_id?.toLowerCase().includes('enterprise') ? 'Gimishoomis (Enterprise)' :
                     subscribed ? 'Ogichidaakwe (Pro)' : 'Maadaadiziwin (Free)';
 
-  // Load saved preferences from Supabase on mount
+  // Upsert preferences via direct PostgREST (not the supabase-js SDK, whose
+  // query path can hang on this project). user_id is the PK, so
+  // Prefer: resolution=merge-duplicates does a true upsert.
+  const upsertPrefs = useCallback(async (patch: Record<string, unknown>): Promise<boolean> => {
+    if (!user) return false;
+    const token = readStoredSession()?.access_token ?? SUPABASE_ANON_KEY;
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/user_preferences`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Prefer: 'resolution=merge-duplicates',
+      },
+      body: JSON.stringify({ user_id: user.id, updated_at: new Date().toISOString(), ...patch }),
+    });
+    return res.ok;
+  }, [user]);
+
+  // Load saved preferences on mount (direct fetch — reliable).
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from('user_preferences')
-      .select('notifications, privacy, language')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (!data) return;
-        if (data.notifications && Object.keys(data.notifications as object).length > 0) {
-          setNotifications(prev => ({ ...prev, ...(data.notifications as NotificationSettings) }));
+    let cancelled = false;
+    (async () => {
+      try {
+        const token = readStoredSession()?.access_token ?? SUPABASE_ANON_KEY;
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/user_preferences?select=notifications,privacy,language&user_id=eq.${user.id}`,
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` } }
+        );
+        if (!res.ok || cancelled) return;
+        const rows = (await res.json()) as Array<{ notifications?: NotificationSettings; privacy?: PrivacySettings; language?: string }>;
+        const data = rows[0];
+        if (!data || cancelled) return;
+        if (data.notifications && Object.keys(data.notifications).length > 0) {
+          setNotifications(prev => ({ ...prev, ...data.notifications }));
         }
-        if (data.privacy && Object.keys(data.privacy as object).length > 0) {
-          setPrivacy(prev => ({ ...prev, ...(data.privacy as PrivacySettings) }));
+        if (data.privacy && Object.keys(data.privacy).length > 0) {
+          setPrivacy(prev => ({ ...prev, ...data.privacy }));
         }
         if (data.language) setSelectedLanguage(data.language);
-      });
+      } catch {
+        /* keep defaults on error */
+      }
+    })();
+    return () => { cancelled = true; };
   }, [user]);
 
   const handlePasswordChange = async () => {
@@ -192,10 +221,7 @@ export default function Settings() {
   const handleSaveNotifications = async () => {
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('user_preferences')
-        .upsert({ user_id: user!.id, notifications }, { onConflict: 'user_id' });
-      if (error) throw error;
+      if (!(await upsertPrefs({ notifications }))) throw new Error('save failed');
       toast.success('Notification preferences saved');
     } catch {
       toast.error('Failed to save notification preferences');
@@ -207,10 +233,7 @@ export default function Settings() {
   const handleSavePrivacy = async () => {
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from('user_preferences')
-        .upsert({ user_id: user!.id, privacy }, { onConflict: 'user_id' });
-      if (error) throw error;
+      if (!(await upsertPrefs({ privacy }))) throw new Error('save failed');
       toast.success('Privacy settings saved');
     } catch {
       toast.error('Failed to save privacy settings');
@@ -223,10 +246,7 @@ export default function Settings() {
     setSaving(true);
     try {
       localStorage.setItem('preferred-language', selectedLanguage);
-      const { error } = await supabase
-        .from('user_preferences')
-        .upsert({ user_id: user!.id, language: selectedLanguage }, { onConflict: 'user_id' });
-      if (error) throw error;
+      if (!(await upsertPrefs({ language: selectedLanguage }))) throw new Error('save failed');
       toast.success(`Language changed to ${languages.find(l => l.code === selectedLanguage)?.name}`);
     } catch {
       toast.error('Failed to save language preference');
