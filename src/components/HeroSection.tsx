@@ -43,14 +43,14 @@ const HeroSection = () => {
             className="flex flex-col gap-2 sm:gap-3 lg:gap-4 opacity-0 translate-y-8"
             style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 0.2s forwards' }}
           >
-            <span className="inline-flex items-center gap-2 text-white/80 text-sm font-medium font-geist mb-4">
+            <span className="inline-flex items-center gap-2 text-white/80 text-sm font-medium mb-4">
               <Sparkles className="w-4 h-4" />
               Biidaasige Naadamaage • Community-Driven Innovation
             </span>
 
             {/* Main heading */}
             <h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white font-geist tracking-tighter leading-[1.05]"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tighter leading-[1.05]"
               style={{ textShadow: '0 4px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.4)' }}
             >
               AI-Powered Support for Indigenous Entrepreneurs
@@ -59,7 +59,7 @@ const HeroSection = () => {
 
           {/* Subtitle */}
           <p
-            className="mt-6 max-w-xl text-white/90 text-base sm:text-lg leading-relaxed font-geist opacity-0 translate-y-8"
+            className="mt-6 max-w-xl text-white/90 text-base sm:text-lg leading-relaxed opacity-0 translate-y-8"
             style={{
               animation: 'fadeSlideBlurIn 1.2s ease-out 0.6s forwards',
               textShadow: '0 2px 12px rgba(0,0,0,0.5)',
@@ -83,7 +83,7 @@ const HeroSection = () => {
                 className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium rounded-full px-4 py-2 ring-1 ring-white/20 backdrop-blur-sm"
               >
                 <Icon className="w-4 h-4" />
-                <span className="font-geist">{label}</span>
+                <span>{label}</span>
               </div>
             ))}
           </div>
@@ -94,7 +94,7 @@ const HeroSection = () => {
             style={{ animation: 'fadeSlideBlurIn 1.2s ease-out 1s forwards' }}
           >
             <ShinyButton onClick={() => navigate('/auth')} className="group">
-              <span className="font-geist">Start Free Account</span>
+              <span>Start Free Account</span>
               <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover:translate-x-0.5 transition-transform" />
             </ShinyButton>
 
@@ -107,7 +107,7 @@ const HeroSection = () => {
               }
               className="group"
             >
-              <span className="font-geist">Schedule Demo</span>
+              <span>Schedule Demo</span>
             </ShinyButton>
           </div>
 
@@ -163,7 +163,7 @@ const HeroSection = () => {
         >
           <button
             onClick={scrollToStats}
-            className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition font-geist"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition"
           >
             <ChevronDown className="w-6 h-4 animate-pulse-soft" />
             Scroll to See More

@@ -98,7 +98,7 @@ const categoryInfo = {
     title: 'Ownership',
     description: 'Your community owns its cultural knowledge and data',
     icon: FileText,
-    color: 'bg-blue-500/10 text-blue-600',
+    color: 'bg-primary/10 text-primary',
   },
   control: {
     title: 'Control',
@@ -110,19 +110,19 @@ const categoryInfo = {
     title: 'Access',
     description: 'Your community decides who can access data',
     icon: Eye,
-    color: 'bg-purple-500/10 text-purple-600',
+    color: 'bg-primary/10 text-primary',
   },
   possession: {
     title: 'Possession',
     description: 'Your community physically holds and protects data',
     icon: Database,
-    color: 'bg-amber-500/10 text-amber-600',
+    color: 'bg-warning/10 text-warning',
   },
 };
 
 const statusStyles = {
   complete: { label: 'Complete', color: 'bg-success', icon: CheckCircle2 },
-  in_progress: { label: 'In Progress', color: 'bg-amber-500', icon: AlertCircle },
+  in_progress: { label: 'In Progress', color: 'bg-warning', icon: AlertCircle },
   pending: { label: 'Pending', color: 'bg-muted', icon: Info },
 };
 
@@ -285,7 +285,7 @@ export default function CompliancePage() {
                           className={cn(
                             "h-5 w-5",
                             item.status === 'complete' && "text-success",
-                            item.status === 'in_progress' && "text-amber-500",
+                            item.status === 'in_progress' && "text-warning",
                             item.status === 'pending' && "text-muted-foreground"
                           )}
                         />
@@ -302,7 +302,7 @@ export default function CompliancePage() {
                           variant={item.status === 'complete' ? 'default' : 'secondary'}
                           className={cn(
                             item.status === 'complete' && "bg-success",
-                            item.status === 'in_progress' && "bg-amber-500"
+                            item.status === 'in_progress' && "bg-warning"
                           )}
                         >
                           {statusStyles[item.status].label}
@@ -327,7 +327,7 @@ export default function CompliancePage() {
                             className={cn(
                               "h-5 w-5",
                               item.status === 'complete' && "text-success",
-                              item.status === 'in_progress' && "text-amber-500",
+                              item.status === 'in_progress' && "text-warning",
                               item.status === 'pending' && "text-muted-foreground"
                             )}
                           />
@@ -339,7 +339,7 @@ export default function CompliancePage() {
                             variant={item.status === 'complete' ? 'default' : 'secondary'}
                             className={cn(
                               item.status === 'complete' && "bg-success",
-                              item.status === 'in_progress' && "bg-amber-500"
+                              item.status === 'in_progress' && "bg-warning"
                             )}
                           >
                             {statusStyles[item.status].label}

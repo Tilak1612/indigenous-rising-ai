@@ -75,12 +75,12 @@ const iconMap = {
 };
 
 const colorMap = {
-  plan: 'bg-blue-500/10 text-blue-600',
+  plan: 'bg-primary/10 text-primary',
   funding: 'bg-success/10 text-success',
-  learning: 'bg-purple-500/10 text-purple-600',
-  impact: 'bg-amber-500/10 text-amber-600',
-  community: 'bg-pink-500/10 text-pink-600',
-  network: 'bg-cyan-500/10 text-cyan-600',
+  learning: 'bg-primary/10 text-primary',
+  impact: 'bg-warning/10 text-warning',
+  community: 'bg-primary/10 text-primary',
+  network: 'bg-primary/10 text-primary',
 };
 
 const statusBadge = {

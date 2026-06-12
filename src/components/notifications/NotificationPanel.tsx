@@ -44,9 +44,9 @@ const iconMap = {
 
 const colorMap = {
   funding: 'text-primary bg-primary/10',
-  course: 'text-blue-600 bg-blue-500/10',
-  community: 'text-purple-600 bg-purple-500/10',
-  system: 'text-amber-600 bg-amber-500/10',
+  course: 'text-primary bg-primary/10',
+  community: 'text-success bg-success/10',
+  system: 'text-warning bg-warning/10',
   security: 'text-destructive bg-destructive/10',
 };
 

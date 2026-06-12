@@ -40,10 +40,10 @@ interface Invitation {
 }
 
 const roleColors: Record<string, string> = {
-  owner: 'bg-amber-500',
-  admin: 'bg-blue-500',
+  owner: 'bg-warning',
+  admin: 'bg-primary',
   member: 'bg-success',
-  viewer: 'bg-gray-500',
+  viewer: 'bg-muted-foreground',
 };
 
 const initials = (s: string) => s.split(/[ @.]/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase()).join('');
@@ -150,8 +150,8 @@ export default function Team() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-12 w-12 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                <Mail className="h-6 w-6 text-amber-500" />
+              <div className="h-12 w-12 rounded-lg bg-warning/10 flex items-center justify-center">
+                <Mail className="h-6 w-6 text-warning" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{pendingCount}</p>

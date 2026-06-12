@@ -18,7 +18,7 @@ const ImpactReport: React.FC = () => {
     <div className="bg-white/4 p-4 rounded-md space-y-3">
       <h3 className="font-medium">Impact Report</h3>
       <p className="text-sm text-white/70">Auto-generate reports aligned to TRC calls and typical funder expectations.</p>
-      <button onClick={generate} className="mt-3 px-3 py-2 bg-indigo-600 rounded-md text-white">Generate report</button>
+      <button onClick={generate} className="mt-3 px-3 py-2 bg-primary rounded-md text-white">Generate report</button>
     </div>
   );
 };

@@ -53,7 +53,7 @@ const Navigation = () => {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="hover:text-white transition text-sm font-medium font-geist whitespace-nowrap"
+                    className="hover:text-white transition text-sm font-medium whitespace-nowrap"
                     onClick={(e) => {
                       e.preventDefault();
                       if (location.pathname !== '/') {
@@ -73,7 +73,7 @@ const Navigation = () => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="hover:text-white transition text-sm font-medium font-geist whitespace-nowrap"
+                  className="hover:text-white transition text-sm font-medium whitespace-nowrap"
                 >
                   {item.name}
                 </Link>
@@ -86,7 +86,7 @@ const Navigation = () => {
             {user ? (
               <button
                 onClick={() => signOut()}
-                className="hidden md:inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90 font-geist"
+                className="hidden md:inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90"
               >
                 <LogOut className="w-4 h-4" />
                 Logout
@@ -94,7 +94,7 @@ const Navigation = () => {
             ) : (
               <Link
                 to="/auth"
-                className="hidden md:inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90 font-geist"
+                className="hidden md:inline-flex items-center gap-2 hover:text-white transition text-sm font-medium text-white/90"
               >
                 Login
                 <ArrowUpRight className="w-4 h-4" />
@@ -142,7 +142,7 @@ const Navigation = () => {
                   className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition group"
                 >
                   <Icon className="w-4 h-4" />
-                  <span className="font-medium font-geist">{item.name}</span>
+                  <span className="font-medium">{item.name}</span>
                 </a>
               );
             }
@@ -155,7 +155,7 @@ const Navigation = () => {
                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition group"
               >
                 <Icon className="w-4 h-4" />
-                <span className="font-medium font-geist">{item.name}</span>
+                <span className="font-medium">{item.name}</span>
               </Link>
             );
           })}
@@ -163,7 +163,7 @@ const Navigation = () => {
           <div className="pt-4 px-2 border-t border-white/10 mt-4">
             {user ? (
               <div className="space-y-2">
-                <p className="text-sm text-center text-white/60 px-4 font-geist">
+                <p className="text-sm text-center text-white/60 px-4">
                   {user.email}
                 </p>
                 <ShinyButton 

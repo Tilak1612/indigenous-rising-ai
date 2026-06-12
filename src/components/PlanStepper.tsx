@@ -63,7 +63,7 @@ const PlanStepper: React.FC = () => {
 
         <button
           onClick={() => exportBankReadyPDF(answers)}
-          className="px-3 py-2 bg-indigo-600 rounded-md text-white text-sm"
+          className="px-3 py-2 bg-primary rounded-md text-white text-sm"
         >
           Export bank-ready PDF
         </button>

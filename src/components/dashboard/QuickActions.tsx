@@ -28,7 +28,7 @@ const actions: QuickAction[] = [
     description: 'Pick up where you left off',
     icon: FileText,
     href: '/dashboard/plan',
-    color: 'bg-blue-500/10 text-blue-600',
+    color: 'bg-primary/10 text-primary',
   },
   {
     title: 'Find Funding',
@@ -42,14 +42,14 @@ const actions: QuickAction[] = [
     description: 'Record community impact metrics',
     icon: TrendingUp,
     href: '/dashboard/analytics',
-    color: 'bg-purple-500/10 text-purple-600',
+    color: 'bg-primary/10 text-primary',
   },
   {
     title: 'Start Training',
     description: 'Continue learning modules',
     icon: BookOpen,
     href: '/dashboard/certifications',
-    color: 'bg-amber-500/10 text-amber-600',
+    color: 'bg-warning/10 text-warning',
   },
 ];
 

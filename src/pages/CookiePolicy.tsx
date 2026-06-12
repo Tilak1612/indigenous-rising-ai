@@ -132,13 +132,13 @@ const CookiePolicy = () => {
   const getCategoryColor = (type: CookieInfo['type']) => {
     switch (type) {
       case 'Necessary':
-        return 'bg-success/10 text-success dark:bg-success/20 dark:text-success';
+        return 'bg-success/10 text-success';
       case 'Functional':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+        return 'bg-primary/10 text-primary';
       case 'Analytics':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+        return 'bg-warning/10 text-warning';
       case 'Marketing':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200';
+        return 'bg-destructive/10 text-destructive';
     }
   };
 
@@ -202,7 +202,7 @@ const CookiePolicy = () => {
               Cookie Categories
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="p-4 bg-success/10 dark:bg-success/20 rounded-lg border border-success/30 dark:border-success/30">
+              <div className="p-4 bg-success/10 rounded-lg border border-success/30">
                 <div className="flex items-center gap-2 mb-2">
                   <Shield className="h-5 w-5 text-success" />
                   <h3 className="font-semibold text-foreground">Strictly Necessary</h3>
@@ -213,9 +213,9 @@ const CookiePolicy = () => {
                 </p>
               </div>
 
-              <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800">
+              <div className="p-4 bg-primary/5 rounded-lg border border-primary/30">
                 <div className="flex items-center gap-2 mb-2">
-                  <Settings className="h-5 w-5 text-blue-600" />
+                  <Settings className="h-5 w-5 text-primary" />
                   <h3 className="font-semibold text-foreground">Functional</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -224,9 +224,9 @@ const CookiePolicy = () => {
                 </p>
               </div>
 
-              <div className="p-4 bg-yellow-50 dark:bg-yellow-950 rounded-lg border border-yellow-200 dark:border-yellow-800">
+              <div className="p-4 bg-warning/5 rounded-lg border border-warning/30">
                 <div className="flex items-center gap-2 mb-2">
-                  <BarChart3 className="h-5 w-5 text-yellow-600" />
+                  <BarChart3 className="h-5 w-5 text-warning" />
                   <h3 className="font-semibold text-foreground">Analytics</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -235,9 +235,9 @@ const CookiePolicy = () => {
                 </p>
               </div>
 
-              <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg border border-purple-200 dark:border-purple-800">
+              <div className="p-4 bg-destructive/5 rounded-lg border border-destructive/30">
                 <div className="flex items-center gap-2 mb-2">
-                  <Megaphone className="h-5 w-5 text-purple-600" />
+                  <Megaphone className="h-5 w-5 text-destructive" />
                   <h3 className="font-semibold text-foreground">Marketing</h3>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -294,7 +294,7 @@ const CookiePolicy = () => {
             {/* Functional Cookies */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Settings className="h-5 w-5 text-blue-600" />
+                <Settings className="h-5 w-5 text-primary" />
                 Functional Cookies
               </h3>
               <div className="overflow-x-auto">
@@ -331,7 +331,7 @@ const CookiePolicy = () => {
             {/* Analytics Cookies */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-yellow-600" />
+                <BarChart3 className="h-5 w-5 text-warning" />
                 Analytics Cookies
               </h3>
               <div className="overflow-x-auto">
@@ -368,7 +368,7 @@ const CookiePolicy = () => {
             {/* Marketing Cookies */}
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Megaphone className="h-5 w-5 text-purple-600" />
+                <Megaphone className="h-5 w-5 text-destructive" />
                 Marketing Cookies
               </h3>
               <div className="overflow-x-auto">

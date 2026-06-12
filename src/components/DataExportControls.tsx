@@ -41,7 +41,7 @@ const DataExportControls: React.FC = () => {
       <p className="text-sm text-white/70">Export your data or request deletion in accordance with data rights.</p>
 
       <div className="flex items-center gap-2 mt-3">
-        <button onClick={exportData} className="px-3 py-2 bg-indigo-600 rounded-md text-white">Export data</button>
+        <button onClick={exportData} className="px-3 py-2 bg-primary rounded-md text-white">Export data</button>
         <button onClick={requestDeletion} className="px-3 py-2 bg-red-600 rounded-md text-white">Request deletion</button>
       </div>
     </section>

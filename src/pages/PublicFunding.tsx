@@ -277,7 +277,7 @@ const PublicFunding: React.FC = () => {
                   const deadline = formatDeadline(grant);
                   const deadlineColor = {
                     urgent: 'bg-destructive/10 text-destructive border-destructive/30',
-                    soon: 'bg-yellow-500/10 text-yellow-700 border-yellow-500/30',
+                    soon: 'bg-warning/10 text-warning border-warning/30',
                     open: 'bg-primary/10 text-primary border-primary/30',
                     recurring: 'bg-primary/10 text-primary border-primary/30',
                     closed: 'bg-muted text-muted-foreground',
