@@ -107,13 +107,22 @@ const App = () => (
             <Toaster />
             <Sonner />
             <Routes>
-              <Route 
-                path="/" 
+              <Route
+                path="/"
+                element={
+                  <Suspense fallback={<PageSkeleton variant="landing" />}>
+                    <LandingV2 />
+                  </Suspense>
+                }
+              />
+              {/* Previous homepage, kept reachable for reference / rollback */}
+              <Route
+                path="/v1"
                 element={
                   <Suspense fallback={<PageSkeleton variant="landing" />}>
                     <Index />
                   </Suspense>
-                } 
+                }
               />
               <Route
                 path="/landing-v2"
