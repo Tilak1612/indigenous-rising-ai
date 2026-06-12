@@ -141,21 +141,58 @@ serve(async (req) => {
         const subscription = event.data.object as Stripe.Subscription;
         logStep(`Subscription ${event.type}`, { subscriptionId: subscription.id });
 
-        const { error: updateError } = await supabaseClient
-          .from('subscriptions')
-          .update({
-            status: subscription.status,
-            current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-            current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-            cancel_at_period_end: subscription.cancel_at_period_end,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('stripe_subscription_id', subscription.id);
+        // Resolve the owning user (Stripe customer → email → profile) and UPSERT
+        // rather than a bare UPDATE. This is order-independent: if Stripe ever
+        // delivers subscription.updated before checkout.session.completed, the
+        // row is created here instead of the update silently no-op'ing.
+        const customerId = subscription.customer as string;
+        const customer = await stripe.customers.retrieve(customerId);
+        const email = (customer as Stripe.Customer).email;
 
-        if (updateError) {
-          logStep("Error updating subscription", { error: updateError });
+        let userId: string | null = null;
+        if (email) {
+          const { data: profileData } = await supabaseClient
+            .from('profiles')
+            .select('id')
+            .eq('email', email)
+            .single();
+          userId = profileData?.id ?? null;
+        }
+
+        if (userId) {
+          const { error: upsertError } = await supabaseClient
+            .from('subscriptions')
+            .upsert({
+              user_id: userId,
+              stripe_customer_id: customerId,
+              stripe_subscription_id: subscription.id,
+              stripe_product_id: subscription.items.data[0]?.price.product as string,
+              status: subscription.status,
+              current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+              current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+              cancel_at_period_end: subscription.cancel_at_period_end,
+              updated_at: new Date().toISOString(),
+            }, { onConflict: 'stripe_subscription_id' });
+
+          if (upsertError) {
+            logStep("Error upserting subscription", { error: upsertError });
+          } else {
+            logStep("Subscription upserted successfully", { userId });
+          }
         } else {
-          logStep("Subscription updated successfully");
+          // Fall back to a plain update so an existing row still reflects the
+          // new status even if we couldn't resolve the user (e.g. no email).
+          const { error: updateError } = await supabaseClient
+            .from('subscriptions')
+            .update({
+              status: subscription.status,
+              current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
+              current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+              cancel_at_period_end: subscription.cancel_at_period_end,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('stripe_subscription_id', subscription.id);
+          if (updateError) logStep("Error updating subscription (no user)", { error: updateError });
         }
         break;
       }
