@@ -64,8 +64,12 @@ export const softwareApplicationSchema = {
     "@type": "AggregateOffer",
     "priceCurrency": "CAD",
     "lowPrice": "0",
-    "highPrice": "149",
-    "offerCount": 3
+    // Advertise only currently-purchasable fixed-price tiers: Free ($0) and
+    // Growth ($49). Professional ($149) is waitlisted (not yet buyable) and
+    // Enterprise is custom-quote, so neither belongs in the public price range.
+    // When Professional launches, bump highPrice to "149" and offerCount to 3.
+    "highPrice": "49",
+    "offerCount": 2
   },
   "provider": {
     "@id": `${BASE_URL}/#organization`
