@@ -192,7 +192,7 @@ const ImpactCalculator = () => {
               <div className="mt-8 text-center space-y-4">
                 <p className="text-muted-foreground">
                   Based on your profile, we recommend starting with our{' '}
-                  <span className="font-bold text-primary">Growing Strong</span> plan
+                  <span className="font-bold text-primary">Growth</span> plan
                 </p>
                 <ShinyButton
                   size="lg"

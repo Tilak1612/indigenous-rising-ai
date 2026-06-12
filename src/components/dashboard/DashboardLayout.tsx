@@ -180,7 +180,7 @@ function UpgradeDialog({
 }) {
   if (!item) return null;
   const isEnterprise = item.tier === 'enterprise';
-  const planName = isEnterprise ? 'Gimishoomis (Enterprise)' : 'Ogichidaakwe (Pro — $49/mo CAD)';
+  const planName = isEnterprise ? 'Gimishoomis (Enterprise)' : 'Ogichidaakwe (Growth — $49/mo CAD)';
   const ctaText = isEnterprise ? 'Contact Sales' : 'View Pricing';
   const ctaHref = isEnterprise ? '/contact' : '/pricing';
 
