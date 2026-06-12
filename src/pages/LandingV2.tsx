@@ -8,6 +8,7 @@ import {
   Sparkles, Users, Wallet, type LucideIcon,
 } from 'lucide-react';
 import MetaTags from '@/components/MetaTags';
+import Footer from '@/components/Footer';
 import './landing-v2.css';
 
 /**
@@ -749,50 +750,8 @@ const LandingV2 = () => {
           </div>
         </section>
 
-        {/* ===== FOOTER ===== */}
-        <footer style={{ background: '#241910', color: '#C8B6A2' }}>
-          <div style={{ maxWidth: 1180, margin: '0 auto', padding: '70px 24px 40px' }}>
-            <div className="ir-foot-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr', gap: 40 }}>
-              <div>
-                <a href="#top" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', marginBottom: 18 }}>
-                  <span style={{ width: 30, height: 30, borderRadius: 9, background: '#C45A33', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FAF6EF', ...FONT_HEAD, fontWeight: 600, fontSize: 18 }}>IR</span>
-                  <span style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 19, color: '#FBF5EC' }}>Indigenous Rising</span>
-                </a>
-                <p style={{ fontSize: 14, lineHeight: 1.7, color: '#A8957F', maxWidth: 340, margin: 0 }}>The AI platform for Indigenous business growth — funding, planning, training, and growth, built around your community's data sovereignty.</p>
-              </div>
-              <div>
-                <h4 style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '.1em', color: '#8A7560', margin: '0 0 16px' }}>Platform</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
-                  {[['Funding Navigator', '#platform'], ['Business planning', '#platform'], ['Training', '#platform'], ['Pricing', '#pricing']].map(([l, h]) => (
-                    <a key={l} href={h} className="irv2-hov-foot" style={{ fontSize: 14.5, color: '#C8B6A2', textDecoration: 'none' }}>{l}</a>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h4 style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '.1em', color: '#8A7560', margin: '0 0 16px' }}>Company</h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
-                  {[['Data sovereignty', '#sovereignty'], ['Trust & security', '/compliance'], ['FAQ', '#faq'], ['Contact', '/contact']].map(([l, h]) => (
-                    <LinkTo key={l} to={h} className="irv2-hov-foot" style={{ fontSize: 14.5, color: '#C8B6A2', textDecoration: 'none' }}>{l}</LinkTo>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: 44, padding: '24px 26px', border: '1px solid rgba(243,233,219,.13)', borderRadius: 16, background: 'rgba(243,233,219,.03)', display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-              <Icon icon="solar:leaf-linear" size={24} style={{ color: '#8FBF9C', flexShrink: 0, marginTop: 2 }} />
-              <p style={{ fontSize: 14, lineHeight: 1.7, color: '#B7A48F', margin: 0 }}>We acknowledge that this work takes place on the traditional territories of First Nations, Métis, and Inuit peoples across the lands now called Canada. We are committed to data sovereignty and to the communities we serve.</p>
-            </div>
-
-            <div style={{ marginTop: 36, paddingTop: 24, borderTop: '1px solid rgba(243,233,219,.1)', display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'space-between', alignItems: 'center' }}>
-              <p style={{ fontSize: 13, color: '#8A7560', margin: 0 }}>© 2026 Indigenous Rising. OCAP® is a registered trademark of the First Nations Information Governance Centre.</p>
-              <div style={{ display: 'flex', gap: 22 }}>
-                {[['Privacy', '/privacy'], ['Terms', '/terms'], ['Trust', '/compliance']].map(([l, h]) => (
-                  <LinkTo key={l} to={h} className="irv2-hov-foot" style={{ fontSize: 13, color: '#8A7560', textDecoration: 'none' }}>{l}</LinkTo>
-                ))}
-              </div>
-            </div>
-          </div>
-        </footer>
+        {/* ===== FOOTER (shared canonical component, used on every route) ===== */}
+        <Footer />
       </div>
     </>
   );
