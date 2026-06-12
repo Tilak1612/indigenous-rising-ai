@@ -85,7 +85,7 @@ const OCAP_DATA: Record<string, OCAPCategory> = {
     title: 'Control',
     description: 'Your community controls how data is collected, used, and shared. This includes control over all aspects of data management.',
     icon: Lock,
-    color: 'bg-green-500/10 text-green-600',
+    color: 'bg-success/10 text-success',
     benchmark: 72,
     requirements: [
       {
@@ -267,7 +267,7 @@ export default function OCAPRequirementModal({
                 <div className="flex items-start gap-3">
                   <div className={cn(
                     "h-6 w-6 rounded-full flex items-center justify-center shrink-0 mt-0.5",
-                    req.status === 'complete' ? "bg-green-500 text-white" :
+                    req.status === 'complete' ? "bg-success text-white" :
                     req.status === 'in_progress' ? "bg-amber-500 text-white" :
                     "bg-muted"
                   )}>
@@ -283,7 +283,7 @@ export default function OCAPRequirementModal({
                       <Badge 
                         variant={req.status === 'complete' ? 'default' : 'secondary'}
                         className={cn(
-                          req.status === 'complete' && "bg-green-500",
+                          req.status === 'complete' && "bg-success",
                           req.status === 'in_progress' && "bg-amber-500"
                         )}
                       >

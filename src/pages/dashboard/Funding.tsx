@@ -231,7 +231,7 @@ export default function Funding() {
       case 'closed':
         return <Badge variant="secondary" className="ml-2">Closed</Badge>;
       default:
-        return <Badge variant="outline" className="ml-2 text-green-500 border-green-500">Open</Badge>;
+        return <Badge variant="outline" className="ml-2 text-success border-success/30">Open</Badge>;
     }
   };
 
@@ -334,8 +334,8 @@ export default function Funding() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-green-500" />
+              <div className="h-12 w-12 rounded-lg bg-success/10 flex items-center justify-center">
+                <DollarSign className="h-6 w-6 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">$2.1M</p>
@@ -455,7 +455,7 @@ export default function Funding() {
                     {/* Match Score */}
                     <div className="flex-shrink-0">
                       <div className={`h-16 w-16 rounded-full flex items-center justify-center text-lg font-bold ${
-                        opp.matchScore >= 80 ? 'bg-green-500/20 text-green-600' :
+                        opp.matchScore >= 80 ? 'bg-success/20 text-success' :
                         opp.matchScore >= 60 ? 'bg-amber-500/20 text-amber-600' :
                         'bg-muted text-muted-foreground'
                       }`}>
@@ -494,7 +494,7 @@ export default function Funding() {
 
                       <div className="flex flex-wrap items-center gap-4 mt-4 text-sm">
                         <div className="flex items-center gap-1">
-                          <DollarSign className="h-4 w-4 text-green-500" />
+                          <DollarSign className="h-4 w-4 text-success" />
                           <span className="font-medium">{formatAmount(opp.amount.min, opp.amount.max)}</span>
                         </div>
                         <div className="flex items-center gap-1 text-muted-foreground">

@@ -40,7 +40,7 @@ type Category = (typeof CATEGORIES)[number];
 
 const categoryColors: Record<string, string> = {
   'Feedback': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-  'Funding Tips': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+  'Funding Tips': 'bg-success/10 text-success dark:bg-success/20 dark:text-success',
   'Business Advice': 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300',
   'Success Stories': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
 };

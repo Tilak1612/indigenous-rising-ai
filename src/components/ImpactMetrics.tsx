@@ -47,7 +47,7 @@ const ImpactMetrics: React.FC = () => {
 
       <div className="mt-3 flex items-center gap-2">
         <input value={customName} onChange={(e) => setCustomName(e.target.value)} placeholder="Add custom metric" className="flex-1 bg-transparent border border-white/10 rounded-md p-2" />
-        <button onClick={addCustom} className="px-3 py-1 bg-emerald-500 rounded-md text-white text-sm">Add</button>
+        <button onClick={addCustom} className="px-3 py-1 bg-success rounded-md text-white text-sm">Add</button>
       </div>
     </section>
   );

@@ -76,7 +76,7 @@ const iconMap = {
 
 const colorMap = {
   plan: 'bg-blue-500/10 text-blue-600',
-  funding: 'bg-green-500/10 text-green-600',
+  funding: 'bg-success/10 text-success',
   learning: 'bg-purple-500/10 text-purple-600',
   impact: 'bg-amber-500/10 text-amber-600',
   community: 'bg-pink-500/10 text-pink-600',

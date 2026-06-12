@@ -116,8 +116,8 @@ export default function Integrations() {
           </Card>
           <Card>
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center">
-                <CheckCircle2 className="h-6 w-6 text-green-500" />
+              <div className="h-12 w-12 rounded-lg bg-success/10 flex items-center justify-center">
+                <CheckCircle2 className="h-6 w-6 text-success" />
               </div>
               <div>
                 <p className="text-2xl font-bold">{connectedCount}</p>
@@ -154,7 +154,7 @@ export default function Integrations() {
                   <div>
                     <div className="flex items-center gap-2">
                       <p className="font-medium">{integration.name}</p>
-                      <Badge variant="outline" className="text-green-500 border-green-500">
+                      <Badge variant="outline" className="text-success border-success/30">
                         <CheckCircle2 className="h-3 w-3 mr-1" />
                         Connected
                       </Badge>

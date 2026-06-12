@@ -30,7 +30,7 @@ const RoleInvites: React.FC = () => {
       </select>
 
       <div className="mt-3">
-        <button onClick={sendInvite} className="px-3 py-2 bg-emerald-500 rounded-md text-white">Send invite</button>
+        <button onClick={sendInvite} className="px-3 py-2 bg-success rounded-md text-white">Send invite</button>
       </div>
     </section>
   );

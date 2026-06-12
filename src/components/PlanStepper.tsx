@@ -56,7 +56,7 @@ const PlanStepper: React.FC = () => {
             setAnswers({ ...answers, [step]: rewritten });
             trackEvent('ai_copilot_used', { step });
           }}
-          className="px-3 py-2 bg-emerald-500 rounded-md text-white text-sm"
+          className="px-3 py-2 bg-success rounded-md text-white text-sm"
         >
           Use AI co-pilot
         </button>

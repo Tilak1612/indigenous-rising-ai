@@ -135,7 +135,7 @@ const categoryIcons = {
 
 const categoryColors = {
   guide: 'bg-blue-500/10 text-blue-600',
-  template: 'bg-green-500/10 text-green-600',
+  template: 'bg-success/10 text-success',
   video: 'bg-purple-500/10 text-purple-600',
   partner: 'bg-amber-500/10 text-amber-600',
 };

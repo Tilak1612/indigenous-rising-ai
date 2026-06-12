@@ -61,7 +61,7 @@ const FundingList: React.FC<{ filters?: Record<string, any> }> = ({ filters = {}
             <div className="text-sm text-white/70">Fit score</div>
             <div className="mt-2 text-2xl font-semibold">{computeFitScore(fundingProfile, opp)}%</div>
             <button
-              className="mt-3 px-3 py-1 bg-emerald-500 rounded-md text-white text-sm"
+              className="mt-3 px-3 py-1 bg-success rounded-md text-white text-sm"
               onClick={() => {
                 try {
                   // record analytics

@@ -29,7 +29,7 @@ const TrackRequest = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="w-6 h-6 text-green-600" />;
+        return <CheckCircle className="w-6 h-6 text-success" />;
       case 'rejected':
         return <XCircle className="w-6 h-6 text-red-600" />;
       case 'in_progress':
@@ -42,7 +42,7 @@ const TrackRequest = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-success/10 text-success border-success/30';
       case 'rejected':
         return 'bg-red-100 text-red-800 border-red-200';
       case 'in_progress':

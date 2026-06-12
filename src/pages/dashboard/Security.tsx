@@ -96,7 +96,7 @@ const statusIcons = {
 };
 
 const statusColors = {
-  success: 'text-green-500',
+  success: 'text-success',
   warning: 'text-amber-500',
   error: 'text-red-500',
 };
@@ -125,7 +125,7 @@ export default function Security() {
                   <p className="text-muted-foreground">Your account is well protected</p>
                 </div>
               </div>
-              <Badge className="bg-green-500">Strong</Badge>
+              <Badge className="bg-success">Strong</Badge>
             </div>
           </CardContent>
         </Card>

@@ -104,7 +104,7 @@ const categoryInfo = {
     title: 'Control',
     description: 'Your community controls how data is used and shared',
     icon: Lock,
-    color: 'bg-green-500/10 text-green-600',
+    color: 'bg-success/10 text-success',
   },
   access: {
     title: 'Access',
@@ -121,7 +121,7 @@ const categoryInfo = {
 };
 
 const statusStyles = {
-  complete: { label: 'Complete', color: 'bg-green-500', icon: CheckCircle2 },
+  complete: { label: 'Complete', color: 'bg-success', icon: CheckCircle2 },
   in_progress: { label: 'In Progress', color: 'bg-amber-500', icon: AlertCircle },
   pending: { label: 'Pending', color: 'bg-muted', icon: Info },
 };
@@ -176,7 +176,7 @@ export default function CompliancePage() {
         </div>
 
         {/* Overall Score Card */}
-        <Card className="bg-gradient-to-br from-primary/10 via-background to-green-500/10 border-primary/20">
+        <Card className="bg-gradient-to-br from-primary/10 via-background to-success/10 border-primary/20">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -192,7 +192,7 @@ export default function CompliancePage() {
                 </div>
               </div>
               <div className="text-right space-y-2">
-                <Badge variant="secondary" className="bg-green-500/10 text-green-600">
+                <Badge variant="secondary" className="bg-success/10 text-success">
                   Good Standing
                 </Badge>
                 <p className="text-sm text-muted-foreground">Last reviewed: Today</p>
@@ -284,7 +284,7 @@ export default function CompliancePage() {
                         <StatusIcon
                           className={cn(
                             "h-5 w-5",
-                            item.status === 'complete' && "text-green-500",
+                            item.status === 'complete' && "text-success",
                             item.status === 'in_progress' && "text-amber-500",
                             item.status === 'pending' && "text-muted-foreground"
                           )}
@@ -301,7 +301,7 @@ export default function CompliancePage() {
                         <Badge
                           variant={item.status === 'complete' ? 'default' : 'secondary'}
                           className={cn(
-                            item.status === 'complete' && "bg-green-500",
+                            item.status === 'complete' && "bg-success",
                             item.status === 'in_progress' && "bg-amber-500"
                           )}
                         >
@@ -326,7 +326,7 @@ export default function CompliancePage() {
                           <StatusIcon
                             className={cn(
                               "h-5 w-5",
-                              item.status === 'complete' && "text-green-500",
+                              item.status === 'complete' && "text-success",
                               item.status === 'in_progress' && "text-amber-500",
                               item.status === 'pending' && "text-muted-foreground"
                             )}
@@ -338,7 +338,7 @@ export default function CompliancePage() {
                           <Badge
                             variant={item.status === 'complete' ? 'default' : 'secondary'}
                             className={cn(
-                              item.status === 'complete' && "bg-green-500",
+                              item.status === 'complete' && "bg-success",
                               item.status === 'in_progress' && "bg-amber-500"
                             )}
                           >

@@ -50,7 +50,7 @@ const STATUSES: { value: Status; label: string; color: string }[] = [
   { value: 'interested', label: 'Interested', color: 'bg-muted text-foreground' },
   { value: 'applied', label: 'Applied', color: 'bg-primary/10 text-primary border-primary/30' },
   { value: 'pending', label: 'Pending review', color: 'bg-yellow-500/10 text-yellow-700 border-yellow-500/30' },
-  { value: 'awarded', label: 'Awarded', color: 'bg-green-500/10 text-green-700 border-green-500/30' },
+  { value: 'awarded', label: 'Awarded', color: 'bg-success/10 text-success border-success/30' },
   { value: 'declined', label: 'Declined', color: 'bg-destructive/10 text-destructive border-destructive/30' },
   { value: 'withdrawn', label: 'Withdrawn', color: 'bg-muted text-muted-foreground' },
 ];
