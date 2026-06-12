@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
-import { SUPABASE_STORAGE_KEY } from '@/lib/auth-storage';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { SUPABASE_STORAGE_KEY, readStoredSession } from '@/lib/auth-storage';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import {
@@ -220,13 +220,23 @@ const FundingMatches: React.FC = () => {
     if (!user) return;
     setSavingId(grantId);
     try {
-      const { error } = await supabase
-        .from('funding_saved_matches')
-        .upsert(
-          { user_id: user.id, grant_id: grantId, status: 'interested' },
-          { onConflict: 'user_id,grant_id' }
-        );
-      if (error) throw error;
+      // Direct PostgREST upsert (SDK query path can hang). Unique constraint
+      // (user_id, grant_id) backs the on_conflict merge.
+      const token = readStoredSession()?.access_token ?? SUPABASE_ANON_KEY;
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/funding_saved_matches?on_conflict=user_id,grant_id`,
+        {
+          method: 'POST',
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Prefer: 'resolution=merge-duplicates',
+          },
+          body: JSON.stringify({ user_id: user.id, grant_id: grantId, status: 'interested' }),
+        }
+      );
+      if (!res.ok) throw new Error('save failed');
       toast.success('Saved to your matches');
     } catch (err) {
       console.error('Save error:', err);

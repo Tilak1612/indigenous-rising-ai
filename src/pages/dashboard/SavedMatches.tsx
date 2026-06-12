@@ -11,9 +11,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { supabase } from '@/lib/supabase';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { readStoredSession } from '@/lib/auth-storage';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+
+// Direct PostgREST (not supabase-js SDK, whose query path can hang on this
+// project). Same pattern as useAuth/FundingMatches/BusinessPlanner/Settings.
+const restHeaders = (json = false): Record<string, string> => {
+  const token = readStoredSession()?.access_token ?? SUPABASE_ANON_KEY;
+  const h: Record<string, string> = { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` };
+  if (json) h['Content-Type'] = 'application/json';
+  return h;
+};
+const REST = `${SUPABASE_URL}/rest/v1`;
 import {
   ArrowRight,
   Bookmark,
@@ -85,14 +96,14 @@ const SavedMatches: React.FC = () => {
     if (!user) return;
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('funding_saved_matches')
-        .select('id, grant_id, status, notes, saved_at, updated_at, grants (name, funder, amount_min, amount_max, amount_currency, deadline, is_recurring, application_url)')
-        .eq('user_id', user.id)
-        .order('updated_at', { ascending: false });
-
-      if (error) throw error;
-      setRows((data as unknown as SavedRow[]) || []);
+      const select = 'id,grant_id,status,notes,saved_at,updated_at,grants(name,funder,amount_min,amount_max,amount_currency,deadline,is_recurring,application_url)';
+      const res = await fetch(
+        `${REST}/funding_saved_matches?select=${select}&user_id=eq.${user.id}&order=updated_at.desc`,
+        { headers: restHeaders() }
+      );
+      if (!res.ok) throw new Error('load failed');
+      const data = (await res.json()) as unknown as SavedRow[];
+      setRows(data || []);
     } catch (err) {
       console.error('Load saved matches error:', err);
       toast.error('Could not load saved matches');
@@ -108,11 +119,12 @@ const SavedMatches: React.FC = () => {
   const updateStatus = async (id: string, status: Status) => {
     setUpdatingId(id);
     try {
-      const { error } = await supabase
-        .from('funding_saved_matches')
-        .update({ status })
-        .eq('id', id);
-      if (error) throw error;
+      const res = await fetch(`${REST}/funding_saved_matches?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: restHeaders(true),
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error('update failed');
       setRows((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
       toast.success('Status updated');
     } catch (err) {
@@ -126,11 +138,11 @@ const SavedMatches: React.FC = () => {
   const deleteRow = async (id: string) => {
     setUpdatingId(id);
     try {
-      const { error } = await supabase
-        .from('funding_saved_matches')
-        .delete()
-        .eq('id', id);
-      if (error) throw error;
+      const res = await fetch(`${REST}/funding_saved_matches?id=eq.${id}`, {
+        method: 'DELETE',
+        headers: restHeaders(),
+      });
+      if (!res.ok) throw new Error('delete failed');
       setRows((prev) => prev.filter((r) => r.id !== id));
       toast.success('Removed from saved matches');
     } catch (err) {
