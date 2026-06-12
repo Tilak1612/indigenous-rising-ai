@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import DOMPurify from 'dompurify';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/lib/supabase';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { readStoredSession } from '@/lib/auth-storage';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -84,23 +85,47 @@ export default function BusinessPlannerPage() {
   const [hasError, setHasError] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
   const autoSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Row id of this user's plan in business_plans (find-or-create). The table
+  // allows multiple plans/user; the builder uses the most-recent as "the" plan.
+  const planIdRef = useRef<string | null>(null);
 
-  // Load plan from Supabase on mount — overrides localStorage (Supabase is source of truth)
+  // PostgREST headers with the user's token. We hit REST directly rather than the
+  // supabase-js SDK: on this project the SDK query path can hang (same issue fixed
+  // in useAuth/useSubscription/PricingSection), which would freeze save/load.
+  const restHeaders = useCallback((): Record<string, string> => {
+    const token = readStoredSession()?.access_token ?? SUPABASE_ANON_KEY;
+    return {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  }, []);
+
+  // Load the user's saved plan from Supabase (source of truth; localStorage is a cache).
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from('business_plans')
-      .select('steps')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data?.steps && Object.keys(data.steps as Record<string, string>).length > 0) {
-          const steps = data.steps as Record<string, string>;
-          setAnswers(steps);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(steps));
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/business_plans?select=id,content&user_id=eq.${user.id}&order=updated_at.desc&limit=1`,
+          { headers: restHeaders() }
+        );
+        if (!res.ok || cancelled) return;
+        const rows = (await res.json()) as Array<{ id: string; content: Record<string, string> | null }>;
+        if (cancelled || rows.length === 0) return;
+        planIdRef.current = rows[0].id;
+        const content = rows[0].content;
+        if (content && Object.keys(content).length > 0) {
+          setAnswers(content);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
         }
-      });
-  }, [user]);
+      } catch {
+        /* keep localStorage cache on network error */
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [user, restHeaders]);
 
   // Auto-save logic — write-through to Supabase for OCAP Possession compliance
   const saveAnswers = useCallback(async (newAnswers: Record<string, string>, createVersion = false) => {
@@ -110,13 +135,45 @@ export default function BusinessPlannerPage() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newAnswers));
 
-      // Persist to Supabase (Canada region) — data owned and accessible by user
+      // Persist to Supabase (Canada region) — data owned and accessible by user.
+      // Write to the `content` jsonb column (the table has no `steps` column),
+      // via direct REST. Find-or-create: PATCH the known row, else INSERT one.
       if (user) {
-        const { error: dbError } = await supabase
-          .from('business_plans')
-          .upsert({ user_id: user.id, steps: newAnswers }, { onConflict: 'user_id' });
-        if (dbError) {
-          console.error('Failed to sync business plan to Supabase:', dbError);
+        const headers = restHeaders();
+        let ok = false;
+        if (planIdRef.current) {
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/business_plans?id=eq.${planIdRef.current}`,
+            {
+              method: 'PATCH',
+              headers,
+              body: JSON.stringify({ content: newAnswers, updated_at: new Date().toISOString() }),
+            }
+          );
+          ok = res.ok;
+        } else {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/business_plans`, {
+            method: 'POST',
+            headers: { ...headers, Prefer: 'return=representation' },
+            // plan_type/status must satisfy the table's CHECK constraints:
+            //   plan_type ∈ startup|expansion|community|social_enterprise
+            //   status    ∈ draft|in_progress|completed|shared
+            body: JSON.stringify({
+              user_id: user.id,
+              title: 'My Business Plan',
+              plan_type: 'startup',
+              status: 'draft',
+              content: newAnswers,
+            }),
+          });
+          ok = res.ok;
+          if (ok) {
+            const rows = (await res.json()) as Array<{ id: string }>;
+            if (rows?.[0]?.id) planIdRef.current = rows[0].id;
+          }
+        }
+        if (!ok) {
+          console.error('Failed to sync business plan to Supabase');
           setHasError(true);
           toast.error('Failed to save');
           return;
@@ -143,7 +200,7 @@ export default function BusinessPlannerPage() {
     } finally {
       setIsSaving(false);
     }
-  }, [versions, user]);
+  }, [versions, user, restHeaders]);
 
   // Auto-save on content change
   useEffect(() => {
