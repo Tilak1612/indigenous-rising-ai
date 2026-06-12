@@ -1,8 +1,10 @@
 const SocialProof = () => {
+  // Honest, verifiable value statements — not fabricated counts/dollars. If real
+  // verified metrics become available, swap these for numbers with a source.
   const stats = [
-    { value: '2,500+', label: 'Entrepreneurs Served' },
-    { value: '$12M+', label: 'Funding Matched' },
-    { value: '150+', label: 'Community Partners' },
+    { value: 'OCAP®', label: 'Built around data sovereignty' },
+    { value: 'Canada', label: 'Your data stored in-country' },
+    { value: 'All-in-one', label: 'Funding, planning & training' },
   ];
 
   return (

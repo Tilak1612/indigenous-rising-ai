@@ -8,30 +8,29 @@ import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
 import { useAuth } from '@/hooks/useAuth';
 
-const impactMetrics = [
+// What the impact tracker does — described as capabilities, not fabricated
+// platform-wide totals. We do not publish aggregate impact numbers we can't
+// verify; users measure and report their own real impact.
+const trackerCapabilities = [
   {
-    title: 'Jobs Created',
-    value: '2,500+',
-    description: 'Employment opportunities in Indigenous communities',
-    icon: Briefcase
-  },
-  {
-    title: 'Youth Engaged',
-    value: '850+',
-    description: 'Young people connected with entrepreneurship programs',
-    icon: Users
-  },
-  {
-    title: 'Businesses Supported',
-    value: '2,500+',
-    description: 'Indigenous businesses using our platform',
+    title: 'Track',
+    description: 'Log jobs, youth programs, funding, and cultural initiatives as they happen.',
     icon: TrendingUp
   },
   {
-    title: 'Funding Secured',
-    value: '$45M+',
-    description: 'Capital accessed through our matching',
+    title: 'Measure',
+    description: 'See your impact across the dimensions that matter to your community.',
     icon: BarChart3
+  },
+  {
+    title: 'Report',
+    description: 'Generate funder-ready reports with charts and year-over-year views.',
+    icon: Briefcase
+  },
+  {
+    title: 'Share',
+    description: 'Publish a shareable public impact page when you\'re ready.',
+    icon: Users
   }
 ];
 
@@ -118,24 +117,24 @@ const PublicImpact: React.FC = () => {
         <section className="py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-white mb-4">Our Collective Impact</h2>
+              <h2 className="text-3xl font-bold text-white mb-4">How the impact tracker works</h2>
               <p className="text-white/70 max-w-2xl mx-auto">
-                Together, Indigenous Rising AI users are creating lasting change in communities across Canada.
+                Capture the difference your business makes — in numbers you can stand behind and
+                report with confidence.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {impactMetrics.map((metric, index) => (
+              {trackerCapabilities.map((cap, index) => (
                 <Card key={index} className="bg-white/5 border-white/10 text-center">
                   <CardHeader>
                     <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                      <metric.icon className="w-6 h-6 text-primary" />
+                      <cap.icon className="w-6 h-6 text-primary" />
                     </div>
-                    <div className="text-4xl font-bold text-primary mb-2">{metric.value}</div>
-                    <CardTitle className="text-white text-lg">{metric.title}</CardTitle>
+                    <CardTitle className="text-white text-lg">{cap.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-white/60">{metric.description}</CardDescription>
+                    <CardDescription className="text-white/60">{cap.description}</CardDescription>
                   </CardContent>
                 </Card>
               ))}

@@ -4,37 +4,31 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Feather } from 'lucide-react';
 
-interface Quote {
+// Our own data-sovereignty principles, stated in the platform's voice. We do
+// NOT attribute words to named Elders or specific Nations — fabricated quotes
+// and pan-Indigenous attributions are not acceptable. These are the OCAP®
+// principles (Ownership, Control, Access, Possession) as we apply them.
+interface Principle {
   text: string;
-  elder: string;
-  community: string;
+  label: string;
 }
 
-const quotes: Quote[] = [
+const principles: Principle[] = [
   {
-    text: "We do not inherit the earth from our ancestors; we borrow it from our children.",
-    elder: "Elder Mary Thunderbird",
-    community: "Anishinaabe Nation",
+    text: "Your community owns its data. We are the custodian — never the owner.",
+    label: "Ownership",
   },
   {
-    text: "In every deliberation, we must consider the impact on the seventh generation.",
-    elder: "Elder James Whitehorse",
-    community: "Haudenosaunee Confederacy",
+    text: "You decide who can see and use your information, always with clear, granular consent.",
+    label: "Control",
   },
   {
-    text: "The strength of the wolf is the pack, and the strength of the pack is the wolf.",
-    elder: "Elder Sarah Littlewing",
-    community: "Cree Nation",
+    text: "You can access and export everything we hold about you, at any time.",
+    label: "Access",
   },
   {
-    text: "Listen to the wind, it talks. Listen to the silence, it speaks. Listen to your heart, it knows.",
-    elder: "Elder Robert Running Bear",
-    community: "Lakota Nation",
-  },
-  {
-    text: "We are all connected; to each other, biologically. To the earth, chemically. To the rest of the universe atomically.",
-    elder: "Elder Maria Crow Feather",
-    community: "Blackfoot Nation",
+    text: "Your data is physically stored in Canada. Possession stays with you and your community.",
+    label: "Possession",
   },
 ];
 
@@ -46,7 +40,7 @@ const ElderWisdom = () => {
     if (!isAnimating) {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % quotes.length);
+        setCurrentIndex((prev) => (prev + 1) % principles.length);
         setIsAnimating(false);
       }, 300);
     }
@@ -56,7 +50,7 @@ const ElderWisdom = () => {
     if (!isAnimating) {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev - 1 + quotes.length) % quotes.length);
+        setCurrentIndex((prev) => (prev - 1 + principles.length) % principles.length);
         setIsAnimating(false);
       }, 300);
     }
@@ -70,7 +64,7 @@ const ElderWisdom = () => {
     return () => clearInterval(interval);
   }, [handleNext]);
 
-  const currentQuote = quotes[currentIndex];
+  const currentPrinciple = principles[currentIndex];
 
   return (
     <section className="py-20 relative overflow-hidden">
@@ -83,10 +77,10 @@ const ElderWisdom = () => {
           <div className="text-center mb-12">
             <Feather className="w-12 h-12 mx-auto mb-4 text-white opacity-70" />
             <h2 className="font-display text-3xl md:text-4xl font-black text-white mb-2">
-              Dibaajimowin - Elder Wisdom
+              Built on data sovereignty
             </h2>
             <p className="text-white/80">
-              Traditional knowledge guiding modern innovation
+              The OCAP® principles guide everything we build
             </p>
           </div>
 
@@ -97,16 +91,13 @@ const ElderWisdom = () => {
               }`}
             >
               <blockquote className="text-center space-y-6">
-                <p className="font-display text-2xl md:text-3xl font-semibold text-white leading-relaxed italic">
-                  "{currentQuote.text}"
+                <p className="font-display text-2xl md:text-3xl font-semibold text-white leading-relaxed">
+                  {currentPrinciple.text}
                 </p>
-                <footer className="space-y-1">
-                  <cite className="not-italic block font-bold text-lg text-white">
-                    — {currentQuote.elder}
+                <footer>
+                  <cite className="not-italic block font-bold text-lg text-white tracking-wide uppercase">
+                    {currentPrinciple.label}
                   </cite>
-                  <p className="text-white/70 text-sm">
-                    {currentQuote.community}
-                  </p>
                 </footer>
               </blockquote>
             </div>
@@ -118,13 +109,13 @@ const ElderWisdom = () => {
                 size="icon"
                 onClick={handlePrev}
                 className="text-white hover:bg-white/10"
-                aria-label="Previous quote"
+                aria-label="Previous principle"
               >
                 <ChevronLeft className="w-6 h-6" />
               </Button>
 
               <div className="flex gap-2">
-                {quotes.map((_, index) => (
+                {principles.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => {
@@ -139,7 +130,7 @@ const ElderWisdom = () => {
                         ? 'bg-white w-8'
                         : 'bg-white/40 hover:bg-white/60'
                     }`}
-                    aria-label={`Go to quote ${index + 1}`}
+                    aria-label={`Go to principle ${index + 1}`}
                   />
                 ))}
               </div>
@@ -149,7 +140,7 @@ const ElderWisdom = () => {
                 size="icon"
                 onClick={handleNext}
                 className="text-white hover:bg-white/10"
-                aria-label="Next quote"
+                aria-label="Next principle"
               >
                 <ChevronRight className="w-6 h-6" />
               </Button>
@@ -163,8 +154,8 @@ const ElderWisdom = () => {
               size="lg"
               className="border-2 border-white text-white hover:bg-white hover:text-success"
             >
-              <Link to="/contact">
-                Access Elder Knowledge Sessions
+              <Link to="/compliance">
+                Learn how we protect your data
               </Link>
             </Button>
           </div>

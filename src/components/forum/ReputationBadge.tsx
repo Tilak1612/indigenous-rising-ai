@@ -105,15 +105,8 @@ export function ReputationBadge({ type, size = 'sm', showLabel = true }: Reputat
   );
 }
 
-export function getAuthorBadges(authorName: string): BadgeType[] {
-  // Mock badge assignment based on author name
-  const badges: Record<string, BadgeType[]> = {
-    'Sarah Crow Feather': ['funding_expert', 'top_contributor'],
-    'James Running Bear': ['elder_advisor', 'founding_member'],
-    'Maria Two Rivers': ['mentor', 'verified_business'],
-    'Robert White Eagle': ['verified_business', 'community_builder'],
-    'Lisa Deer': ['moderator'],
-  };
-  
-  return badges[authorName] || [];
+// Badge assignment will come from real reputation data once the forum is wired
+// to its backing tables. We do not seed fabricated named users with badges.
+export function getAuthorBadges(_authorName: string): BadgeType[] {
+  return [];
 }
