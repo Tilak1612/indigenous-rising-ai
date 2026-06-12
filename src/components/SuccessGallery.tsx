@@ -11,48 +11,47 @@ import galleryTourism from '@/assets/gallery-tourism.jpg';
 import galleryTech from '@/assets/gallery-tech.jpg';
 import galleryWellness from '@/assets/gallery-wellness.jpg';
 
+// Illustrative of the SECTORS Indigenous entrepreneurs build in — not named
+// customer stories. We do not attach invented business names or claim these are
+// specific real customers; real, named, consented case studies will replace
+// these as the community grows. Titles describe the sector; locations describe
+// where Indigenous business thrives across Canada.
 const galleryItems = [
   {
     image: galleryArtisan,
     title: "Traditional Artisan Crafts",
-    description: "Creating beautiful beadwork and traditional art for global markets",
-    business: "Indigenous Arts Collective",
-    location: "Manitoba"
+    description: "Beadwork and traditional art reaching global markets.",
+    location: "Prairies"
   },
   {
     image: galleryForestry,
     title: "Sustainable Forestry",
-    description: "Managing traditional territories with sustainable forestry practices",
-    business: "Northern Nations Forestry",
-    location: "British Columbia"
+    description: "Managing traditional territories with sustainable practices.",
+    location: "West Coast"
   },
   {
     image: galleryCulinary,
     title: "Indigenous Culinary Arts",
-    description: "Bringing traditional ingredients and recipes to modern cuisine",
-    business: "Turtle Island Kitchen",
-    location: "Ontario"
+    description: "Traditional ingredients and recipes in modern cuisine.",
+    location: "Central Canada"
   },
   {
     image: galleryTourism,
-    title: "Eco-Tourism Adventures",
-    description: "Sharing traditional knowledge through guided eco-tourism experiences",
-    business: "Spirit Trail Tours",
-    location: "Alberta"
+    title: "Eco-Tourism & Land-Based Experiences",
+    description: "Sharing traditional knowledge through guided experiences.",
+    location: "The Rockies"
   },
   {
     image: galleryTech,
-    title: "Tech Innovation",
-    description: "Building technology solutions that serve Indigenous communities",
-    business: "First Code Technologies",
-    location: "Saskatchewan"
+    title: "Technology & Innovation",
+    description: "Building technology that serves Indigenous communities.",
+    location: "Prairies"
   },
   {
     image: galleryWellness,
     title: "Traditional Wellness",
-    description: "Integrating traditional healing practices with modern wellness services",
-    business: "Sacred Circle Wellness",
-    location: "Quebec"
+    description: "Traditional healing alongside modern wellness services.",
+    location: "Eastern Canada"
   }
 ];
 
@@ -88,7 +87,7 @@ const SuccessGallery = ({ limit, showCta = true }: SuccessGalleryProps) => {
           <div className="inline-flex items-center space-x-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-natural">
             <Camera className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-muted-foreground">
-              Mazinaakoziwin • Success in Action
+              Across every sector
             </span>
           </div>
           
@@ -100,8 +99,9 @@ const SuccessGallery = ({ limit, showCta = true }: SuccessGalleryProps) => {
           </h2>
           
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Real businesses, real people, real impact. See how Indigenous entrepreneurs are 
-            building successful ventures while honoring cultural traditions.
+            From traditional crafts to clean tech, Indigenous entrepreneurs build across every
+            sector. The examples below are illustrative of the kinds of businesses Indigenous Rising
+            is built to support — we&apos;ll share named, consented stories as our community grows.
           </p>
         </div>
 
@@ -133,8 +133,7 @@ const SuccessGallery = ({ limit, showCta = true }: SuccessGalleryProps) => {
                   <p className="text-white/80 text-sm mb-3">
                     {item.description}
                   </p>
-                  <div className="flex items-center justify-between text-xs text-white/60">
-                    <span>{item.business}</span>
+                  <div className="flex items-center justify-end text-xs text-white/60">
                     <span>{item.location}</span>
                   </div>
                 </div>
@@ -194,8 +193,6 @@ const SuccessGallery = ({ limit, showCta = true }: SuccessGalleryProps) => {
                     {visibleItems[selectedIndex].description}
                   </p>
                   <div className="flex items-center gap-4 text-sm text-white/60">
-                    <span className="font-medium">{visibleItems[selectedIndex].business}</span>
-                    <span>•</span>
                     <span>{visibleItems[selectedIndex].location}</span>
                   </div>
                 </div>

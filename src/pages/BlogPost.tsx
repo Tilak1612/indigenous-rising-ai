@@ -212,6 +212,18 @@ const BlogPost = () => {
           </div>
         </div>
 
+        {/* Hero image — was previously only emitted in OG/meta, not visible */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <img
+            src={getPostImage(post.id)}
+            alt={post.title}
+            className="w-full aspect-[16/9] object-cover rounded-2xl border border-border/50"
+            loading="eager"
+            width={1200}
+            height={675}
+          />
+        </div>
+
         <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
           {/* Share Bar */}
           <div className="flex items-center gap-4 mb-8 pb-8 border-b">
