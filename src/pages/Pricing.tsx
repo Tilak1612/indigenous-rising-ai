@@ -7,20 +7,22 @@ import { StructuredData } from '@/components/StructuredData';
 const Pricing = () => {
   return (
     <>
+      {/* Title + description kept in sync with scripts/prerender.mjs so the
+          static (crawler) and hydrated (runtime) head don't drift. */}
       <Helmet>
-        <title>Pricing Plans | Indigenous Rising AI - Business Support for Indigenous Entrepreneurs</title>
+        <title>Pricing — Free, Growth & Nations plans | Indigenous Rising AI</title>
         <meta
           name="description"
-          content="Four plans for every stage of the Indigenous business journey: Free, Growth ($49/mo), Professional ($149/mo), and Enterprise (custom). All OCAP® compliant, all data stored in Canada."
+          content="Honest, transparent pricing for Indigenous entrepreneurs. Start free; Growth is $49/mo. OCAP®-aligned, data stored in Canada, and you are never billed for a feature before it ships."
         />
-        <meta name="keywords" content="Indigenous business pricing, First Nations entrepreneur tools, Aboriginal business support plans, OCAP compliant platform pricing" />
+        <meta name="keywords" content="Indigenous business pricing, First Nations entrepreneur tools, Aboriginal business support plans, OCAP-aligned platform pricing" />
       </Helmet>
-      
-      <StructuredData 
-        type="page" 
+
+      <StructuredData
+        type="page"
         pageData={{
-          name: "Pricing Plans - Indigenous Rising AI",
-          description: "Flexible pricing plans for Indigenous entrepreneurs. From free starter tools to enterprise solutions with OCAP® compliance and cultural competency features.",
+          name: "Pricing — Indigenous Rising AI",
+          description: "Honest, transparent pricing for Indigenous entrepreneurs. Start free; Growth is $49/mo. OCAP®-aligned and data stored in Canada.",
           url: "https://www.indigenousrising.ai/pricing"
         }}
       />
