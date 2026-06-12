@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
 import { useSubscription } from '@/hooks/useSubscription';
+import { useNotifications } from '@/hooks/useNotifications';
 import { getString } from '@/lib/i18n';
 import {
   Dialog,
@@ -50,6 +51,7 @@ import {
   Globe,
   MessageSquare,
   Calendar,
+  ListChecks,
   Briefcase,
   FolderOpen,
 } from 'lucide-react';
@@ -82,6 +84,7 @@ const freeNavItems: NavItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: Home, tier: 'free' },
   { title: 'Funding Matches', href: '/dashboard/funding/matches', icon: Target, tier: 'free', badge: 'AI' },
   { title: 'Business Planner', href: '/dashboard/plan', icon: FileText, tier: 'free' },
+  { title: 'Tasks & Deadlines', href: '/dashboard/tasks', icon: ListChecks, tier: 'free' },
   { title: 'Resources', href: '/dashboard/resources', icon: BookOpen, tier: 'free' },
   { title: 'Documents', href: '/dashboard/documents', icon: FolderOpen, tier: 'free' },
   { title: 'Community Forum', href: '/dashboard/forum', icon: MessageSquare, tier: 'free' },
@@ -370,6 +373,7 @@ function DashboardHeader() {
   const { subscribed, product_id } = useSubscription();
   const userTier = getTierFromSubscription(subscribed, product_id);
   const [headerAvatarUrl, setHeaderAvatarUrl] = useState<string | null>(null);
+  const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
 
   useEffect(() => {
     if (!user) return;
@@ -411,28 +415,55 @@ function DashboardHeader() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative">
+            <Button variant="ghost" size="icon" className="relative" aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}>
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-4 w-4 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
-                3
-              </span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <div className="flex items-center justify-between px-2 py-1.5">
+              <DropdownMenuLabel className="p-0">Notifications</DropdownMenuLabel>
+              {unreadCount > 0 && (
+                <button
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); markAllRead(); }}
+                  className="text-xs text-primary hover:underline"
+                >
+                  Mark all read
+                </button>
+              )}
+            </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex flex-col items-start gap-1 p-3">
-              <span className="font-medium">New funding match</span>
-              <span className="text-xs text-muted-foreground">Indigenous Business Development Program - 85% match</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex flex-col items-start gap-1 p-3">
-              <span className="font-medium">Course reminder</span>
-              <span className="text-xs text-muted-foreground">Complete Module 3 of Business Fundamentals</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex flex-col items-start gap-1 p-3">
-              <span className="font-medium">Community update</span>
-              <span className="text-xs text-muted-foreground">Elder wisdom session scheduled for next week</span>
-            </DropdownMenuItem>
+            {notifications.length === 0 ? (
+              <div className="px-3 py-6 text-center text-sm text-muted-foreground">
+                You&apos;re all caught up.
+              </div>
+            ) : (
+              <div className="max-h-80 overflow-y-auto">
+                {notifications.map((n) => (
+                  <DropdownMenuItem
+                    key={n.id}
+                    className="flex flex-col items-start gap-0.5 p-3 cursor-pointer"
+                    onSelect={() => { if (!n.read) markRead(n.id); }}
+                  >
+                    <div className="flex w-full items-center gap-2">
+                      {!n.read && <span className="h-2 w-2 rounded-full bg-primary flex-shrink-0" aria-hidden />}
+                      <span className={`font-medium ${n.read ? 'text-muted-foreground' : ''}`}>
+                        {n.title || 'Notification'}
+                      </span>
+                    </div>
+                    <span className="text-xs text-muted-foreground line-clamp-2">{n.message}</span>
+                    <span className="text-[11px] text-muted-foreground/70">
+                      {new Date(n.created_at).toLocaleDateString('en-CA', { month: 'short', day: 'numeric' })}
+                    </span>
+                  </DropdownMenuItem>
+                ))}
+              </div>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
 

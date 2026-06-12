@@ -59,6 +59,7 @@ const BusinessTools = lazy(() => import("./pages/dashboard/BusinessTools"));
 const BusinessPlanner = lazy(() => import("./pages/dashboard/BusinessPlanner"));
 const Resources = lazy(() => import("./pages/dashboard/Resources"));
 const Documents = lazy(() => import("./pages/dashboard/Documents"));
+const Tasks = lazy(() => import("./pages/dashboard/Tasks"));
 const Forum = lazy(() => import("./pages/dashboard/Forum"));
 const Compliance = lazy(() => import("./pages/dashboard/Compliance"));
 const DashboardFunding = lazy(() => import("./pages/dashboard/Funding"));
@@ -343,6 +344,16 @@ const App = () => (
                   <Suspense fallback={<PageSkeleton />}>
                     <ProtectedRoute>
                       <Documents />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/tasks"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ProtectedRoute>
+                      <Tasks />
                     </ProtectedRoute>
                   </Suspense>
                 }
