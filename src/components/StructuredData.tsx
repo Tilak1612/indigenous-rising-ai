@@ -177,11 +177,12 @@ interface StructuredDataProps {
 
 export const StructuredData = ({ type = 'page', pageData, faqs }: StructuredDataProps) => {
   const schemas = [];
-  
-  // Always include organization schema on homepage
+
+  // Organization + WebSite JSON-LD are emitted statically in index.html (so
+  // no-JS crawlers see them). Re-emitting them here duplicated each block once
+  // the app hydrated. Keep only the SoftwareApplication schema in React, which
+  // index.html does not include.
   if (type === 'home') {
-    schemas.push(organizationSchema);
-    schemas.push(websiteSchema);
     schemas.push(softwareApplicationSchema);
   }
   

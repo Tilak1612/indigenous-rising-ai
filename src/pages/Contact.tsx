@@ -151,6 +151,9 @@ const Contact = () => {
                 <Input
                   id="full_name"
                   {...register('full_name')}
+                  autoComplete="name"
+                  required
+                  aria-required="true"
                   placeholder="John Doe"
                   disabled={isSubmitting}
                 />
@@ -165,6 +168,9 @@ const Contact = () => {
                   id="email"
                   type="email"
                   {...register('email')}
+                  autoComplete="email"
+                  required
+                  aria-required="true"
                   placeholder="john@example.com"
                   disabled={isSubmitting}
                 />
@@ -188,6 +194,8 @@ const Contact = () => {
                 <Input
                   id="subject"
                   {...register('subject')}
+                  required
+                  aria-required="true"
                   placeholder="How can we help?"
                   disabled={isSubmitting}
                 />
@@ -201,6 +209,8 @@ const Contact = () => {
                 <Textarea
                   id="message"
                   {...register('message')}
+                  required
+                  aria-required="true"
                   placeholder="Tell us more about your inquiry..."
                   className="min-h-[150px]"
                   disabled={isSubmitting}

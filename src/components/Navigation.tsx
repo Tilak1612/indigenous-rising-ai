@@ -11,11 +11,15 @@ const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Match the homepage (LandingV2) section IDs and vocabulary so the marketing
+  // nav is consistent everywhere and the anchors actually resolve. Off the
+  // homepage these navigate to /#section; on it they smooth-scroll.
   const navItems = [
-    { name: 'Funding', href: '#funding', icon: Target, isAnchor: true },
-    { name: 'Learning', href: '#training', icon: BookOpen, isAnchor: true },
-    { name: 'Success Stories', href: '/success-stories', icon: Users, isAnchor: false },
+    { name: 'Platform', href: '#platform', icon: Target, isAnchor: true },
+    { name: 'How it works', href: '#how', icon: TrendingUp, isAnchor: true },
+    { name: 'Sovereignty', href: '#sovereignty', icon: Users, isAnchor: true },
     { name: 'Pricing', href: '#pricing', icon: Award, isAnchor: true },
+    { name: 'FAQ', href: '#faq', icon: BookOpen, isAnchor: true },
   ];
 
   const appNavItems = [
