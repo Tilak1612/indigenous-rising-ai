@@ -18,7 +18,7 @@ interface StatCardProps {
 const colorMap = {
   default: 'bg-muted text-foreground',
   primary: 'bg-primary/10 text-primary',
-  success: 'bg-green-500/10 text-green-600',
+  success: 'bg-success/10 text-success',
   warning: 'bg-amber-500/10 text-amber-600',
   destructive: 'bg-destructive/10 text-destructive',
 };
@@ -32,7 +32,7 @@ export default function StatCard({
   className 
 }: StatCardProps) {
   const TrendIcon = trend ? (trend.value > 0 ? TrendingUp : trend.value < 0 ? TrendingDown : Minus) : null;
-  const trendColor = trend ? (trend.value > 0 ? 'text-green-600' : trend.value < 0 ? 'text-destructive' : 'text-muted-foreground') : '';
+  const trendColor = trend ? (trend.value > 0 ? 'text-success' : trend.value < 0 ? 'text-destructive' : 'text-muted-foreground') : '';
 
   return (
     <Card className={cn("hover:shadow-md transition-shadow", className)}>

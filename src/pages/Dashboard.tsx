@@ -41,7 +41,7 @@ const Dashboard: React.FC = () => {
             title="Funding Matches"
             value="0"
             icon={Target}
-            color="success"
+            color="primary"
           />
           <StatCard
             title="OCAP™ Score"
