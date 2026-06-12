@@ -128,7 +128,8 @@ const PricingSection = () => {
   const proAnnualTotal = proAnnualMonthly * 12;
 
   type Plan = {
-    name: string;
+    name: string;            // internal key — drives Stripe price lookup; do not change
+    displayName: string;     // English label shown on the card (canonical, both pages)
     nameTranslation: string;
     description: string;
     monthlyPrice: string;
@@ -146,6 +147,7 @@ const PricingSection = () => {
   const plans: Plan[] = [
     {
       name: "Maadaadiziwin",
+      displayName: "Free",
       nameTranslation: "Starting Out",
       description: "Free tools for Indigenous entrepreneurs taking their first steps",
       monthlyPrice: "Free",
@@ -170,6 +172,7 @@ const PricingSection = () => {
     },
     {
       name: "Ogichidaakwe",
+      displayName: "Growth",
       nameTranslation: "Growth",
       description: "For entrepreneurs ready to scale with AI-assisted tools",
       monthlyPrice: `$${growthMonthly}`,
@@ -179,10 +182,9 @@ const PricingSection = () => {
       popular: true,
       priceId: "price_1SSRqgS23MQcIdnrGDAHGF4C",
       features: [
-        { text: "Everything in Maadaadiziwin", available: true },
+        { text: "Everything in Free", available: true },
         { text: "Priority email support", available: true },
         { text: "Cultural competency training programs", available: true },
-        { text: "Profile listing in partner directory", available: true },
         { text: "AI-powered funding navigator (unlimited matches)", available: true },
         { text: "Grant writing assistant", available: false },
         { text: "Funding deadline alerts (email + SMS)", available: false },
@@ -195,6 +197,7 @@ const PricingSection = () => {
     },
     {
       name: "Bimaadiziwin",
+      displayName: "Professional",
       nameTranslation: "Professional",
       description: "For established businesses and growing community ventures",
       monthlyPrice: `$${proMonthly}`,
@@ -204,7 +207,7 @@ const PricingSection = () => {
       popular: false,
       priceId: undefined,
       features: [
-        { text: "Everything in Ogichidaakwe", available: true },
+        { text: "Everything in Growth", available: true },
         { text: "Multi-entity support (up to 3 businesses)", available: false },
         { text: "Quarterly business review with our team", available: false },
         { text: "IFI Connection Engine (50+ Indigenous Financial Institutions)", available: false },
@@ -219,6 +222,7 @@ const PricingSection = () => {
     },
     {
       name: "Gimishoomis",
+      displayName: "Nations & Organizations",
       nameTranslation: "Enterprise",
       description: "For Nations, Economic Development Corporations, and Band Councils",
       monthlyPrice: "Custom",
@@ -227,7 +231,7 @@ const PricingSection = () => {
       popular: false,
       priceId: undefined,
       features: [
-        { text: "Everything in Bimaadiziwin", available: true },
+        { text: "Everything in Professional", available: true },
         { text: "Unlimited business entities", available: false },
         { text: "White-label platform with your Nation's branding", available: false },
         { text: "OCAP® data governance console", available: false },
@@ -251,7 +255,7 @@ const PricingSection = () => {
           <div className="inline-flex items-center space-x-2 bg-card/80 backdrop-blur-sm border border-border rounded-full px-4 py-2 shadow-natural">
             <Crown className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-muted-foreground">
-              Ozhichigan • Investment in Growth
+              Investment in Growth
             </span>
           </div>
 
@@ -336,11 +340,8 @@ const PricingSection = () => {
 
                   <div className="space-y-2">
                     <CardTitle className="font-display text-xl text-foreground">
-                      {plan.name}
+                      {plan.displayName}
                     </CardTitle>
-                    <p className="text-sm text-primary/70 font-medium italic">
-                      {plan.nameTranslation}
-                    </p>
                     <CardDescription className="text-muted-foreground text-sm min-h-[40px]">
                       {plan.description}
                     </CardDescription>
