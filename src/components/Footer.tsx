@@ -6,7 +6,6 @@ import {
   Mail, Phone, MapPin, Twitter, Linkedin, 
   Youtube, Globe, Shield, Heart, BookOpen
 } from 'lucide-react';
-import logoFull from '@/assets/logo-full.png';
 
 const Footer = () => {
   const navigate = useNavigate();
@@ -79,17 +78,14 @@ const Footer = () => {
           {/* Company info and newsletter */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div className="space-y-8">
-              {/* Logo and tagline */}
-              <Link to="/" className="inline-block group">
-                <img 
-                  src={logoFull} 
-                  alt="Indigenous Rising AI Business Support Platform - Empowering Indigenous entrepreneurs with culturally respectful AI technology" 
-                  className="h-14 w-auto transition-all duration-300 group-hover:opacity-80"
-                  loading="lazy"
-                  decoding="async"
-                  width={180}
-                  height={56}
-                />
+              {/* Logo — IR monogram + wordmark (matches the homepage brand) */}
+              <Link to="/" className="inline-flex items-center gap-2.5 group" aria-label="Indigenous Rising AI — home">
+                <span className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-primary text-primary-foreground font-display font-semibold text-xl leading-none transition-opacity duration-300 group-hover:opacity-80">
+                  IR
+                </span>
+                <span className="font-display font-semibold text-xl text-foreground tracking-tight">
+                  Indigenous Rising
+                </span>
               </Link>
 
               <p className="text-muted-foreground leading-relaxed max-w-md text-lg">
