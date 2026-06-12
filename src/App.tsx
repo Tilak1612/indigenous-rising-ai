@@ -122,6 +122,9 @@ const App = () => (
                   /v1 and /landing-v2 both redirect to the canonical homepage. */}
               <Route path="/v1" element={<Navigate to="/" replace />} />
               <Route path="/landing-v2" element={<Navigate to="/" replace />} />
+              {/* The sign-in page lives at /auth; /login was a dead end (404). */}
+              <Route path="/login" element={<Navigate to="/auth" replace />} />
+              <Route path="/signin" element={<Navigate to="/auth" replace />} />
               <Route
                 path="/privacy"
                 element={
