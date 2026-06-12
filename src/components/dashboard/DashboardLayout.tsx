@@ -51,6 +51,7 @@ import {
   MessageSquare,
   Calendar,
   Briefcase,
+  FolderOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -82,6 +83,7 @@ const freeNavItems: NavItem[] = [
   { title: 'Funding Matches', href: '/dashboard/funding/matches', icon: Target, tier: 'free', badge: 'AI' },
   { title: 'Business Planner', href: '/dashboard/plan', icon: FileText, tier: 'free' },
   { title: 'Resources', href: '/dashboard/resources', icon: BookOpen, tier: 'free' },
+  { title: 'Documents', href: '/dashboard/documents', icon: FolderOpen, tier: 'free' },
   { title: 'Community Forum', href: '/dashboard/forum', icon: MessageSquare, tier: 'free' },
   { title: 'OCAP™ Compliance', href: '/dashboard/compliance', icon: Shield, tier: 'free' },
 ];
