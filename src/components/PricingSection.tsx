@@ -256,7 +256,7 @@ const PricingSection = () => {
           </div>
 
           <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground">
-            Plans for
+            Plans for{' '}
             <span className="block gradient-earth bg-clip-text text-transparent">
               Every Stage of the Journey
             </span>

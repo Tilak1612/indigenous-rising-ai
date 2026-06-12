@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { trackEvent } from '@/utils/analytics';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
@@ -185,6 +186,19 @@ export default function Auth() {
         <div className="container mx-auto">
           <div className="flex justify-center">
             <div className="w-full sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12">
+              {/* Brand header — keeps the auth page on-brand and gives a way back home */}
+              <Link
+                to="/"
+                className="flex items-center justify-center gap-2.5 mb-6 group"
+                aria-label="Indigenous Rising AI — home"
+              >
+                <span className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-primary text-primary-foreground font-display font-semibold text-xl leading-none transition-opacity group-hover:opacity-80">
+                  IR
+                </span>
+                <span className="font-display font-semibold text-xl text-foreground tracking-tight">
+                  Indigenous Rising
+                </span>
+              </Link>
               <div className="bg-card p-8 rounded-lg shadow-lg border">
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -244,6 +258,8 @@ export default function Auth() {
                         <Input
                           type="email"
                           id="reset-email"
+                          name="email"
+                          autoComplete="email"
                           placeholder="john@example.com"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
@@ -285,6 +301,8 @@ export default function Auth() {
                       <Input
                         type="email"
                         id="email"
+                        name="email"
+                        autoComplete="email"
                         className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="john@example.com"
                         value={email}
@@ -300,6 +318,8 @@ export default function Auth() {
                       <Input
                         type="password"
                         id="password"
+                        name="password"
+                        autoComplete={isLogin ? 'current-password' : 'new-password'}
                         className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="••••••••"
                         value={password}
