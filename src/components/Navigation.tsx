@@ -4,6 +4,7 @@ import { ShinyButton } from '@/components/ui/shiny-button';
 import { Menu, X, Users, TrendingUp, Target, Award, BookOpen, LogIn, LogOut, ArrowUpRight, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { RisingGlyph } from '@/components/RisingGlyph';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,8 +38,8 @@ const Navigation = () => {
         <div className="flex items-center justify-between py-5">
           {/* Logo — IR monogram + wordmark (matches the homepage brand) */}
           <Link to="/" className="shrink-0 flex items-center gap-2.5" aria-label="Indigenous Rising AI — home">
-            <span className="flex items-center justify-center w-8 h-8 rounded-[9px] bg-[#FAF6EF] text-primary font-display font-semibold text-lg leading-none">
-              IR
+            <span className="flex items-center justify-center w-8 h-8 rounded-[9px] bg-[#FAF6EF] text-primary">
+              <RisingGlyph size={19} />
             </span>
             <span className="font-display font-semibold text-[19px] text-white tracking-tight">
               Indigenous Rising

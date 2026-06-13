@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indigenous Rising">
+  <rect width="512" height="512" fill="#C45A33"/>
+  <g stroke="#FAF6EF" stroke-width="30" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150 332h212"/>
+    <path d="M196 332a60 60 0 0 1 120 0"/>
+    <path d="M256 150v34"/>
+    <path d="M163 196l24 24"/>
+    <path d="M349 196l-24 24"/>
+  </g>
+</svg>

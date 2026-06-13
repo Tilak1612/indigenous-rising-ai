@@ -10,6 +10,7 @@ import {
 import MetaTags from '@/components/MetaTags';
 import Footer from '@/components/Footer';
 import { PLANS } from '@/data/plans';
+import { RisingGlyph } from '@/components/RisingGlyph';
 import './landing-v2.css';
 
 /**
@@ -292,7 +293,7 @@ const LandingV2 = () => {
         >
           <div style={{ maxWidth: 1180, margin: '0 auto', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <a href="#top" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-              <span style={{ width: 30, height: 30, borderRadius: 9, background: '#C45A33', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FAF6EF', ...FONT_HEAD, fontWeight: 600, fontSize: 18 }}>IR</span>
+              <span style={{ width: 30, height: 30, borderRadius: 9, background: '#C45A33', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FAF6EF' }}><RisingGlyph size={19} /></span>
               <span style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 19, color: '#2C1E12', letterSpacing: '-.01em' }}>Indigenous Rising</span>
             </a>
             <nav className="ir-desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 30 }}>
@@ -326,8 +327,8 @@ const LandingV2 = () => {
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#3E6B4F' }} />
               Built around Indigenous data sovereignty
             </div>
-            <h1 data-reveal style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(40px,6vw,76px)', lineHeight: 1.04, letterSpacing: '-.025em', color: '#2C1E12', maxWidth: 900, margin: '0 auto' }}>
-              The AI platform for <span style={{ fontStyle: 'italic', color: '#C45A33' }}>Indigenous</span> business growth.
+            <h1 data-reveal style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(34px,5vw,64px)', lineHeight: 1.08, letterSpacing: '-.025em', color: '#2C1E12', maxWidth: 860, margin: '0 auto' }}>
+              Get <span style={{ fontStyle: 'italic', color: '#C45A33' }}>funded.</span> Grow your business. Keep your data.
             </h1>
             <p data-reveal style={{ fontSize: 'clamp(17px,1.6vw,21px)', lineHeight: 1.65, color: '#6B5645', maxWidth: 620, margin: '28px auto 0' }}>
               Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.

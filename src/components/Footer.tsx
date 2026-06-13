@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
 import { Mail, Twitter, Linkedin, Youtube, Leaf } from 'lucide-react';
 import { ComplianceBadge, DataResidencyNote } from '@/components/trust';
+import { RisingGlyph } from '@/components/RisingGlyph';
 
 // Single canonical footer used on every route (marketing + inner pages + the
 // homepage). New brand (IR monogram + terracotta tokens). Claims kept factual
@@ -77,8 +78,8 @@ const Footer = () => {
           {/* Brand + contact + trust */}
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-2.5 group" aria-label="Indigenous Rising AI — home">
-              <span className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-primary text-primary-foreground font-display font-semibold text-xl leading-none transition-opacity duration-300 group-hover:opacity-80">
-                IR
+              <span className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-primary text-primary-foreground transition-opacity duration-300 group-hover:opacity-80">
+                <RisingGlyph size={21} />
               </span>
               <span className="font-display font-semibold text-xl text-foreground tracking-tight">
                 Indigenous Rising
