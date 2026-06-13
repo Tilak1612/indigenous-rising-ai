@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import MetaTags from '@/components/MetaTags';
 import Footer from '@/components/Footer';
+import { PLANS } from '@/data/plans';
 import './landing-v2.css';
 
 /**
@@ -663,59 +664,58 @@ const LandingV2 = () => {
               <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(30px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-.02em', color: '#2C1E12', margin: '14px 0 0' }}>Honest pricing. Start free.</h2>
               <p style={{ fontSize: 18, lineHeight: 1.65, color: '#6B5645', margin: '18px auto 0' }}>Nobody pays for a feature before it ships. Planned features are marked, never billed.</p>
             </div>
+            {/* Cards render from the shared src/data/plans.ts so they stay in
+                lock-step with /pricing. Same landing card colour theme; full
+                feature lists with ◐ for planned items. */}
             <div className="ir-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20, marginTop: 50, alignItems: 'stretch' }}>
-              {/* Free */}
-              <div data-reveal style={{ background: '#FFFDF9', border: '1px solid rgba(74,56,38,.12)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#2C1E12', margin: 0 }}>Free</h3>
-                <p style={{ fontSize: 14, color: '#8A7560', margin: '6px 0 18px' }}>For getting started.</p>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#2C1E12' }}>$0</span><span style={{ fontSize: 15, color: '#8A7560' }}>/ forever</span></div>
-                <LinkTo to="/auth" className="irv2-hov-free-btn" style={{ textAlign: 'center', background: '#2C1E12', color: '#FAF6EF', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 }}>Start free account</LinkTo>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
-                  {['Funding Navigator search & deadline reminders', '1 guided business plan', 'Full training library', 'Data export anytime'].map((f) => (
-                    <li key={f} style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#4A3826', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#3E6B4F', flexShrink: 0 }} /> {f}</li>
-                  ))}
-                </ul>
-              </div>
-              {/* Growth (featured) */}
-              <div data-reveal style={{ background: '#241910', color: '#F3E9DB', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column', position: 'relative', boxShadow: '0 24px 60px -28px rgba(44,30,18,.5)' }}>
-                <span style={{ position: 'absolute', top: 18, right: 18, fontSize: 11.5, fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', background: '#C45A33', color: '#FAF6EF', padding: '5px 11px', borderRadius: 100 }}>Most popular</span>
-                <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#FBF5EC', margin: 0 }}>Growth</h3>
-                <p style={{ fontSize: 14, color: '#C8B6A2', margin: '6px 0 18px' }}>For businesses that are scaling.</p>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#FBF5EC' }}>$49</span><span style={{ fontSize: 15, color: '#C8B6A2' }}>/ month</span></div>
-                <LinkTo to="/auth" className="irv2-hov-growth-btn" style={{ textAlign: 'center', background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 }}>Start free account</LinkTo>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#E7D8C5', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#8FBF9C', flexShrink: 0 }} /> Everything in Free</li>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#E7D8C5', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#8FBF9C', flexShrink: 0 }} /> Unlimited business plans</li>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#E7D8C5', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#8FBF9C', flexShrink: 0 }} /> Growth dashboard & goal tracking</li>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#B7A48F', lineHeight: 1.45 }}><span style={{ color: '#D9B45A', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Auto-filled application drafts <em style={{ color: '#D9B45A', fontStyle: 'normal' }}>· coming soon</em></li>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#B7A48F', lineHeight: 1.45 }}><span style={{ color: '#D9B45A', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Completion certificates <em style={{ color: '#D9B45A', fontStyle: 'normal' }}>· coming soon</em></li>
-                </ul>
-              </div>
-              {/* Professional */}
-              <div data-reveal style={{ background: '#FFFDF9', border: '1px solid rgba(74,56,38,.12)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#2C1E12', margin: 0 }}>Professional</h3>
-                <p style={{ fontSize: 14, color: '#8A7560', margin: '6px 0 18px' }}>For established businesses.</p>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 46, color: '#2C1E12' }}>$149</span><span style={{ fontSize: 15, color: '#8A7560' }}>/ month</span></div>
-                <LinkTo to="/pricing" className="irv2-hov-nations-btn" style={{ textAlign: 'center', background: '#FFFDF9', color: '#2C1E12', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24, border: '1px solid rgba(74,56,38,.2)' }}>Join the waitlist</LinkTo>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#4A3826', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#3E6B4F', flexShrink: 0 }} /> Everything in Growth</li>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#8A7560', lineHeight: 1.45 }}><span style={{ color: '#A87A1E', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Multi-entity support <em style={{ color: '#A87A1E', fontStyle: 'normal' }}>· coming soon</em></li>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#8A7560', lineHeight: 1.45 }}><span style={{ color: '#A87A1E', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> Quarterly business review <em style={{ color: '#A87A1E', fontStyle: 'normal' }}>· coming soon</em></li>
-                  <li style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#8A7560', lineHeight: 1.45 }}><span style={{ color: '#A87A1E', fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span> IFI connection engine <em style={{ color: '#A87A1E', fontStyle: 'normal' }}>· coming soon</em></li>
-                </ul>
-              </div>
-              {/* Nations */}
-              <div data-reveal style={{ background: '#FFFDF9', border: '1px solid rgba(74,56,38,.12)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column' }}>
-                <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: '#2C1E12', margin: 0 }}>Nations & Organizations</h3>
-                <p style={{ fontSize: 14, color: '#8A7560', margin: '6px 0 18px' }}>For communities & support orgs.</p>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}><span style={{ ...FONT_HEAD, fontSize: 38, color: '#2C1E12' }}>Let's talk</span></div>
-                <LinkTo to="/contact" className="irv2-hov-nations-btn" style={{ textAlign: 'center', background: '#FFFDF9', color: '#2C1E12', textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24, border: '1px solid rgba(74,56,38,.2)' }}>Talk to our team</LinkTo>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
-                  {['Seats for your members & clients', 'Role-based access you manage', 'Data governance support', 'Onboarding for your team'].map((f) => (
-                    <li key={f} style={{ display: 'flex', gap: 10, fontSize: 14.5, color: '#4A3826', lineHeight: 1.45 }}><Icon icon="solar:check-circle-bold" size={18} style={{ color: '#3E6B4F', flexShrink: 0 }} /> {f}</li>
-                  ))}
-                </ul>
-              </div>
+              {PLANS.map((p) => {
+                const dark = p.popular;
+                const cta = {
+                  Maadaadiziwin: { to: '/auth', label: 'Start free account', variant: 'dark' },
+                  Ogichidaakwe: { to: '/auth', label: 'Start free account', variant: 'terracotta' },
+                  Bimaadiziwin: { to: '/pricing', label: 'Join the waitlist', variant: 'outline' },
+                  Gimishoomis: { to: '/contact', label: 'Talk to our team', variant: 'outline' },
+                }[p.key];
+                const btnBase = { textAlign: 'center' as const, textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 };
+                const btnStyle = cta.variant === 'dark'
+                  ? { ...btnBase, background: '#2C1E12', color: '#FAF6EF' }
+                  : cta.variant === 'terracotta'
+                  ? { ...btnBase, background: '#C45A33', color: '#FAF6EF' }
+                  : { ...btnBase, background: '#FFFDF9', color: '#2C1E12', border: '1px solid rgba(74,56,38,.2)' };
+                const btnClass = cta.variant === 'dark' ? 'irv2-hov-free-btn' : cta.variant === 'terracotta' ? 'irv2-hov-growth-btn' : 'irv2-hov-nations-btn';
+                const checkColor = dark ? '#8FBF9C' : '#3E6B4F';
+                const comingColor = dark ? '#D9B45A' : '#A87A1E';
+                const featColor = dark ? '#E7D8C5' : '#4A3826';
+                const comingTextColor = dark ? '#B7A48F' : '#8A7560';
+                return (
+                  <div key={p.key} data-reveal style={{ background: dark ? '#241910' : '#FFFDF9', color: dark ? '#F3E9DB' : undefined, border: dark ? undefined : '1px solid rgba(74,56,38,.12)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column', position: 'relative', boxShadow: dark ? '0 24px 60px -28px rgba(44,30,18,.5)' : undefined }}>
+                    {p.popular && (
+                      <span style={{ position: 'absolute', top: 18, right: 18, fontSize: 11.5, fontWeight: 600, letterSpacing: '.08em', textTransform: 'uppercase', background: '#C45A33', color: '#FAF6EF', padding: '5px 11px', borderRadius: 100 }}>Most popular</span>
+                    )}
+                    <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 22, color: dark ? '#FBF5EC' : '#2C1E12', margin: 0 }}>{p.name}</h3>
+                    <p style={{ fontSize: 14, color: dark ? '#C8B6A2' : '#8A7560', margin: '6px 0 18px' }}>{p.tagline}</p>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 22 }}>
+                      <span style={{ ...FONT_HEAD, fontSize: p.period ? 46 : 38, color: dark ? '#FBF5EC' : '#2C1E12' }}>{p.priceLabel}</span>
+                      {p.period && <span style={{ fontSize: 15, color: dark ? '#C8B6A2' : '#8A7560' }}>/ {p.period}</span>}
+                    </div>
+                    <LinkTo to={cta.to} className={btnClass} style={btnStyle}>{cta.label}</LinkTo>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 13 }}>
+                      {p.features.map((f) => (
+                        f.available ? (
+                          <li key={f.text} style={{ display: 'flex', gap: 10, fontSize: 14.5, color: featColor, lineHeight: 1.45 }}>
+                            <Icon icon="solar:check-circle-bold" size={18} style={{ color: checkColor, flexShrink: 0 }} /> {f.text}
+                          </li>
+                        ) : (
+                          <li key={f.text} style={{ display: 'flex', gap: 10, fontSize: 14.5, color: comingTextColor, lineHeight: 1.45 }}>
+                            <span style={{ color: comingColor, fontSize: 18, flexShrink: 0, lineHeight: 1 }}>◐</span>
+                            {f.text} <em style={{ color: comingColor, fontStyle: 'normal' }}>· coming soon</em>
+                          </li>
+                        )
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
             </div>
             <p data-reveal style={{ textAlign: 'center', fontSize: 13.5, color: '#8A7560', margin: '28px auto 0', maxWidth: 560, lineHeight: 1.6 }}><span style={{ color: '#A87A1E', fontWeight: 600 }}>◐</span> marks features that are planned but not yet available. You'll never be charged for a feature before it ships.</p>
           </div>
