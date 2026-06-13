@@ -148,7 +148,7 @@ const FAQS = [
   { q: 'What does OCAP® mean here?', a: 'OCAP® is a set of First Nations principles for how data about a community should be governed. We design the platform around those principles. OCAP® is a registered trademark of the First Nations Information Governance Centre; we are designed around it, not certified by it.' },
   { q: 'Where is my information stored?', a: 'In Canada. Your data lives in AWS ca-central-1 and does not leave the country. It is encrypted in transit and at rest, with role-based access you control.' },
   { q: 'Is my information shared with funders?', a: 'No. Nothing is shared with a funder unless you choose to submit it. We do not sell your data, and we do not share it with funders or third parties without your explicit action.' },
-  { q: "What's live now versus coming soon?", a: 'All four modules — Funding Navigator, Business Planning, Training, and Growth Tools — are live today. Features marked with a ◐ (like auto-filled application drafts and completion certificates) are planned but not yet available. We label them clearly and never bill you for a feature before it ships.' },
+  { q: 'What do I get when I sign up?', a: 'All four modules — Funding Navigator, Business Planning, Training, and Growth Tools — are live and available today. The free plan gets you started with no credit card; paid plans add unlimited AI funding matches, the grant writing assistant, the IFI Connection Engine, and more. You can export your data and cancel at any time.' },
 ];
 
 const FONT_HEAD: React.CSSProperties = { fontFamily: "'Fraunces', serif" };
@@ -662,7 +662,7 @@ const LandingV2 = () => {
             <div data-reveal style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
               <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: '#C45A33' }}>Pricing</span>
               <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(30px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-.02em', color: '#2C1E12', margin: '14px 0 0' }}>Honest pricing. Start free.</h2>
-              <p style={{ fontSize: 18, lineHeight: 1.65, color: '#6B5645', margin: '18px auto 0' }}>Nobody pays for a feature before it ships. Planned features are marked, never billed.</p>
+              <p style={{ fontSize: 18, lineHeight: 1.65, color: '#6B5645', margin: '18px auto 0' }}>Start free, upgrade when you're ready. Billed in CAD — cancel anytime, your data stays exportable.</p>
             </div>
             {/* Cards render from the shared src/data/plans.ts so they stay in
                 lock-step with /pricing. Same landing card colour theme; full
@@ -673,7 +673,7 @@ const LandingV2 = () => {
                 const cta = {
                   Maadaadiziwin: { to: '/auth', label: 'Start free account', variant: 'dark' },
                   Ogichidaakwe: { to: '/auth', label: 'Start free account', variant: 'terracotta' },
-                  Bimaadiziwin: { to: '/pricing', label: 'Join the waitlist', variant: 'outline' },
+                  Bimaadiziwin: { to: '/auth', label: 'Get Started', variant: 'outline' },
                   Gimishoomis: { to: '/contact', label: 'Talk to our team', variant: 'outline' },
                 }[p.key];
                 const btnBase = { textAlign: 'center' as const, textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 };
@@ -717,7 +717,7 @@ const LandingV2 = () => {
                 );
               })}
             </div>
-            <p data-reveal style={{ textAlign: 'center', fontSize: 13.5, color: '#8A7560', margin: '28px auto 0', maxWidth: 560, lineHeight: 1.6 }}><span style={{ color: '#A87A1E', fontWeight: 600 }}>◐</span> marks features that are planned but not yet available. You'll never be charged for a feature before it ships.</p>
+            <p data-reveal style={{ textAlign: 'center', fontSize: 13.5, color: '#8A7560', margin: '28px auto 0', maxWidth: 560, lineHeight: 1.6 }}>All plans are billed in CAD. Cancel anytime — your data stays exportable.</p>
           </div>
         </section>
 

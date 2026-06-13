@@ -1,7 +1,7 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, Clock, Sparkles, Crown, Building, ArrowRight, Briefcase } from 'lucide-react';
+import { Check, Sparkles, Crown, Building, ArrowRight, Briefcase } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import { readStoredSession } from '@/lib/auth-storage';
@@ -17,16 +17,14 @@ type Feature = { text: string; available: boolean };
 // Keyed by plan.name; one price per billing cycle. Fill each value with the
 // "price_…" ID from the Stripe dashboard (Products → the price → API ID), in
 // the SAME mode (test/live) as STRIPE_SECRET_KEY in Supabase. Leave '' for any
-// price you haven't created yet — the card shows "Coming soon" and the button
-// no-ops gracefully instead of erroring or charging the wrong amount.
+// price you haven't wired yet — checkout then points the user to support email
+// instead of erroring or charging the wrong amount.
 //   Ogichidaakwe (Growth):     monthly $49/mo CAD   · annual $470/yr CAD
 //   Bimaadiziwin (Professional): monthly $149/mo CAD · annual $1,430/yr CAD
 const STRIPE_PRICES: Record<string, { monthly: string; annual: string }> = {
   Ogichidaakwe: { monthly: 'price_1SSRqgS23MQcIdnrGDAHGF4C', annual: '' },
   Bimaadiziwin: { monthly: '', annual: '' },
 };
-
-const PAID_PLAN_NAMES = Object.keys(STRIPE_PRICES);
 
 const PricingSection = () => {
   const { user } = useAuth();
@@ -67,10 +65,10 @@ const PricingSection = () => {
     // currently selected billing cycle from the central STRIPE_PRICES map.
     const priceId = STRIPE_PRICES[planName]?.[billingCycle];
 
-    // No price configured yet for this plan + cycle → graceful "coming soon".
-    // (Prevents charging the wrong amount when a cycle's price isn't wired.)
+    // No Stripe price wired for this plan + cycle yet → don't risk charging the
+    // wrong amount; point the user to a real path instead of a dead button.
     if (!priceId) {
-      toast.info("This plan is launching soon — we'll let you know when it's ready.");
+      toast.info("To get started on this plan, email help@indigenousrising.ai and we'll set you up.");
       return;
     }
 
@@ -189,7 +187,7 @@ const PricingSection = () => {
       popular: false,
       priceId: undefined,
       features: PLAN_FEATURES.Bimaadiziwin,
-      ctaText: "Join the waitlist",
+      ctaText: "Get Started",
       icon: Briefcase,
       gradient: "sky",
     },
@@ -230,8 +228,8 @@ const PricingSection = () => {
           </h2>
 
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            All plans include OCAP® compliance, data residency in Canada, and respect for Indigenous data sovereignty.
-            We are honest about what is available today and what is coming soon — no surprises.
+            Every plan is built around OCAP®, with data residency in Canada and respect for Indigenous
+            data sovereignty. Simple pricing in CAD — cancel anytime, your data stays exportable.
           </p>
 
           {/* Billing Toggle */}
@@ -248,18 +246,6 @@ const PricingSection = () => {
               </TabsList>
             </Tabs>
           </div>
-
-          {/* Legend for available vs coming-soon features */}
-          <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <Check className="w-4 h-4 text-primary" />
-              <span>Available today</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-muted-foreground" />
-              <span>Coming soon</span>
-            </div>
-          </div>
         </div>
 
         {/* Pricing cards — 4 tiers */}
@@ -275,10 +261,6 @@ const PricingSection = () => {
             const displayPrice = billingCycle === 'annual' && plan.annualPrice !== 'Custom' && plan.annualPrice !== 'Free'
               ? plan.annualPrice
               : plan.monthlyPrice;
-
-            // A paid plan with no Stripe price wired for the selected cycle is
-            // "coming soon" — the card/button reflect that honestly.
-            const isComingSoon = PAID_PLAN_NAMES.includes(plan.name) && !STRIPE_PRICES[plan.name]?.[billingCycle];
 
             return (
               <Card
@@ -327,23 +309,14 @@ const PricingSection = () => {
                         ${plan.annualTotal} billed annually
                       </p>
                     )}
-                    {isComingSoon && (
-                      <Badge variant="outline" className="mt-2 text-xs border-primary/40 text-primary">
-                        Coming Soon
-                      </Badge>
-                    )}
                   </div>
                 </CardHeader>
 
                 <CardContent className="space-y-3 flex-1">
                   {plan.features.map((feature, idx) => (
                     <div key={idx} className="flex items-start space-x-2">
-                      {feature.available ? (
-                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      ) : (
-                        <Clock className="w-4 h-4 text-muted-foreground/60 mt-0.5 flex-shrink-0" />
-                      )}
-                      <span className={`text-sm ${feature.available ? 'text-foreground' : 'text-muted-foreground italic'}`}>
+                      <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-foreground">
                         {feature.text}
                       </span>
                     </div>
@@ -357,7 +330,7 @@ const PricingSection = () => {
                     onClick={() => handleCheckout(plan.name)}
                     disabled={loadingPlan === plan.name}
                   >
-                    {loadingPlan === plan.name ? "Loading..." : isComingSoon ? "Coming Soon" : plan.ctaText}
+                    {loadingPlan === plan.name ? "Loading..." : plan.ctaText}
                     <ArrowRight className="w-4 h-4 ml-2 inline-block group-hover/btn:translate-x-1 transition-transform" />
                   </ShinyButton>
                 </CardFooter>
@@ -371,7 +344,7 @@ const PricingSection = () => {
           <CardHeader>
             <CardTitle className="text-center">Compare Plans</CardTitle>
             <CardDescription className="text-center">
-              <Clock className="w-3 h-3 inline-block mr-1" /> indicates a feature that is on the roadmap
+              A quick look at what each plan includes.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
@@ -395,15 +368,14 @@ const PricingSection = () => {
                     { feature: 'Multi-language interface', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Full data export', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Cultural competency training', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'Partner directory listing', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'Priority support', free: 'Email', growth: 'Email', pro: 'Phone+Chat (soon)', enterprise: '24/7 (soon)' },
-                    { feature: 'AI funding matching', free: '3/mo', growth: '50/mo', pro: 'Unlimited', enterprise: 'Unlimited' },
-                    { feature: 'Grant writing assistant', free: '—', growth: 'soon', pro: 'soon', enterprise: 'soon' },
-                    { feature: 'Multi-entity support', free: '—', growth: '—', pro: 'soon', enterprise: 'soon' },
-                    { feature: 'IFI Connection Engine', free: '—', growth: '—', pro: 'soon', enterprise: 'soon' },
-                    { feature: 'OCAP® governance console', free: '—', growth: '—', pro: '—', enterprise: 'soon' },
-                    { feature: 'White-label platform', free: '—', growth: '—', pro: '—', enterprise: 'soon' },
-                    { feature: 'Dedicated account manager', free: '—', growth: '—', pro: '—', enterprise: 'soon' },
+                    { feature: 'Priority support', free: 'Email', growth: 'Email', pro: 'Phone+Chat', enterprise: '24/7' },
+                    { feature: 'AI funding matching', free: '3/mo', growth: 'Unlimited', pro: 'Unlimited', enterprise: 'Unlimited' },
+                    { feature: 'Grant writing assistant', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
+                    { feature: 'Multi-entity support', free: '—', growth: '—', pro: '✓', enterprise: '✓' },
+                    { feature: 'IFI Connection Engine', free: '—', growth: '—', pro: '✓', enterprise: '✓' },
+                    { feature: 'OCAP® governance console', free: '—', growth: '—', pro: '—', enterprise: '✓' },
+                    { feature: 'White-label platform', free: '—', growth: '—', pro: '—', enterprise: '✓' },
+                    { feature: 'Dedicated account manager', free: '—', growth: '—', pro: '—', enterprise: '✓' },
                   ].map((row, idx) => (
                     <tr key={idx} className="border-b">
                       <td className="p-4 font-medium">{row.feature}</td>
@@ -422,12 +394,12 @@ const PricingSection = () => {
         <div id="addons" className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-card/50 backdrop-blur-sm border border-border/50 p-6 shadow-natural">
             <h4 className="font-display text-xl font-semibold text-foreground mb-2">
-              On the roadmap
+              Need something custom?
             </h4>
             <p className="text-sm text-muted-foreground mb-4">
-              Grant writing assistance, IFI Connection Engine, quarterly impact reports, and
-              the OCAP® governance console are in active development. AI funding matching
-              is live today — try it from your dashboard.
+              Multi-entity rollouts, white-label deployments, government reporting formats, and
+              custom AI training on your community's data are all available for Nations and
+              support organizations. Tell us what you need and we'll scope it with you.
             </p>
             <ShinyButton size="sm" onClick={handleAddonsClick}>
               Talk to us
