@@ -303,7 +303,7 @@ const LandingV2 = () => {
             </nav>
             <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
               <LinkTo to="/auth" className="ir-login-link" style={{ fontSize: 14.5, color: '#6B5645', textDecoration: 'none', fontWeight: 500 }}>Log in</LinkTo>
-              <LinkTo to="/auth" className="irv2-hov-cta" style={{ background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 14, fontWeight: 600, padding: '11px 20px', borderRadius: 10, boxShadow: '0 2px 10px rgba(196,90,51,.28)' }}>Start free account</LinkTo>
+              <LinkTo to="/auth" className="irv2-hov-cta" style={{ background: '#C45A33', color: '#FAF6EF', textDecoration: 'none', fontSize: 14, fontWeight: 600, padding: '11px 20px', borderRadius: 10, boxShadow: '0 2px 10px rgba(196,90,51,.28)' }}><span className="ir-cta-long">Start free account</span><span className="ir-cta-short">Get Started</span></LinkTo>
               <button onClick={() => setMenuOpen((v) => !v)} aria-label="Menu" className="ir-burger" style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#2C1E12', padding: 4 }}>
                 <Icon icon="solar:hamburger-menu-linear" size={26} />
               </button>
