@@ -60,10 +60,17 @@
 /* ----- responsive grids (mirror prototype class names) ----- */
 .ir-burger { display: none; }
 
+/* Header CTA: long label on desktop, compact "Get Started" once the header
+   collapses to its mobile (burger) layout at <=920px, so it stops crowding
+   the logo + hamburger. */
+.ir-cta-short { display: none; }
+
 @media (max-width: 920px) {
   .irv2-root .ir-desktop-nav { display: none !important; }
   .irv2-root .ir-login-link  { display: none !important; }
   .irv2-root .ir-burger      { display: inline-flex !important; }
+  .irv2-root .ir-cta-long    { display: none !important; }
+  .irv2-root .ir-cta-short   { display: inline !important; }
   .irv2-root .ir-sov-grid    { grid-template-columns: 1fr !important; gap: 40px !important; }
   .irv2-root .ir-3col        { grid-template-columns: 1fr 1fr !important; }
   .irv2-root .ir-foot-grid   { grid-template-columns: 1fr 1fr !important; }
