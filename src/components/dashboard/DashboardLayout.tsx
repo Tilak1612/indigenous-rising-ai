@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
 import { useSubscription } from '@/hooks/useSubscription';
+import { RisingGlyph } from '@/components/RisingGlyph';
 import { useNotifications } from '@/hooks/useNotifications';
 import { getString } from '@/lib/i18n';
 import {
@@ -259,8 +260,8 @@ function DashboardSidebar() {
     <Sidebar collapsible="icon" className="border-r border-border">
       <SidebarHeader className="p-4">
         <Link to="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">IR</span>
+          <div className="h-8 w-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center">
+            <RisingGlyph size={19} />
           </div>
           <div className="group-data-[collapsible=icon]:hidden">
             <span className="font-semibold text-sm">Indigenous Rising</span>
