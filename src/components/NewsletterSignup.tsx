@@ -175,7 +175,7 @@ const NewsletterSignup = () => {
               >
                 I consent to receive funding alerts, community updates, and promotional communications. 
                 I understand my information will be handled according to our{' '}
-                <Link to="/privacy" className="text-primary hover:underline font-medium">
+                <Link to="/privacy" className="text-primary underline font-medium">
                   Privacy Policy
                 </Link>
                 {' '}and I can unsubscribe at any time.
@@ -207,7 +207,7 @@ const NewsletterSignup = () => {
             </p>
             <p className="text-xs text-muted-foreground text-center">
               Questions? Contact our Privacy Officer at{' '}
-              <a href="mailto:privacy@indigenousrising.ai" className="text-primary hover:underline">
+              <a href="mailto:privacy@indigenousrising.ai" className="text-primary underline">
                 privacy@indigenousrising.ai
               </a>
             </p>
