@@ -318,6 +318,7 @@ const LandingV2 = () => {
           )}
         </header>
 
+        <main>
         {/* ===== HERO ===== */}
         <section id="top" style={{ position: 'relative', overflow: 'hidden' }}>
           <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />
@@ -372,7 +373,7 @@ const LandingV2 = () => {
                 </div>
                 <div style={{ padding: '22px 24px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 18 }}>
-                    <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 21, color: '#2C1E12', margin: 0 }}>Funding matches</h3>
+                    <div style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 21, color: '#2C1E12', margin: 0 }}>Funding matches</div>
                     <span style={{ fontSize: 12.5, color: '#8A7560' }}>Sorted by fit</span>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -763,6 +764,8 @@ const LandingV2 = () => {
             </div>
           </div>
         </section>
+
+        </main>
 
         {/* ===== FOOTER (shared canonical component, used on every route) ===== */}
         <Footer />
