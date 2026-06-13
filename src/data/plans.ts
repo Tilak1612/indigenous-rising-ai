@@ -30,7 +30,7 @@ const freeFeatures: PlanFeature[] = [
   { text: 'Full data export at any time', available: true },
   { text: 'Email support', available: true },
   { text: '3 AI funding matches per month', available: true },
-  { text: 'Business health score', available: false },
+  { text: 'Business health score', available: true },
 ];
 
 const growthFeatures: PlanFeature[] = [
@@ -38,33 +38,33 @@ const growthFeatures: PlanFeature[] = [
   { text: 'Priority email support', available: true },
   { text: 'Cultural competency training programs', available: true },
   { text: 'AI-powered funding navigator (unlimited matches)', available: true },
-  { text: 'Grant writing assistant', available: false },
-  { text: 'Funding deadline alerts (email + SMS)', available: false },
-  { text: 'Quarterly impact report PDF', available: false },
-  { text: 'Application checklist generator', available: false },
+  { text: 'Grant writing assistant', available: true },
+  { text: 'Funding deadline alerts (email + SMS)', available: true },
+  { text: 'Quarterly impact report PDF', available: true },
+  { text: 'Application checklist generator', available: true },
 ];
 
 const professionalFeatures: PlanFeature[] = [
   { text: 'Everything in Growth', available: true },
-  { text: 'Multi-entity support (up to 3 businesses)', available: false },
-  { text: 'Quarterly business review with our team', available: false },
-  { text: 'IFI Connection Engine (50+ Indigenous Financial Institutions)', available: false },
-  { text: 'Priority phone and chat support', available: false },
-  { text: 'Cohort matching with peers in your stage and industry', available: false },
-  { text: 'Grant Success Predictor', available: false },
-  { text: '7-generation planning canvas', available: false },
+  { text: 'Multi-entity support (up to 3 businesses)', available: true },
+  { text: 'Quarterly business review with our team', available: true },
+  { text: 'IFI Connection Engine (50+ Indigenous Financial Institutions)', available: true },
+  { text: 'Priority phone and chat support', available: true },
+  { text: 'Cohort matching with peers in your stage and industry', available: true },
+  { text: 'Grant Success Predictor', available: true },
+  { text: '7-generation planning canvas', available: true },
 ];
 
 const nationsFeatures: PlanFeature[] = [
   { text: 'Everything in Professional', available: true },
-  { text: 'Unlimited business entities', available: false },
-  { text: "White-label platform with your Nation's branding", available: false },
-  { text: 'OCAP® data governance console', available: false },
-  { text: 'Government reporting module (ISC, AANDC formats)', available: false },
-  { text: "Custom AI training on your community's data", available: false },
-  { text: 'Dedicated account manager', available: false },
-  { text: 'On-site training programs', available: false },
-  { text: '24/7 priority support', available: false },
+  { text: 'Unlimited business entities', available: true },
+  { text: "White-label platform with your Nation's branding", available: true },
+  { text: 'OCAP® data governance console', available: true },
+  { text: 'Government reporting module (ISC, AANDC formats)', available: true },
+  { text: "Custom AI training on your community's data", available: true },
+  { text: 'Dedicated account manager', available: true },
+  { text: 'On-site training programs', available: true },
+  { text: '24/7 priority support', available: true },
 ];
 
 /** Feature lists keyed by internal plan key (used by PricingSection). */
@@ -79,6 +79,6 @@ export const PLAN_FEATURES: Record<PlanInfo['key'], PlanFeature[]> = {
 export const PLANS: PlanInfo[] = [
   { key: 'Maadaadiziwin', name: 'Free', tagline: 'For getting started.', priceLabel: '$0', period: 'forever', popular: false, comingSoon: false, features: freeFeatures },
   { key: 'Ogichidaakwe', name: 'Growth', tagline: 'For businesses that are scaling.', priceLabel: '$49', period: 'per month', popular: true, comingSoon: false, features: growthFeatures },
-  { key: 'Bimaadiziwin', name: 'Professional', tagline: 'For established businesses.', priceLabel: '$149', period: 'per month', popular: false, comingSoon: true, features: professionalFeatures },
+  { key: 'Bimaadiziwin', name: 'Professional', tagline: 'For established businesses.', priceLabel: '$149', period: 'per month', popular: false, comingSoon: false, features: professionalFeatures },
   { key: 'Gimishoomis', name: 'Nations & Organizations', tagline: 'For communities & support orgs.', priceLabel: "Let's talk", period: '', popular: false, comingSoon: false, features: nationsFeatures },
 ];
