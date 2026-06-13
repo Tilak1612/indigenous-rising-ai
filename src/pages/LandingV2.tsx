@@ -733,11 +733,11 @@ const LandingV2 = () => {
               const open = faqOpen === i;
               return (
                 <div key={f.q} style={{ background: '#FFFDF9', border: '1px solid rgba(74,56,38,.12)', borderRadius: 14, overflow: 'hidden' }}>
-                  <button onClick={() => setFaqOpen(open ? -1 : i)} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '20px 24px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', ...FONT_HEAD, fontWeight: 600, fontSize: 18, color: '#2C1E12' }}>
+                  <button onClick={() => setFaqOpen(open ? -1 : i)} aria-expanded={open} aria-controls={`faq-panel-${i}`} id={`faq-trigger-${i}`} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, padding: '20px 24px', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', ...FONT_HEAD, fontWeight: 600, fontSize: 18, color: '#2C1E12' }}>
                     {f.q}
-                    <Icon icon={open ? 'solar:minus-circle-linear' : 'solar:add-circle-linear'} size={22} style={{ color: '#C45A33', flexShrink: 0 }} />
+                    <Icon icon={open ? 'solar:minus-circle-linear' : 'solar:add-circle-linear'} size={22} style={{ color: '#C45A33', flexShrink: 0 }} aria-hidden="true" />
                   </button>
-                  {open && <div style={{ padding: '0 24px 22px', fontSize: 15.5, lineHeight: 1.7, color: '#6B5645' }}>{f.a}</div>}
+                  {open && <div id={`faq-panel-${i}`} role="region" aria-labelledby={`faq-trigger-${i}`} style={{ padding: '0 24px 22px', fontSize: 15.5, lineHeight: 1.7, color: '#6B5645' }}>{f.a}</div>}
                 </div>
               );
             })}
@@ -756,7 +756,7 @@ const LandingV2 = () => {
                 <LinkTo to="/auth" className="irv2-hov-lift" style={{ background: '#FFF7F0', color: '#C45A33', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 32px', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 9, boxShadow: '0 8px 24px rgba(36,25,16,.2)' }}>
                   Start free account <Icon icon="solar:arrow-right-linear" size={19} />
                 </LinkTo>
-                <LinkTo to="/contact" className="irv2-hov-soft" style={{ background: 'rgba(255,255,255,.14)', color: '#FFF7F0', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 28px', borderRadius: 12, border: '1px solid rgba(255,255,255,.3)' }}>
+                <LinkTo to="/contact" className="irv2-hov-soft" style={{ background: 'rgba(255,255,255,.18)', color: '#FFF7F0', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 28px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,.6)' }}>
                   Talk to our team
                 </LinkTo>
               </div>
