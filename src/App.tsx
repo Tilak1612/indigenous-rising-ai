@@ -48,7 +48,6 @@ const FundingAlertConfirm = lazy(() => import("./pages/FundingAlertConfirm"));
 const FundingAlertUnsubscribe = lazy(() => import("./pages/FundingAlertUnsubscribe"));
 const PublicPlan = lazy(() => import("./pages/PublicPlan"));
 const PublicImpact = lazy(() => import("./pages/PublicImpact"));
-const PublicLearning = lazy(() => import("./pages/PublicLearning"));
 const SuccessStories = lazy(() => import("./pages/SuccessStories"));
 const Careers = lazy(() => import("./pages/Careers"));
 const Community = lazy(() => import("./pages/Community"));
@@ -608,14 +607,10 @@ const App = () => (
                   </Suspense>
                 } 
               />
-              <Route
-                path="/learning"
-                element={
-                  <Suspense fallback={<PageSkeleton variant="landing" />}>
-                    <PublicLearning />
-                  </Suspense>
-                }
-              />
+              {/* /learning was an orphaned near-duplicate of /training (not linked
+                  in nav, not prerendered). Consolidated into the canonical /training
+                  page to avoid thin-content/duplicate SEO. */}
+              <Route path="/learning" element={<Navigate to="/training" replace />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route
                 path="*" 
