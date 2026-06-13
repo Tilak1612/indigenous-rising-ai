@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { trackEvent } from '@/utils/analytics';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
+import { RisingGlyph } from '@/components/RisingGlyph';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -191,8 +192,8 @@ export default function Auth() {
                 className="flex items-center justify-center gap-2.5 mb-6 group"
                 aria-label="Indigenous Rising AI — home"
               >
-                <span className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-primary text-primary-foreground font-display font-semibold text-xl leading-none transition-opacity group-hover:opacity-80">
-                  IR
+                <span className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-primary text-primary-foreground transition-opacity group-hover:opacity-80">
+                  <RisingGlyph size={21} />
                 </span>
                 <span className="font-display font-semibold text-xl text-foreground tracking-tight">
                   Indigenous Rising
