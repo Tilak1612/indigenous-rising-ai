@@ -58,7 +58,9 @@ const AccessibilityStatement: React.FC = () => {
             Our commitment to making our platform accessible to all users, in compliance with AODA and WCAG 2.1 AA standards
           </p>
           <p className="text-sm text-muted-foreground mt-4">
-            Last updated: {new Date().toLocaleDateString('en-CA')}
+            {/* Fixed review date — not new Date(), which perpetually (and falsely)
+                stamped "today". Bump this when the statement is actually revised. */}
+            Last updated: 2026-06-14
           </p>
         </div>
 
@@ -308,9 +310,9 @@ const AccessibilityStatement: React.FC = () => {
               <div className="p-4 bg-warning/10 rounded-lg border border-warning/20">
                 <h3 className="font-semibold text-foreground mb-2">In Progress</h3>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-                  <li>Enhanced voice control compatibility (planned Q2 2024)</li>
+                  <li>Enhanced voice control compatibility (on our roadmap)</li>
                   <li>Additional language support for Indigenous languages (ongoing)</li>
-                  <li>Improved mobile accessibility for complex forms (Q1 2024)</li>
+                  <li>Improved mobile accessibility for complex forms (in progress)</li>
                 </ul>
               </div>
               
