@@ -1,4 +1,10 @@
 {
+  "redirects": [
+    { "source": "/blog/indigenous-business-grants-alberta-2025", "destination": "/blog/indigenous-business-funding-alberta-complete-guide", "permanent": true },
+    { "source": "/blog/indigenous-business-grants-british-columbia-2025", "destination": "/blog/bc-indigenous-business-grants-loans-complete-resource", "permanent": true },
+    { "source": "/blog/indigenous-business-grants-ontario-2025", "destination": "/blog/ontario-indigenous-business-funding-programs-grants-support", "permanent": true },
+    { "source": "/blog/how-to-apply-indigenous-business-funding-canada", "destination": "/blog/how-to-apply-indigenous-business-funding-step-by-step", "permanent": true }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
