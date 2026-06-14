@@ -12,15 +12,32 @@ import {
 } from 'lucide-react';
 import { getBlogBySlug, getRelatedPosts, getPostImage } from '@/data/blogPosts';
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
+
+// Old blog slugs that were renamed (and were in the sitemap, soft-404'ing).
+// Handled here rather than as App-level redirect routes so it doesn't depend on
+// React Router static-vs-dynamic route ranking — when getBlogBySlug misses, we
+// check this map and redirect, recovering link equity from the old URLs.
+const LEGACY_SLUG_REDIRECTS: Record<string, string> = {
+  'indigenous-business-grants-alberta-2025': 'indigenous-business-funding-alberta-complete-guide',
+  'indigenous-business-grants-british-columbia-2025': 'bc-indigenous-business-grants-loans-complete-resource',
+  'indigenous-business-grants-ontario-2025': 'ontario-indigenous-business-funding-programs-grants-support',
+  'how-to-apply-indigenous-business-funding-canada': 'how-to-apply-indigenous-business-funding-step-by-step',
+};
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [showScrollTop, setShowScrollTop] = useState(false);
-  
+
   const post = slug ? getBlogBySlug(slug) : undefined;
   const relatedPosts = post ? getRelatedPosts(post.relatedPosts) : [];
+
+  // Redirect a known renamed slug to its current article before rendering 404.
+  if (!post && slug && LEGACY_SLUG_REDIRECTS[slug]) {
+    return <Navigate to={`/blog/${LEGACY_SLUG_REDIRECTS[slug]}`} replace />;
+  }
 
   useEffect(() => {
     const handleScroll = () => {
