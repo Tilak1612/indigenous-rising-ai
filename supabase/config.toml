@@ -1,4 +1,9 @@
-project_id = "fsqjgexjkjicwlzcgweu"
+# Default project ref used by the Supabase CLI for `supabase functions deploy`,
+# `supabase db push`, etc. when no --project-ref flag is passed.
+# This MUST match the production project that the frontend talks to (see
+# src/lib/supabase.ts fallback). A wrong value here previously caused the
+# Stripe webhook URL to be created against the wrong Supabase project.
+project_id = "upxojfcdtmqtcvgbjsym"
 
 [functions.newsletter-subscribe]
 verify_jwt = false
