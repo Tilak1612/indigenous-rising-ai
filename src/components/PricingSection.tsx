@@ -22,8 +22,16 @@ type Feature = { text: string; available: boolean };
 //   Ogichidaakwe (Growth):     monthly $49/mo CAD   · annual $470/yr CAD
 //   Bimaadiziwin (Professional): monthly $149/mo CAD · annual $1,430/yr CAD
 const STRIPE_PRICES: Record<string, { monthly: string; annual: string }> = {
-  Ogichidaakwe: { monthly: 'price_1SSRqgS23MQcIdnrGDAHGF4C', annual: '' },
-  Bimaadiziwin: { monthly: '', annual: '' },
+  // Growth — $49/mo · $470/yr CAD
+  Ogichidaakwe: {
+    monthly: 'price_1SSRqgS23MQcIdnrGDAHGF4C',
+    annual: 'price_1Ti443AVTgSOk7kNewKcPh6Q',
+  },
+  // Professional — $149/mo · $1,430/yr CAD
+  Bimaadiziwin: {
+    monthly: 'price_1Ti47xAVTgSOk7kNvfZdLbr8',
+    annual: 'price_1Ti49bAVTgSOk7kNjT1wTOIp',
+  },
 };
 
 const PricingSection = () => {
