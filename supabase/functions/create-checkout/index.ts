@@ -97,6 +97,16 @@ serve(async (req) => {
         },
       ],
       mode: 'subscription',
+      // GST/HST is calculated by Stripe Tax based on the customer's billing
+      // address. Requires Stripe Tax to be registered/enabled in the dashboard
+      // (Settings → Tax) — once registered, Stripe applies the correct rate;
+      // until then, Stripe charges 0% but the field is harmless to leave on.
+      automatic_tax: { enabled: true },
+      // Required when automatic_tax is enabled so Stripe can determine the
+      // customer's tax jurisdiction.
+      customer_update: customerId ? { address: 'auto', name: 'auto' } : undefined,
+      billing_address_collection: 'required',
+      tax_id_collection: { enabled: true },
       success_url: `${origin}/?checkout=success`,
       cancel_url: `${origin}/?checkout=canceled`,
     });
