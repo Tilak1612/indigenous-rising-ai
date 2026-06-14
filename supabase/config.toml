@@ -21,7 +21,11 @@ verify_jwt = false
 verify_jwt = true
 
 [functions.check-subscription]
-verify_jwt = true
+# Self-authenticates: reads the Authorization header and calls getUser(token)
+# internally (and handles OPTIONS), so the gateway JWT check stays off — matching
+# the deployed function. Keep false so `supabase functions deploy` never flips it
+# to true and 401s the call.
+verify_jwt = false
 
 [functions.customer-portal]
 verify_jwt = true
