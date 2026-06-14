@@ -7,6 +7,7 @@ import {
   SUPABASE_STORAGE_KEY,
   readStoredSession,
   writeStoredSession,
+  clearStoredSession,
   type StoredSession,
 } from '@/lib/auth-storage';
 
@@ -73,6 +74,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('[useAuth] user_roles fetch threw:', err);
       setIsAdmin(false);
       setIsTeamMember(false);
+    }
+  };
+
+  // Validate that a cached access token is actually live server-side. A token
+  // can be locally unexpired (future expires_at) yet dead server-side — revoked,
+  // signed out on another device, or invalidated by a JWT-secret rotation. We
+  // previously trusted the local expiry, so a dead token produced a phantom
+  // `user`, which made Auth.tsx redirect to /dashboard where a data fetch then
+  // 401'd and threw into the global ErrorBoundary ("Something went wrong").
+  // Hitting /auth/v1/user directly (the SDK's getUser() hangs in this env) with
+  // a hard abort tells us definitively: 401 = dead, 200 = live. Network/timeout
+  // returns null (inconclusive) — we proceed optimistically rather than lock a
+  // real user out over a transient blip.
+  const validateAccessToken = async (token: string): Promise<boolean | null> => {
+    try {
+      const controller = new AbortController();
+      const abortId = setTimeout(() => controller.abort(), 4000);
+      const res = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: {
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${token}`,
+        },
+        signal: controller.signal,
+      }).finally(() => clearTimeout(abortId));
+      // Supabase rejects a dead token on this endpoint with 401 (expired) or
+      // 403 (bad_jwt: malformed / wrong signature / revoked) — treat both as
+      // definitively dead.
+      if (res.status === 401 || res.status === 403) return false;
+      return res.ok ? true : null;          // 200 = live; 5xx/other = inconclusive
+    } catch {
+      return null;                          // network / timeout — inconclusive
     }
   };
 
@@ -169,7 +201,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const expiresIn = (stored.expires_at ?? 0) - nowSeconds;
 
       if (expiresIn > 60) {
-        // Healthy — use as-is
+        // Locally unexpired — but confirm it's actually live server-side BEFORE
+        // applying it, so a revoked/dead token never becomes a phantom `user`
+        // that redirects into a crashing dashboard. Only a definitive 401 clears
+        // the session; inconclusive (network/timeout) proceeds optimistically.
+        const tokenLive = await validateAccessToken(stored.access_token);
+        if (tokenLive === false) {
+          console.log('[useAuth] cached token rejected by server (401) — clearing dead session');
+          clearStoredSession();
+          return null;
+        }
         applyStoredSession(stored);
         console.log('[useAuth] hydrated from localStorage, user:', stored.user?.email, 'expires in', expiresIn, 's');
         return stored;

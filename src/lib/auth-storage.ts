@@ -57,3 +57,16 @@ export function readAccessToken(): string | null {
   const session = readStoredSession();
   return session?.access_token ?? null;
 }
+
+/**
+ * Remove the cached session. Used when a stored token is found to be invalid
+ * server-side (revoked / signed out elsewhere / JWT secret rotated) so we don't
+ * keep treating a dead token as a live login.
+ */
+export function clearStoredSession(): void {
+  try {
+    localStorage.removeItem(SUPABASE_STORAGE_KEY);
+  } catch (err) {
+    console.error('[auth-storage] failed to clear session:', err);
+  }
+}
