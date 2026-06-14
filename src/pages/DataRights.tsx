@@ -42,7 +42,7 @@ const DataRights = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <Helmet>
         <title>Your Data Rights | PIPEDA Compliance | Indigenous Rising AI</title>
         <meta 

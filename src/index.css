@@ -231,9 +231,13 @@
   /* Warm marketing-page surface — matches the homepage's cream wrapper
      (irv2-root) without pulling in its full rule-set. Use on the root of
      marketing subpages so they share the homepage's warmth instead of the
-     default white --background. Pair with text-[#2C1E12] on the main heading. */
+     default white --background. The h1 rule warms the page's main heading to
+     the brand brown so individual pages don't each need text-[#2C1E12]. */
   .warm-page {
     background-color: #FAF6EF;
+  }
+  .warm-page h1 {
+    color: #2C1E12;
   }
 
   .gradient-sky {

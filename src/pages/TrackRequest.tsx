@@ -129,7 +129,7 @@ const TrackRequest = () => {
         <link rel="canonical" href="https://www.indigenousrising.ai/track-request" />
       </Helmet>
 
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
+      <div className="min-h-screen flex flex-col warm-page">
         <Navigation />
 
         <main className="flex-1 container mx-auto px-4 py-16">

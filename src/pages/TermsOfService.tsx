@@ -7,7 +7,7 @@ import { Scale, FileText, AlertTriangle, Shield, Users, Gavel } from 'lucide-rea
 
 const TermsOfService: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <Helmet>
         <title>Terms of Service - Indigenous Rising AI</title>
         <meta name="description" content="Legal terms governing your use of the Indigenous Rising AI Business Support Platform. Read our terms and conditions, user responsibilities, and service guidelines." />

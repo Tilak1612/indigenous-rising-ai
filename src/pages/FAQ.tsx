@@ -6,7 +6,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 
 const FAQ = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <MetaTags 
         title="Frequently Asked Questions | Indigenous Rising AI"
         description="Find answers to common questions about Indigenous Rising AI, OCAP® principles, funding opportunities, training programs, and how our platform supports Indigenous entrepreneurs."

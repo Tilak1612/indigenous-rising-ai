@@ -148,7 +148,7 @@ const CookiePolicy = () => {
   const marketingCookies = cookies.filter(c => c.type === 'Marketing');
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <MetaTags
         title="Cookie Policy | Indigenous Rising AI"
         description="Learn about the cookies we use on Indigenous Rising AI. Detailed information about necessary, functional, analytics, and marketing cookies in compliance with PIPEDA."

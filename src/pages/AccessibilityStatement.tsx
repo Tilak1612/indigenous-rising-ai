@@ -18,7 +18,7 @@ import {
 
 const AccessibilityStatement: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <Helmet>
         <title>Accessibility Statement - Indigenous Rising AI</title>
         <meta name="description" content="Our commitment to digital accessibility for Indigenous entrepreneurs. WCAG 2.1 Level AA compliance, assistive technology support, and inclusive design." />
