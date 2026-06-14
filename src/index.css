@@ -228,6 +228,14 @@
     @apply bg-gradient-to-r from-primary to-[#E0926E];
   }
 
+  /* Warm marketing-page surface — matches the homepage's cream wrapper
+     (irv2-root) without pulling in its full rule-set. Use on the root of
+     marketing subpages so they share the homepage's warmth instead of the
+     default white --background. Pair with text-[#2C1E12] on the main heading. */
+  .warm-page {
+    background-color: #FAF6EF;
+  }
+
   .gradient-sky {
     @apply bg-gradient-to-r from-sky-500 to-blue-500;
   }

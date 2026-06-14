@@ -93,11 +93,11 @@ const Contact = () => {
       />
       
       <Navigation />
-      <div className="min-h-screen bg-background pt-16">
+      <div className="min-h-screen warm-page pt-16">
         <Breadcrumbs className="container mx-auto bg-muted border-b" />
         <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">Contact Us</h1>
+          <h1 className="text-4xl font-bold text-[#2C1E12] mb-4">Contact Us</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Have a question or need assistance? We're here to help. Send us a message and we'll respond as soon as possible.
           </p>
