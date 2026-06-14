@@ -144,7 +144,7 @@ const STEPS = [
 ];
 
 const FAQS = [
-  { q: 'Is it really free to start?', a: 'Yes. The Free plan is free forever — funding search with deadline reminders, one guided business plan, the full training library, and data export. No credit card to sign up.' },
+  { q: 'Is it really free to start?', a: 'Yes. The Free plan is free forever — funding search with deadline reminders, one guided business plan, and full data export. No credit card to sign up. The cultural competency training library is included once you upgrade to Growth.' },
   { q: 'Who owns my data?', a: 'You do. We design around OCAP® principles — Ownership, Control, Access, and Possession — and you can export everything in open formats and delete your account at any time. For community accounts, your organization controls access for its members.' },
   { q: 'What does OCAP® mean here?', a: 'OCAP® is a set of First Nations principles for how data about a community should be governed. We design the platform around those principles. OCAP® is a registered trademark of the First Nations Information Governance Centre; we are designed around it, not certified by it.' },
   { q: 'Where is my information stored?', a: 'In Canada. Your data lives in AWS ca-central-1 and does not leave the country. It is encrypted in transit and at rest, with role-based access you control.' },
