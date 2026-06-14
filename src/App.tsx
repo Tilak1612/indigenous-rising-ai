@@ -611,6 +611,8 @@ const App = () => (
                   in nav, not prerendered). Consolidated into the canonical /training
                   page to avoid thin-content/duplicate SEO. */}
               <Route path="/learning" element={<Navigate to="/training" replace />} />
+              {/* Renamed blog slugs are redirected inside BlogPost
+                  (LEGACY_SLUG_REDIRECTS) so it doesn't depend on route ranking. */}
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route
                 path="*" 
