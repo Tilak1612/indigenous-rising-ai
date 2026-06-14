@@ -240,6 +240,13 @@
     color: #2C1E12;
   }
 
+  /* Cream background only — no heading override. For pages that keep their own
+     coloured hero with white headings (Pricing, Blog, Community) but whose
+     content area below the hero should sit on cream instead of white. */
+  .warm-bg {
+    background-color: #FAF6EF;
+  }
+
   .gradient-sky {
     @apply bg-gradient-to-r from-sky-500 to-blue-500;
   }

@@ -137,7 +137,7 @@ const Community = () => {
         <link rel="canonical" href="https://www.indigenousrising.ai/community" />
       </Helmet>
 
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen warm-bg">
         <div className="bg-gradient-to-b from-primary/90 to-primary">
           <Navigation />
 
