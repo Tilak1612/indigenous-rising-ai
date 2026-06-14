@@ -115,7 +115,7 @@ const Training = () => {
         <Breadcrumbs className="container mx-auto bg-muted border-b" />
       </div>
 
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen warm-page">
         {/* Hero Section */}
         <section className="relative py-20 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
           <div className="container mx-auto max-w-6xl">

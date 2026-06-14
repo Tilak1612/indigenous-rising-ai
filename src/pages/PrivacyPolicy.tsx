@@ -8,7 +8,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 
 const PrivacyPolicy: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <MetaTags
         title="Privacy Policy | PIPEDA-aligned | Indigenous Rising AI"
         description="Our commitment to protecting your privacy in accordance with Canadian privacy laws, including PIPEDA. Learn how we collect, use, and protect your personal information."
