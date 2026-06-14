@@ -361,10 +361,10 @@ const PricingSection = () => {
                 <thead>
                   <tr className="border-b bg-muted/50">
                     <th className="text-left p-4 font-medium">Feature</th>
-                    <th className="text-center p-4 font-medium">Maadaadiziwin</th>
-                    <th className="text-center p-4 font-medium bg-primary/5">Ogichidaakwe</th>
-                    <th className="text-center p-4 font-medium">Bimaadiziwin</th>
-                    <th className="text-center p-4 font-medium">Gimishoomis</th>
+                    <th className="text-center p-4 font-medium">Free<span className="block text-xs font-normal text-muted-foreground">Maadaadiziwin</span></th>
+                    <th className="text-center p-4 font-medium bg-primary/5">Growth<span className="block text-xs font-normal text-muted-foreground">Ogichidaakwe</span></th>
+                    <th className="text-center p-4 font-medium">Professional<span className="block text-xs font-normal text-muted-foreground">Bimaadiziwin</span></th>
+                    <th className="text-center p-4 font-medium">Nations<span className="block text-xs font-normal text-muted-foreground">Gimishoomis</span></th>
                   </tr>
                 </thead>
                 <tbody>
