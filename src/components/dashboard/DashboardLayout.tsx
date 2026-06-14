@@ -39,7 +39,6 @@ import {
   Users,
   Settings,
   Shield,
-  Key,
   Building2,
   Headphones,
   Crown,
@@ -54,7 +53,6 @@ import {
   Calendar,
   ListChecks,
   Sparkles,
-  Briefcase,
   FolderOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -99,8 +97,10 @@ const paidNavItems: NavItem[] = [
   { title: 'Impact Analytics', href: '/dashboard/analytics', icon: TrendingUp, tier: 'paid' },
   { title: 'Partner Network', href: '/dashboard/network', icon: Users, tier: 'paid' },
   { title: 'Certifications', href: '/dashboard/certifications', icon: Crown, tier: 'paid' },
-  { title: 'Templates', href: '/dashboard/templates', icon: Briefcase, tier: 'paid' },
-  { title: 'API Access', href: '/dashboard/api', icon: Key, tier: 'paid' },
+  // 'Templates' and 'API Access' removed from the sidebar: they were gated as
+  // paid features but appear in no pricing tier. Their routes still exist, so
+  // re-add here (and list them in plans.ts) once they're a real announced plan
+  // feature.
 ];
 
 const enterpriseNavItems: NavItem[] = [
