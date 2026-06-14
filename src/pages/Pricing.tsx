@@ -27,7 +27,7 @@ const Pricing = () => {
         }}
       />
       
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen warm-bg">
         {/* Hero header with gradient background */}
         <div className="relative bg-gradient-to-br from-primary/90 via-primary to-accent overflow-hidden">
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-10" />
