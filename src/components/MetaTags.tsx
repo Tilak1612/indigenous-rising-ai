@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { StructuredData } from './StructuredData';
+import { truncateDescription } from '@/lib/seo';
 
 interface MetaTagsProps {
   title?: string;
@@ -30,19 +31,21 @@ const MetaTags = ({
   const location = useLocation();
   // Self-referential canonical: use explicitly passed url, or derive from current route
   const canonicalUrl = url || `${BASE_URL}${location.pathname === '/' ? '' : location.pathname}`;
+  // Keep the SERP/social description under Google's truncation point.
+  const metaDescription = truncateDescription(description);
   return (
     <>
       <Helmet>
         {/* Basic Meta Tags */}
         <title>{title}</title>
-        <meta name="description" content={description} />
+        <meta name="description" content={metaDescription} />
         <meta name="keywords" content={keywords} />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content={type} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        <meta property="og:description" content={metaDescription} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -53,7 +56,7 @@ const MetaTags = ({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={canonicalUrl} />
         <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
+        <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={twitterImage} />
         <meta name="twitter:site" content="@indigenous_ai" />
 

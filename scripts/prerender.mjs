@@ -76,9 +76,20 @@ async function loadBlogPosts() {
   }
 }
 
+// Trim a meta description to a SERP-safe length on a word boundary (mirrors
+// src/lib/seo.ts so the static HTML and the client-rendered tags agree).
+function truncateDesc(text, max = 160) {
+  const t = String(text || '').trim().replace(/\s+/g, ' ');
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  const base = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut;
+  return base.replace(/[\s,.;:–—-]+$/, '') + '…';
+}
+
 function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd, robots }) {
   let out = html;
-  const T = esc(title), D = esc(description), U = esc(url), I = esc(ogImage);
+  const T = esc(title), D = esc(truncateDesc(description)), U = esc(url), I = esc(ogImage);
   out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${T}</title>`);
   if (robots) {
     out = out.replace(/(<meta\s+name="robots"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${esc(robots)}$2`);
@@ -115,12 +126,19 @@ async function main() {
   }
   const template = await readFile(path.join(DIST, 'index.html'), 'utf8');
   let count = 0;
+  // Collected live and indexable URLs — written to dist/sitemap.xml at the end so
+  // the sitemap is generated from the SAME source as the prerendered pages and can
+  // never drift (no more dead slugs listed / real posts omitted).
+  const sitemap = [];
 
   for (const m of MARKETING) {
     try {
       const url = m.p === '/' ? `${BASE}/` : `${BASE}${m.p}`;
       await writeRoute(template, { p: m.p, url, title: m.t, description: m.d, robots: m.robots });
       count++;
+      if (!/noindex/i.test(m.robots || '')) {
+        sitemap.push({ loc: url, changefreq: m.p === '/' ? 'weekly' : 'monthly', priority: m.p === '/' ? '1.0' : '0.8' });
+      }
     } catch (e) { console.warn('[prerender] route failed', m.p, e.message); }
   }
 
@@ -156,10 +174,40 @@ async function main() {
     try {
       await writeRoute(template, { p: `/blog/${post.slug}`, url, title, description, jsonLd });
       count++;
+      const lastmod = toISODate(post.updatedAt || post.publishedAt || post.date);
+      sitemap.push({ loc: url, ...(lastmod ? { lastmod } : {}), changefreq: 'monthly', priority: '0.7' });
     } catch (e) { console.warn('[prerender] blog route failed', post.slug, e.message); }
   }
 
+  await writeSitemap(sitemap);
+
   console.log(`[prerender] wrote ${count} static route file(s) (${MARKETING.length} marketing + ${posts.length} blog).`);
+}
+
+/** Coerce any date-ish value to YYYY-MM-DD, or null if unparseable. */
+function toISODate(v) {
+  if (!v) return null;
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+}
+
+/** Write dist/sitemap.xml from the live, indexable URL list. */
+async function writeSitemap(entries) {
+  try {
+    const body = entries.map((e) =>
+      '  <url>\n' +
+      `    <loc>${esc(e.loc)}</loc>\n` +
+      (e.lastmod ? `    <lastmod>${e.lastmod}</lastmod>\n` : '') +
+      `    <changefreq>${e.changefreq}</changefreq>\n` +
+      `    <priority>${e.priority}</priority>\n` +
+      '  </url>'
+    ).join('\n');
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+    await writeFile(path.join(DIST, 'sitemap.xml'), xml, 'utf8');
+    console.log(`[prerender] wrote dist/sitemap.xml (${entries.length} URLs)`);
+  } catch (e) {
+    console.warn('[prerender] sitemap write failed:', e.message);
+  }
 }
 
 main().catch((e) => {
