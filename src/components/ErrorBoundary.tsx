@@ -38,7 +38,12 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   handleReset = () => {
-    this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+    // A bare setState re-renders the same subtree and usually re-throws the same
+    // error. A full reload re-runs the app from scratch — and combined with the
+    // useAuth stale-session guard, a dead session token is re-validated and
+    // cleared on rehydration, so "Try Again" actually recovers instead of
+    // looping back into the same crash.
+    window.location.reload();
   };
 
   render() {
