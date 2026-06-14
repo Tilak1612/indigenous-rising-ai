@@ -26,7 +26,7 @@ const freeFeatures: PlanFeature[] = [
   { text: 'Funding opportunity browser', available: true },
   { text: 'Community forum and resource library', available: true },
   { text: 'OCAP® compliant data handling, stored in Canada', available: true },
-  { text: 'Multi-language interface (EN, FR — more rolling out)', available: true },
+  { text: 'Multi-language support — English & French (interface translations rolling out)', available: true },
   { text: 'Full data export at any time', available: true },
   { text: 'Email support', available: true },
   { text: '3 AI funding matches per month', available: true },

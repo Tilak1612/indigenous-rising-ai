@@ -373,7 +373,7 @@ const PricingSection = () => {
                     { feature: 'Funding opportunity browser', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'OCAP® compliant data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Community forum + resources', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'Multi-language interface', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
+                    { feature: 'Multi-language support (EN/FR)', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Full data export', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Cultural competency training', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Priority support', free: 'Email', growth: 'Email', pro: 'Phone+Chat', enterprise: '24/7' },
