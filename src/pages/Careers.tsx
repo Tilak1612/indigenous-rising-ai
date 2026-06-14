@@ -444,7 +444,7 @@ const Careers = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <MetaTags
         title="Careers | Indigenous Rising AI"
         description="Explore careers at Indigenous Rising AI and apply to build OCAP®-aligned, community-driven technology with First Nations, Métis, and Inuit communities across Turtle Island."
@@ -456,7 +456,7 @@ const Careers = () => {
           <Breadcrumbs />
 
           <section className="mt-8 max-w-4xl mx-auto space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground">Bimaadiziwin — Living a Good Life Through Good Work</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-[#2C1E12]">Bimaadiziwin — Living a Good Life Through Good Work</h1>
             <p className="text-lg text-muted-foreground">
               We believe economic sovereignty for Indigenous entrepreneurs starts with the right people in the right roles. At Indigenous Rising AI, every team member is part of a movement — one rooted in OCAP® principles, Elder-guided innovation, and the long-term prosperity of First Nations, Métis, and Inuit communities across Turtle Island.
             </p>

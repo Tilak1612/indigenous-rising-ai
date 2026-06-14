@@ -6,7 +6,7 @@ import Breadcrumbs from '../components/Breadcrumbs';
 
 const SuccessStories = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <MetaTags 
         title="Success Stories | Indigenous Rising AI"
         description="Explore Indigenous entrepreneur success stories and community impact across Canada."

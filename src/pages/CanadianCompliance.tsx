@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 const CanadianCompliance = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen warm-page">
       <Helmet>
         <title>Canadian Regulatory Alignment - Indigenous Rising AI</title>
         <meta name="description" content="How Indigenous Rising AI is built in alignment with Canadian federal and provincial regulations — PIPEDA-aligned, CASL-aligned, AODA-aligned, and designed around OCAP® data sovereignty. Not third-party certifications." />
@@ -44,7 +44,7 @@ const CanadianCompliance = () => {
                 <span className="text-sm font-bold text-primary">🍁 Built for Canada</span>
               </div>
 
-              <h1 className="font-display text-4xl md:text-5xl font-black text-foreground mb-6">
+              <h1 className="font-display text-4xl md:text-5xl font-black text-[#2C1E12] mb-6">
                 Canadian Regulatory
                 <span className="block gradient-earth bg-clip-text text-transparent">
                   Alignment Framework
