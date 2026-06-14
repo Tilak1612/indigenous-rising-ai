@@ -34,11 +34,6 @@ const BlogPost = () => {
   const post = slug ? getBlogBySlug(slug) : undefined;
   const relatedPosts = post ? getRelatedPosts(post.relatedPosts) : [];
 
-  // Redirect a known renamed slug to its current article before rendering 404.
-  if (!post && slug && LEGACY_SLUG_REDIRECTS[slug]) {
-    return <Navigate to={`/blog/${LEGACY_SLUG_REDIRECTS[slug]}`} replace />;
-  }
-
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 500);
@@ -50,6 +45,13 @@ const BlogPost = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  // Redirect a known renamed slug to its current article before rendering 404.
+  // MUST come after the hooks above — an early return before them would change
+  // the hook count between renders (Rules of Hooks) and crash the page.
+  if (!post && slug && LEGACY_SLUG_REDIRECTS[slug]) {
+    return <Navigate to={`/blog/${LEGACY_SLUG_REDIRECTS[slug]}`} replace />;
+  }
 
   if (!post) {
     return (
