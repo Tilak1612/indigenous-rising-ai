@@ -79,7 +79,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
           'Ability to work independently in a remote-first, early-stage environment',
         ],
         hiringNowReason:
-          "The Funding Navigator, Impact Tracker, and Training & Certification modules are in active development and need a skilled full-stack engineer to ship features, maintain platform stability, and build the integrations that connect Indigenous entrepreneurs to real funding opportunities. Without this role filled, our development velocity stalls — and so does the community's access to tools they are waiting for.",
+          "The Funding Navigator, Impact Tracker, and Training & Certification modules are live and improving fast, and we need a skilled full-stack engineer to ship new features, maintain platform stability, and build the integrations that connect Indigenous entrepreneurs to real funding opportunities. Without this role filled, our development velocity stalls — and so does the community's access to the tools they rely on.",
       },
       {
         title: 'Machine Learning Engineer — Responsible & OCAP-Aligned AI',

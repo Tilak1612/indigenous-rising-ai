@@ -15,7 +15,7 @@ export const TRUST_COPY = {
   comingSoon:
     "◐ marks features that are planned but not yet available. You'll never be charged for a feature before it ships.",
   dataResidency:
-    "Your data is stored in Canada and doesn't leave the country. Encrypted in transit and at rest, with role-based access you manage.",
+    "Your data is stored in Canada (AWS ca-central-1), encrypted in transit and at rest, with role-based access you manage.",
 } as const;
 
 /** Full OCAP® notice — for the sovereignty section and the compliance page. */
