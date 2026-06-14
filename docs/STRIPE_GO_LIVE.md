@@ -1,115 +1,101 @@
-# Stripe Go-Live Checklist — Indigenous Rising AI
+# Stripe Go-Live Status — Indigenous Rising AI
 
-Everything needed to turn on real billing. Items marked **OWNER** must be done by
-Tilak in the Stripe + Supabase dashboards (they involve secrets / account access).
-Items marked **CLAUDE** are code changes I make once you send me the values.
+Status of the billing rollout. Most of it is **done** (Stripe dashboard config +
+code). What remains is **owner-only** (secrets + account activation).
 
 - **Currency:** CAD only
 - **Checkout mode:** `subscription` (server-side Checkout Session → redirect; no
-  client-side publishable key is used, so nothing Stripe-related is needed in Vercel)
-- **Supabase project ref:** `fsqjgexjkjicwlzcgweu`
-- **Live site origin:** https://www.indigenousrising.ai
+  client-side publishable key, so nothing Stripe-related is needed in Vercel)
+- **Production Supabase project:** `upxojfcdtmqtcvgbjsym`
+  (this is what the live frontend + edge functions + webhook use — confirmed via
+  `src/lib/supabase.ts` fallback URL)
+- **Stripe account:** `acct_1STFMxAVTgSOk7kN` (Live mode, CAD)
+- **Live site:** https://www.indigenousrising.ai
+
+> ⚠️ **Heads-up:** `supabase/config.toml` has `project_id = "fsqjgexjkjicwlzcgweu"`,
+> which is **NOT** the production project. Production is `upxojfcdtmqtcvgbjsym`.
+> Pointing tooling at the `config.toml` ref already caused the webhook to be
+> created against the wrong project once. Before running any `supabase` CLI
+> command (`db push`, `functions deploy`), target `upxojfcdtmqtcvgbjsym`
+> explicitly, or update `config.toml` if `fsqjgexjkjicwlzcgweu` is truly stale.
 
 ---
 
-## 1. Products & Prices  (OWNER → then CLAUDE wires the IDs)
+## ✅ Done
 
-Create **2 products**, each with **a monthly and an annual** recurring price, in the
-**same mode (Test or Live)** as the secret key you put in Supabase.
+### Products & Prices (Live, CAD) — all 4 wired in `src/components/PricingSection.tsx`
+| Product | Cycle | Amount | Price ID |
+|---|---|---|---|
+| Growth | Monthly | $49/mo | `price_1SSRqgS23MQcIdnrGDAHGF4C` |
+| Growth | Yearly | $470/yr | `price_1Ti443AVTgSOk7kNewKcPh6Q` |
+| Professional | Monthly | $149/mo | `price_1Ti47xAVTgSOk7kNvfZdLbr8` |
+| Professional | Yearly | $1,430/yr | `price_1Ti49bAVTgSOk7kNjT1wTOIp` |
 
-| Product | Plan key (internal) | Price | Cycle | Status |
-|---|---|---|---|---|
-| Growth | `Ogichidaakwe` | **$49 CAD / mo** | monthly | ✅ already wired (`price_1SSRqgS23MQcIdnrGDAHGF4C`) |
-| Growth | `Ogichidaakwe` | **$470 CAD / yr** | annual | ⛔ NEED `price_…` |
-| Professional | `Bimaadiziwin` | **$149 CAD / mo** | monthly | ⛔ NEED `price_…` |
-| Professional | `Bimaadiziwin` | **$1,430 CAD / yr** | annual | ⛔ NEED `price_…` |
+Free and Nations & Organizations intentionally have **no** Stripe price.
 
-> Nations & Organizations is "Let's talk" (sales-led) — **no Stripe price needed.**
-> Free (Maadaadiziwin) is $0 — no Stripe.
+### Webhook — `we_1Ti4G3AVTgSOk7kNthMck5uw` (Active)
+- URL: `https://upxojfcdtmqtcvgbjsym.supabase.co/functions/v1/stripe-webhook`
+- Events: `checkout.session.completed`, `customer.subscription.updated`,
+  `customer.subscription.deleted`, `invoice.payment_succeeded`,
+  `invoice.payment_failed`
 
-**Send me these 3 price IDs** and I'll drop them into `STRIPE_PRICES` in
-`src/components/PricingSection.tsx` and ship:
+### Customer Portal — `bpc_1Ti4IVAVTgSOk7kNuZ…` (Active)
+Cancel ✓ · Switch plans (all 4 prices) ✓ · Update payment method ✓ · Invoice history ✓
 
-```
-Growth   annual  : price_________________
-Pro      monthly : price_________________
-Pro      annual  : price_________________
-```
-
-(If you set different amounts than above, tell me — I'll also update the displayed
-prices in `src/data/plans.ts` so the cards match Stripe exactly.)
-
----
-
-## 2. Secrets in Supabase Edge Functions  (OWNER)
-
-Set these in **Supabase → Project → Edge Functions → Secrets** (NOT in Vercel).
-The functions read them via `Deno.env.get(...)`.
-
-| Secret | Used by | Where to get it |
-|---|---|---|
-| `STRIPE_SECRET_KEY` | create-checkout, customer-portal, check-subscription, stripe-webhook | Stripe → Developers → API keys → **Secret key** (`sk_live_…` for live) |
-| `STRIPE_WEBHOOK_SECRET` | stripe-webhook (signature verification) | Generated when you create the webhook endpoint in step 3 (`whsec_…`) |
-
-⚠️ The secret key's mode (test vs live) **must match** the mode the price IDs were
-created in. Don't mix `sk_test_…` with live `price_…`.
+### Code & DB (shipped — PR #64, commit `9e1fe5b`)
+- `STRIPE_PRICES` map: all 4 cycles wired.
+- `create-checkout` (edge fn v2): `automatic_tax: { enabled: true }`,
+  `billing_address_collection: 'required'`, `customer_update: { address:'auto', name:'auto' }`,
+  `tax_id_collection: { enabled: true }`.
+- `stripe-webhook` (edge fn v2): race-hardened upsert on `stripe_subscription_id`.
+- DB migration `subscriptions_stripe_webhook_alignment`: added `stripe_product_id`,
+  `cancel_at_period_end`, partial unique index on `stripe_subscription_id`, all 8
+  Stripe statuses in the status check, lookup indexes.
 
 ---
 
-## 3. Webhook endpoint  (OWNER)
+## ⛔ Remaining — OWNER ONLY (before the first real charge)
 
-Stripe → Developers → **Webhooks** → Add endpoint.
+### 1. Set 2 secrets in Supabase → project `upxojfcdtmqtcvgbjsym` → Edge Functions → Secrets
+| Secret | Where to get it |
+|---|---|
+| `STRIPE_SECRET_KEY` | Stripe → Developers → API keys → **Secret key** (`sk_live_…`) |
+| `STRIPE_WEBHOOK_SECRET` | Stripe → Webhooks → `we_1Ti4G3AVTgSOk7kNthMck5uw` → **Reveal** signing secret (`whsec_…`) |
 
-- **Endpoint URL:**
-  `https://fsqjgexjkjicwlzcgweu.supabase.co/functions/v1/stripe-webhook`
-- **Events to send** (the handler already implements all of these):
-  - `checkout.session.completed`
-  - `customer.subscription.updated`
-  - `customer.subscription.deleted`
-  - `invoice.payment_succeeded`
-  - `invoice.payment_failed`
-- After creating it, copy the **Signing secret** (`whsec_…`) into
-  `STRIPE_WEBHOOK_SECRET` (step 2).
+*(Supabase, NOT Vercel.)*
 
----
+### 2. Activate the Stripe account for live payments
+Settings → Business: business details, **bank account** for payouts, **statement descriptor**.
 
-## 4. Customer Portal  (OWNER)
-
-Stripe → Settings → Billing → **Customer portal** → activate. This powers the
-`customer-portal` edge function (the "Manage billing / cancel" flow).
-
-Recommended toggles:
-- Allow customers to **cancel** subscriptions
-- Allow **switching plans** between Growth ↔ Professional (and monthly ↔ annual)
-- Allow updating **payment method**
-- Show **invoice history**
+### 3. (Optional) Stripe Tax for GST/HST
+Settings → Tax → register. Code is already wired for `automatic_tax`; until you
+register, Stripe charges **0%** safely (no broken checkouts, just no tax collected).
 
 ---
 
-## 5. Business settings  (OWNER, before going live)
+## 🧪 Test plan (after the 2 secrets are set)
 
-- Activate the Stripe account (business details, bank account for payouts)
-- Set the account/statement descriptor (what shows on customers' card statements)
-- Confirm **CAD** as the price currency on every price
-- Tax: decide if you're charging GST/HST. If yes, enable **Stripe Tax** (or set tax
-  rates) — tell me if you want tax collection wired into checkout, it's a small change.
+1. https://www.indigenousrising.ai/pricing → sign in → **Growth Monthly** → checkout.
+2. Test card `4242 4242 4242 4242`, any future expiry / CVC / postal.
+3. Confirm all three:
+   - Browser redirects back to `/?checkout=success`
+   - A row appears in `public.subscriptions` (project `upxojfcdtmqtcvgbjsym`) with the
+     right `stripe_customer_id`, `stripe_subscription_id`, `status='active'`
+   - Stripe → Webhooks → endpoint shows **200s** on `checkout.session.completed`,
+     `customer.subscription.updated`, `invoice.payment_succeeded`
+4. Repeat once with **Professional Annual** (validates 2nd product + annual cycle).
+5. Optional: dashboard → manage subscription → confirm the Customer Portal opens and
+   lets you switch/cancel.
 
 ---
 
-## What is NOT needed
-- ❌ No `VITE_STRIPE_PUBLISHABLE_KEY` (checkout is server-side redirect, not Stripe.js)
-- ❌ No Stripe env vars in Vercel
-- ❌ No code change for Nations/Free plans
-
----
-
-## Hand-off summary — the 3 things to send me
-1. **Growth annual** `price_…`
-2. **Professional monthly** `price_…`
-3. **Professional annual** `price_…`
-
-Plus confirm: **STRIPE_SECRET_KEY** and **STRIPE_WEBHOOK_SECRET** are set in Supabase,
-the **webhook endpoint** is live, and the **Customer Portal** is activated.
-
-Once I have the 3 price IDs I wire them in, run tsc + build, and ship a PR — billing
-goes live on the next deploy.
+## Quick reference
+| Thing | Value |
+|---|---|
+| Stripe account | `acct_1STFMxAVTgSOk7kN` |
+| Webhook endpoint | `we_1Ti4G3AVTgSOk7kNthMck5uw` |
+| Webhook URL | `https://upxojfcdtmqtcvgbjsym.supabase.co/functions/v1/stripe-webhook` |
+| Customer Portal config | `bpc_1Ti4IVAVTgSOk7kNuZ…` |
+| Prod Supabase project | `upxojfcdtmqtcvgbjsym` |
+| Latest main commit | `9e1fe5b` (PR #64) |
+| Needed from owner | `STRIPE_SECRET_KEY` + `STRIPE_WEBHOOK_SECRET` in Supabase; account activation |
