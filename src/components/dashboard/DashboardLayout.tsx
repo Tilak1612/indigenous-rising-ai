@@ -376,8 +376,24 @@ function DashboardHeader() {
   const { subscribed, product_id } = useSubscription();
   const userTier = getTierFromSubscription(subscribed, product_id);
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
-  // Avatar is fetched once above (avatarUrl) and reused for both the sidebar and
-  // the header — no second profiles?select=avatar_url round-trip.
+  // DashboardHeader is a SIBLING of DashboardSidebar, not a child — it has no
+  // access to the sidebar's avatarUrl. (A previous dedup pointed this header at
+  // that out-of-scope variable, which threw "avatarUrl is not defined" and
+  // crashed the whole dashboard for every logged-in user.) The header owns its
+  // own avatar fetch.
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user) return;
+    (supabase as any)
+      .from('profiles')
+      .select('avatar_url')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }: { data: { avatar_url?: string } | null }) => {
+        if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+      });
+  }, [user]);
 
   return (
     <header className="h-14 border-b border-border flex items-center justify-between px-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
