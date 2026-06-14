@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { trackEvent } from '@/utils/analytics';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
@@ -29,39 +28,7 @@ const Training = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { subscribed, subscription_end, loading, refreshSubscription } = useSubscription();
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
-
-  const handleSubscribe = async () => {
-    trackEvent('training_enrollment_start', { training_type: 'premium_training' });
-    if (!user) {
-      toast.error('Please log in to subscribe to the training program');
-      navigate('/auth');
-      return;
-    }
-
-    setCheckoutLoading(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
-        headers: {
-          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
-        },
-      });
-
-      if (error) throw error;
-
-      if (data.url) {
-        window.open(data.url, '_blank');
-        // Refresh subscription status after a delay
-        setTimeout(refreshSubscription, 3000);
-      }
-    } catch (error: any) {
-      console.error('Checkout error:', error);
-      toast.error(error.message || 'Failed to create checkout session');
-    } finally {
-      setCheckoutLoading(false);
-    }
-  };
 
   const handleManageSubscription = async () => {
     setPortalLoading(true);
@@ -209,20 +176,18 @@ const Training = () => {
                   ) : (
                     <>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-4xl font-bold">$29</span>
-                        <span className="text-muted-foreground">/month</span>
+                        <span className="text-4xl font-bold">Included</span>
+                        <span className="text-muted-foreground">with Growth — $49/mo</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Get unlimited access to all training content, live workshops, and community support.
+                        The full training library, live workshops, and community support are included with the Growth plan and above.
                       </p>
-                      <Button 
-                        onClick={handleSubscribe} 
-                        disabled={checkoutLoading}
+                      <Button
+                        onClick={() => navigate('/pricing')}
                         size="lg"
                         className="w-full"
                       >
-                        {checkoutLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                        Subscribe to Training Program
+                        View plans
                       </Button>
                     </>
                   )}
@@ -301,7 +266,7 @@ const Training = () => {
                   <CardContent>
                     {module.locked ? (
                       <p className="text-sm text-muted-foreground">
-                        Subscribe to unlock this module
+                        Included with the Growth plan — upgrade to unlock
                       </p>
                     ) : (
                       <Button variant="outline" className="w-full">
