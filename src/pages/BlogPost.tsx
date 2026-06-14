@@ -13,6 +13,7 @@ import {
 import { getBlogBySlug, getRelatedPosts, getPostImage } from '@/data/blogPosts';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { truncateDescription } from '@/lib/seo';
 import { toast } from 'sonner';
 
 // Old blog slugs that were renamed (and were in the sitemap, soft-404'ing).
@@ -85,6 +86,8 @@ const BlogPost = () => {
   const BASE_URL = 'https://www.indigenousrising.ai';
   const shareUrl = `${BASE_URL}/blog/${post.slug}`;
   const absoluteImage = `${BASE_URL}${getPostImage(post.id)}`;
+  // SERP/social description trimmed so Google doesn't cut it off (summaries run 200+ chars).
+  const metaDesc = truncateDescription(post.summary);
   
   const handleShare = async (platform?: string) => {
     const shareData = {
@@ -119,12 +122,12 @@ const BlogPost = () => {
     <>
       <Helmet>
         <title>{post.title} | Indigenous Rising AI</title>
-        <meta name="description" content={post.summary} />
+        <meta name="description" content={metaDesc} />
         <meta name="keywords" content={post.keywords.join(', ')} />
         <link rel="canonical" href={shareUrl} />
         
         <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.summary} />
+        <meta property="og:description" content={metaDesc} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={shareUrl} />
         <meta property="og:image" content={absoluteImage} />
@@ -138,7 +141,7 @@ const BlogPost = () => {
         
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.summary} />
+        <meta name="twitter:description" content={metaDesc} />
         
         <script type="application/ld+json">
           {JSON.stringify({

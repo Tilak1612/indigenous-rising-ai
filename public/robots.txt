@@ -50,11 +50,42 @@ Allow: /
 User-agent: LinkedInBot
 Allow: /
 
-# Block AI training crawlers (protect Indigenous knowledge)
+# AI crawler policy — sovereignty-aligned middle path:
+# ALLOW retrieval / answer engines on PUBLIC content (they surface live, ATTRIBUTED
+# citations rather than silently ingesting for training); app + private areas stay
+# blocked. BLOCK bulk training crawlers entirely.
+
+# Retrieval / answer engines — public content only
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /api/
+Disallow: /auth
+Disallow: /profile
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /api/
+Disallow: /auth
+Disallow: /profile
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /api/
+Disallow: /auth
+Disallow: /profile
+
+# Bulk AI TRAINING crawlers — blocked entirely (protect Indigenous knowledge from
+# corpus ingestion; visibility comes from the retrieval engines above, with attribution)
 User-agent: GPTBot
 Disallow: /
 
-User-agent: ChatGPT-User
+User-agent: Google-Extended
 Disallow: /
 
 User-agent: CCBot
@@ -63,5 +94,5 @@ Disallow: /
 User-agent: anthropic-ai
 Disallow: /
 
-User-agent: Google-Extended
+User-agent: ClaudeBot
 Disallow: /
