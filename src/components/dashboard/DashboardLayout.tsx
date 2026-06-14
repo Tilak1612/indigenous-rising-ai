@@ -375,20 +375,9 @@ function DashboardHeader() {
   const { user } = useAuth();
   const { subscribed, product_id } = useSubscription();
   const userTier = getTierFromSubscription(subscribed, product_id);
-  const [headerAvatarUrl, setHeaderAvatarUrl] = useState<string | null>(null);
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
-
-  useEffect(() => {
-    if (!user) return;
-    (supabase as any)
-      .from('profiles')
-      .select('avatar_url')
-      .eq('id', user.id)
-      .maybeSingle()
-      .then(({ data }: { data: { avatar_url?: string } | null }) => {
-        if (data?.avatar_url) setHeaderAvatarUrl(data.avatar_url);
-      });
-  }, [user]);
+  // Avatar is fetched once above (avatarUrl) and reused for both the sidebar and
+  // the header — no second profiles?select=avatar_url round-trip.
 
   return (
     <header className="h-14 border-b border-border flex items-center justify-between px-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
@@ -489,7 +478,7 @@ function DashboardHeader() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
               <Avatar className="h-8 w-8">
-                {headerAvatarUrl && <AvatarImage src={headerAvatarUrl} alt="Profile" className="object-cover" />}
+                {avatarUrl && <AvatarImage src={avatarUrl} alt="Profile" className="object-cover" />}
                 <AvatarFallback className="bg-primary/10 text-primary text-sm">
                   {user?.email?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>

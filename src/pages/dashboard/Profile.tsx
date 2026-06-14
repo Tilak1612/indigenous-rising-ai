@@ -170,7 +170,7 @@ export default function Profile() {
   });
 
   const tierLabel = product_id?.toLowerCase().includes('enterprise') ? 'Gimishoomis (Enterprise)' :
-                    subscribed ? 'Ogichidaakwe (Pro)' : 'Maadaadiziwin (Free)';
+                    subscribed ? 'Ogichidaakwe (Growth)' : 'Maadaadiziwin (Free)';
 
   // Load existing profile from Supabase on mount.
   // Uses maybeSingle() so a missing profile row (e.g. a user who signed up

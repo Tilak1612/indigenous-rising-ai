@@ -120,7 +120,7 @@ export default function Settings() {
   });
 
   const tierLabel = product_id?.toLowerCase().includes('enterprise') ? 'Gimishoomis (Enterprise)' :
-                    subscribed ? 'Ogichidaakwe (Pro)' : 'Maadaadiziwin (Free)';
+                    subscribed ? 'Ogichidaakwe (Growth)' : 'Maadaadiziwin (Free)';
 
   // Upsert preferences via direct PostgREST (not the supabase-js SDK, whose
   // query path can hang on this project). user_id is the PK, so
@@ -688,7 +688,7 @@ export default function Settings() {
                       
                       {!subscribed && (
                         <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-                          <h4 className="font-medium mb-2">Upgrade to Ogichidaakwe (Pro)</h4>
+                          <h4 className="font-medium mb-2">Upgrade to Ogichidaakwe (Growth)</h4>
                           <p className="text-sm text-muted-foreground mb-4">
                             Get access to AI-powered funding navigator, advanced analytics, partner network, and more.
                           </p>
