@@ -1,4 +1,5 @@
 import { extraBlogPosts, extraPostImages } from './blogPostsExtra';
+import { blogFaqs } from './blogFaqs';
 import fundingGuidesImage from '@/assets/blog/funding-guides.jpg';
 import howToGuidesImage from '@/assets/blog/how-to-guides.jpg';
 import provincialGuidesImage from '@/assets/blog/provincial-guides.jpg';
@@ -103,6 +104,9 @@ export interface BlogPost {
   }[];
   cta: string;
   relatedPosts: string[];
+  /** Optional Q&A pairs — rendered as a visible FAQ block and emitted as
+   *  FAQPage schema (featured-snippet + AI-extraction lever). */
+  faqs?: { question: string; answer: string }[];
 }
 
 export const blogPosts: BlogPost[] = [
@@ -2908,6 +2912,12 @@ Maintain connections with regional organizations even while operating in urban c
 
 // Merge all posts
 const allPosts = [...blogPosts, ...extraBlogPosts];
+// Attach FAQ Q&A (kept in a separate file) onto matching posts → visible FAQ
+// block + FAQPage schema. Posts without an entry simply have no faqs.
+for (const post of allPosts) {
+  const faqs = blogFaqs[post.slug];
+  if (faqs && faqs.length) post.faqs = faqs;
+}
 const allPostImages = { ...postImages, ...extraPostImages };
 
 export const getBlogBySlug = (slug: string): BlogPost | undefined => {

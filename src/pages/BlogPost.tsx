@@ -188,6 +188,19 @@ const BlogPost = () => {
                 (s.subsections?.reduce((a, sub) => a + sub.content.split(' ').length, 0) ?? 0), 0)
           })}
         </script>
+        {post.faqs && post.faqs.length > 0 && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": post.faqs.map((f) => ({
+                "@type": "Question",
+                "name": f.question,
+                "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+              }))
+            })}
+          </script>
+        )}
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -357,6 +370,24 @@ const BlogPost = () => {
               </div>
             </section>
           ))}
+
+          {/* FAQ — visible Q&A, mirrors the FAQPage schema in <head> */}
+          {post.faqs && post.faqs.length > 0 && (
+            <section id="faq" className="mb-12 scroll-mt-24">
+              <h2 className="text-2xl font-display font-bold mb-6">Frequently Asked Questions</h2>
+              <div className="space-y-4">
+                {post.faqs.map((f, i) => (
+                  <details key={i} className="group rounded-lg border border-border bg-card p-5">
+                    <summary className="cursor-pointer list-none font-semibold text-foreground flex items-center justify-between gap-4">
+                      {f.question}
+                      <ChevronUp className="w-5 h-5 text-primary shrink-0 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <p className="mt-3 text-foreground/90 leading-relaxed">{f.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* CTA */}
           <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 mb-12">
