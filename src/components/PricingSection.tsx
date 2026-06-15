@@ -24,7 +24,7 @@ type Feature = { text: string; available: boolean };
 const STRIPE_PRICES: Record<string, { monthly: string; annual: string }> = {
   // Growth — $49/mo · $470/yr CAD
   Ogichidaakwe: {
-    monthly: 'price_1SSRqgS23MQcIdnrGDAHGF4C',
+    monthly: 'price_1TieC4AVTgSOk7kNi0635mvd',
     annual: 'price_1Ti443AVTgSOk7kNewKcPh6Q',
   },
   // Professional — $149/mo · $1,430/yr CAD
@@ -198,7 +198,7 @@ const PricingSection = () => {
       annualTotal: growthAnnualTotal,
       period: billingCycle === 'monthly' ? 'per month' : 'per month, billed annually',
       popular: true,
-      priceId: "price_1SSRqgS23MQcIdnrGDAHGF4C",
+      priceId: "price_1TieC4AVTgSOk7kNi0635mvd",
       features: PLAN_FEATURES.Ogichidaakwe,
       ctaText: "Start Growing",
       icon: Crown,
