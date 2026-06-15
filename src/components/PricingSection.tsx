@@ -108,15 +108,36 @@ const PricingSection = () => {
 
       if (checkoutError) {
         console.error('Checkout error:', checkoutError);
-        toast.error("Failed to create checkout session");
+        // supabase-js wraps a non-2xx response in a FunctionsHttpError whose
+        // real payload lives on `.context` (the raw Response). Read it so the
+        // user gets an actionable message instead of a silent / generic failure.
+        let serverError = '';
+        try {
+          const body = await (checkoutError as { context?: Response }).context?.json();
+          serverError = body?.error ?? '';
+        } catch {
+          // body wasn't JSON — fall back to the generic message below
+        }
+        if (serverError === 'Payment service not configured') {
+          toast.error(
+            "Online checkout is temporarily unavailable. Please email help@indigenousrising.ai and we'll set up your plan."
+          );
+        } else {
+          toast.error(
+            serverError || "Couldn't start checkout. Please try again, or email help@indigenousrising.ai."
+          );
+        }
         return;
       }
 
       if (data?.url) {
-        window.open(data.url, '_blank');
-        toast.success("Opening Stripe checkout...");
+        // Same-tab redirect: window.open('_blank') after an await is frequently
+        // swallowed by popup blockers, which would be another silent failure.
+        window.location.assign(data.url);
       } else {
-        toast.error("No checkout URL received");
+        toast.error(
+          "No checkout link was returned. Please try again, or email help@indigenousrising.ai."
+        );
       }
     } catch (error) {
       console.error('Error creating checkout:', error);
