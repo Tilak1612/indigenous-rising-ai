@@ -183,6 +183,17 @@ async function main() {
           { '@type': 'ListItem', position: 3, name: post.title, item: url },
         ],
       },
+      ...(Array.isArray(post.faqs) && post.faqs.length
+        ? [{
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: post.faqs.map((f) => ({
+              '@type': 'Question',
+              name: f.question,
+              acceptedAnswer: { '@type': 'Answer', text: f.answer },
+            })),
+          }]
+        : []),
     ];
     try {
       await writeRoute(template, { p: `/blog/${post.slug}`, url, title, description, ogImage, jsonLd });
