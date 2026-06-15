@@ -11,7 +11,7 @@
 // process still exits 0, so a prerender hiccup can never fail the Vercel build
 // (worst case: fewer routes get prerendered, the SPA still works).
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -101,6 +101,7 @@ function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd
   out = out.replace(/(<meta\s+property="og:image"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${I}$2`);
   out = out.replace(/(<meta\s+name="twitter:title"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${T}$2`);
   out = out.replace(/(<meta\s+name="twitter:description"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${D}$2`);
+  out = out.replace(/(<meta\s+name="twitter:image"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${I}$2`);
   // Canonical: replace if present, else inject before </head>
   const inject = [`<link rel="canonical" href="${U}" />`];
   if (jsonLd) inject.push(`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`);
@@ -142,18 +143,30 @@ async function main() {
     } catch (e) { console.warn('[prerender] route failed', m.p, e.message); }
   }
 
+  // Resolve each post's unique hero image (bundled as dist/assets/post-<id>-*.jpg)
+  // so the STATIC HTML uses a per-article OG image instead of the generic
+  // og-home.jpg — social scrapers read the static HTML, not client-rendered tags.
+  const assetFiles = await readdir(path.join(DIST, 'assets')).catch(() => []);
+  const ogForPost = (id) => {
+    if (id == null) return OG_DEFAULT;
+    const f = assetFiles.find((n) => n.startsWith(`post-${id}-`) && /\.(jpe?g|png|webp)$/i.test(n));
+    return f ? `${BASE}/assets/${f}` : OG_DEFAULT;
+  };
+
   const posts = await loadBlogPosts();
   for (const post of posts) {
     if (!post?.slug) continue;
     const url = `${BASE}/blog/${post.slug}`;
     const title = `${post.title} | Indigenous Rising AI`;
     const description = post.summary || post.excerpt || '';
+    const ogImage = ogForPost(post.id);
     const jsonLd = [
       {
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         headline: post.title,
         description,
+        image: ogImage,
         url,
         datePublished: post.publishedAt || post.date,
         dateModified: post.updatedAt || post.publishedAt || post.date,
@@ -172,7 +185,7 @@ async function main() {
       },
     ];
     try {
-      await writeRoute(template, { p: `/blog/${post.slug}`, url, title, description, jsonLd });
+      await writeRoute(template, { p: `/blog/${post.slug}`, url, title, description, ogImage, jsonLd });
       count++;
       const lastmod = toISODate(post.updatedAt || post.publishedAt || post.date);
       sitemap.push({ loc: url, ...(lastmod ? { lastmod } : {}), changefreq: 'monthly', priority: '0.7' });
