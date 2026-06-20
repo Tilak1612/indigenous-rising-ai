@@ -245,7 +245,7 @@ Timelines vary from 4-6 weeks for smaller loans to 6-12 months for larger contri
       }
     ],
     cta: "Use Indigenous Rising AI to search Canada's Indigenous business funding programs and find the grants and loans that match your business vision and community goals.",
-    relatedPosts: ["2", "8", "9"]
+    relatedPosts: ["2", "8", "9", "51"]
   },
   {
     id: "2",
@@ -1372,7 +1372,7 @@ Money borrowed from and repaid to IFIs stays in Indigenous communities, building
       }
     ],
     cta: "Use Indigenous Rising AI to find Indigenous financial institutions in your region—connect with community-based lenders who understand your business and cultural context.",
-    relatedPosts: ["1", "8", "2"]
+    relatedPosts: ["1", "8", "2", "51"]
   },
   {
     id: "10",
@@ -2491,7 +2491,7 @@ Many major corporations have Indigenous procurement targets as part of reconcili
       }
     ],
     cta: "Indigenous Rising AI helps you find procurement opportunities alongside funding programs—discover the full range of Indigenous business economic opportunities.",
-    relatedPosts: ["1", "2", "12"]
+    relatedPosts: ["1", "2", "12", "51"]
   },
   {
     id: "18",
