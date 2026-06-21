@@ -162,10 +162,13 @@ describe('NewsletterSignup', () => {
     expect(privacyLink).toHaveAttribute('href', '/privacy');
   });
 
-  it('displays PIPEDA compliance message', () => {
+  it('displays PIPEDA privacy message', () => {
     renderComponent();
-    
-    expect(screen.getByText(/PIPEDA Compliant/i)).toBeInTheDocument();
+
+    // Intentionally "PIPEDA-aligned" (not "Compliant") — the brand avoids
+    // overclaiming certification/compliance. Keep this assertion in sync with
+    // the component's honest wording.
+    expect(screen.getByText(/PIPEDA-aligned/i)).toBeInTheDocument();
     expect(screen.getByText(/Data stored in Canada/i)).toBeInTheDocument();
   });
 });
