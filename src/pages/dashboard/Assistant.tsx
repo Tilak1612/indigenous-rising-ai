@@ -39,6 +39,18 @@ const SUGGESTIONS = [
   'What documents do funders usually ask for?',
 ];
 
+// The model replies in light markdown; without this, **bold** shows as literal
+// asterisks in the chat bubble. Builds React nodes (never innerHTML), so the
+// model's output stays fully escaped — no XSS surface.
+const renderAssistantContent = (text: string): React.ReactNode[] =>
+  text.split(/(\*\*[^*\n]+\*\*)/g).map((part, i) =>
+    part.startsWith('**') && part.endsWith('**') && part.length > 4 ? (
+      <strong key={i}>{part.slice(2, -2)}</strong>
+    ) : (
+      part
+    )
+  );
+
 export default function Assistant() {
   const { user } = useAuth();
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -205,7 +217,7 @@ export default function Assistant() {
                   <div className={`rounded-2xl px-4 py-2.5 max-w-[80%] whitespace-pre-wrap text-sm leading-relaxed ${
                     m.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
                   }`}>
-                    {m.content}
+                    {m.role === 'assistant' ? renderAssistantContent(m.content) : m.content}
                   </div>
                 </div>
               ))
