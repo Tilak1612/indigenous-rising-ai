@@ -26,6 +26,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
   {
     title: 'Resources',
     links: [
+      { name: 'Grants & funding hub', to: '/guides/indigenous-business-grants' },
       { name: 'Blog', to: '/blog' },
       { name: 'FAQ', to: '/faq' },
       { name: 'Track a request', to: '/track-request' },

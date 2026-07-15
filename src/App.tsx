@@ -43,6 +43,7 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
+const GrantsHub = lazy(() => import("./pages/GrantsHub"));
 const PublicFunding = lazy(() => import("./pages/PublicFunding"));
 const FundingAlerts = lazy(() => import("./pages/FundingAlerts"));
 const FundingAlertConfirm = lazy(() => import("./pages/FundingAlertConfirm"));
@@ -557,13 +558,21 @@ const App = () => (
                   </Suspense>
                 } 
               />
-              <Route 
-                path="/blog" 
+              <Route
+                path="/blog"
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <Blog />
                   </Suspense>
-                } 
+                }
+              />
+              <Route
+                path="/guides/indigenous-business-grants"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <GrantsHub />
+                  </Suspense>
+                }
               />
               <Route 
                 path="/blog/:slug" 
