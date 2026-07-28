@@ -42,6 +42,7 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
 const PublicFunding = lazy(() => import("./pages/PublicFunding"));
 const FundingAlerts = lazy(() => import("./pages/FundingAlerts"));
 const FundingAlertConfirm = lazy(() => import("./pages/FundingAlertConfirm"));
@@ -97,6 +98,18 @@ function RouteChangeTracker() {
   return null;
 }
 
+/** Public marketing chatbot — shown on marketing pages, hidden inside the app
+ *  (dashboard/auth/admin/onboarding), where the authenticated AI Assistant lives. */
+function MarketingAssistant() {
+  const location = useLocation();
+  if (/^\/(dashboard|auth|admin|onboarding|login|signin)(\/|$)/.test(location.pathname)) return null;
+  return (
+    <Suspense fallback={null}>
+      <SiteAssistant />
+    </Suspense>
+  );
+}
+
 const App = () => (
   <ErrorBoundary>
     <HelmetProvider>
@@ -107,6 +120,7 @@ const App = () => (
             <TooltipProvider>
             <Toaster />
             <Sonner />
+            <MarketingAssistant />
             <Routes>
               <Route
                 path="/"
