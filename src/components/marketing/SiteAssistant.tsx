@@ -90,7 +90,9 @@ const SiteAssistant = () => {
         <button
           onClick={() => setOpen(true)}
           aria-label="Ask Rising AI about Indigenous Rising AI"
-          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-elevated px-4 py-3 hover:opacity-90 transition-opacity"
+          /* Sits ABOVE the accessibility toolbar toggle (fixed bottom-4 right-4
+             z-50) so the a11y control is never obscured or crowded. */
+          className="fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-elevated px-4 py-3 hover:opacity-90 transition-opacity"
         >
           <MessageCircle className="w-5 h-5" />
           <span className="text-sm font-semibold hidden sm:inline">Ask Rising AI</span>
@@ -102,7 +104,8 @@ const SiteAssistant = () => {
         <div
           role="dialog"
           aria-label="Rising AI assistant"
-          className="fixed bottom-5 right-5 z-40 w-[92vw] max-w-sm rounded-2xl border border-border bg-card shadow-elevated flex flex-col overflow-hidden"
+          /* Anchored above the accessibility toolbar toggle, matching the launcher. */
+          className="fixed bottom-20 right-4 z-40 w-[92vw] max-w-sm rounded-2xl border border-border bg-card shadow-elevated flex flex-col overflow-hidden"
           style={{ height: 'min(70vh, 560px)' }}
         >
           <header className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border bg-primary/5">
