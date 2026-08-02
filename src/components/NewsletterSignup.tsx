@@ -145,18 +145,28 @@ const NewsletterSignup = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <div className="space-y-1">
+            {/* A placeholder is not an accessible name — screen readers announced
+                this field as an unlabelled edit box. Visually hidden label keeps
+                the compact design while naming the input properly. */}
+            <Label htmlFor="newsletter-email" className="sr-only">
+              Email address
+            </Label>
             <Input
+              id="newsletter-email"
               type="email"
+              autoComplete="email"
               placeholder="Enter your email address"
               {...register('email')}
               className="bg-background"
               disabled={isSubmitting}
+              aria-invalid={errors.email || emailError ? true : undefined}
+              aria-describedby={errors.email || emailError ? 'newsletter-email-error' : undefined}
             />
               {errors.email && (
-                <p className="text-xs text-destructive">{errors.email.message}</p>
+                <p id="newsletter-email-error" className="text-xs text-destructive">{errors.email.message}</p>
               )}
               {emailError && !errors.email && (
-                <p className="text-xs text-destructive">{emailError}</p>
+                <p id="newsletter-email-error" className="text-xs text-destructive">{emailError}</p>
               )}
           </div>
           
