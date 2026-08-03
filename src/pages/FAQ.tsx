@@ -16,6 +16,12 @@ const FAQ = () => {
       <main className="pt-24">
         <div className="container mx-auto px-4 py-8">
           <Breadcrumbs />
+          {/* The page had no <h1> at all — broken heading hierarchy for screen
+              readers and a weaker page for search. FAQSection starts at h2, so
+              this supplies the document's single top-level heading. */}
+          <h1 className="sr-only">
+            Frequently Asked Questions — Indigenous Rising AI
+          </h1>
         </div>
         <FAQSection includeSchema />
       </main>
