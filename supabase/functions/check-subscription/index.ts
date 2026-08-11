@@ -71,6 +71,35 @@ serve(async (req) => {
     const user = userData.user;
     logStep("User authenticated", { email: user.email });
 
+    // ── Demo-account override ────────────────────────────────────────────────
+    // Lets a sales/demo account show paid features without a real Stripe
+    // subscription. Deliberately conservative:
+    //   * OFF unless DEMO_ACCOUNT_EMAILS is set (no env var = normal billing).
+    //   * Matched against the SERVER-VERIFIED email from auth.getUser(), so a
+    //     client cannot spoof it by editing a request body or header.
+    //   * Grants read-style access only — it never creates a Stripe customer,
+    //     never charges, and never writes to the subscriptions table.
+    //   * DEMO_PRODUCT_TIER picks what the UI shows: "enterprise" unlocks the
+    //     enterprise nav, anything else maps to the normal paid tier.
+    // Remove the env var to instantly revoke the demo's access.
+    const demoEmails = (Deno.env.get("DEMO_ACCOUNT_EMAILS") ?? "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+
+    if (demoEmails.length > 0 && demoEmails.includes((user.email ?? "").toLowerCase())) {
+      const tier = (Deno.env.get("DEMO_PRODUCT_TIER") ?? "paid").toLowerCase();
+      // getTierFromSubscription() reads this string: "…enterprise"/"…gimishoomis"
+      // => enterprise tier, otherwise paid.
+      const productId = tier === "enterprise" ? "demo_enterprise" : "demo_paid";
+      const subscriptionEnd = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+      logStep("DEMO ACCOUNT override applied", { email: user.email, productId });
+      return new Response(
+        JSON.stringify({ subscribed: true, product_id: productId, subscription_end: subscriptionEnd }),
+        { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
+      );
+    }
+
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
 
