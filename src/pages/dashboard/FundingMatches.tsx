@@ -21,6 +21,7 @@ import {
   ArrowRight,
   AlertCircle,
   Bookmark,
+  Info,
 } from 'lucide-react';
 
 interface Match {
@@ -92,10 +93,13 @@ function EligibilityBadge({ eligibility }: { eligibility: Match['eligibility'] }
     );
   }
   if (eligibility === 'no') {
+    // Deliberately hedged. This is an AI assessment, not a funder's decision —
+    // stating "Not eligible" as fact could stop someone applying for funding
+    // they actually qualify for, which is the costliest error this page can make.
     return (
       <Badge variant="outline" className="text-muted-foreground">
         <XCircle className="w-3 h-3 mr-1" />
-        Not eligible
+        Likely not a fit
       </Badge>
     );
   }
@@ -416,6 +420,22 @@ const FundingMatches: React.FC = () => {
                       Upgrade for explanations and save-for-later
                     </Link>
                   )}
+                </div>
+
+                {/* Separates VERIFIED source data (the programs themselves, from
+                    our grants database) from AI-GENERATED guidance (the fit score,
+                    eligibility read, and explanation). Without this, an AI verdict
+                    can be mistaken for a funder's decision. */}
+                <div className="rounded-lg border border-border bg-muted/40 p-4 flex gap-3">
+                  <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" aria-hidden="true" />
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <span className="font-medium text-foreground">How to read these results:</span>{' '}
+                    the funding programs listed are real records from our database. The{' '}
+                    <span className="font-medium text-foreground">fit score, eligibility read, and explanation are AI-generated guidance</span>{' '}
+                    — not an eligibility decision. Always confirm current criteria, amounts, and
+                    deadlines with the funder before applying, and don&apos;t rule a program out on
+                    this page alone.
+                  </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
