@@ -39,7 +39,13 @@ const PricingSection = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+  // Annual is the default during the launch campaign; ?billing=monthly or
+  // ?billing=annual overrides it so ads and emails can deep-link a specific
+  // billing option. Users can still switch instantly either way.
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>(() => {
+    const param = new URLSearchParams(location.search).get('billing');
+    return param === 'monthly' ? 'monthly' : 'annual';
+  });
 
   const handleAddonsClick = () => {
     if (location.pathname === '/pricing') {
@@ -100,7 +106,9 @@ const PricingSection = () => {
       }
 
       const { data, error: checkoutError } = await supabase.functions.invoke('create-checkout', {
-        body: { priceId },
+        // Send identifiers only — the server resolves the approved Stripe Price
+        // ID. The browser must never decide what Stripe charges.
+        body: { plan: planName, billing: billingCycle },
         headers: {
           Authorization: `Bearer ${stored.access_token}`,
         },
@@ -147,13 +155,20 @@ const PricingSection = () => {
     }
   };
 
+  // Annual totals are CONFIGURED, not computed in the browser — they must equal
+  // the amount the Stripe annual price actually charges. Deriving them as
+  // round(monthly * 0.8) * 12 previously advertised $468 / $1,428 while Stripe
+  // charged $470 / $1,430 — a customer-facing price mismatch.
+  // Effective monthly and the dollar saving are derived FROM these real totals.
   const growthMonthly = 49;
-  const growthAnnualMonthly = Math.round(growthMonthly * 0.8);
-  const growthAnnualTotal = growthAnnualMonthly * 12;
+  const growthAnnualTotal = 470;                                   // Stripe: price_1Ti443…
+  const growthAnnualMonthly = Math.round(growthAnnualTotal / 12);  // ≈ $39/mo
+  const growthAnnualSaving = growthMonthly * 12 - growthAnnualTotal;
 
   const proMonthly = 149;
-  const proAnnualMonthly = Math.round(proMonthly * 0.8);
-  const proAnnualTotal = proAnnualMonthly * 12;
+  const proAnnualTotal = 1430;                                     // Stripe: price_1Ti49b…
+  const proAnnualMonthly = Math.round(proAnnualTotal / 12);        // ≈ $119/mo
+  const proAnnualSaving = proMonthly * 12 - proAnnualTotal;
 
   type Plan = {
     name: string;            // internal key — drives Stripe price lookup; do not change
@@ -163,6 +178,7 @@ const PricingSection = () => {
     monthlyPrice: string;
     annualPrice: string;
     annualTotal?: number;
+    annualSaving?: number;
     period: string;
     popular: boolean;
     priceId?: string;
@@ -196,6 +212,7 @@ const PricingSection = () => {
       monthlyPrice: `$${growthMonthly}`,
       annualPrice: `$${growthAnnualMonthly}`,
       annualTotal: growthAnnualTotal,
+      annualSaving: growthAnnualSaving,
       period: billingCycle === 'monthly' ? 'per month' : 'per month, billed annually',
       popular: true,
       priceId: "price_1TieC4AVTgSOk7kNi0635mvd",
@@ -212,6 +229,7 @@ const PricingSection = () => {
       monthlyPrice: `$${proMonthly}`,
       annualPrice: `$${proAnnualMonthly}`,
       annualTotal: proAnnualTotal,
+      annualSaving: proAnnualSaving,
       period: billingCycle === 'monthly' ? 'per month' : 'per month, billed annually',
       popular: false,
       priceId: undefined,
@@ -334,9 +352,18 @@ const PricingSection = () => {
                       <p className="text-sm text-muted-foreground">{plan.period}</p>
                     )}
                     {billingCycle === 'annual' && plan.annualTotal && (
-                      <p className="text-xs text-muted-foreground">
-                        ${plan.annualTotal} billed annually
-                      </p>
+                      <>
+                        {/* The full annual charge is always disclosed — never
+                            only the effective monthly figure. */}
+                        <p className="text-xs text-muted-foreground">
+                          ${plan.annualTotal} CAD billed annually
+                        </p>
+                        {plan.annualSaving ? (
+                          <p className="text-xs font-medium text-primary">
+                            Save ${plan.annualSaving} CAD per year
+                          </p>
+                        ) : null}
+                      </>
                     )}
                   </div>
                 </CardHeader>

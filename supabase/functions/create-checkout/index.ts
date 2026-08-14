@@ -52,14 +52,64 @@ serve(async (req) => {
 
     console.log('[CREATE-CHECKOUT] User authenticated:', user.email);
 
-    // Get priceId from request body
-    const { priceId } = await req.json();
-    
-    if (!priceId) {
-      throw new Error('Price ID is required');
+    // ── Server-side price resolution (never trust the browser) ──────────────
+    // Previously the client sent a raw Stripe priceId and we charged it
+    // verbatim — meaning any authenticated user could POST an arbitrary price
+    // ID and check out at any price that exists in the Stripe account. The
+    // client now sends only identifiers (plan + billing) and the server maps
+    // them to an approved Price ID.
+    //
+    // Price IDs come from env so they are never in client code and can differ
+    // per environment; the literals are the current production fallbacks.
+    const PRICES: Record<string, { monthly: string; annual: string }> = {
+      // Growth — $49/mo · $470/yr CAD (20% saving)
+      Ogichidaakwe: {
+        monthly: Deno.env.get('STRIPE_GROWTH_MONTHLY_PRICE_ID') ?? 'price_1TieC4AVTgSOk7kNi0635mvd',
+        annual: Deno.env.get('STRIPE_GROWTH_ANNUAL_PRICE_ID') ?? 'price_1Ti443AVTgSOk7kNewKcPh6Q',
+      },
+      // Professional — $149/mo · $1,430/yr CAD (20% saving)
+      Bimaadiziwin: {
+        monthly: Deno.env.get('STRIPE_PRO_MONTHLY_PRICE_ID') ?? 'price_1Ti47xAVTgSOk7kNvfZdLbr8',
+        annual: Deno.env.get('STRIPE_PRO_ANNUAL_PRICE_ID') ?? 'price_1Ti49bAVTgSOk7kNjT1wTOIp',
+      },
+    };
+    // Every price the server is willing to charge. Used to validate the legacy
+    // priceId path so an older cached frontend keeps working but still cannot
+    // charge an arbitrary amount.
+    const ALLOWED = new Set(Object.values(PRICES).flatMap((p) => [p.monthly, p.annual]));
+
+    const body = await req.json().catch(() => ({}));
+    const { plan, billing, priceId: legacyPriceId } = body ?? {};
+
+    let priceId: string | undefined;
+
+    if (plan || billing) {
+      const cycle = billing === 'annual' ? 'annual' : 'monthly';
+      const entry = PRICES[plan as string];
+      if (!entry) {
+        return new Response(
+          JSON.stringify({ error: 'Unknown plan' }),
+          { headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' }, status: 400 }
+        );
+      }
+      priceId = entry[cycle];
+      console.log('[CREATE-CHECKOUT] Resolved server-side:', { plan, billing: cycle, priceId });
+    } else if (legacyPriceId) {
+      // Legacy path: accept only prices on the allow-list.
+      if (!ALLOWED.has(legacyPriceId)) {
+        console.warn('[CREATE-CHECKOUT] Rejected non-allow-listed priceId:', legacyPriceId);
+        return new Response(
+          JSON.stringify({ error: 'Invalid plan selection' }),
+          { headers: { ...corsHeaders, ...securityHeaders, 'Content-Type': 'application/json' }, status: 400 }
+        );
+      }
+      priceId = legacyPriceId;
+      console.log('[CREATE-CHECKOUT] Legacy priceId (allow-listed):', priceId);
     }
 
-    console.log('[CREATE-CHECKOUT] Price ID:', priceId);
+    if (!priceId) {
+      throw new Error('A plan is required');
+    }
 
     const stripe = new Stripe(stripeKey, {
       apiVersion: '2025-08-27.basil',
