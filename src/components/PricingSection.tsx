@@ -356,11 +356,11 @@ const PricingSection = () => {
                         {/* The full annual charge is always disclosed — never
                             only the effective monthly figure. */}
                         <p className="text-xs text-muted-foreground">
-                          ${plan.annualTotal} CAD billed annually
+                          ${plan.annualTotal.toLocaleString('en-CA')} CAD billed annually
                         </p>
                         {plan.annualSaving ? (
                           <p className="text-xs font-medium text-primary">
-                            Save ${plan.annualSaving} CAD per year
+                            Save ${plan.annualSaving.toLocaleString('en-CA')} CAD per year
                           </p>
                         ) : null}
                       </>
