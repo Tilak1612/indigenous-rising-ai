@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import { TwoFactorSettings } from '@/components/dashboard/TwoFactorSettings';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -450,6 +451,10 @@ export default function Settings() {
                     </Button>
                   </CardContent>
                 </Card>
+
+                {/* Real TOTP 2FA via Supabase MFA — enrolment is only activated
+                    after the user proves a valid code. */}
+                <TwoFactorSettings />
 
                 <Card className="border-destructive/50">
                   <CardHeader>
