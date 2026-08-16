@@ -27,6 +27,38 @@ const LEGACY_SLUG_REDIRECTS: Record<string, string> = {
   'how-to-apply-indigenous-business-funding-canada': 'how-to-apply-indigenous-business-funding-step-by-step',
 };
 
+// Renders inline [text](url) markdown links within blog body text. Internal
+// links (starting with "/") use SPA navigation; external links open in a new
+// tab with safe rel. Text without link syntax is returned unchanged, so
+// existing posts (which use none) render identically.
+const LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]+)\)/g;
+const renderInline = (text: string): string | Array<string | JSX.Element> => {
+  if (!text.includes('](')) return text;
+  const nodes: Array<string | JSX.Element> = [];
+  let last = 0;
+  let key = 0;
+  let m: RegExpExecArray | null;
+  LINK_RE.lastIndex = 0;
+  while ((m = LINK_RE.exec(text)) !== null) {
+    if (m.index > last) nodes.push(text.slice(last, m.index));
+    const [full, label, url] = m;
+    nodes.push(
+      url.startsWith('/') ? (
+        <Link key={key++} to={url} className="text-primary underline underline-offset-2 hover:text-primary/80">
+          {label}
+        </Link>
+      ) : (
+        <a key={key++} href={url} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
+          {label}
+        </a>
+      )
+    );
+    last = m.index + full.length;
+  }
+  if (last < text.length) nodes.push(text.slice(last));
+  return nodes;
+};
+
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -343,7 +375,7 @@ const BlogPost = () => {
                         <h3 className="text-lg font-semibold text-foreground mb-2">
                           {header.replace(/\*\*/g, '')}
                         </h3>
-                        <p className="text-foreground/90">{rest.join(':**')}</p>
+                        <p className="text-foreground/90">{renderInline(rest.join(':**'))}</p>
                       </div>
                     );
                   }
@@ -355,7 +387,7 @@ const BlogPost = () => {
                         {intro && <p className="text-foreground/90 mb-2">{intro}</p>}
                         <ul className="list-disc pl-6 space-y-1">
                           {items.map((item, j) => (
-                            <li key={j} className="text-foreground/90">{item}</li>
+                            <li key={j} className="text-foreground/90">{renderInline(item)}</li>
                           ))}
                         </ul>
                       </div>
@@ -363,7 +395,7 @@ const BlogPost = () => {
                   }
                   return (
                     <p key={i} className="text-foreground/90 leading-relaxed mb-4">
-                      {para}
+                      {renderInline(para)}
                     </p>
                   );
                 })}
