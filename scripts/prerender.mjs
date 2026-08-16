@@ -33,6 +33,12 @@ const MARKETING = [
   { p: '/auth', t: 'Sign in | Indigenous Rising AI', d: 'Sign in to your Indigenous Rising AI account.', robots: 'noindex, nofollow' },
   { p: '/pricing', t: 'Pricing — Free, Growth & Nations plans | Indigenous Rising AI', d: 'Honest, transparent pricing for Indigenous entrepreneurs. Start free; Growth is $49/mo. OCAP®-aligned, data stored in Canada, and you are never billed for a feature before it ships.' },
   { p: '/blog', t: 'Blog — Indigenous business funding & growth | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications, business planning, and growth across Canada — written for First Nations, Métis, and Inuit entrepreneurs.' },
+  { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada | Indigenous Rising AI', d: 'A hub of guides to Indigenous business grants, loans, and non-repayable funding across Canada — by province and by community (First Nations, Métis, Inuit), plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding', faqs: [
+    { q: 'What Indigenous business grants are available in Canada?', a: 'Indigenous entrepreneurs can access a mix of federal and provincial programs, non-repayable contributions, and loans from Indigenous Financial Institutions. Availability depends on your province, community (First Nations, Métis, or Inuit), industry, and stage.' },
+    { q: 'Do I need Indian status to get Indigenous business funding?', a: 'Not always. Many programs serve Status and Non-Status First Nations, Métis, and Inuit entrepreneurs, using community membership, Métis citizenship, or Inuit beneficiary status as proof of identity rather than Indian status specifically. Always check each program’s eligibility.' },
+    { q: 'Are Indigenous business grants the same as loans?', a: 'No. Grants and non-repayable contributions do not have to be paid back (subject to using funds for the approved purpose and meeting reporting requirements), while loans do. Many entrepreneurs combine both.' },
+    { q: 'How do I find the grants I am actually eligible for?', a: 'Start with the guide for your province and your community, then use Indigenous Rising AI’s funding matching to scan programs against your profile. A clear business plan makes every application stronger.' },
+  ] },
   { p: '/contact', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
   { p: '/faq', t: 'Frequently asked questions | Indigenous Rising AI', d: 'Answers about funding matching, business planning, OCAP® data sovereignty, pricing, and what is live today versus coming soon on Indigenous Rising AI.' },
   { p: '/about', t: 'About Indigenous Rising AI', d: 'The AI platform for Indigenous business growth — funding, planning, training, and growth, built around your community’s data sovereignty.' },
@@ -135,7 +141,31 @@ async function main() {
   for (const m of MARKETING) {
     try {
       const url = m.p === '/' ? `${BASE}/` : `${BASE}${m.p}`;
-      await writeRoute(template, { p: m.p, url, title: m.t, description: m.d, robots: m.robots });
+      // Optional structured data for content hubs (mirrors the client-rendered
+      // Helmet tags so non-JS crawlers / AI extractors see it in the raw HTML).
+      const jsonLd = [];
+      if (m.breadcrumb) {
+        jsonLd.push({
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
+            { '@type': 'ListItem', position: 2, name: m.breadcrumb, item: url },
+          ],
+        });
+      }
+      if (Array.isArray(m.faqs) && m.faqs.length) {
+        jsonLd.push({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: m.faqs.map((f) => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        });
+      }
+      await writeRoute(template, { p: m.p, url, title: m.t, description: m.d, robots: m.robots, ...(jsonLd.length ? { jsonLd } : {}) });
       count++;
       if (!/noindex/i.test(m.robots || '')) {
         sitemap.push({ loc: url, changefreq: m.p === '/' ? 'weekly' : 'monthly', priority: m.p === '/' ? '1.0' : '0.8' });
