@@ -118,7 +118,6 @@ async function sha256(input: string): Promise<string> {
 }
 
 function computeProfileHash(profile: Profile): Promise<string> {
-  // Only the fields that affect matching
   const relevant = JSON.stringify({
     territory: profile.territory,
     industry: profile.industry,
@@ -175,10 +174,7 @@ async function callOpenAi(
     name: grant.name,
     funder: grant.funder,
     description: grant.description,
-    amount_range_cad: {
-      min: grant.amount_min,
-      max: grant.amount_max,
-    },
+    amount_range_cad: { min: grant.amount_min, max: grant.amount_max },
     deadline: grant.deadline,
     is_recurring: grant.is_recurring,
     eligible_provinces: grant.provinces,
@@ -191,13 +187,11 @@ async function callOpenAi(
 
   const userPrompt = `PROFILE:\n${JSON.stringify(profileSummary, null, 2)}\n\nGRANT:\n${JSON.stringify(grantSummary, null, 2)}\n\nReturn JSON only.`;
 
+  let response: Response;
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         response_format: { type: 'json_object' },
@@ -209,35 +203,49 @@ async function callOpenAi(
         ],
       }),
     });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('[MATCH] OpenAI error:', response.status, errText);
-      return null;
-    }
-
-    const body = await response.json();
-    const content = body?.choices?.[0]?.message?.content;
-    if (!content) return null;
-
-    const parsed = JSON.parse(content);
-    const eligibility = ['yes', 'no', 'maybe'].includes(parsed.eligibility) ? parsed.eligibility : 'maybe';
-    const fitScore = Math.max(0, Math.min(100, Math.round(Number(parsed.fit_score) || 0)));
-    const explanation = String(parsed.explanation || '').slice(0, 220);
-
-    return {
-      verdict: {
-        eligibility: eligibility as 'yes' | 'no' | 'maybe',
-        fit_score: fitScore,
-        explanation,
-      },
-      inputTokens: body?.usage?.prompt_tokens ?? 0,
-      outputTokens: body?.usage?.completion_tokens ?? 0,
-    };
-  } catch (err) {
-    console.error('[MATCH] OpenAI fetch threw:', err);
+  } catch (fetchErr) {
+    const msg = fetchErr instanceof Error ? fetchErr.message : String(fetchErr);
+    console.error('[MATCH-OPENAI] fetch threw:', msg);
     return null;
   }
+
+  if (!response.ok) {
+    const errText = await response.text();
+    console.error('[MATCH-OPENAI] non-2xx response:', response.status, errText.substring(0, 500));
+    return null;
+  }
+
+  let body: { choices?: Array<{ message?: { content?: string } }>; usage?: { prompt_tokens?: number; completion_tokens?: number } };
+  try {
+    body = await response.json();
+  } catch (parseErr) {
+    console.error('[MATCH-OPENAI] response JSON parse failed:', parseErr);
+    return null;
+  }
+
+  const content = body?.choices?.[0]?.message?.content;
+  if (!content) {
+    console.error('[MATCH-OPENAI] no content in response');
+    return null;
+  }
+
+  let parsed: { eligibility?: string; fit_score?: number; explanation?: string };
+  try {
+    parsed = JSON.parse(content);
+  } catch (parseErr) {
+    console.error('[MATCH-OPENAI] content JSON parse failed:', parseErr);
+    return null;
+  }
+
+  const eligibility = ['yes', 'no', 'maybe'].includes(parsed.eligibility ?? '') ? parsed.eligibility! : 'maybe';
+  const fitScore = Math.max(0, Math.min(100, Math.round(Number(parsed.fit_score) || 0)));
+  const explanation = String(parsed.explanation || '').slice(0, 220);
+
+  return {
+    verdict: { eligibility: eligibility as 'yes' | 'no' | 'maybe', fit_score: fitScore, explanation },
+    inputTokens: body?.usage?.prompt_tokens ?? 0,
+    outputTokens: body?.usage?.completion_tokens ?? 0,
+  };
 }
 
 serve(async (req) => {
@@ -248,7 +256,6 @@ serve(async (req) => {
   }
 
   try {
-    // 1. Auth — require user JWT
     const authHeader = req.headers.get('Authorization') || '';
     const token = authHeader.replace(/^Bearer\s+/i, '');
     if (!token) {
@@ -262,7 +269,6 @@ serve(async (req) => {
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
     const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
 
-    // Verify the JWT using the anon-key client (standard supabase pattern)
     const userClient = createClient(supabaseUrl, anonKey, {
       auth: { persistSession: false },
       global: { headers: { Authorization: `Bearer ${token}` } },
@@ -270,18 +276,14 @@ serve(async (req) => {
     const { data: userData, error: userErr } = await userClient.auth.getUser(token);
     if (userErr || !userData?.user) {
       return new Response(
-        JSON.stringify({ error: 'Invalid session' }),
+        JSON.stringify({ error: 'Invalid session', detail: userErr?.message ?? 'no user' }),
         { status: 401, headers: { ...cors, 'Content-Type': 'application/json' } }
       );
     }
     const userId = userData.user.id;
 
-    // Admin client for DB writes
-    const admin = createClient(supabaseUrl, serviceKey, {
-      auth: { persistSession: false },
-    });
+    const admin = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
-    // 2. Profile fetch
     const { data: profile, error: profileErr } = await admin
       .from('profiles')
       .select('id, territory, industry, business_stage, business_name, business_description, bio, employees, target_funding_amount, funding_purpose')
@@ -301,15 +303,11 @@ serve(async (req) => {
     if (!profile.business_stage) missing.push('business_stage');
     if (missing.length > 0) {
       return new Response(
-        JSON.stringify({
-          error: 'Complete your profile to find matches',
-          missing_fields: missing,
-        }),
+        JSON.stringify({ error: 'Complete your profile to find matches', missing_fields: missing }),
         { status: 400, headers: { ...cors, 'Content-Type': 'application/json' } }
       );
     }
 
-    // 3. Tier check
     const { data: subscription } = await admin
       .from('subscriptions')
       .select('status, stripe_product_id')
@@ -321,12 +319,10 @@ serve(async (req) => {
     const quota = QUOTA_BY_TIER[tier];
     const topN = TOP_N_BY_TIER[tier];
 
-    // 4. Monthly quota check
     if (quota !== null) {
       const monthStart = new Date();
       monthStart.setUTCDate(1);
       monthStart.setUTCHours(0, 0, 0, 0);
-
       const { count: monthlyUsage } = await admin
         .from('funding_match_runs')
         .select('id', { count: 'exact', head: true })
@@ -336,9 +332,7 @@ serve(async (req) => {
       if ((monthlyUsage ?? 0) >= quota) {
         return new Response(
           JSON.stringify({
-            error: tier === 'free'
-              ? `You have used your ${quota} free matches this month. Upgrade to Ogichidaakwe for more.`
-              : `You have reached your monthly match limit of ${quota}.`,
+            error: tier === 'free' ? `You have used your ${quota} free matches this month. Upgrade to Ogichidaakwe for more.` : `You have reached your monthly match limit of ${quota}.`,
             quota_exceeded: true,
             upgrade_url: '/pricing',
             tier,
@@ -348,7 +342,6 @@ serve(async (req) => {
       }
     }
 
-    // 5. Per-minute rate limit (3/min, all tiers)
     const oneMinuteAgo = new Date(Date.now() - 60 * 1000).toISOString();
     const { count: recentCount } = await admin
       .from('funding_match_runs')
@@ -363,10 +356,7 @@ serve(async (req) => {
       );
     }
 
-    // 6. Profile hash
     const profileHash = await computeProfileHash(profile as Profile);
-
-    // 7. Rules-based shortlist
     const territoryCode = territoryToCode(profile.territory);
     const today = new Date().toISOString().split('T')[0];
 
@@ -385,36 +375,20 @@ serve(async (req) => {
       .limit(30);
 
     if (shortlistErr) {
-      console.error('[MATCH] Shortlist query error:', shortlistErr);
       return new Response(
         JSON.stringify({ error: 'Failed to fetch grants' }),
         { status: 500, headers: { ...cors, 'Content-Type': 'application/json' } }
       );
     }
 
-    // Additional filters in JS: industry overlap, business_stage overlap, amount fit
     const shortlist = (rawShortlist || []).filter((g: Grant) => {
-      // Industry: grant with no industries matches everyone; otherwise must contain user's industry
-      if (g.industries.length > 0 && profile.industry && !g.industries.includes(profile.industry)) {
-        return false;
-      }
-      // Business stage: same semantics
-      if (g.business_stages.length > 0 && profile.business_stage && !g.business_stages.includes(profile.business_stage)) {
-        return false;
-      }
-      // Amount: if user specified a target and grant has an explicit minimum, target must be >= min
-      if (
-        profile.target_funding_amount != null &&
-        g.amount_min != null &&
-        profile.target_funding_amount < g.amount_min
-      ) {
-        return false;
-      }
+      if (g.industries.length > 0 && profile.industry && !g.industries.includes(profile.industry)) return false;
+      if (g.business_stages.length > 0 && profile.business_stage && !g.business_stages.includes(profile.business_stage)) return false;
+      if (profile.target_funding_amount != null && g.amount_min != null && profile.target_funding_amount < g.amount_min) return false;
       return true;
     }).slice(0, 20);
 
     if (shortlist.length === 0) {
-      // Log the empty run (counts toward quota — intentional, matches user intent)
       await admin.from('funding_match_runs').insert({
         user_id: userId,
         grant_count: 0,
@@ -434,7 +408,6 @@ serve(async (req) => {
       );
     }
 
-    // 8. Cache lookup
     const grantIds = shortlist.map((g: Grant) => g.id);
     const { data: cacheRows } = await admin
       .from('funding_match_cache')
@@ -451,16 +424,12 @@ serve(async (req) => {
       if (!grant) continue;
       const grantFresh = new Date(row.grant_updated_at).getTime() === new Date(grant.updated_at).getTime();
       if (!expired && grantFresh) {
-        cacheByGrant.set(row.grant_id, {
-          eligibility: row.eligibility,
-          fit_score: row.fit_score,
-          explanation: row.explanation,
-        });
+        cacheByGrant.set(row.grant_id, { eligibility: row.eligibility, fit_score: row.fit_score, explanation: row.explanation });
       }
     }
 
-    // 9. LLM call for cache misses
     const openAiKey = Deno.env.get('OPENAI_API_KEY');
+
     const llmResults = new Map<string, LlmVerdict>();
     let totalInputTokens = 0;
     let totalOutputTokens = 0;
@@ -469,7 +438,6 @@ serve(async (req) => {
     const missingGrants = shortlist.filter((g: Grant) => !cacheByGrant.has(g.id));
 
     if (missingGrants.length > 0 && !openAiKey) {
-      // No API key — degrade gracefully. Return rules shortlist with "maybe" for everything.
       console.warn('[MATCH] OPENAI_API_KEY not set — returning rules shortlist with fallback verdicts');
       for (const g of missingGrants) {
         llmResults.set(g.id, {
@@ -480,7 +448,6 @@ serve(async (req) => {
       }
       llmFailureCount = missingGrants.length;
     } else if (missingGrants.length > 0 && openAiKey) {
-      // Sequential calls (could parallelize with Promise.all, but 20 concurrent is aggressive for rate limits)
       for (const g of missingGrants) {
         const result = await callOpenAi(openAiKey, profile as Profile, g);
         if (result) {
@@ -488,7 +455,6 @@ serve(async (req) => {
           totalInputTokens += result.inputTokens;
           totalOutputTokens += result.outputTokens;
         } else {
-          // Fallback for this single grant
           llmResults.set(g.id, {
             eligibility: 'maybe',
             fit_score: 50,
@@ -499,7 +465,6 @@ serve(async (req) => {
       }
     }
 
-    // 10. Cache write for successful LLM results only
     const cacheInserts = Array.from(llmResults.entries())
       .filter(([, v]) => v.explanation !== 'AI scoring is temporarily unavailable. This grant matched your profile on rules alone.' && v.explanation !== 'AI scoring was unavailable for this grant. It matched your profile on rules alone.')
       .map(([grantId, verdict]) => {
@@ -516,15 +481,9 @@ serve(async (req) => {
       });
 
     if (cacheInserts.length > 0) {
-      const { error: cacheErr } = await admin
-        .from('funding_match_cache')
-        .upsert(cacheInserts, { onConflict: 'user_id,grant_id,profile_hash' });
-      if (cacheErr) {
-        console.error('[MATCH] Cache write error:', cacheErr);
-      }
+      await admin.from('funding_match_cache').upsert(cacheInserts, { onConflict: 'user_id,grant_id,profile_hash' });
     }
 
-    // 11. Log the run
     await admin.from('funding_match_runs').insert({
       user_id: userId,
       grant_count: shortlist.length,
@@ -534,22 +493,16 @@ serve(async (req) => {
       source: 'user',
     });
 
-    // 12. Merge cache + LLM results, sort, truncate
     const scored = shortlist.map((g: Grant) => {
       const fromCache = cacheByGrant.get(g.id);
       const fromLlm = llmResults.get(g.id);
-      const verdict = fromCache ?? fromLlm ?? {
-        eligibility: 'maybe' as const,
-        fit_score: 50,
-        explanation: 'Matched on profile alone.',
-      };
+      const verdict = fromCache ?? fromLlm ?? { eligibility: 'maybe' as const, fit_score: 50, explanation: 'Matched on profile alone.' };
       return { grant: g, verdict };
     });
 
     scored.sort((a, b) => b.verdict.fit_score - a.verdict.fit_score);
     const top = scored.slice(0, topN);
 
-    // 13. Tier-aware response
     const matches: MatchResponse[] = top.map(({ grant, verdict }) => {
       const base: MatchResponse = {
         grant_id: grant.id,
@@ -570,10 +523,8 @@ serve(async (req) => {
       return base;
     });
 
-    // Compute remaining after this run
     let remaining: number | null = null;
     if (quota !== null) {
-      // We just inserted one row, so use the count + 1
       const monthStart = new Date();
       monthStart.setUTCDate(1);
       monthStart.setUTCHours(0, 0, 0, 0);
