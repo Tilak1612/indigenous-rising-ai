@@ -31,6 +31,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 const STEPS = [
   { id: 'vision', title: 'Vision & Mission', description: 'Define your business purpose' },
@@ -80,6 +87,8 @@ export default function BusinessPlannerPage() {
       return [];
     }
   });
+  // Version being shown in the read-only preview dialog (null = closed).
+  const [previewVersion, setPreviewVersion] = useState<Version | null>(null);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -252,8 +261,12 @@ export default function BusinessPlannerPage() {
     toast.success('Version restored');
   };
 
+  // Was a dead button that only fired a "coming soon" toast. The version's
+  // content is already loaded client-side, so this now shows a real read-only
+  // preview — letting the user check a version before overwriting their work
+  // with Restore.
   const handlePreviewVersion = (version: Version) => {
-    toast.info('Preview feature coming soon');
+    setPreviewVersion(version);
   };
 
   const handleExport = (format: 'pdf' | 'word' | 'grant') => {
@@ -310,11 +323,44 @@ export default function BusinessPlannerPage() {
               hasError={hasError}
             />
             
-            <VersionHistory 
+            <VersionHistory
               versions={versions}
               onRestore={handleRestoreVersion}
               onPreview={handlePreviewVersion}
             />
+
+            {/* Read-only preview of a saved version. Lets the user check a
+                version's contents BEFORE Restore overwrites their current work. */}
+            <Dialog open={previewVersion !== null} onOpenChange={(open) => !open && setPreviewVersion(null)}>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>Version preview</DialogTitle>
+                  <DialogDescription>
+                    {previewVersion
+                      ? `Saved ${previewVersion.timestamp.toLocaleString('en-CA')} — read-only. Close this and choose Restore to load it into your plan.`
+                      : ''}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  {previewVersion &&
+                    STEPS.map((step) => {
+                      const value = (previewVersion.data?.[step.id] ?? '').trim();
+                      return (
+                        <div key={step.id} className="space-y-1">
+                          <h4 className="font-semibold text-sm text-foreground">{step.title}</h4>
+                          {value ? (
+                            <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                              {value}
+                            </p>
+                          ) : (
+                            <p className="text-sm text-muted-foreground/70 italic">Not filled in</p>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
+              </DialogContent>
+            </Dialog>
             
             <Button variant="outline" onClick={handleManualSave}>
               <Save className="h-4 w-4 mr-2" />
