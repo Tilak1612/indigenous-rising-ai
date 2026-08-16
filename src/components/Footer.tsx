@@ -61,11 +61,17 @@ const SOCIAL = [
 
 // Homepage-section links (#...) use a plain anchor so the browser does a real
 // navigation to the homepage and scrolls to the section; routes use SPA Link.
+// Footer links were ~20px tall — under the 44px minimum touch target, and there
+// are 25 of them (measured at 375px). The min-height applies on touch-sized
+// viewports only, so desktop keeps its compact density.
+const navLinkClass =
+  'inline-flex items-center min-h-[44px] md:min-h-0 text-sm text-muted-foreground hover:text-foreground transition-colors';
+
 const NavLink = ({ to, children }: { to: string; children: React.ReactNode }) =>
   to.includes('#') ? (
-    <a href={to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{children}</a>
+    <a href={to} className={navLinkClass}>{children}</a>
   ) : (
-    <Link to={to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{children}</Link>
+    <Link to={to} className={navLinkClass}>{children}</Link>
   );
 
 const Footer = () => {
@@ -146,7 +152,9 @@ const Footer = () => {
           {SECTIONS.map((section) => (
             <div key={section.title} className="space-y-3">
               <h4 className="font-medium text-foreground text-sm">{section.title}</h4>
-              <ul className="space-y-2.5">
+              {/* No extra gap on mobile — the 44px link min-height provides the
+                  rhythm; desktop keeps the original 2.5 spacing. */}
+              <ul className="space-y-0 md:space-y-2.5">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <NavLink to={link.to}>{link.name}</NavLink>
