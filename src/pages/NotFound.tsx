@@ -30,6 +30,7 @@ const NotFound = () => {
       </Helmet>
       
       <Navigation />
+      <main>
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center max-w-md px-4">
           <h1 className="text-6xl font-display font-bold text-primary mb-4">404</h1>
@@ -45,6 +46,7 @@ const NotFound = () => {
           </Link>
         </div>
       </div>
+      </main>
       <Footer />
     </>
   );

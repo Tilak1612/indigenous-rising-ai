@@ -93,6 +93,7 @@ const Contact = () => {
       />
       
       <Navigation />
+      <main>
       <div className="min-h-screen warm-page pt-16">
         <Breadcrumbs className="container mx-auto bg-muted border-b" />
         <div className="container mx-auto px-4 py-8">
@@ -235,6 +236,7 @@ const Contact = () => {
         </Card>
       </div>
     </div>
+      </main>
       <Footer />
     </>
   );
