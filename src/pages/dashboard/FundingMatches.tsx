@@ -510,7 +510,7 @@ const FundingMatches: React.FC = () => {
                       <div>
                         <h3 className="font-semibold mb-1">See why each grant fits you</h3>
                         <p className="text-sm text-muted-foreground">
-                          Growth tier ($49/mo) unlocks AI explanations, fit scores, save-for-later, and unlimited matches.
+                          Growth tier (from $39/mo) unlocks AI explanations, fit scores, save-for-later, and unlimited matches.
                         </p>
                       </div>
                       <ShinyButton asChild>

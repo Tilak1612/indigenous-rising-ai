@@ -16,7 +16,6 @@ import {
   Eye,
   Database,
   Download,
-  Award,
   ChevronRight,
   Users,
   RefreshCw,
@@ -24,7 +23,6 @@ import {
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import OCAPRequirementModal from '@/components/dashboard/OCAPRequirementModal';
-import ComplianceCertificate from '@/components/dashboard/ComplianceCertificate';
 
 interface ComplianceItem {
   id: string;
@@ -39,35 +37,35 @@ const complianceItems: ComplianceItem[] = [
     id: '1',
     title: 'Data Ownership Declaration',
     description: 'Confirmed ownership of all business and community data',
-    status: 'complete',
+    status: 'pending',
     category: 'ownership',
   },
   {
     id: '2',
     title: 'Community Consent Records',
     description: 'Documented consent from community members for data collection',
-    status: 'complete',
+    status: 'pending',
     category: 'ownership',
   },
   {
     id: '3',
     title: 'Access Control Policies',
     description: 'Defined who can access different types of data',
-    status: 'complete',
+    status: 'pending',
     category: 'control',
   },
   {
     id: '4',
     title: 'Data Governance Framework',
     description: 'Established rules for data management and decision-making',
-    status: 'in_progress',
+    status: 'pending',
     category: 'control',
   },
   {
     id: '5',
     title: 'Community Access Portal',
     description: 'Enable community members to view their own data',
-    status: 'in_progress',
+    status: 'pending',
     category: 'access',
   },
   {
@@ -81,14 +79,14 @@ const complianceItems: ComplianceItem[] = [
     id: '7',
     title: 'Local Data Storage',
     description: 'Data stored in jurisdiction with Indigenous data sovereignty',
-    status: 'complete',
+    status: 'pending',
     category: 'possession',
   },
   {
     id: '8',
     title: 'Backup & Recovery Plan',
     description: 'Secure backup systems under community control',
-    status: 'in_progress',
+    status: 'pending',
     category: 'possession',
   },
 ];
@@ -123,18 +121,16 @@ const categoryInfo = {
 const statusStyles = {
   complete: { label: 'Complete', color: 'bg-success', icon: CheckCircle2 },
   in_progress: { label: 'In Progress', color: 'bg-warning', icon: AlertCircle },
-  pending: { label: 'Pending', color: 'bg-muted', icon: Info },
+  pending: { label: 'Not started', color: 'bg-muted', icon: Info },
 };
 
 export default function CompliancePage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showCertificate, setShowCertificate] = useState(false);
   const { toast } = useToast();
 
   const completeCount = complianceItems.filter(i => i.status === 'complete').length;
   const totalCount = complianceItems.length;
   const complianceScore = Math.round((completeCount / totalCount) * 100);
-  const communityBenchmark = 68;
 
   // Re-assessment opens the first incomplete category in the requirement modal,
   // letting the user walk through outstanding items. When everything is complete
@@ -160,19 +156,29 @@ export default function CompliancePage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">OCAP® Compliance Dashboard</h1>
-            <p className="text-muted-foreground">Ownership, Control, Access, and Possession principles</p>
+            <h1 className="text-2xl font-bold">OCAP® Self-Assessment</h1>
+            <p className="text-muted-foreground">
+              A private worksheet to track your own progress on Ownership, Control, Access, and Possession.
+            </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setShowCertificate(true)}>
-              <Award className="h-4 w-4 mr-2" />
-              Export Certificate
-            </Button>
             <Button variant="outline">
               <Download className="h-4 w-4 mr-2" />
               Export Report
             </Button>
           </div>
+        </div>
+
+        {/* Honest framing: this is a self-directed worksheet, not a certification.
+            OCAP® is a registered mark of the First Nations Information Governance
+            Centre (FNIGC), which delivers OCAP® training — the platform is not
+            affiliated with or endorsed by FNIGC and does not certify anyone. */}
+        <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+          This is a self-assessment tool to help you organise your own data-governance
+          practices. It is <strong>not a certification</strong> and is not affiliated with or
+          endorsed by the First Nations Information Governance Centre (FNIGC), which owns the
+          OCAP® mark and delivers official OCAP® training. Items start as “Not started” and
+          only reflect what you record yourself.
         </div>
 
         {/* Overall Score Card */}
@@ -184,22 +190,14 @@ export default function CompliancePage() {
                   <Shield className="h-8 w-8 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">OCAP® Compliance Score</p>
-                  <p className="text-4xl font-bold">{complianceScore}%</p>
+                  <p className="text-sm text-muted-foreground">Self-assessment progress</p>
+                  <p className="text-4xl font-bold">{completeCount} of {totalCount}</p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    {completeCount} of {totalCount} requirements complete
+                    items you&apos;ve recorded so far
                   </p>
                 </div>
               </div>
               <div className="text-right space-y-2">
-                <Badge variant="secondary" className="bg-success/10 text-success">
-                  Good Standing
-                </Badge>
-                <p className="text-sm text-muted-foreground">Last reviewed: Today</p>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground justify-end">
-                  <Users className="h-4 w-4" />
-                  <span>Community avg: {communityBenchmark}%</span>
-                </div>
                 <Button
                   size="sm"
                   variant="default"
@@ -207,7 +205,7 @@ export default function CompliancePage() {
                   className="mt-2"
                 >
                   <RefreshCw className="h-3.5 w-3.5 mr-2" />
-                  Re-assess Score
+                  Continue self-assessment
                 </Button>
               </div>
             </div>
@@ -397,15 +395,6 @@ export default function CompliancePage() {
         open={!!selectedCategory}
         onOpenChange={(open) => !open && setSelectedCategory(null)}
         category={selectedCategory || ''}
-      />
-
-      {/* Compliance Certificate Modal */}
-      <ComplianceCertificate
-        open={showCertificate}
-        onOpenChange={setShowCertificate}
-        score={complianceScore}
-        completedRequirements={completeCount}
-        totalRequirements={totalCount}
       />
     </DashboardLayout>
   );

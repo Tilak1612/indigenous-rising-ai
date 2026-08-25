@@ -13,7 +13,7 @@ interface UpgradePromptProps {
 
 export default function UpgradePrompt({ feature, description, tier, benefits = [] }: UpgradePromptProps) {
   const tierName = tier === 'enterprise' ? 'Gimishoomis' : 'Ogichidaakwe';
-  const tierPrice = tier === 'enterprise' ? 'Custom Pricing' : '$49/month';
+  const tierPrice = tier === 'enterprise' ? 'Custom Pricing' : 'from $39/mo';
 
   return (
     <div className="flex items-center justify-center min-h-[60vh]">
