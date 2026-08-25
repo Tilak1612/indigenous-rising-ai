@@ -119,6 +119,11 @@ const App = () => (
           <RouteChangeTracker />
           <AuthProvider>
             <TooltipProvider>
+            {/* The .skip-link styles existed in index.css but nothing ever
+                rendered the element, so keyboard users had no way past the nav
+                on any page (WCAG 2.4.1). Every page renders exactly one <main id="main-content" tabIndex={-1}>;
+                this targets it. */}
+            <a href="#main-content" className="skip-link">Skip to main content</a>
             <Toaster />
             <Sonner />
             <MarketingAssistant />

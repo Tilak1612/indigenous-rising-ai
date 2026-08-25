@@ -34,7 +34,7 @@ const CanadianCompliance = () => {
       </Helmet>
       <Navigation />
       
-      <main className="pt-24 pb-20">
+      <main id="main-content" tabIndex={-1} className="pt-24 pb-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Header */}

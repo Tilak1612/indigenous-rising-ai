@@ -110,7 +110,7 @@ const GrantsHub = () => {
         faqs={FAQS}
       />
       <Navigation />
-      <main className="pt-24">
+      <main id="main-content" tabIndex={-1} className="pt-24">
         <div className="container mx-auto px-4 py-8 max-w-5xl">
           <Breadcrumbs />
 

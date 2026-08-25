@@ -212,7 +212,7 @@ const CommunityPost = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-32 pb-16">
+      <main id="main-content" tabIndex={-1} className="max-w-3xl mx-auto px-4 sm:px-6 pt-32 pb-16">
         {/* Back link */}
         <Link
           to="/community"

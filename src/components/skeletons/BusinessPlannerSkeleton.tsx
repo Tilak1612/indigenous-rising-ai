@@ -15,7 +15,7 @@ export function BusinessPlannerSkeleton() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 space-y-6">
+      <main id="main-content" tabIndex={-1} className="flex-1 p-6 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="space-y-2">

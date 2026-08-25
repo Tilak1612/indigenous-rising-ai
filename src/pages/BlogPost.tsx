@@ -291,7 +291,7 @@ const BlogPost = () => {
           />
         </div>
 
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+        <main id="main-content" tabIndex={-1} className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
           {/* Share Bar */}
           <div className="flex items-center gap-4 mb-8 pb-8 border-b">
             <span className="text-sm text-muted-foreground flex items-center gap-2">

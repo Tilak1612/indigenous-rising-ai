@@ -529,7 +529,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <DashboardSidebar />
         <SidebarInset className="flex-1">
           <DashboardHeader />
-          <main className="flex-1 p-6 bg-muted/30">
+          <main id="main-content" tabIndex={-1} className="flex-1 p-6 bg-muted/30">
             {children}
           </main>
         </SidebarInset>

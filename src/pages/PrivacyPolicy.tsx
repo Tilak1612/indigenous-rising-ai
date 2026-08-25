@@ -19,7 +19,7 @@ const PrivacyPolicy: React.FC = () => {
       <div className="pt-16">
         <Breadcrumbs className="container mx-auto bg-muted border-b" />
         
-        <main className="container mx-auto px-4 py-8">
+        <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">

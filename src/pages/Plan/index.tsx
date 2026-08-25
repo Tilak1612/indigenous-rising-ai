@@ -4,7 +4,7 @@ import PlanTemplates from '@/components/PlanTemplates';
 
 const PlanPage: React.FC = () => {
   return (
-    <main className="min-h-screen bg-background text-foreground py-10 px-6">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-background text-foreground py-10 px-6">
       <div className="max-w-6xl mx-auto space-y-6">
         <header>
           <h1 className="text-3xl font-semibold">Business Planning Assistant</h1>

@@ -318,7 +318,7 @@ const LandingV2 = () => {
           )}
         </header>
 
-        <main>
+        <main id="main-content" tabIndex={-1}>
         {/* ===== HERO ===== */}
         <section id="top" style={{ position: 'relative', overflow: 'hidden' }}>
           <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />

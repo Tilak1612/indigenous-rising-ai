@@ -13,7 +13,7 @@ const SuccessStories = () => {
         keywords="Indigenous success stories, entrepreneurship, community impact, Indigenous Rising AI"
       />
       <Navigation />
-      <main className="pt-24">
+      <main id="main-content" tabIndex={-1} className="pt-24">
         <div className="container mx-auto px-4 py-8">
           <Breadcrumbs />
           <h1 className="sr-only">Success Stories — Indigenous Entrepreneurs Thriving Across Turtle Island</h1>
