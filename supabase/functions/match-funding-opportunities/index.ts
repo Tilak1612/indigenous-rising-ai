@@ -46,6 +46,9 @@ interface Profile {
   employees: string | null;
   target_funding_amount: number | null;
   funding_purpose: string | null;
+  indigenous_identity: string | null;
+  indigenous_ownership_pct: number | null;
+  entity_type: string | null;
 }
 
 interface Grant {
@@ -132,6 +135,9 @@ function computeProfileHash(profile: Profile): Promise<string> {
     employees: profile.employees,
     target_funding_amount: profile.target_funding_amount,
     funding_purpose: profile.funding_purpose,
+    indigenous_identity: profile.indigenous_identity,
+    indigenous_ownership_pct: profile.indigenous_ownership_pct,
+    entity_type: profile.entity_type,
   });
   return sha256(relevant);
 }
@@ -180,6 +186,11 @@ async function callOpenAi(
   profile: Profile,
   grant: Grant,
 ): Promise<{ verdict: LlmVerdict; inputTokens: number; outputTokens: number } | null> {
+  // What is sent to the model. community_name and nation are DELIBERATELY
+  // ABSENT and must never be added: a community's name is its own, and it does
+  // not go to a third-party model. Identity is sent only as the coarse
+  // self-declared category (and omitted entirely for prefer_not_to_say), which
+  // is what program criteria are written against.
   const profileSummary = {
     territory: profile.territory,
     industry: profile.industry,
@@ -190,6 +201,12 @@ async function callOpenAi(
     employees: profile.employees,
     target_funding_amount_cad: profile.target_funding_amount,
     funding_purpose: profile.funding_purpose,
+    self_declared_identity:
+      profile.indigenous_identity && profile.indigenous_identity !== 'prefer_not_to_say'
+        ? profile.indigenous_identity
+        : 'not stated',
+    indigenous_ownership_pct: profile.indigenous_ownership_pct ?? 'not stated',
+    entity_type: profile.entity_type ?? 'not stated',
   };
 
   const grantSummary = {
@@ -308,7 +325,7 @@ serve(async (req) => {
 
     const { data: profile, error: profileErr } = await admin
       .from('profiles')
-      .select('id, territory, industry, business_stage, business_name, business_description, bio, employees, target_funding_amount, funding_purpose')
+      .select('id, territory, industry, business_stage, business_name, business_description, bio, employees, target_funding_amount, funding_purpose, indigenous_identity, indigenous_ownership_pct, entity_type')
       .eq('id', userId)
       .maybeSingle();
 
