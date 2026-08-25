@@ -64,6 +64,8 @@ interface Grant {
   business_stages: string[];
   eligibility_notes: string | null;
   application_url: string;
+  funding_type: string;
+  is_repayable: boolean | null;
   updated_at: string;
 }
 
@@ -83,6 +85,11 @@ interface MatchResponse {
   deadline: string | null;
   is_recurring: boolean;
   application_url: string;
+  // Whether the money must be paid back. 11 of 17 catalogue records are
+  // repayable financing, so this must reach the card — see migration
+  // 20260825000002.
+  funding_type: string;
+  is_repayable: boolean | null;
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
@@ -533,6 +540,8 @@ serve(async (req) => {
         deadline: grant.deadline,
         is_recurring: grant.is_recurring,
         application_url: grant.application_url,
+        funding_type: grant.funding_type,
+        is_repayable: grant.is_repayable,
         eligibility: verdict.eligibility,
       };
       if (tier !== 'free') {
