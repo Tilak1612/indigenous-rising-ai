@@ -131,8 +131,23 @@ function computeProfileHash(profile: Profile): Promise<string> {
 
 type Tier = 'free' | 'growth' | 'pro' | 'enterprise';
 
-function deriveTier(subscribed: boolean, productId: string | null): Tier {
+// Canonical price id -> tier. These are the same four price ids create-checkout
+// resolves plan+cycle to (env-overridable, identical fallbacks), so the tier a
+// customer receives always matches the price they actually bought — regardless
+// of billing cycle (a plan's monthly and annual price map to the same tier).
+const PRICE_TIER: Record<string, Tier> = {
+  [Deno.env.get('STRIPE_GROWTH_MONTHLY_PRICE_ID') ?? 'price_1TieC4AVTgSOk7kNi0635mvd']: 'growth',
+  [Deno.env.get('STRIPE_GROWTH_ANNUAL_PRICE_ID') ?? 'price_1Ti443AVTgSOk7kNewKcPh6Q']: 'growth',
+  [Deno.env.get('STRIPE_PRO_MONTHLY_PRICE_ID') ?? 'price_1Ti47xAVTgSOk7kNvfZdLbr8']: 'pro',
+  [Deno.env.get('STRIPE_PRO_ANNUAL_PRICE_ID') ?? 'price_1Ti49bAVTgSOk7kNjT1wTOIp']: 'pro',
+};
+
+// Prefer the price id (exact, checkout-controlled). productId is a fallback for
+// legacy rows written before stripe_price_id existed and for demo accounts,
+// whose synthetic product ids DO contain these keywords by design.
+function deriveTier(subscribed: boolean, priceId: string | null, productId: string | null): Tier {
   if (!subscribed) return 'free';
+  if (priceId && PRICE_TIER[priceId]) return PRICE_TIER[priceId];
   const pid = (productId || '').toLowerCase();
   if (pid.includes('enterprise') || pid.includes('gimishoomis')) return 'enterprise';
   if (pid.includes('professional') || pid.includes('bimaadiziwin') || pid.includes('149')) return 'pro';
@@ -310,12 +325,16 @@ serve(async (req) => {
 
     const { data: subscription } = await admin
       .from('subscriptions')
-      .select('status, stripe_product_id')
+      .select('status, stripe_price_id, stripe_product_id')
       .eq('user_id', userId)
       .maybeSingle();
 
     const isActiveSub = subscription?.status === 'active' || subscription?.status === 'trialing';
-    const tier = deriveTier(!!isActiveSub, subscription?.stripe_product_id ?? null);
+    const tier = deriveTier(
+      !!isActiveSub,
+      subscription?.stripe_price_id ?? null,
+      subscription?.stripe_product_id ?? null,
+    );
     const quota = QUOTA_BY_TIER[tier];
     const topN = TOP_N_BY_TIER[tier];
 

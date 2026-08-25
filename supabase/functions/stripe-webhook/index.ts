@@ -117,6 +117,9 @@ serve(async (req) => {
                   stripe_customer_id: customerId,
                   stripe_subscription_id: subscription.id,
                   stripe_product_id: subscription.items.data[0].price.product as string,
+                  // Price id (not product id) is the canonical tier key — see
+                  // match-funding-opportunities deriveTier().
+                  stripe_price_id: subscription.items.data[0].price.id,
                   status: subscription.status,
                   current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
                   current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
@@ -167,6 +170,7 @@ serve(async (req) => {
               stripe_customer_id: customerId,
               stripe_subscription_id: subscription.id,
               stripe_product_id: subscription.items.data[0]?.price.product as string,
+              stripe_price_id: subscription.items.data[0]?.price.id,
               status: subscription.status,
               current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
               current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
@@ -185,6 +189,7 @@ serve(async (req) => {
           const { error: updateError } = await supabaseClient
             .from('subscriptions')
             .update({
+              stripe_price_id: subscription.items.data[0]?.price.id,
               status: subscription.status,
               current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
               current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
