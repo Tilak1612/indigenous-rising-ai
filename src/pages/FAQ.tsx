@@ -13,7 +13,7 @@ const FAQ = () => {
         keywords="FAQ, Indigenous business questions, OCAP, funding help, training programs, Indigenous Rising AI"
       />
       <Navigation />
-      <main id="main-content" tabIndex={-1} className="pt-24">
+      <main className="pt-24">
         <div className="container mx-auto px-4 py-8">
           <Breadcrumbs />
           {/* The page had no <h1> at all — broken heading hierarchy for screen

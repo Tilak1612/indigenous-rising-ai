@@ -15,7 +15,7 @@ export function DashboardSkeleton() {
       </aside>
 
       {/* Main Content */}
-      <main id="main-content" tabIndex={-1} className="flex-1 p-6 space-y-6">
+      <main className="flex-1 p-6 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="space-y-2">

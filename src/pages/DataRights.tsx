@@ -73,7 +73,7 @@ const DataRights = () => {
 
       <Navigation />
       
-      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-16 max-w-6xl">
+      <main className="container mx-auto px-4 py-16 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">

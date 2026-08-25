@@ -45,7 +45,7 @@ export default function Admin() {
           </div>
         </header>
 
-        <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-8">
           <Tabs defaultValue="newsletter" className="space-y-6">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="newsletter">

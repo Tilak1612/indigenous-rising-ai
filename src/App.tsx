@@ -121,12 +121,19 @@ const App = () => (
             <TooltipProvider>
             {/* The .skip-link styles existed in index.css but nothing ever
                 rendered the element, so keyboard users had no way past the nav
-                on any page (WCAG 2.4.1). Every page renders exactly one <main id="main-content" tabIndex={-1}>;
+                on any page (WCAG 2.4.1). Every page renders exactly one <main>;
                 this targets it. */}
             <a href="#main-content" className="skip-link">Skip to main content</a>
             <Toaster />
             <Sonner />
             <MarketingAssistant />
+            {/* Single skip-link target for EVERY route. Deliberately a wrapper
+                rather than an id on each page's <main>: 10+ pages (Pricing,
+                Contact, Auth, PublicFunding, Dashboard...) have no <main> at
+                all, so a per-page id left the skip link pointing at nothing on
+                those routes. tabIndex={-1} so focus actually lands when the
+                link is followed. */}
+            <div id="main-content" tabIndex={-1}>
             <Routes>
               <Route
                 path="/"
@@ -651,6 +658,7 @@ const App = () => (
                 } 
               />
             </Routes>
+            </div>
               <AccessibilityToolbar />
               <CookieConsent />
               <ComplianceBanner />

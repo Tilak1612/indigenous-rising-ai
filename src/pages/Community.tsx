@@ -157,7 +157,7 @@ const Community = () => {
           </div>
         </div>
 
-        <main id="main-content" tabIndex={-1} className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
           {/* Action bar */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             {/* Category tabs */}

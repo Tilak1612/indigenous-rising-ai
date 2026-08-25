@@ -38,7 +38,7 @@ const FundingAlertUnsubscribe: React.FC = () => {
       />
       <Navigation />
 
-      <main id="main-content" tabIndex={-1} className="pt-24 pb-16">
+      <main className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="max-w-xl mx-auto">
             <Card>
