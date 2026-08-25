@@ -177,7 +177,7 @@ const Training = () => {
                     <>
                       <div className="flex items-baseline gap-2">
                         <span className="text-4xl font-bold">Included</span>
-                        <span className="text-muted-foreground">with Growth — $49/mo</span>
+                        <span className="text-muted-foreground">with Growth — from $39/mo</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
                         The full training library, live workshops, and community support are included with the Growth plan and above.

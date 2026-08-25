@@ -39,7 +39,7 @@ const UpgradeModal: React.FC<UpgradeModalProps> = ({ triggerText = 'Upgrade to a
         <div className="mt-4 space-y-4">
           <div className="flex items-center gap-3">
             <Badge className="bg-primary/10 text-primary">Ogichidaakwe</Badge>
-            <div className="text-sm text-muted-foreground">From $49 / month</div>
+            <div className="text-sm text-muted-foreground">From $39 / mo</div>
           </div>
 
           <p className="text-muted-foreground">{details || 'Access AI funding matches, advanced impact analytics, and priority support.'}</p>

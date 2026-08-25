@@ -114,9 +114,9 @@ export default function Settings() {
   
   // Privacy settings
   const [privacy, setPrivacy] = useState<PrivacySettings>({
-    profileVisible: true,
-    showInDirectory: true,
-    allowMessages: true,
+    profileVisible: false,
+    showInDirectory: false,
+    allowMessages: false,
     shareAnalytics: false,
   });
 
@@ -710,7 +710,7 @@ export default function Settings() {
                               <p className="font-medium">Billing Period</p>
                               <p className="text-sm text-muted-foreground">Monthly subscription</p>
                             </div>
-                            <span className="text-lg font-bold">$49/month</span>
+                            <span className="text-lg font-bold">from $39/mo</span>
                           </div>
                           <Button variant="outline">Manage Billing</Button>
                         </div>

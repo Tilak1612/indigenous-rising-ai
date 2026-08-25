@@ -105,7 +105,7 @@ const Dashboard: React.FC = () => {
                   </ul>
                   <Button asChild className="w-full">
                     <Link to="/pricing">
-                      Upgrade for $49/mo
+                      Upgrade — from $39/mo
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
