@@ -159,7 +159,7 @@ const CookiePolicy = () => {
         <Breadcrumbs className="container mx-auto bg-muted border-b" />
       </div>
 
-      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
