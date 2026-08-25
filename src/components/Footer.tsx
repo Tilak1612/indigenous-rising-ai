@@ -4,10 +4,10 @@ import NewsletterSignup from './NewsletterSignup';
 import { Mail, Leaf } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { ComplianceBadge, DataResidencyNote } from '@/components/trust';
-import { RisingGlyph } from '@/components/RisingGlyph';
+import { BrandMark } from '@/components/BrandMark';
 
 // Single canonical footer used on every route (marketing + inner pages + the
-// homepage). New brand (IR monogram + terracotta tokens). Claims kept factual
+// homepage). Brand mark + wordmark lockup. Claims kept factual
 // and hedged per the no-fake-claims rule — no "certified", "owned", "TRC
 // aligned", or unreviewed decorative Indigenous-language headers. OCAP is the
 // registered ® mark of the FNIGC.
@@ -98,9 +98,7 @@ const Footer = () => {
           {/* Brand + contact + trust */}
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-2.5 group" aria-label="Indigenous Rising AI — home">
-              <span className="flex items-center justify-center w-9 h-9 rounded-[10px] bg-primary text-primary-foreground transition-opacity duration-300 group-hover:opacity-80">
-                <RisingGlyph size={21} />
-              </span>
+              <BrandMark size={36} className="transition-opacity duration-300 group-hover:opacity-80" />
               <span className="font-display font-semibold text-xl text-foreground tracking-tight">
                 Indigenous Rising
               </span>

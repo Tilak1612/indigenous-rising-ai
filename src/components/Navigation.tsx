@@ -3,12 +3,12 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Users, TrendingUp, Target, Award, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { RisingGlyph } from '@/components/RisingGlyph';
+import { BrandMark } from '@/components/BrandMark';
 
 /**
  * Shared marketing header for every interior page. Matches the homepage
- * (LandingV2) header exactly: a sticky cream/blur bar with dark text, the
- * terracotta logo mark, the marketing nav, and a terracotta CTA — so the header
+ * (LandingV2) header exactly: a sticky cream/blur bar with dark text,
+ * brand mark, the marketing nav, and a terracotta CTA — so the header
  * is pixel-consistent across the whole site instead of the old transparent
  * white-on-hero overlay (which was invisible on the cream pages). Always shows
  * the marketing nav; logged-in users get a "Dashboard" CTA on the right.
@@ -42,11 +42,9 @@ const Navigation = () => {
     <header className="sticky top-0 z-50 bg-[#FAF6EF]/85 backdrop-blur-md border-b border-[#4A3826]/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-4">
-          {/* Logo — terracotta mark + wordmark (matches the homepage brand) */}
+          {/* Logo — brand mark + wordmark (matches the homepage brand) */}
           <Link to="/" className="shrink-0 flex items-center gap-2.5" aria-label="Indigenous Rising AI — home">
-            <span className="flex items-center justify-center w-8 h-8 rounded-[9px] bg-primary text-primary-foreground">
-              <RisingGlyph size={19} />
-            </span>
+            <BrandMark size={32} />
             <span className="font-display font-semibold text-[19px] text-[#2C1E12] tracking-tight">
               Indigenous Rising
             </span>

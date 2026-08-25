@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indigenous Rising">
+  <!-- Brand mark: two open rings radiating from a solid centre. Transparent
+       ground — for the favicon/app-icon set see icon-master-fullbleed.svg,
+       which sets the same mark on the cream brand ground. -->
+  <g fill="none" stroke-linecap="butt">
+    <path d="M 157.4 413.7 A 186 186 0 1 1 354.6 413.7" stroke="#123F2B" stroke-width="40"/>
+    <path d="M 183.4 349.0 A 118 118 0 1 1 328.6 349.0" stroke="#E8A317" stroke-width="38"/>
+  </g>
+  <circle cx="256" cy="256" r="57" fill="#DD4B26"/>
+</svg>
