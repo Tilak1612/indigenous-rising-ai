@@ -391,10 +391,12 @@ export default function Settings() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium">Current Password</label>
+                      <label className="text-sm font-medium" htmlFor="current-password">Current Password</label>
                       <div className="relative mt-1">
                         <Input
+                          id="current-password"
                           type={showCurrentPassword ? 'text' : 'password'}
+                          autoComplete="current-password"
                           value={passwordData.currentPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
                           placeholder="Enter current password"
@@ -412,10 +414,12 @@ export default function Settings() {
                       )}
                     </div>
                     <div>
-                      <label className="text-sm font-medium">New Password</label>
+                      <label className="text-sm font-medium" htmlFor="new-password">New Password</label>
                       <div className="relative mt-1">
                         <Input
+                          id="new-password"
                           type={showNewPassword ? 'text' : 'password'}
+                          autoComplete="new-password"
                           value={passwordData.newPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
                           placeholder="Enter new password"
@@ -433,9 +437,11 @@ export default function Settings() {
                       )}
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Confirm New Password</label>
+                      <label className="text-sm font-medium" htmlFor="confirm-new-password">Confirm New Password</label>
                       <Input
+                        id="confirm-new-password"
                         type="password"
+                        autoComplete="new-password"
                         value={passwordData.confirmPassword}
                         onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                         placeholder="Confirm new password"
@@ -529,12 +535,16 @@ export default function Settings() {
                   ].map(item => (
                     <div key={item.key} className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium">{item.title}</p>
-                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <p className="font-medium" id={`notif-${item.key}-label`}>{item.title}</p>
+                        <p className="text-sm text-muted-foreground" id={`notif-${item.key}-desc`}>
+                          {item.description}
+                        </p>
                       </div>
                       <Switch
+                        aria-labelledby={`notif-${item.key}-label`}
+                        aria-describedby={`notif-${item.key}-desc`}
                         checked={notifications[item.key as keyof NotificationSettings]}
-                        onCheckedChange={(checked) => 
+                        onCheckedChange={(checked) =>
                           setNotifications(prev => ({ ...prev, [item.key]: checked }))
                         }
                       />
@@ -604,14 +614,22 @@ export default function Settings() {
                     { key: 'allowMessages', title: 'Direct Messages', description: 'Allow other members to send you messages' },
                     { key: 'shareAnalytics', title: 'Share Analytics', description: 'Contribute anonymous usage data to improve the platform' },
                   ].map(item => (
+                    // Without aria-labelledby/-describedby a screen reader
+                    // announces only "switch, on" — the visible title and
+                    // description are separate nodes it never associates with
+                    // the control (WCAG 4.1.2).
                     <div key={item.key} className="flex items-center justify-between">
                       <div>
-                        <p className="font-medium">{item.title}</p>
-                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                        <p className="font-medium" id={`privacy-${item.key}-label`}>{item.title}</p>
+                        <p className="text-sm text-muted-foreground" id={`privacy-${item.key}-desc`}>
+                          {item.description}
+                        </p>
                       </div>
                       <Switch
+                        aria-labelledby={`privacy-${item.key}-label`}
+                        aria-describedby={`privacy-${item.key}-desc`}
                         checked={privacy[item.key as keyof PrivacySettings]}
-                        onCheckedChange={(checked) => 
+                        onCheckedChange={(checked) =>
                           setPrivacy(prev => ({ ...prev, [item.key]: checked }))
                         }
                       />

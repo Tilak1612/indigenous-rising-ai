@@ -217,6 +217,7 @@ export default function Auth() {
                         <Input
                           type="password"
                           id="new-password"
+                          autoComplete="new-password"
                           placeholder="••••••••"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
@@ -231,6 +232,7 @@ export default function Auth() {
                         <Input
                           type="password"
                           id="confirm-new-password"
+                          autoComplete="new-password"
                           placeholder="••••••••"
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
@@ -340,6 +342,7 @@ export default function Auth() {
                           <Input
                             type="password"
                             id="confirm-password"
+                            autoComplete="new-password"
                             className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             placeholder="••••••••"
                             value={confirmPassword}
