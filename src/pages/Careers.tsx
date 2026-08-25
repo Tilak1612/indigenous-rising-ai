@@ -41,7 +41,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
         mission:
           "You will own the roadmap for core platform features — the Business Planning Assistant, Funding Navigator, and Community Impact Tracker — ensuring every product decision reflects Indigenous values, OCAP® principles, and genuine community need. You will be the bridge between engineering, community partners, and Elders who help guide the platform's direction. This role is central to ensuring that what we build actually serves the communities it was made for.",
         responsibilities: [
-          'Define and maintain the product roadmap across the Business Planning Assistant, Funding Navigator (500+ grants), Impact Tracker, and Training & Certification modules',
+          'Define and maintain the product roadmap across the Business Planning Assistant, Funding Navigator, Impact Tracker, and Training & Certification modules',
           'Lead discovery sessions with Indigenous entrepreneurs, community organizations, and Elders to identify and prioritize features',
           'Write clear, culturally-informed user stories and acceptance criteria for engineering sprints',
           'Partner with the Community Engagement Lead to run ongoing feedback loops with First Nations, Métis, and Inuit users',
