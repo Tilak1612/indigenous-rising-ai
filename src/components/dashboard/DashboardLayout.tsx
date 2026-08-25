@@ -111,8 +111,26 @@ const enterpriseNavItems: NavItem[] = [
   { title: 'Support Tickets', href: '/dashboard/support', icon: Headphones, tier: 'enterprise' },
 ];
 
-function getTierFromSubscription(subscribed: boolean, productId: string | null): SubscriptionTier {
+// Price id -> tier. A real Stripe product id is an opaque prod_<random>, so
+// keyword-matching it can never classify a genuine subscription — that is why
+// an enterprise customer would previously have stayed locked out of the
+// enterprise nav. Resolve from the PRICE id, which checkout controls.
+// VITE_STRIPE_ENTERPRISE_*_PRICE_ID are read from env so enterprise works the
+// moment it is actually sold through Stripe.
+const ENTERPRISE_PRICE_IDS = [
+  import.meta.env.VITE_STRIPE_ENTERPRISE_MONTHLY_PRICE_ID,
+  import.meta.env.VITE_STRIPE_ENTERPRISE_ANNUAL_PRICE_ID,
+].filter(Boolean) as string[];
+
+function getTierFromSubscription(
+  subscribed: boolean,
+  productId: string | null,
+  priceId: string | null,
+): SubscriptionTier {
   if (!subscribed) return 'free';
+  if (priceId && ENTERPRISE_PRICE_IDS.includes(priceId)) return 'enterprise';
+  // Fallback for the env-gated demo override, whose synthetic product ids
+  // ("demo_enterprise") intentionally carry the keyword.
   if (productId?.toLowerCase().includes('enterprise') || productId?.toLowerCase().includes('gimishoomis')) {
     return 'enterprise';
   }
@@ -227,8 +245,8 @@ function UpgradeDialog({
 function DashboardSidebar() {
   const location = useLocation();
   const { user, signOut } = useAuth();
-  const { subscribed, product_id } = useSubscription();
-  const userTier = getTierFromSubscription(subscribed, product_id);
+  const { subscribed, product_id, price_id } = useSubscription();
+  const userTier = getTierFromSubscription(subscribed, product_id, price_id);
   const [upgradeItem, setUpgradeItem] = useState<NavItem | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
@@ -371,8 +389,8 @@ function DashboardSidebar() {
 
 function DashboardHeader() {
   const { user } = useAuth();
-  const { subscribed, product_id } = useSubscription();
-  const userTier = getTierFromSubscription(subscribed, product_id);
+  const { subscribed, product_id, price_id } = useSubscription();
+  const userTier = getTierFromSubscription(subscribed, product_id, price_id);
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
   // DashboardHeader is a SIBLING of DashboardSidebar, not a child — it has no
   // access to the sidebar's avatarUrl. (A previous dedup pointed this header at

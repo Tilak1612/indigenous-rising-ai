@@ -37,7 +37,7 @@ serve(async (req) => {
     if (!stripeKey) {
       logStep("STRIPE_SECRET_KEY not set - returning unsubscribed");
       return new Response(
-        JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
+        JSON.stringify({ subscribed: false, product_id: null, price_id: null, subscription_end: null }),
         { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
@@ -52,7 +52,7 @@ serve(async (req) => {
     if (!authHeader) {
       logStep("No authorization header");
       return new Response(
-        JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
+        JSON.stringify({ subscribed: false, product_id: null, price_id: null, subscription_end: null }),
         { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
@@ -63,7 +63,7 @@ serve(async (req) => {
     if (userError || !userData?.user?.email) {
       logStep("Auth error or no email", { error: userError?.message });
       return new Response(
-        JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
+        JSON.stringify({ subscribed: false, product_id: null, price_id: null, subscription_end: null }),
         { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
@@ -95,7 +95,7 @@ serve(async (req) => {
       const subscriptionEnd = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
       logStep("DEMO ACCOUNT override applied", { email: user.email, productId });
       return new Response(
-        JSON.stringify({ subscribed: true, product_id: productId, subscription_end: subscriptionEnd }),
+        JSON.stringify({ subscribed: true, product_id: productId, price_id: null, subscription_end: subscriptionEnd }),
         { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
@@ -106,7 +106,7 @@ serve(async (req) => {
     if (customers.data.length === 0) {
       logStep("No Stripe customer found");
       return new Response(
-        JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
+        JSON.stringify({ subscribed: false, product_id: null, price_id: null, subscription_end: null }),
         { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
       );
     }
@@ -122,26 +122,32 @@ serve(async (req) => {
 
     const hasActiveSub = subscriptions.data.length > 0;
     let productId: string | null = null;
+    // The PRICE id is the canonical tier key — a real Stripe product id is an
+    // opaque prod_<random> that no keyword match can classify. Returning only
+    // product_id is why the dashboard could never resolve an enterprise
+    // subscription (same defect class as the matcher fix in PR #113).
+    let priceId: string | null = null;
     let subscriptionEnd: string | null = null;
 
     if (hasActiveSub) {
       const subscription = subscriptions.data[0];
       subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
       productId = subscription.items.data[0].price.product as string;
-      logStep("Active subscription", { productId, subscriptionEnd });
+      priceId = subscription.items.data[0].price.id;
+      logStep("Active subscription", { productId, priceId, subscriptionEnd });
     } else {
       logStep("No active subscription");
     }
 
     return new Response(
-      JSON.stringify({ subscribed: hasActiveSub, product_id: productId, subscription_end: subscriptionEnd }),
+      JSON.stringify({ subscribed: hasActiveSub, product_id: productId, price_id: priceId, subscription_end: subscriptionEnd }),
       { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
     );
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     logStep("ERROR", { message });
     return new Response(
-      JSON.stringify({ subscribed: false, product_id: null, subscription_end: null }),
+      JSON.stringify({ subscribed: false, product_id: null, price_id: null, subscription_end: null }),
       { headers: { ...getCorsHeaders(req), "Content-Type": "application/json" }, status: 200 }
     );
   }

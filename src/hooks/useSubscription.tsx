@@ -9,6 +9,7 @@ export const SUBSCRIPTION_QUERY_KEY = 'subscription-status';
 interface SubscriptionData {
   subscribed: boolean;
   product_id: string | null;
+  price_id: string | null;
   subscription_end: string | null;
 }
 
@@ -23,12 +24,13 @@ async function fetchSubscriptionStatus(): Promise<SubscriptionData> {
   const accessToken = readAccessToken();
 
   if (!accessToken) {
-    return { subscribed: false, product_id: null, subscription_end: null };
+    return { subscribed: false, product_id: null, price_id: null, subscription_end: null };
   }
 
   const fallback: SubscriptionData = {
     subscribed: false,
     product_id: null,
+    price_id: null,
     subscription_end: null,
   };
 
@@ -55,6 +57,7 @@ async function fetchSubscriptionStatus(): Promise<SubscriptionData> {
     return {
       subscribed: data?.subscribed ?? false,
       product_id: data?.product_id ?? null,
+      price_id: data?.price_id ?? null,
       subscription_end: data?.subscription_end ?? null,
     };
   } catch (err) {
