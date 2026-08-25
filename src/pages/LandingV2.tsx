@@ -10,7 +10,7 @@ import {
 import MetaTags from '@/components/MetaTags';
 import Footer from '@/components/Footer';
 import { PLANS } from '@/data/plans';
-import { RisingGlyph } from '@/components/RisingGlyph';
+import { BrandMark } from '@/components/BrandMark';
 import './landing-v2.css';
 
 /**
@@ -293,7 +293,7 @@ const LandingV2 = () => {
         >
           <div style={{ maxWidth: 1180, margin: '0 auto', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <a href="#top" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-              <span style={{ width: 30, height: 30, borderRadius: 9, background: '#C45A33', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FAF6EF' }}><RisingGlyph size={19} /></span>
+              <BrandMark size={32} />
               <span style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 19, color: '#2C1E12', letterSpacing: '-.01em' }}>Indigenous Rising</span>
             </a>
             <nav className="ir-desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 30 }}>

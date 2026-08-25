@@ -1,10 +1,14 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Indigenous Rising">
-  <rect width="512" height="512" fill="#C45A33"/>
-  <g stroke="#FAF6EF" stroke-width="30" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M150 332h212"/>
-    <path d="M196 332a60 60 0 0 1 120 0"/>
-    <path d="M256 150v34"/>
-    <path d="M163 196l24 24"/>
-    <path d="M349 196l-24 24"/>
+  <!-- Full-bleed master for the PNG app-icon set (including the maskable
+       icon). Cream ground so the deep-green outer ring keeps contrast on any
+       launcher background; the mark is scaled to ~72% so it stays inside the
+       maskable safe zone when a platform crops to a circle or squircle. -->
+  <rect width="512" height="512" fill="#FAF6EF"/>
+  <g transform="translate(256 256) scale(0.72) translate(-256 -256)">
+    <g fill="none" stroke-linecap="butt">
+      <path d="M 157.4 413.7 A 186 186 0 1 1 354.6 413.7" stroke="#123F2B" stroke-width="44"/>
+      <path d="M 183.4 349.0 A 118 118 0 1 1 328.6 349.0" stroke="#E8A317" stroke-width="42"/>
+    </g>
+    <circle cx="256" cy="256" r="60" fill="#DD4B26"/>
   </g>
 </svg>
