@@ -25,6 +25,11 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 
+interface Criterion {
+  label: string;
+  status: 'met' | 'unmet' | 'unknown';
+}
+
 interface Match {
   grant_id: string;
   name: string;
@@ -37,6 +42,7 @@ interface Match {
   application_url: string;
   funding_type: string;
   is_repayable: boolean | null;
+  criteria?: Criterion[];
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
@@ -84,6 +90,50 @@ function formatDeadline(m: Match): string {
   if (daysLeft < 0) return formatted;
   if (daysLeft === 0) return `${formatted} — today`;
   return `${formatted} — ${daysLeft} days left`;
+}
+
+// The criteria list is the honest core of this page: which stated requirements
+// the profile meets, which it doesn't, and — crucially — which were never
+// assessed. It is computed by deterministic rules in the edge function, not by
+// the model, and it renders on EVERY tier. Charging to see why something
+// matched is what made the old "Likely eligible" badge necessary in the first
+// place.
+function CriteriaList({ criteria }: { criteria: Criterion[] }) {
+  if (!criteria || criteria.length === 0) return null;
+  const met = criteria.filter((c) => c.status === 'met').length;
+  const unknown = criteria.filter((c) => c.status === 'unknown').length;
+
+  return (
+    <div className="rounded-lg border border-border bg-muted/20 p-3">
+      <p className="text-xs font-medium text-foreground mb-2">
+        Meets {met} of {criteria.length} stated criteria
+        {unknown > 0 && <span className="text-muted-foreground"> · {unknown} not assessed</span>}
+      </p>
+      <ul className="space-y-1.5">
+        {criteria.map((c) => (
+          <li key={c.label} className="flex items-start gap-2 text-xs leading-relaxed">
+            {c.status === 'met' && <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-px" aria-hidden="true" />}
+            {c.status === 'unmet' && <XCircle className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-px" aria-hidden="true" />}
+            {c.status === 'unknown' && <HelpCircle className="w-3.5 h-3.5 text-yellow-600 shrink-0 mt-px" aria-hidden="true" />}
+            <span className={c.status === 'unmet' ? 'text-muted-foreground line-through' : 'text-foreground/80'}>
+              {c.label}
+              {c.status === 'unknown' && (
+                <span className="text-muted-foreground"> — not assessed</span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {unknown > 0 && (
+        <p className="text-xs text-muted-foreground mt-2">
+          <Link to="/dashboard/profile" className="text-primary underline">
+            Add the missing details
+          </Link>{' '}
+          to assess these.
+        </p>
+      )}
+    </div>
+  );
 }
 
 // Most of this catalogue is repayable financing from Indigenous Financial
@@ -512,6 +562,10 @@ const FundingMatches: React.FC = () => {
                       </CardHeader>
 
                       <CardContent className="space-y-4 flex-1 flex flex-col">
+                        {match.criteria && match.criteria.length > 0 && (
+                          <CriteriaList criteria={match.criteria} />
+                        )}
+
                         {match.explanation && (
                           <p className="text-sm text-foreground/80 leading-relaxed italic bg-muted/30 border-l-2 border-primary/40 pl-3 py-2">
                             {match.explanation}
