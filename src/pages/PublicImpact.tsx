@@ -69,6 +69,7 @@ const PublicImpact: React.FC = () => {
       
       <div className="min-h-screen bg-neutral-900">
         <Navigation />
+        <main>
         
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 px-6">
@@ -224,6 +225,7 @@ const PublicImpact: React.FC = () => {
           </div>
         </section>
 
+        </main>
         <Footer />
       </div>
     </>
