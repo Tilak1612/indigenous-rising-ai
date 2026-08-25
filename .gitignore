@@ -41,3 +41,13 @@ bun.lockb
 .gstack/
 .claude/launch.json
 supabase/.temp/
+
+# Brand asset library (brand/) — 94MB of PNG renders.
+# The files live in the working tree so they're to hand, but they are NOT
+# committed: they're ChatGPT renders, not production files (see brand/README.txt
+# — no true vector, no real .ICO, "192x192" is actually 1254x1254, and files
+# named "-transparent" have no alpha). Committing 94MB of non-production
+# raster into the app repo would bloat every clone for no benefit.
+# brand/README.txt IS tracked — it carries the canonical colour spec.
+brand/*
+!brand/README.txt

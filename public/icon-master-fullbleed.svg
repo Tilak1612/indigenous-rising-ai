@@ -6,9 +6,9 @@
   <rect width="512" height="512" fill="#FAF6EF"/>
   <g transform="translate(256 256) scale(0.72) translate(-256 -256)">
     <g fill="none" stroke-linecap="butt">
-      <path d="M 157.4 413.7 A 186 186 0 1 1 354.6 413.7" stroke="#123F2B" stroke-width="44"/>
-      <path d="M 183.4 349.0 A 118 118 0 1 1 328.6 349.0" stroke="#E8A317" stroke-width="42"/>
+      <path d="M 157.4 413.7 A 186 186 0 1 1 354.6 413.7" stroke="#124C3B" stroke-width="44"/>
+      <path d="M 183.4 349.0 A 118 118 0 1 1 328.6 349.0" stroke="#D79A27" stroke-width="42"/>
     </g>
-    <circle cx="256" cy="256" r="60" fill="#DD4B26"/>
+    <circle cx="256" cy="256" r="60" fill="#D45B35"/>
   </g>
 </svg>

@@ -17,6 +17,13 @@ interface BrandMarkProps {
  * public/icon-master-fullbleed.svg (the favicon / app-icon master), so the
  * in-app logo and the browser-tab icon cannot drift apart.
  *
+ * Colours are the OFFICIAL brand palette from brand/README.txt:
+ *   Deep Forest Green  #124C3B
+ *   Legacy Gold        #D79A27
+ *   Rising Terracotta  #D45B35
+ * (They replaced values sampled by eye from artwork in PR #111 — do not
+ * re-sample from a render; take them from the spec.)
+ *
  * Deliberately geometric and non-figurative — no specific cultural motif.
  */
 export function BrandMark({ size = 32, className }: BrandMarkProps) {
@@ -32,10 +39,10 @@ export function BrandMark({ size = 32, className }: BrandMarkProps) {
       aria-label="Indigenous Rising"
     >
       <g fill="none" strokeLinecap="butt">
-        <path d="M 157.4 413.7 A 186 186 0 1 1 354.6 413.7" stroke="#123F2B" strokeWidth="40" />
-        <path d="M 183.4 349.0 A 118 118 0 1 1 328.6 349.0" stroke="#E8A317" strokeWidth="38" />
+        <path d="M 157.4 413.7 A 186 186 0 1 1 354.6 413.7" stroke="#124C3B" strokeWidth="40" />
+        <path d="M 183.4 349.0 A 118 118 0 1 1 328.6 349.0" stroke="#D79A27" strokeWidth="38" />
       </g>
-      <circle cx="256" cy="256" r="57" fill="#DD4B26" />
+      <circle cx="256" cy="256" r="57" fill="#D45B35" />
     </svg>
   );
 }
