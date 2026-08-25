@@ -74,7 +74,7 @@ const Unsubscribe = () => {
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">
         <Navigation />
         
-        <main className="flex-1 container mx-auto px-4 py-16 flex items-center justify-center">
+        <main id="main-content" tabIndex={-1} className="flex-1 container mx-auto px-4 py-16 flex items-center justify-center">
           <Card className="max-w-lg w-full p-8 space-y-6">
             {status === 'loading' && (
               <div className="text-center space-y-4">

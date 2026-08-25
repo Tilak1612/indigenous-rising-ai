@@ -451,7 +451,7 @@ const Careers = () => {
         keywords="Indigenous careers, OCAP, Indigenous data sovereignty, community-driven AI, Indigenous Rising AI jobs"
       />
       <Navigation />
-      <main className="pt-24">
+      <main id="main-content" tabIndex={-1} className="pt-24">
         <div className="container mx-auto px-4 py-8">
           <Breadcrumbs />
 

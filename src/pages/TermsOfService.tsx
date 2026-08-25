@@ -34,7 +34,7 @@ const TermsOfService: React.FC = () => {
       </Helmet>
       <Navigation />
       
-      <main className="container mx-auto px-4 py-16">
+      <main id="main-content" tabIndex={-1} className="container mx-auto px-4 py-16">
         {/* Header */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-4">
