@@ -40,3 +40,4 @@ bun.lock
 bun.lockb
 .gstack/
 .claude/launch.json
+supabase/.temp/
