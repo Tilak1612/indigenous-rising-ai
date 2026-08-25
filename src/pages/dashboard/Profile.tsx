@@ -147,6 +147,9 @@ export default function Profile() {
     phone: '',
     location: '',
     territory: '',
+    indigenousIdentity: '',
+    communityName: '',
+    nation: '',
     bio: '',
   });
   
@@ -158,6 +161,8 @@ export default function Profile() {
     description: '',
     employees: '',
     businessStage: '',
+    indigenousOwnershipPct: '',
+    entityType: '',
     targetFundingAmount: '',
     fundingPurpose: '',
   });
@@ -182,7 +187,7 @@ export default function Profile() {
     let cancelled = false;
     (async () => {
       try {
-        const cols = 'full_name,phone,location,territory,bio,business_name,industry,website,year_founded,business_description,employees,social_links,business_stage,target_funding_amount,funding_purpose,avatar_url';
+        const cols = 'full_name,phone,location,territory,indigenous_identity,community_name,nation,indigenous_ownership_pct,entity_type,bio,business_name,industry,website,year_founded,business_description,employees,social_links,business_stage,target_funding_amount,funding_purpose,avatar_url';
         const res = await fetch(
           `${REST}/profiles?select=${cols}&id=eq.${user.id}&limit=1`,
           { headers: authHeaders() }
@@ -195,6 +200,8 @@ export default function Profile() {
         const rows = (await res.json()) as Array<Record<string, unknown>> | null;
         const data = rows && rows.length ? (rows[0] as {
           full_name?: string; phone?: string; location?: string; territory?: string; bio?: string;
+          indigenous_identity?: string; community_name?: string; nation?: string;
+          indigenous_ownership_pct?: number; entity_type?: string;
           business_name?: string; industry?: string; website?: string; year_founded?: string;
           business_description?: string; employees?: string; social_links?: Record<string, string>;
           business_stage?: string; target_funding_amount?: number | null; funding_purpose?: string;
@@ -212,6 +219,9 @@ export default function Profile() {
           phone: data.phone || '',
           location: data.location || '',
           territory: data.territory || '',
+          indigenousIdentity: data.indigenous_identity || '',
+          communityName: data.community_name || '',
+          nation: data.nation || '',
           bio: data.bio || '',
         });
         setBusinessData({
@@ -222,6 +232,11 @@ export default function Profile() {
           description: data.business_description || '',
           employees: data.employees || '',
           businessStage: data.business_stage || '',
+          indigenousOwnershipPct:
+            data.indigenous_ownership_pct === null || data.indigenous_ownership_pct === undefined
+              ? ''
+              : String(data.indigenous_ownership_pct),
+          entityType: data.entity_type || '',
           targetFundingAmount: data.target_funding_amount != null ? String(data.target_funding_amount) : '',
           fundingPurpose: data.funding_purpose || '',
         });
@@ -250,6 +265,11 @@ export default function Profile() {
         phone: profileData.phone || null,
         location: profileData.location || null,
         territory: profileData.territory || null,
+        // Self-declared, optional, never public. Empty string -> null so an
+        // untouched field is stored as "not stated", not as a chosen value.
+        indigenous_identity: profileData.indigenousIdentity || null,
+        community_name: profileData.communityName.trim() || null,
+        nation: profileData.nation.trim() || null,
         bio: profileData.bio || null,
       });
       toast.success('Profile updated successfully');
@@ -290,6 +310,13 @@ export default function Profile() {
         business_description: businessData.description || null,
         employees: businessData.employees || null,
         business_stage: businessData.businessStage || null,
+        // Ownership threshold (commonly 51%) gates many Indigenous-specific
+        // programs. Empty stays null — "not stated", not zero.
+        indigenous_ownership_pct:
+          businessData.indigenousOwnershipPct === ''
+            ? null
+            : Number(businessData.indigenousOwnershipPct),
+        entity_type: businessData.entityType || null,
         target_funding_amount: parsedAmount,
         funding_purpose: businessData.fundingPurpose || null,
       });
@@ -607,6 +634,77 @@ export default function Profile() {
                   </div>
                 </div>
 
+                {/* Identity & community — the inputs most Indigenous-specific
+                    funding programs actually turn on. Every field is optional,
+                    "Prefer not to say" is always available, community and Nation
+                    are free text (a dropdown would force people to pick someone
+                    else's label or spelling for their own Nation), nothing here
+                    is ever shown publicly, and the community/Nation name is never
+                    sent to an AI model. First Nations, Métis and Inuit are kept
+                    distinct — never collapsed into one "Indigenous" flag. */}
+                <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-4">
+                  <div>
+                    <h3 className="text-sm font-semibold">Identity &amp; community</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                      Optional, and only used to match you to programs. This is
+                      recorded as you state it — we don&apos;t verify it, we never show
+                      it on your public profile or in the partner directory, and we
+                      never send your community or Nation to an AI model. Sharing it
+                      here does not imply your community endorses your business.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm font-medium" htmlFor="identity">Identity</label>
+                      <Select
+                        value={profileData.indigenousIdentity}
+                        onValueChange={(value) => setProfileData(prev => ({ ...prev, indigenousIdentity: value }))}
+                      >
+                        <SelectTrigger className="mt-1" id="identity">
+                          <SelectValue placeholder="Select (optional)" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="first_nations">First Nations</SelectItem>
+                          <SelectItem value="metis">Métis</SelectItem>
+                          <SelectItem value="inuit">Inuit</SelectItem>
+                          <SelectItem value="multiple">More than one</SelectItem>
+                          <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Choosing “Prefer not to say” never limits your account.
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium" htmlFor="nation">Nation</label>
+                      <Input
+                        id="nation"
+                        value={profileData.nation}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, nation: e.target.value }))}
+                        placeholder="However you name it"
+                        className="mt-1"
+                        maxLength={120}
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="text-sm font-medium" htmlFor="community">Community or settlement</label>
+                      <Input
+                        id="community"
+                        value={profileData.communityName}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, communityName: e.target.value }))}
+                        placeholder="However you name it"
+                        className="mt-1"
+                        maxLength={120}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Free text on purpose — communities name themselves, and we
+                        won&apos;t make you pick our spelling from a list.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
                   <label className="text-sm font-medium">Bio</label>
                   <Textarea
@@ -658,9 +756,48 @@ export default function Profile() {
                     )}
                   </div>
                   <div>
+                    <label className="text-sm font-medium" htmlFor="ownership-pct">
+                      Indigenous ownership (%)
+                    </label>
+                    <Input
+                      id="ownership-pct"
+                      type="number"
+                      min={0}
+                      max={100}
+                      inputMode="numeric"
+                      value={businessData.indigenousOwnershipPct}
+                      onChange={(e) => setBusinessData(prev => ({ ...prev, indigenousOwnershipPct: e.target.value }))}
+                      placeholder="Optional"
+                      className="mt-1"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Many programs require at least 51%. Leave blank if you&apos;d rather not say.
+                    </p>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium" htmlFor="entity-type">Legal structure</label>
+                    <Select
+                      value={businessData.entityType}
+                      onValueChange={(value) => setBusinessData(prev => ({ ...prev, entityType: value }))}
+                    >
+                      <SelectTrigger className="mt-1" id="entity-type">
+                        <SelectValue placeholder="Select (optional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sole_proprietorship">Sole proprietorship</SelectItem>
+                        <SelectItem value="partnership">Partnership</SelectItem>
+                        <SelectItem value="corporation">Corporation</SelectItem>
+                        <SelectItem value="co_operative">Co-operative</SelectItem>
+                        <SelectItem value="nation_owned">Nation-owned</SelectItem>
+                        <SelectItem value="development_corporation">Development corporation</SelectItem>
+                        <SelectItem value="non_profit">Non-profit</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
                     <label className="text-sm font-medium">Industry *</label>
-                    <Select 
-                      value={businessData.industry} 
+                    <Select
+                      value={businessData.industry}
                       onValueChange={(value) => setBusinessData(prev => ({ ...prev, industry: value }))}
                     >
                       <SelectTrigger className="mt-1">
