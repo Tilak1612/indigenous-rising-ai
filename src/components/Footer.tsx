@@ -1,7 +1,8 @@
 import { Separator } from '@/components/ui/separator';
 import { Link } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
-import { Mail, Twitter, Linkedin, Youtube, Leaf } from 'lucide-react';
+import { Mail, Leaf } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { ComplianceBadge, DataResidencyNote } from '@/components/trust';
 import { RisingGlyph } from '@/components/RisingGlyph';
 
@@ -54,11 +55,23 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
   },
 ];
 
-const SOCIAL = [
-  { name: 'X (Twitter)', icon: Twitter, href: 'https://twitter.com/indigenous_ai' },
-  { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/company/indigenous-ai' },
-  { name: 'YouTube', icon: Youtube, href: 'https://youtube.com/@indigenousai' },
-];
+// Social accounts. EMPTY ON PURPOSE — do not re-add a handle that has not been
+// verified as belonging to Indigenous Rising AI.
+//
+// The three previous entries pointed at accounts we do not own:
+//   twitter.com/indigenous_ai        → does not exist (404)
+//   linkedin.com/company/indigenous-ai → a different organization
+//                                        ("safeguards for indigenous knowledge
+//                                        in AI"), unaffiliated with us
+//   youtube.com/@indigenousai        → an unrelated channel about
+//                                        "Indigenous Mindset: Conspiracies,
+//                                        History, Mysteries"
+//
+// Publishing those implied both a social presence we do not have and an
+// affiliation with an unrelated Indigenous organization. The block below
+// renders nothing while this list is empty, so real handles can be dropped in
+// here later with no other change.
+const SOCIAL: Array<{ name: string; icon: LucideIcon; href: string }> = [];
 
 // Homepage-section links (#...) use a plain anchor so the browser does a real
 // navigation to the homepage and scrolls to the section; routes use SPA Link.
@@ -114,7 +127,7 @@ const Footer = () => {
 
             <DataResidencyNote className="max-w-md" />
 
-            <div className="flex gap-3 pt-1">
+            <div className={SOCIAL.length ? 'flex gap-3 pt-1' : 'hidden'}>
               {SOCIAL.map((s) => {
                 const Icon = s.icon;
                 return (

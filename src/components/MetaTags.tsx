@@ -58,7 +58,10 @@ const MetaTags = ({
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={twitterImage} />
-        <meta name="twitter:site" content="@indigenous_ai" />
+        {/* twitter:site is omitted on purpose: @indigenous_ai does not exist,
+            and attributing every shared page to a non-existent handle is worse
+            than leaving the card unattributed. Re-add once a real X account is
+            registered. */}
 
         {/* Additional SEO */}
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />

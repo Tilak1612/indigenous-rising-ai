@@ -2,13 +2,28 @@ import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 
+// Must match MetaTags' BASE_URL — the canonical host is www. Emitting the
+// bare apex here put a non-canonical URL in every BreadcrumbList.
+const BASE_URL = 'https://www.indigenousrising.ai';
+
 interface BreadcrumbItem {
   name: string;
   path: string;
+  /** false when the path is a URL namespace with no route behind it. */
+  navigable?: boolean;
 }
+
+// Path prefixes that exist only to namespace their children — there is no
+// route at the prefix itself. Breadcrumbs previously linked every intermediate
+// segment, so /guides/indigenous-business-grants rendered a link to /guides,
+// which 404s. These render as plain text instead, and are omitted from the
+// JSON-LD `item` URL so search engines aren't handed a dead link either.
+const NON_ROUTE_SEGMENTS = new Set(['/guides', '/features']);
 
 const routeNames: Record<string, string> = {
   '/': 'Home',
+  '/guides': 'Guides',
+  '/features': 'Features',
   '/privacy': 'Privacy Policy',
   '/terms': 'Terms of Service',
   '/cookies': 'Cookie Policy',
@@ -44,7 +59,7 @@ export const Breadcrumbs = ({ customItems, className = '' }: BreadcrumbsProps) =
     for (const segment of pathSegments) {
       currentPath += `/${segment}`;
       const name = routeNames[currentPath] || segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
-      items.push({ name, path: currentPath });
+      items.push({ name, path: currentPath, navigable: !NON_ROUTE_SEGMENTS.has(currentPath) });
     }
     
     return items;
@@ -63,7 +78,9 @@ export const Breadcrumbs = ({ customItems, className = '' }: BreadcrumbsProps) =
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `https://indigenousrising.ai${item.path}`
+      // A namespace segment has no page to point at; omitting `item` is valid
+      // for BreadcrumbList and avoids publishing a URL that 404s.
+      ...(item.navigable === false ? {} : { "item": `${BASE_URL}${item.path}` })
     }))
   };
   
@@ -100,12 +117,16 @@ export const Breadcrumbs = ({ customItems, className = '' }: BreadcrumbsProps) =
                 )}
                 
                 {isLast ? (
-                  <span 
+                  <span
                     className="text-foreground font-medium"
                     itemProp="name"
                     aria-current="page"
                   >
                     {index === 0 ? <Home className="h-4 w-4" aria-label="Home" /> : item.name}
+                  </span>
+                ) : item.navigable === false ? (
+                  <span className="flex items-center">
+                    <span itemProp="name">{item.name}</span>
                   </span>
                 ) : (
                   <Link
