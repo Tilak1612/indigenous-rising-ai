@@ -22,6 +22,7 @@ import {
   AlertCircle,
   Bookmark,
   Info,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface Match {
@@ -34,6 +35,8 @@ interface Match {
   deadline: string | null;
   is_recurring: boolean;
   application_url: string;
+  funding_type: string;
+  is_repayable: boolean | null;
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
@@ -83,12 +86,56 @@ function formatDeadline(m: Match): string {
   return `${formatted} — ${daysLeft} days left`;
 }
 
+// Most of this catalogue is repayable financing from Indigenous Financial
+// Institutions, not grants. Rendering a $350,000 LOAN in the same card as a
+// non-repayable contribution — under a heading that said "grant
+// recommendations" — is the most consequential category error this page can
+// make, so repayability is stated on the card face.
+// is_repayable === null means "not stated in the record"; that is shown as
+// "confirm with funder", never silently as non-repayable.
+function FundingTypeBadge({ fundingType, isRepayable }: { fundingType: string; isRepayable: boolean | null }) {
+  const label =
+    fundingType === 'loan' ? 'Loan — repayable'
+    : fundingType === 'loan_guarantee' ? 'Loan guarantee — repayable'
+    : fundingType === 'grant' ? 'Grant — non-repayable'
+    : fundingType === 'mixed' ? 'Loans & non-repayable — varies'
+    : 'Type varies — confirm with funder';
+
+  if (isRepayable === true) {
+    return (
+      <Badge className="bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/40">
+        <AlertTriangle className="w-3 h-3 mr-1" />
+        {label}
+      </Badge>
+    );
+  }
+  if (isRepayable === false) {
+    return (
+      <Badge className="bg-primary/10 text-primary border border-primary/30">
+        {label}
+      </Badge>
+    );
+  }
+  return (
+    <Badge variant="outline" className="text-muted-foreground">
+      {label}
+    </Badge>
+  );
+}
+
+// These badges describe how well a program matches the PROFILE, never whether
+// the person is eligible. Eligibility for most Indigenous-specific programs
+// turns on First Nations / Métis / Inuit identity, community or Nation
+// affiliation, and percentage of Indigenous ownership — none of which this
+// product collects. Saying "Likely eligible" on inputs that cannot establish
+// eligibility sends someone to spend weeks on an application they may be
+// screened out of on the first criterion.
 function EligibilityBadge({ eligibility }: { eligibility: Match['eligibility'] }) {
   if (eligibility === 'yes') {
     return (
       <Badge className="bg-primary/10 text-primary border-primary/30 border">
         <CheckCircle2 className="w-3 h-3 mr-1" />
-        Likely eligible
+        Strong profile match
       </Badge>
     );
   }
@@ -261,7 +308,7 @@ const FundingMatches: React.FC = () => {
           <div>
             <h1 className="text-3xl font-bold">Your funding matches</h1>
             <p className="text-muted-foreground mt-1">
-              Personalised grant recommendations based on your profile
+              Personalised funding and financing matches based on your profile
             </p>
           </div>
 
@@ -432,9 +479,13 @@ const FundingMatches: React.FC = () => {
                     <span className="font-medium text-foreground">How to read these results:</span>{' '}
                     the funding programs listed are real records from our database. The{' '}
                     <span className="font-medium text-foreground">fit score, eligibility read, and explanation are AI-generated guidance</span>{' '}
-                    — not an eligibility decision. Always confirm current criteria, amounts, and
-                    deadlines with the funder before applying, and don&apos;t rule a program out on
-                    this page alone.
+                    — not an eligibility decision. Matching uses your territory, industry and
+                    business stage. It does{' '}
+                    <span className="font-medium text-foreground">not</span> assess First Nations,
+                    Métis or Inuit identity, community or Nation affiliation, or percentage of
+                    Indigenous ownership — which is what most of these programs actually turn on.
+                    Always confirm current criteria, amounts, and deadlines with the funder before
+                    applying, and don&apos;t rule a program out on this page alone.
                   </p>
                 </div>
 
@@ -455,6 +506,7 @@ const FundingMatches: React.FC = () => {
                           )}
                         </div>
                         <div className="flex flex-wrap gap-2">
+                          <FundingTypeBadge fundingType={match.funding_type} isRepayable={match.is_repayable} />
                           <EligibilityBadge eligibility={match.eligibility} />
                         </div>
                       </CardHeader>

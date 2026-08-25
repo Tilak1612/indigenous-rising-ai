@@ -492,18 +492,14 @@ export default function BusinessPlannerPage() {
                   suppressContentEditableWarning
                 />
 
-                {/* AI Inline Suggestions */}
-                <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg border border-primary/20">
-                  <Sparkles className="h-4 w-4 text-primary shrink-0" />
-                  <p className="text-sm text-muted-foreground flex-1">
-                    Need help? Click AI Suggestions for personalized content ideas for this section.
-                  </p>
-                  <Button size="sm" variant="outline" className="shrink-0">
-                    <Sparkles className="h-3 w-3 mr-1" />
-                    AI Suggestions
-                  </Button>
-                </div>
-                
+                {/* The "AI Suggestions" button that sat here had no onClick — it
+                    issued no request and showed no loading or error state, so the
+                    flagship AI affordance silently did nothing on the user's first
+                    real attempt to use it. Removed rather than left as a dead
+                    control; the per-section writing prompts above already give
+                    concrete guidance. Re-add only with a real handler plus
+                    loading, empty and error states. */}
+
                 <div className="flex items-center justify-between pt-4 border-t">
                   <div className="text-sm text-muted-foreground">
                     {answers[STEPS[currentStep].id]?.length || 0} characters

@@ -397,16 +397,13 @@ function DashboardHeader() {
     <header className="h-14 border-b border-border flex items-center justify-between px-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
       <div className="flex items-center gap-4">
         <SidebarTrigger />
-        <div className="hidden md:flex items-center gap-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search features, resources..."
-              className="h-9 w-64 rounded-lg border border-input bg-background pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            />
-          </div>
-        </div>
+        {/* A "Search features, resources…" input sat here with no onChange, no
+            handler and no results UI — typing did nothing. Worse, it had no id,
+            name, label or autocomplete, so on the settings page (which contains
+            password fields) Chrome treated it as the username field and
+            autofilled the account email into it. Removed until search actually
+            exists; when it returns it needs a label, a name and
+            autocomplete="off". */}
       </div>
 
       <div className="flex items-center gap-3">
