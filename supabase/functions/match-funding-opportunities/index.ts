@@ -69,6 +69,8 @@ interface Grant {
   application_url: string;
   funding_type: string;
   is_repayable: boolean | null;
+  identity_criteria: string[] | null;
+  ownership_min_pct: number | null;
   updated_at: string;
 }
 
@@ -93,6 +95,9 @@ interface MatchResponse {
   // 20260825000002.
   funding_type: string;
   is_repayable: boolean | null;
+  // Deterministic, rules-based criteria. Free on every tier — this is the
+  // honest core of the page and must never sit behind a paywall.
+  criteria: Criterion[];
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
@@ -180,6 +185,90 @@ const TOP_N_BY_TIER: Record<Tier, number> = {
   pro: 20,
   enterprise: 20,
 };
+
+// A single eligibility criterion, evaluated in CODE — never by the model.
+// Anything that could change whether a person applies for money is computed by
+// rules that can be audited and explained, not generated.
+interface Criterion {
+  label: string;
+  status: 'met' | 'unmet' | 'unknown';
+}
+
+const IDENTITY_LABEL: Record<string, string> = {
+  first_nations: 'First Nations',
+  metis: 'Métis',
+  inuit: 'Inuit',
+};
+
+function labelIdentities(keys: string[]): string {
+  return keys.map((k) => IDENTITY_LABEL[k] ?? k).join(', ');
+}
+
+// Returns one Criterion per dimension the record actually states. A dimension
+// the grant does not restrict is omitted entirely (there is nothing to meet).
+// A dimension the grant restricts but the profile has not supplied is
+// 'unknown' — surfaced as "not assessed", never silently treated as a pass.
+function evaluateCriteria(profile: Profile, grant: Grant): Criterion[] {
+  const out: Criterion[] = [];
+
+  // Province / territory
+  if (grant.provinces && grant.provinces.length > 0 && grant.provinces.length < 13) {
+    const code = territoryToCode(profile.territory);
+    out.push({
+      label: `Operating in ${grant.provinces.join(', ')}`,
+      status: !code ? 'unknown' : grant.provinces.includes(code) ? 'met' : 'unmet',
+    });
+  }
+
+  // Industry
+  if (grant.industries && grant.industries.length > 0) {
+    out.push({
+      label: `Sector: ${grant.industries.join(', ')}`,
+      status: !profile.industry
+        ? 'unknown'
+        : grant.industries.includes(profile.industry) ? 'met' : 'unmet',
+    });
+  }
+
+  // Business stage
+  if (grant.business_stages && grant.business_stages.length > 0 && grant.business_stages.length < 5) {
+    out.push({
+      label: `Business stage: ${grant.business_stages.join(', ')}`,
+      status: !profile.business_stage
+        ? 'unknown'
+        : grant.business_stages.includes(profile.business_stage) ? 'met' : 'unmet',
+    });
+  }
+
+  // Identity. 'prefer_not_to_say' is deliberately treated as 'unknown', never
+  // 'unmet' — declining to state identity must never read as a rejection.
+  if (grant.identity_criteria && grant.identity_criteria.length > 0) {
+    const declared = profile.indigenous_identity;
+    let status: Criterion['status'];
+    if (!declared || declared === 'prefer_not_to_say') {
+      status = 'unknown';
+    } else if (declared === 'multiple') {
+      // More than one identity — we don't know which, so we can't rule it out.
+      status = 'unknown';
+    } else {
+      status = grant.identity_criteria.includes(declared) ? 'met' : 'unmet';
+    }
+    out.push({ label: `Open to ${labelIdentities(grant.identity_criteria)}`, status });
+  }
+
+  // Ownership threshold
+  if (grant.ownership_min_pct !== null && grant.ownership_min_pct !== undefined) {
+    const pct = profile.indigenous_ownership_pct;
+    out.push({
+      label: `At least ${grant.ownership_min_pct}% Indigenous ownership`,
+      status: pct === null || pct === undefined
+        ? 'unknown'
+        : pct >= grant.ownership_min_pct ? 'met' : 'unmet',
+    });
+  }
+
+  return out;
+}
 
 async function callOpenAi(
   apiKey: string,
@@ -559,6 +648,7 @@ serve(async (req) => {
         application_url: grant.application_url,
         funding_type: grant.funding_type,
         is_repayable: grant.is_repayable,
+        criteria: evaluateCriteria(profile, grant),
         eligibility: verdict.eligibility,
       };
       if (tier !== 'free') {
