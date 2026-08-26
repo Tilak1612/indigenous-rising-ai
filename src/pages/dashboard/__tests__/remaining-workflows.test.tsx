@@ -31,8 +31,18 @@ const posts = () => fetchMock.mock.calls.filter(([, i]) => (i as RequestInit)?.m
 
 beforeEach(() => {
   toastError.mockClear(); toastSuccess.mockClear();
-  fetchMock = vi.fn((url: string, init?: RequestInit) =>
-    !init?.method || init.method === 'GET' ? res([]) : res([{ id: 'x' }]));
+  // The component sends Prefer: return=representation, so the server returns
+  // the FULL row. Returning a bare { id } made the page render an invite with
+  // no email and crash in initials() — a mock artefact, but it exposed real
+  // fragility, now fixed in the component too.
+  fetchMock = vi.fn((url: string, init?: RequestInit) => {
+    if (!init?.method || init.method === 'GET') return res([]);
+    if (init.method === 'POST') {
+      const body = JSON.parse(init.body as string);
+      return res([{ id: 'inv1', status: 'pending', ...body }]);
+    }
+    return res([]);
+  });
   vi.stubGlobal('fetch', fetchMock);
 });
 afterEach(() => vi.unstubAllGlobals());

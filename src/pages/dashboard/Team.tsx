@@ -46,7 +46,12 @@ const roleColors: Record<string, string> = {
   viewer: 'bg-muted-foreground',
 };
 
-const initials = (s: string) => s.split(/[ @.]/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase()).join('');
+// Tolerates a missing or malformed value. This threw
+// "Cannot read properties of undefined (reading 'split')" on a row with no
+// email, and because it happens during render it took the whole Team page
+// down rather than degrading one avatar.
+const initials = (s?: string | null) =>
+  (s ?? '').split(/[ @.]/).filter(Boolean).slice(0, 2).map((p) => p[0]?.toUpperCase()).join('') || '?';
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 
 export default function Team() {
