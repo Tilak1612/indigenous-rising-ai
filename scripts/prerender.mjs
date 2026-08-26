@@ -52,6 +52,16 @@ const MARKETING = [
   { p: '/terms', t: 'Terms of Service | Indigenous Rising AI', d: 'The terms that govern your use of the Indigenous Rising AI platform.' },
   { p: '/accessibility', t: 'Accessibility statement | Indigenous Rising AI', d: 'Our commitment to an accessible platform for all Indigenous entrepreneurs, and how to reach us with accessibility feedback.' },
   { p: '/cookies', t: 'Cookie Policy | Indigenous Rising AI', d: 'How Indigenous Rising AI uses cookies and similar technologies, and the choices available to you.' },
+  // These five render fine but were absent from MARKETING, so no per-route HTML
+  // was written and Vercel's SPA rewrite served index.html — meaning all five
+  // shipped the HOMEPAGE <title>. That is a WCAG 2.4.2 (Page Titled) failure —
+  // a screen reader announces the same name on five different pages — and five
+  // duplicate title tags for search engines.
+  { p: '/funding', t: 'Find Indigenous business funding | Indigenous Rising AI', d: 'Browse real funding and financing programs for First Nations, Métis, and Inuit entrepreneurs across Canada — grants, non-repayable contributions, and loans from Indigenous Financial Institutions.' },
+  { p: '/funding/alerts', t: 'Free weekly funding alerts | Indigenous Rising AI', d: 'Get a free weekly email of Indigenous business funding opportunities matched to your province and industry. CASL-compliant double opt-in; unsubscribe in one click.' },
+  { p: '/impact', t: 'Measure your community impact | Indigenous Rising AI', d: 'Track and report the community impact of your Indigenous business — jobs, training, and local spend — in a form funders and your Nation recognise.' },
+  { p: '/plan', t: 'Build your business plan with AI guidance | Indigenous Rising AI', d: 'Write a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Free to start, no credit card.' },
+  { p: '/track-request', t: 'Track a data request | Indigenous Rising AI', d: 'Check the status of a data access, export, correction, or deletion request — OCAP® Possession in practice.', robots: 'noindex, nofollow' },
   { p: '/data-rights', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
 ];
 
