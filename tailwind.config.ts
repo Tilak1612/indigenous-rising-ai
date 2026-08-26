@@ -20,8 +20,9 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif"],
-        display: ["Fraunces", "Georgia", "Times New Roman", "serif"],
-        geist: ["Geist", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Manrope", "Inter", "Arial", "sans-serif"],  // brand spec 108
+        geist: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        data: ["IBM Plex Mono", "ui-monospace", "SFMono-Regular", "monospace"],  // spec 108 numerals
         body: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       colors: {
