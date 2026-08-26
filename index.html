@@ -109,13 +109,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://upxojfcdtmqtcvgbjsym.supabase.co">
     
-    <!-- Preload critical hero image -->
-    <link rel="preload" as="image" href="/hero-image-800.webp" type="image/webp" media="(max-width: 1024px)">
-    <link rel="preload" as="image" href="/hero-image-1200.webp" type="image/webp" media="(min-width: 1025px)">
-    
-    <!-- Fonts: Geist and Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Brand fonts, per brand/09-brand-system spec 108: Manrope (display /
+         heading), Inter (body / UI), IBM Plex Mono (data). Loaded here rather
+         than only via the CSS @import so the display face is discovered in the
+         initial HTML instead of after the stylesheet parses.
+         Geist was dropped — nothing references it since the font map moved to
+         Manrope, so it was a render-blocking request for an unused family. -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Restore SPA routes when served from GitHub Pages 404 fallback -->
     <script>
