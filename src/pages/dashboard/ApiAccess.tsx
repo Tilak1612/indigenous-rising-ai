@@ -16,27 +16,16 @@ interface ApiKey {
   permissions: string[];
 }
 
-const mockApiKeys: ApiKey[] = [
-  {
-    id: '1',
-    name: 'Production API Key',
-    key: 'ir_live_sk_1a2b3c4d5e6f7g8h9i0j',
-    created: '2024-01-15',
-    lastUsed: '2024-01-20',
-    permissions: ['read', 'write'],
-  },
-  {
-    id: '2',
-    name: 'Development API Key',
-    key: 'ir_test_sk_9z8y7x6w5v4u3t2s1r0q',
-    created: '2024-01-10',
-    lastUsed: '2024-01-19',
-    permissions: ['read'],
-  },
-];
+// No fabricated keys. There is no public API behind this screen — no API
+// edge function exists — so there is nothing for a key to authenticate
+// against. This previously shipped two invented keys, one labelled
+// "Production API Key" with a value shaped like a real secret
+// (ir_live_sk_...) and a copy-to-clipboard button. A user could reasonably
+// have copied it into their own code, or believed a live secret had leaked.
+const apiKeysPlaceholder: ApiKey[] = [];
 
 export default function ApiAccess() {
-  const [apiKeys, setApiKeys] = useState(mockApiKeys);
+  const [apiKeys] = useState<ApiKey[]>(apiKeysPlaceholder);
   const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
 
   const toggleKeyVisibility = (id: string) => {
@@ -62,10 +51,17 @@ export default function ApiAccess() {
               Manage your API keys and integrations
             </p>
           </div>
-          <Button>
+          <Button disabled title="API access is not available yet">
             <Plus className="h-4 w-4 mr-2" />
             Create New Key
           </Button>
+        </div>
+
+        <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+          <strong className="text-foreground">API access isn&apos;t available yet.</strong>{' '}
+          There is no public API to issue keys for. This page is a placeholder for a
+          planned feature — when the API ships, your real keys will appear here. Nothing
+          on this screen will authenticate against anything today.
         </div>
 
         {/* Quick Stats */}
