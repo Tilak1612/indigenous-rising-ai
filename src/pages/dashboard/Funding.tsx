@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useSubscription } from '@/hooks/useSubscription';
+import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import {
   Search,
@@ -50,9 +51,11 @@ interface FundingOpportunity {
   category: string;
   region: string[];
   eligibility: string[];
-  matchScore: number;
   description: string;
   website: string;
+  fundingType: string | null;
+  isRepayable: boolean;
+  lastVerified: string | null;
   status: 'open' | 'closing_soon' | 'closed';
   saved: boolean;
 }
@@ -68,98 +71,14 @@ const deriveStatus = (deadline: string): FundingOpportunity['status'] => {
   return 'open';
 };
 
-const fundingData: FundingOpportunity[] = [
-  {
-    id: '1',
-    name: 'Indigenous Business Development Program',
-    organization: 'Indigenous Services Canada',
-    amount: { min: 10000, max: 99999 },
-    deadline: '2026-09-30',
-    category: 'Business Development',
-    region: ['All Provinces'],
-    eligibility: ['Indigenous-owned', 'Registered Business'],
-    matchScore: 95,
-    description: 'Funding to support Indigenous entrepreneurs in starting, expanding, or acquiring a business.',
-    website: 'https://www.isc.gc.ca',
-    status: deriveStatus('2026-09-30'),
-    saved: true,
-  },
-  {
-    id: '2',
-    name: 'Aboriginal Business Financing Program',
-    organization: 'Business Development Bank of Canada',
-    amount: { min: 25000, max: 250000 },
-    deadline: '2026-12-31',
-    category: 'Loans & Financing',
-    region: ['All Provinces'],
-    eligibility: ['Indigenous-owned', '51% Indigenous ownership'],
-    matchScore: 88,
-    description: 'Flexible financing solutions for Indigenous entrepreneurs with favorable terms.',
-    website: 'https://www.bdc.ca',
-    status: deriveStatus('2026-12-31'),
-    saved: false,
-  },
-  {
-    id: '3',
-    name: 'Indigenous Tourism Grant',
-    organization: 'Indigenous Tourism Association of Canada',
-    amount: { min: 5000, max: 50000 },
-    deadline: '2026-08-31',
-    category: 'Tourism',
-    region: ['British Columbia', 'Alberta', 'Ontario'],
-    eligibility: ['Tourism Business', 'Indigenous-owned'],
-    matchScore: 72,
-    description: 'Grants to support Indigenous tourism businesses and experiences.',
-    website: 'https://indigenoustourism.ca',
-    status: deriveStatus('2026-08-31'),
-    saved: false,
-  },
-  {
-    id: '4',
-    name: 'Women Entrepreneurship Strategy',
-    organization: 'Innovation, Science and Economic Development Canada',
-    amount: { min: 10000, max: 100000 },
-    deadline: '2026-10-15',
-    category: 'Women Entrepreneurs',
-    region: ['All Provinces'],
-    eligibility: ['Woman-owned', 'Indigenous-owned'],
-    matchScore: 85,
-    description: 'Support for women entrepreneurs including Indigenous women in business.',
-    website: 'https://ised-isde.canada.ca',
-    status: deriveStatus('2026-10-15'),
-    saved: true,
-  },
-  {
-    id: '5',
-    name: 'Northern Ontario Heritage Fund',
-    organization: 'NOHFC',
-    amount: { min: 5000, max: 500000 },
-    deadline: '2026-11-30',
-    category: 'Regional Development',
-    region: ['Ontario'],
-    eligibility: ['Northern Ontario', 'Indigenous Communities'],
-    matchScore: 68,
-    description: 'Economic development funding for projects in Northern Ontario.',
-    website: 'https://nohfc.ca',
-    status: deriveStatus('2026-11-30'),
-    saved: false,
-  },
-  {
-    id: '6',
-    name: 'Community Futures Development',
-    organization: 'Community Futures Network',
-    amount: { min: 5000, max: 150000 },
-    deadline: 'Ongoing',
-    category: 'Community Development',
-    region: ['All Provinces'],
-    eligibility: ['Small Business', 'Rural Communities'],
-    matchScore: 75,
-    description: 'Loans and support for small business development in rural and Indigenous communities.',
-    website: 'https://communityfutures.ca',
-    status: deriveStatus('Ongoing'),
-    saved: false,
-  },
-];
+// Opportunities come from public.grants, the verified catalogue — never
+// hardcoded. This page previously shipped six invented entries with fabricated
+// match scores (95, 88, 85, 75, 72, 68), deadlines the catalogue does not have
+// (grants.deadline is null on every row today), and `saved: true` on accounts
+// that had saved nothing. It is the PAID "Funding Navigator", badged AI in the
+// nav, so a paying customer was shown fabricated results as the feature they
+// bought.
+const fundingData: FundingOpportunity[] = [];
 
 const categories = ['All', 'Business Development', 'Loans & Financing', 'Tourism', 'Women Entrepreneurs', 'Regional Development', 'Community Development'];
 const regions = ['All Regions', 'All Provinces', 'British Columbia', 'Alberta', 'Saskatchewan', 'Manitoba', 'Ontario', 'Quebec', 'Atlantic Provinces', 'Northern Territories'];
@@ -179,7 +98,51 @@ export default function Funding() {
   const [selectedRegion, setSelectedRegion] = useState('All Regions');
   const [selectedAmount, setSelectedAmount] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
-  const [opportunities, setOpportunities] = useState(fundingData);
+  const [opportunities, setOpportunities] = useState<FundingOpportunity[]>(fundingData);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  // Read the verified catalogue. RLS exposes only published grants, so this is
+  // the same source the funding matcher and the digest gate use — one catalogue,
+  // no page-local copy that can drift from it.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('grants')
+        .select('id,name,funder,description,amount_min,amount_max,deadline,provinces,eligibility_notes,application_url,source_url,funding_type,is_repayable,last_verified')
+        .eq('is_published', true);
+      if (cancelled) return;
+      if (error) {
+        // Surface the failure. An empty list that looks like "no programmes"
+        // would be a lie when the truth is "we could not load them".
+        setLoadError(error.message);
+        setOpportunities([]);
+      } else {
+        setOpportunities((data ?? []).map((g): FundingOpportunity => ({
+          id: g.id,
+          name: g.name,
+          organization: g.funder ?? 'Unknown funder',
+          amount: { min: g.amount_min ?? 0, max: g.amount_max ?? 0 },
+          deadline: g.deadline ?? '',
+          category: g.funding_type ?? 'Funding',
+          region: g.provinces ?? [],
+          eligibility: g.eligibility_notes ? [g.eligibility_notes] : [],
+          description: g.description ?? '',
+          website: g.source_url ?? g.application_url ?? '',
+          fundingType: g.funding_type ?? null,
+          isRepayable: Boolean(g.is_repayable),
+          lastVerified: g.last_verified ?? null,
+          status: g.deadline ? deriveStatus(g.deadline) : 'open',
+          saved: false,
+        })));
+        setLoadError(null);
+      }
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, []);
   const [analyzing, setAnalyzing] = useState(false);
 
   const filteredOpportunities = useMemo(() => {
@@ -201,7 +164,15 @@ export default function Funding() {
       }
       
       return matchesSearch && matchesCategory && matchesRegion && matchesAmount;
-    }).sort((a, b) => b.matchScore - a.matchScore);
+    }).sort((a, b) => {
+      // No match score to rank by — asserting one without criteria is exactly
+      // what #118 removed from the other funding page. Soonest deadline first,
+      // undated programmes last.
+      if (!a.deadline && !b.deadline) return a.name.localeCompare(b.name);
+      if (!a.deadline) return 1;
+      if (!b.deadline) return -1;
+      return a.deadline.localeCompare(b.deadline);
+    });
   }, [opportunities, searchTerm, selectedCategory, selectedRegion, selectedAmount]);
 
   const toggleSaved = (id: string) => {
@@ -283,7 +254,7 @@ export default function Funding() {
                   <div key={opp.id} className="p-4 border rounded-lg blur-sm">
                     <div className="flex justify-between">
                       <h4 className="font-medium">{opp.name}</h4>
-                      <Badge>{opp.matchScore}% match</Badge>
+                      <Badge variant="secondary">{opp.fundingType ?? 'Funding'}</Badge>
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">{opp.organization}</p>
                   </div>
@@ -452,15 +423,18 @@ export default function Funding() {
               <Card key={opp.id} className="hover:border-primary/50 transition-colors">
                 <CardContent className="p-6">
                   <div className="flex flex-col lg:flex-row lg:items-start gap-4">
-                    {/* Match Score */}
-                    <div className="flex-shrink-0">
-                      <div className={`h-16 w-16 rounded-full flex items-center justify-center text-lg font-bold ${
-                        opp.matchScore >= 80 ? 'bg-success/20 text-success' :
-                        opp.matchScore >= 60 ? 'bg-warning/20 text-warning' :
-                        'bg-muted text-muted-foreground'
-                      }`}>
-                        {opp.matchScore}%
-                      </div>
+                    {/* Funding type — a fact from the catalogue, not an
+                        asserted score. Repayable instruments are called out so
+                        a loan is never mistaken for a grant. */}
+                    <div className="flex-shrink-0 space-y-1">
+                      <Badge variant={opp.isRepayable ? 'destructive' : 'secondary'}>
+                        {opp.fundingType ?? 'Funding'}
+                      </Badge>
+                      {opp.isRepayable && (
+                        <p className="text-xs text-muted-foreground max-w-[7rem]">
+                          You pay this back
+                        </p>
+                      )}
                     </div>
 
                     {/* Main Content */}
