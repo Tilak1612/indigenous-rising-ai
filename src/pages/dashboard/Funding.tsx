@@ -143,7 +143,6 @@ export default function Funding() {
     })();
     return () => { cancelled = true; };
   }, []);
-  const [analyzing, setAnalyzing] = useState(false);
 
   const filteredOpportunities = useMemo(() => {
     return opportunities.filter(opp => {
@@ -175,19 +174,39 @@ export default function Funding() {
     });
   }, [opportunities, searchTerm, selectedCategory, selectedRegion, selectedAmount]);
 
-  const toggleSaved = (id: string) => {
-    setOpportunities(prev => prev.map(opp => 
-      opp.id === id ? { ...opp, saved: !opp.saved } : opp
-    ));
-    const opp = opportunities.find(o => o.id === id);
-    toast.success(opp?.saved ? 'Removed from saved' : 'Added to saved opportunities');
-  };
+  // Saving writes to funding_saved_matches, the same table SavedMatches reads.
+  // This used to set local state only and still toast "Added to saved
+  // opportunities" — so the user was told it saved, went to Saved Matches, and
+  // found nothing. RLS scopes the row to auth.uid() on both read and write.
+  const toggleSaved = async (id: string) => {
+    const opp = opportunities.find((o) => o.id === id);
+    if (!opp) return;
+    const nowSaved = !opp.saved;
 
-  const runAIAnalysis = async () => {
-    setAnalyzing(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    toast.success('AI analysis complete! Match scores updated based on your profile.');
-    setAnalyzing(false);
+    // Optimistic, reverted below if the write fails — never leave the UI
+    // claiming a state the database does not have.
+    setOpportunities((prev) => prev.map((o) => (o.id === id ? { ...o, saved: nowSaved } : o)));
+
+    const { data: auth } = await supabase.auth.getUser();
+    const userId = auth?.user?.id;
+    if (!userId) {
+      setOpportunities((prev) => prev.map((o) => (o.id === id ? { ...o, saved: !nowSaved } : o)));
+      toast.error('Please sign in again to save opportunities');
+      return;
+    }
+
+    const { error } = nowSaved
+      ? await supabase.from('funding_saved_matches')
+          .upsert({ user_id: userId, grant_id: id, status: 'saved' }, { onConflict: 'user_id,grant_id' })
+      : await supabase.from('funding_saved_matches')
+          .delete().eq('user_id', userId).eq('grant_id', id);
+
+    if (error) {
+      setOpportunities((prev) => prev.map((o) => (o.id === id ? { ...o, saved: !nowSaved } : o)));
+      toast.error(nowSaved ? 'Could not save — please try again' : 'Could not remove — please try again');
+      return;
+    }
+    toast.success(nowSaved ? 'Saved — find it in Saved Matches' : 'Removed from saved');
   };
 
   const formatAmount = (min: number, max: number) => {
@@ -277,16 +296,19 @@ export default function Funding() {
           <div>
             <h1 className="text-3xl font-bold">Funding Navigator</h1>
             <p className="text-muted-foreground mt-1">
-              AI-powered funding opportunity matching
+              Browse verified funding and financing programs across Canada
             </p>
           </div>
-          <Button onClick={runAIAnalysis} disabled={analyzing}>
-            {analyzing ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
+          {/* Was a "Run AI Analysis" button that waited 2s on a setTimeout and
+              then claimed "AI analysis complete! Match scores updated based on
+              your profile." No model was called and nothing was updated — pure
+              theatre on the paid, AI-badged page. Matching is real, but it lives
+              on /dashboard/funding/matches, so send people there. */}
+          <Button asChild>
+            <Link to="/dashboard/funding/matches">
               <Sparkles className="h-4 w-4 mr-2" />
-            )}
-            {analyzing ? 'Analyzing...' : 'Run AI Analysis'}
+              Match me to funding
+            </Link>
           </Button>
         </div>
 
@@ -452,6 +474,12 @@ export default function Funding() {
                         </div>
                         <button
                           onClick={() => toggleSaved(opp.id)}
+                          // Icon-only control: without a name a screen reader
+                          // announces just "button". aria-pressed conveys the
+                          // saved/not-saved state that the icon shows visually.
+                          aria-label={opp.saved ? `Remove ${opp.name} from saved` : `Save ${opp.name}`}
+                          aria-pressed={opp.saved}
+                          title={opp.saved ? 'Remove from saved' : 'Save'}
                           className="text-muted-foreground hover:text-primary transition-colors"
                         >
                           {opp.saved ? (
