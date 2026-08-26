@@ -23,7 +23,7 @@ const integrations: Integration[] = [
     description: 'Sync your accounting and financial data',
     category: 'Accounting',
     icon: '📊',
-    connected: true,
+    connected: false,
     popular: true,
   },
   {
@@ -32,7 +32,7 @@ const integrations: Integration[] = [
     description: 'Get notifications and updates in Slack',
     category: 'Communication',
     icon: '💬',
-    connected: true,
+    connected: false,
   },
   {
     id: 'mailchimp',
@@ -57,7 +57,7 @@ const integrations: Integration[] = [
     description: 'Process payments and manage subscriptions',
     category: 'Payments',
     icon: '💳',
-    connected: true,
+    connected: false,
     popular: true,
   },
   {
@@ -82,13 +82,18 @@ const integrations: Integration[] = [
     description: 'Connect with 5000+ apps automatically',
     category: 'Automation',
     icon: '⚡',
-    connected: true,
+    connected: false,
   },
 ];
 
 const categories = ['All', 'Accounting', 'Communication', 'Marketing', 'CRM', 'Payments', 'Analytics', 'Automation'];
 
 export default function Integrations() {
+  // Every integration ships as disconnected. Four were hardcoded connected:true
+  // (QuickBooks, Slack, Mailchimp, Zapier among them) on accounts that had
+  // authorised nothing — a claimed connection to a third party the user never
+  // made. There is no OAuth flow, no stored credential and no integration
+  // backend behind this screen.
   const connectedCount = integrations.filter(i => i.connected).length;
 
   return (
@@ -162,6 +167,13 @@ export default function Integrations() {
                     <p className="text-sm text-muted-foreground">{integration.description}</p>
                   </div>
                 </div>
+
+        <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+          <strong className="text-foreground">Integrations aren&apos;t live yet.</strong>{' '}
+          Nothing here is connected, and connecting isn&apos;t possible today — there is no
+          authorisation flow behind these cards. They show what is planned, not what is
+          available.
+        </div>
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm">
                     <Settings className="h-4 w-4 mr-2" />
