@@ -1,0 +1,47 @@
+name: CI
+
+# Runs on every pull request and on main. Before this existed nothing ran the
+# test suite in CI at all — 122 tests, including the guards that stop fabricated
+# data returning to the dashboard, only ever ran when someone remembered to run
+# them locally. A pull request reintroducing fake API keys, a fake "connected"
+# integration, or a save that silently writes nothing would have gone green.
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # One run per branch; cancel superseded runs so a fast follow-up push does not
+  # queue behind a stale one.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # .npmrc sets legacy-peer-deps, which `npm ci` honours.
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # `npm test` is vitest in WATCH mode and would hang a runner forever.
+      # `vitest run` is the single-shot form.
+      - name: Test
+        run: npx vitest run --reporter=default
+
+      - name: Build
+        run: npm run build
