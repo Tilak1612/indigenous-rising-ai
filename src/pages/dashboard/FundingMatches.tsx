@@ -43,6 +43,7 @@ interface Match {
   funding_type: string;
   is_repayable: boolean | null;
   criteria?: Criterion[];
+  verification_status?: string;
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
@@ -562,6 +563,18 @@ const FundingMatches: React.FC = () => {
                       </CardHeader>
 
                       <CardContent className="space-y-4 flex-1 flex flex-col">
+                        {match.verification_status === 'needs_review' && (
+                          <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 flex gap-2">
+                            <AlertTriangle className="w-4 h-4 text-amber-700 dark:text-amber-300 shrink-0 mt-0.5" aria-hidden="true" />
+                            <p className="text-xs text-foreground/80 leading-relaxed">
+                              <span className="font-medium">Check this link before relying on it.</span>{' '}
+                              Our last automated check couldn&apos;t reach the funder&apos;s page for
+                              this programme — it may have moved. The programme itself is real;
+                              search the funder&apos;s site if the link doesn&apos;t open.
+                            </p>
+                          </div>
+                        )}
+
                         {match.criteria && match.criteria.length > 0 && (
                           <CriteriaList criteria={match.criteria} />
                         )}

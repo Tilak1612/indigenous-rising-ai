@@ -71,6 +71,7 @@ interface Grant {
   is_repayable: boolean | null;
   identity_criteria: string[] | null;
   ownership_min_pct: number | null;
+  verification_status: string;
   updated_at: string;
 }
 
@@ -98,6 +99,10 @@ interface MatchResponse {
   // Deterministic, rules-based criteria. Free on every tier — this is the
   // honest core of the page and must never sit behind a paywall.
   criteria: Criterion[];
+  // 'needs_review' means an automated check found the funder link dead or
+  // unreachable. The programme is still real — we surface it with a warning
+  // rather than silently sending someone to a 404.
+  verification_status: string;
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
@@ -649,6 +654,7 @@ serve(async (req) => {
         funding_type: grant.funding_type,
         is_repayable: grant.is_repayable,
         criteria: evaluateCriteria(profile, grant),
+        verification_status: grant.verification_status,
         eligibility: verdict.eligibility,
       };
       if (tier !== 'free') {
