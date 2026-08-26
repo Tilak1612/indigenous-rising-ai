@@ -156,6 +156,18 @@ export default function ResourcesPage() {
     return matchesSearch && matchesTab && matchesRegion && matchesStage && matchesLanguage;
   });
 
+  // The Featured block only renders on the unfiltered "all" tab. Whenever it
+  // is on screen, drop those same items from the list below so nothing appears
+  // twice. Under any search or filter the featured block is hidden, so the
+  // full result set is shown.
+  const featuredVisible =
+    activeTab === 'all' && search.trim() === '' &&
+    regionFilter === 'All Regions' && stageFilter === 'All Stages' &&
+    languageFilter === 'All Languages';
+  const listResources = featuredVisible
+    ? filteredResources.filter(r => !r.featured)
+    : filteredResources;
+
   const toggleFavorite = (resourceId: string) => {
     setFavorites(prev => {
       const newFavorites = new Set(prev);
@@ -295,7 +307,7 @@ export default function ResourcesPage() {
 
           <TabsContent value={activeTab} className="mt-6">
             {/* Featured Resources */}
-            {activeTab === 'all' && (
+            {featuredVisible && (
               <div className="mb-6">
                 <h2 className="text-lg font-semibold mb-4">Featured Resources</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -363,9 +375,13 @@ export default function ResourcesPage() {
               </div>
             )}
 
-            {/* All Resources Grid */}
+            {/* All Resources Grid.
+                Featured items are excluded here when the Featured block above
+                is showing (activeTab === 'all' with no active search or
+                filter), otherwise each one rendered twice on the same screen —
+                very visible in a six-item catalogue, and it reads as padding. */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredResources.map(resource => {
+              {listResources.map(resource => {
                 const Icon = categoryIcons[resource.category];
                 const isFavorite = favorites.has(resource.id);
                 return (
@@ -419,7 +435,7 @@ export default function ResourcesPage() {
               })}
             </div>
 
-            {filteredResources.length === 0 && (
+            {listResources.length === 0 && !featuredVisible && (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No resources found matching your search.</p>
               </div>
