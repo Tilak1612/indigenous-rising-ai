@@ -102,12 +102,18 @@ export default function Settings() {
   // Language state
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   
-  // Notification settings
+  // Notification settings.
+  // fundingAlerts and trainingReminders default OFF: both describe features
+  // the free plan does not include ("Funding deadline alerts (email + SMS)" is
+  // a Growth feature; training is Enterprise). Showing them pre-enabled told a
+  // free user they were subscribed to alerts that would never arrive.
+  // securityAlerts stays true and is not really optional — security, billing
+  // and data-rights mail must send regardless of preference.
   const [notifications, setNotifications] = useState<NotificationSettings>({
     emailUpdates: true,
-    fundingAlerts: true,
+    fundingAlerts: false,
     communityDigest: false,
-    trainingReminders: true,
+    trainingReminders: false,
     securityAlerts: true,
     marketingEmails: false,
   });
