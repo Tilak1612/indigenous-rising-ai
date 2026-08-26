@@ -154,7 +154,7 @@ export default function CompliancePage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-2xl font-bold">OCAP® Self-Assessment</h1>
             <p className="text-muted-foreground">
@@ -184,9 +184,9 @@ export default function CompliancePage() {
         {/* Overall Score Card */}
         <Card className="bg-gradient-to-br from-primary/10 via-background to-success/10 border-primary/20">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-16 w-16 shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
                   <Shield className="h-8 w-8 text-primary" />
                 </div>
                 <div>
@@ -197,7 +197,7 @@ export default function CompliancePage() {
                   </p>
                 </div>
               </div>
-              <div className="text-right space-y-2">
+              <div className="space-y-2 sm:text-right">
                 <Button
                   size="sm"
                   variant="default"
