@@ -182,7 +182,7 @@ export default function Auth() {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <section className="bg-background font-serif min-h-screen flex items-center justify-center px-4">
+      <section className="bg-background min-h-screen flex items-center justify-center px-4">
         <div className="container mx-auto">
           <div className="flex justify-center">
             <div className="w-full sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12">

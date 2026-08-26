@@ -1,7 +1,13 @@
-/* Two families only: Fraunces (display) + Inter (text/UI). The legacy
+/* Brand typography, per brand/09-brand-system spec 108:
+     Display   Manrope ExtraBold 800, -2% tracking
+     Heading   Manrope Bold 700, -1% tracking
+     Body      Inter Regular 400
+     UI        Inter Medium 500
+     Data      IBM Plex Mono Medium 500  (.font-data)
+   Replaces Fraunces, which was never the brand face. The legacy
    `.font-geist` utility now falls back to Inter, so Geist is no longer
    downloaded — smaller font payload, consistent type system. */
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -14,9 +20,11 @@
 
 @layer base {
   :root {
-    /* Clean Light Palette - White with Emerald accents */
+    /* Brand palette — brand/09-brand-system spec 107.
+       Deep Forest Green #124C3B · Legacy Gold #D79A27
+       Rising Terracotta #D45B35 · Warm Cream #F5F0E8 · Dark Neutral #111111 */
     --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
+    --foreground: 0 0% 7%;              /* Dark Neutral — 16.65:1 on cream */
     
     --card: 0 0% 100%;
     --card-foreground: 0 0% 9%;
@@ -24,9 +32,13 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
     
-    /* Primary: Emerald */
-    --primary: 16 59% 48%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary: Deep Forest Green.
+       The brand's own contrast spec (115) rates terracotta-on-cream at
+       3.46:1 — a WCAG AA FAIL — while forest-green-on-cream is 8.72:1 (AAA).
+       Terracotta was previously --primary here at 4.07:1, also below AA.
+       Per spec 114 terracotta is the DESTRUCTIVE colour, not the primary. */
+    --primary: 162 62% 27%;             /* #124C3B */
+    --primary-foreground: 37 39% 93%;   /* Warm Cream on green — 8.72:1 */
     
     /* Secondary: Neutral */
     --secondary: 0 0% 96%;
@@ -36,9 +48,13 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 40%;
     
-    /* Accent: Light Emerald */
-    --accent: 16 60% 94%;
-    --accent-foreground: 16 55% 32%;
+    /* Accent: pale forest tint (spec 114 secondary hover #E1EAE5). Legacy Gold
+       is deliberately NOT a text colour — 2.17:1 on cream, 4.02:1 on green,
+       both fail. Gold is decorative and focus-ring only. */
+    --accent: 150 16% 90%;              /* #E1EAE5 */
+    --accent-foreground: 162 62% 22%;   /* #0F3F31 — spec primary hover */
+    --brand-gold: 40 70% 50%;           /* #D79A27 — decorative / focus ring */
+    --brand-terracotta: 15 65% 57%;     /* #D45B35 — destructive */
     
     /* Extended palette */
     --neutral-50: 0 0% 98%;
@@ -67,7 +83,7 @@
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 9%;
     
-    --destructive: 0 84% 60%;
+    --destructive: 15 65% 57%;          /* Rising Terracotta #D45B35 — spec 114 */
     --destructive-foreground: 0 0% 100%;
     
     --border: 0 0% 90%;
@@ -77,8 +93,9 @@
     --radius: 0.75rem;
 
     /* Typography */
-    --font-display: 'Fraunces', Georgia, serif;
-    --font-body: 'Inter', sans-serif;
+    --font-display: 'Manrope', 'Inter', Arial, sans-serif;
+    --font-body: 'Inter', Arial, sans-serif;
+    --font-data: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
     /* Shadows */
     --shadow-natural: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
@@ -111,7 +128,9 @@
     --popover: 0 0% 10%;
     --popover-foreground: 0 0% 95%;
     
-    --primary: 16 62% 54%;
+    /* Forest green lifted for a dark ground — #124C3B is too dark to read
+       against near-black, so lightness goes up while the hue stays brand. */
+    --primary: 162 45% 48%;
     --primary-foreground: 0 0% 100%;
     
     --secondary: 0 0% 15%;
@@ -120,8 +139,8 @@
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
     
-    --accent: 16 45% 18%;
-    --accent-foreground: 16 55% 85%;
+    --accent: 162 30% 18%;
+    --accent-foreground: 150 30% 85%;
     
     --success: 143 25% 45%;
     --success-foreground: 0 0% 100%;
@@ -129,7 +148,7 @@
     --warning: 38 92% 48%;
     --warning-foreground: 0 0% 9%;
     
-    --destructive: 0 75% 48%;
+    --destructive: 15 60% 52%;          /* Rising Terracotta, dark-ground tuned */
     --destructive-foreground: 0 0% 100%;
     
     --border: 0 0% 20%;
@@ -162,7 +181,8 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-family: 'Manrope', 'Inter', Arial, sans-serif;
+    letter-spacing: -0.01em;
     @apply font-medium tracking-tight;
   }
 
@@ -237,8 +257,17 @@
     font-family: 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
   }
 
+  /* Data and numerals — IBM Plex Mono Medium per spec 108. tabular-nums so
+     figures line up in columns (amounts, deadlines, match counts). */
+  .font-data {
+    font-family: var(--font-data);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
   .font-display {
-    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    font-family: 'Manrope', 'Inter', Arial, sans-serif;
+    letter-spacing: -0.01em;
   }
 
   /* Glass effect */

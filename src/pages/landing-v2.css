@@ -6,7 +6,7 @@
 
 .irv2-root {
   box-sizing: border-box;
-  background: #FAF6EF;
+  background: #F5F0E8;
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   color: #4A3826;
   -webkit-font-smoothing: antialiased;
@@ -45,14 +45,14 @@
 }
 
 /* ----- hover states (prototype style-hover attributes) ----- */
-.irv2-hov-cta:hover            { background: #A8482A !important; }
-.irv2-hov-cta-lift:hover       { background: #A8482A !important; transform: translateY(-2px); }
-.irv2-hov-link:hover           { color: #C45A33 !important; }
+.irv2-hov-cta:hover            { background: #0F3F31 !important; }
+.irv2-hov-cta-lift:hover       { background: #0F3F31 !important; transform: translateY(-2px); }
+.irv2-hov-link:hover           { color: #124C3B !important; }
 .irv2-hov-card                 { transition: all .3s ease; }
 .irv2-hov-card:hover           { border-color: rgba(196, 90, 51, .4) !important; transform: translateY(-3px); }
 .irv2-hov-free-btn:hover       { background: #3A2818 !important; }
 .irv2-hov-growth-btn:hover     { background: #D9694A !important; }
-.irv2-hov-nations-btn:hover    { border-color: #C45A33 !important; color: #C45A33 !important; }
+.irv2-hov-nations-btn:hover    { border-color: #124C3B !important; color: #124C3B !important; }
 .irv2-hov-lift:hover           { transform: translateY(-2px); }
 .irv2-hov-soft:hover           { background: rgba(255, 255, 255, .22) !important; }
 .irv2-hov-foot:hover           { color: #FBF5EC !important; }
