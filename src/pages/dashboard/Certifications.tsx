@@ -24,20 +24,20 @@ const certifications: Certification[] = [
     title: 'Indigenous Business Fundamentals',
     description: 'Learn the core principles of running a successful Indigenous-owned business.',
     modules: 8,
-    completedModules: 8,
+    completedModules: 0,
     duration: '4 hours',
-    status: 'completed',
+    status: 'not_started',
     badge: '🏆',
-    certificate: true,
+    certificate: false,
   },
   {
     id: '2',
     title: 'Cultural Competency in Business',
     description: 'Understanding cultural values and integrating them into business practices.',
     modules: 6,
-    completedModules: 4,
+    completedModules: 0,
     duration: '3 hours',
-    status: 'in_progress',
+    status: 'not_started',
   },
   {
     id: '3',
@@ -229,6 +229,13 @@ export default function Certifications() {
           ))}
         </div>
       </div>
+
+        <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+          <strong className="text-foreground">Training isn&apos;t live yet.</strong>{' '}
+          These courses are planned, not available — there is no training platform behind
+          this page, so nothing can be started, completed, or certified today. Your progress
+          will be recorded here once it ships.
+        </div>
     </DashboardLayout>
   );
 }
