@@ -116,7 +116,16 @@ export default function Documents() {
           size_bytes: file.size,
         }),
       });
-      if (!meta.ok) throw new Error('metadata insert failed');
+      if (!meta.ok) {
+        // The bytes are already in storage. Without this the file is orphaned:
+        // present in the bucket, absent from `documents`, so the user cannot
+        // see or delete it, and every retry leaves another copy behind.
+        await fetch(`${STORAGE}/object/documents/${path}`, {
+          method: 'DELETE',
+          headers: authHeaders(),
+        }).catch(() => { /* best effort — the error below is what the user sees */ });
+        throw new Error('metadata insert failed');
+      }
       toast.success('Document uploaded');
       await load();
     } catch {
