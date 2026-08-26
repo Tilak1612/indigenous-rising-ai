@@ -99,6 +99,12 @@ export default function Integrations() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
+        <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+          <strong className="text-foreground">Integrations aren&apos;t live yet.</strong>{' '}
+          Nothing here is connected, and connecting isn&apos;t possible today — there is no
+          authorisation flow behind these cards. They show what is planned, not what is
+          available.
+        </div>
         <div>
           <h1 className="text-3xl font-bold">Integrations</h1>
           <p className="text-muted-foreground mt-1">
@@ -168,12 +174,6 @@ export default function Integrations() {
                   </div>
                 </div>
 
-        <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
-          <strong className="text-foreground">Integrations aren&apos;t live yet.</strong>{' '}
-          Nothing here is connected, and connecting isn&apos;t possible today — there is no
-          authorisation flow behind these cards. They show what is planned, not what is
-          available.
-        </div>
                 <div className="flex items-center gap-2">
                   <Button variant="outline" size="sm">
                     <Settings className="h-4 w-4 mr-2" />
