@@ -1,5 +1,21 @@
 
 
+// jsdom has no matchMedia. useIsMobile() calls it on mount, so anything
+// rendering the dashboard shell throws without this. Driven by window.innerWidth
+// so a test can set a viewport width and get the matching result.
+if (!window.matchMedia) {
+  window.matchMedia = (query: string) => {
+    const m = /max-width:\s*(\d+)px/.exec(query);
+    const matches = m ? window.innerWidth <= Number(m[1]) : false;
+    return {
+      matches, media: query, onchange: null,
+      addEventListener: () => {}, removeEventListener: () => {},
+      addListener: () => {}, removeListener: () => {},
+      dispatchEvent: () => false,
+    } as MediaQueryList;
+  };
+}
+
 // jsdom implements neither of these. They are browser APIs the app legitimately
 // uses, so they are stubbed here rather than worked around in product code.
 // Element.scrollTo is missing entirely — Assistant scrolls its transcript to the
