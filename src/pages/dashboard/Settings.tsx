@@ -271,13 +271,56 @@ export default function Settings() {
         return;
       }
 
-      const [profileResult, subscriptionResult] = await Promise.all([
+      // OCAP Access/Possession: the user owns this data and must be able to
+      // take all of it. This previously exported only profile + subscription
+      // while the UI claimed the export included "Business plan data and
+      // documents" — it did not. Every table below is user-owned; RLS scopes
+      // each read to auth.uid(), so a plain select returns only their rows.
+      //
+      // Deliberately excluded: user_roles (assigned by an admin, not the
+      // user's own data) and email_log (recipient_hash only, no content).
+      const OWNED = [
+        ['business_profiles', 'user_id'],
+        ['business_plans', 'user_id'],
+        ['business_plan_versions', 'user_id'],
+        ['documents', 'user_id'],
+        ['tasks', 'user_id'],
+        ['notifications', 'user_id'],
+        ['ai_chat_sessions', 'user_id'],
+        ['ai_chat_messages', 'user_id'],
+        ['funding_saved_matches', 'user_id'],
+        ['funding_match_runs', 'user_id'],
+        ['grant_applications', 'user_id'],
+        ['grant_application_versions', 'user_id'],
+        ['community_posts', 'user_id'],
+        ['community_comments', 'user_id'],
+        ['community_votes', 'user_id'],
+        ['support_tickets', 'user_id'],
+        ['cirnac_reports', 'user_id'],
+        ['audit_logs', 'user_id'],
+        ['user_preferences', 'user_id'],
+        ['team_invitations', 'owner_id'],
+      ] as const;
+
+      const [profileResult, subscriptionResult, ...ownedResults] = await Promise.all([
         supabase.from('profiles').select('id, email, full_name, created_at, updated_at').eq('id', uid).single(),
         supabase.from('subscriptions').select('stripe_product_id, status, current_period_start, current_period_end, cancel_at_period_end, created_at').eq('user_id', uid).maybeSingle(),
+        ...OWNED.map(([table, col]) => supabase.from(table).select('*').eq(col, uid)),
       ]);
+
+      // Report per-table failures rather than silently shipping a short export
+      // — an incomplete export that looks complete is worse than a loud one.
+      const records: Record<string, unknown> = {};
+      const incomplete: string[] = [];
+      OWNED.forEach(([table], i) => {
+        const r = ownedResults[i];
+        if (r?.error) { incomplete.push(table); records[table] = []; }
+        else { records[table] = r?.data ?? []; }
+      });
 
       const data = {
         exportDate: new Date().toISOString(),
+        exportFormat: 'indigenous-rising/v2',
         profile: profileResult.data ?? { email: user?.email },
         subscription: subscriptionResult.data ?? null,
         preferences: {
@@ -285,7 +328,19 @@ export default function Settings() {
           privacy,
           language: selectedLanguage,
         },
+        records,
+        notes: {
+          documents:
+            'The documents table lists your uploaded files and their metadata. ' +
+            'The file contents are stored separately and are not embedded in this JSON — ' +
+            'download them from the Document Library.',
+          incompleteTables: incomplete,
+        },
       };
+
+      if (incomplete.length > 0) {
+        toast.warning(`Export finished, but ${incomplete.length} section(s) could not be read. See notes.incompleteTables in the file.`);
+      }
 
       const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -664,11 +719,14 @@ export default function Settings() {
                   <div className="bg-muted/50 rounded-lg p-4">
                     <h4 className="font-medium mb-2">What's included in your export:</h4>
                     <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Profile information and settings</li>
-                      <li>• Business plan data and documents</li>
-                      <li>• Funding applications and history</li>
-                      <li>• Community forum posts and comments</li>
-                      <li>• Certification progress and achievements</li>
+                      <li>• Profile, business profile and preferences</li>
+                      <li>• Business plans and every saved version</li>
+                      <li>• Document list and metadata <span className="opacity-70">(file contents download separately from the Document Library)</span></li>
+                      <li>• Saved funding matches, match history and grant applications</li>
+                      <li>• Tasks, notifications and support tickets</li>
+                      <li>• Community posts, comments and votes</li>
+                      <li>• AI assistant conversations</li>
+                      <li>• Your account activity log</li>
                     </ul>
                   </div>
                   <Button onClick={handleExportData} disabled={exporting}>
