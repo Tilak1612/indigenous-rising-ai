@@ -84,6 +84,30 @@ const languages = [
 export default function Settings() {
   const { user, signOut } = useAuth();
   const { subscribed, product_id, loading: subLoading } = useSubscription();
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  // "Manage Billing" rendered with no handler, so a paying customer clicked
+  // it and nothing happened. This calls the same already-deployed
+  // customer-portal function that Training.tsx uses; no billing logic is
+  // changed, the button is simply wired to it.
+  const openBillingPortal = async () => {
+    setPortalLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal', {
+        headers: {
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+        },
+      });
+      if (error) throw error;
+      if (!data?.url) throw new Error('The billing portal did not return a link');
+      window.open(data.url, '_blank', 'noopener,noreferrer');
+    } catch (err) {
+      console.error('[Settings] billing portal error:', err);
+      toast.error(err instanceof Error ? err.message : 'Could not open the billing portal');
+    } finally {
+      setPortalLoading(false);
+    }
+  };
   
   const [activeSection, setActiveSection] = useState('account');
   const [saving, setSaving] = useState(false);
@@ -795,7 +819,13 @@ export default function Settings() {
                             </div>
                             <span className="text-lg font-bold">from $39/mo</span>
                           </div>
-                          <Button variant="outline">Manage Billing</Button>
+                          <Button
+                            variant="outline"
+                            onClick={openBillingPortal}
+                            disabled={portalLoading}
+                          >
+                            {portalLoading ? 'Opening…' : 'Manage Billing'}
+                          </Button>
                         </div>
                       )}
                     </>

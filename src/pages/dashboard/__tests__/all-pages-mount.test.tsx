@@ -28,6 +28,10 @@ vi.mock('@/lib/auth-storage', () => ({
   readStoredSession: () => ({ access_token: 'tok' }),
   readAccessToken: () => 'tok',
 }));
+// ReadinessWorkspace is flag-gated and renders a redirect when off, which
+// this file's "something must be on screen" assertion would read as a
+// silent failure. The off path is covered in ReadinessWorkspace.workflow.
+vi.mock('@/lib/flags', () => ({ FLAGS: { readinessWorkspace: true } }));
 vi.mock('sonner', () => ({ toast: { error: vi.fn(), success: vi.fn(), info: vi.fn(), warning: vi.fn() } }));
 vi.mock('@/lib/supabase', () => ({
   supabase: {
@@ -52,7 +56,7 @@ const PAGES = [
   'Analytics', 'ApiAccess', 'Assistant', 'BusinessPlanner', 'BusinessTools',
   'Certifications', 'Compliance', 'Documents', 'Forum', 'Funding',
   'FundingMatches', 'Integrations', 'Network', 'Profile', 'Resources',
-  'SavedMatches', 'Security', 'Settings', 'Support', 'Tasks', 'Team',
+  'ReadinessWorkspace', 'SavedMatches', 'Security', 'Settings', 'Support', 'Tasks', 'Team',
   'Templates', 'TrainingCalendar',
 ] as const;
 

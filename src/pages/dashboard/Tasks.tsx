@@ -254,7 +254,7 @@ export default function Tasks() {
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
             />
-            <div className="flex flex-col sm:flex-row gap-3 sm:items-end">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:items-end">
               <div className="space-y-1.5">
                 <label className="text-sm font-medium" htmlFor="task-type">Type</label>
                 <Select value={taskType} onValueChange={setTaskType}>

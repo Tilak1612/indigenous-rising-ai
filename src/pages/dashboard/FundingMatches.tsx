@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { DEFAULT_SAVED_STATUS } from '@/lib/funding-status';
 import { SUPABASE_STORAGE_KEY, readStoredSession } from '@/lib/auth-storage';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -335,7 +336,7 @@ const FundingMatches: React.FC = () => {
             'Content-Type': 'application/json',
             Prefer: 'resolution=merge-duplicates',
           },
-          body: JSON.stringify({ user_id: user.id, grant_id: grantId, status: 'interested' }),
+          body: JSON.stringify({ user_id: user.id, grant_id: grantId, status: DEFAULT_SAVED_STATUS }),
         }
       );
       if (!res.ok) throw new Error('save failed');

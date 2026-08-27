@@ -91,12 +91,16 @@ const DataRights = () => {
           <p className="text-sm text-muted-foreground mb-6">
             Last updated: {new Date().toLocaleDateString('en-CA')}
           </p>
-          <Link to="/track-request">
-            <Button variant="outline" className="gap-2">
+          {/* asChild, not <Link><Button>: the latter renders a <button>
+              inside an <a>, which is invalid (interactive content nested in
+              interactive content) and collapsed the anchor to a 20px inline
+              box sitting 2px from its neighbour. */}
+          <Button asChild variant="outline" className="gap-2">
+            <Link to="/track-request">
               <Search className="w-4 h-4" />
               Track Your Request
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
 
         {/* Rights Grid */}

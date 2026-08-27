@@ -133,10 +133,25 @@ const regions = ['All Regions', 'National', 'Ontario', 'British Columbia', 'Albe
 const stages = ['All Stages', 'Startup', 'Growth', 'Established'];
 const languages = ['All Languages', 'English', 'French', 'Cree', 'Ojibwe', 'Inuktitut'];
 
+const FAVORITES_KEY = 'ir:resource-favorites';
+
 export default function ResourcesPage() {
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('all');
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  // Favourites persist to this device. They used to live in component
+  // state only, so "Added to favorites" was reported to the user and the
+  // favourite was gone on the next render — the same shape of defect as a
+  // save button that toasts success while writing nothing. Device-local
+  // rather than server-side: there is no favourites table, and inventing
+  // one would put a new class of user data on the server without asking.
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const raw = localStorage.getItem(FAVORITES_KEY);
+      return raw ? new Set(JSON.parse(raw) as string[]) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
   const [previewResource, setPreviewResource] = useState<Resource | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   
@@ -173,10 +188,18 @@ export default function ResourcesPage() {
       const newFavorites = new Set(prev);
       if (newFavorites.has(resourceId)) {
         newFavorites.delete(resourceId);
-        toast.success('Removed from favorites');
       } else {
         newFavorites.add(resourceId);
-        toast.success('Added to favorites');
+      }
+      // Report success only once the write has actually happened.
+      try {
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify([...newFavorites]));
+        toast.success(newFavorites.has(resourceId)
+          ? 'Added to favourites'
+          : 'Removed from favourites');
+      } catch {
+        toast.error('Could not save your favourites on this device');
+        return prev;
       }
       return newFavorites;
     });
@@ -297,7 +320,9 @@ export default function ResourcesPage() {
 
         {/* Category Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList>
+          {/* h-auto + flex-wrap: the bare inline-flex list was 439px wide on a
+                375px viewport and pushed the page into horizontal scroll. */}
+              <TabsList className="h-auto flex-wrap justify-start">
             <TabsTrigger value="all">All Resources</TabsTrigger>
             <TabsTrigger value="guide">Guides</TabsTrigger>
             <TabsTrigger value="template">Templates</TabsTrigger>
@@ -318,11 +343,11 @@ export default function ResourcesPage() {
                       <Card key={resource.id} className="border-primary/20 bg-gradient-to-br from-primary/5 to-background">
                         <CardContent className="p-6">
                           <div className="flex items-start gap-4">
-                            <div className={cn("h-12 w-12 rounded-lg flex items-center justify-center", categoryColors[resource.category])}>
+                            <div className={cn("h-12 w-12 shrink-0 rounded-lg flex items-center justify-center", categoryColors[resource.category])}>
                               <Icon className="h-6 w-6" />
                             </div>
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
                                 <Badge variant="secondary">{resource.type}</Badge>
                                 <Badge variant="outline" className="text-warning">
                                   <Star className="h-3 w-3 mr-1 fill-current" />
@@ -331,7 +356,7 @@ export default function ResourcesPage() {
                               </div>
                               <h3 className="font-semibold">{resource.title}</h3>
                               <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
-                              <div className="flex items-center gap-4 mt-3">
+                              <div className="flex flex-wrap items-center gap-4 mt-3">
                                 {resource.rating > 0 && (
                                   <span className="text-sm flex items-center gap-1">
                                     <Star className="h-4 w-4 text-warning fill-warning" />
@@ -344,7 +369,7 @@ export default function ResourcesPage() {
                                     {resource.downloads.toLocaleString()}
                                   </span>
                                 )}
-                                <div className="flex items-center gap-2 ml-auto">
+                                <div className="flex flex-wrap items-center gap-2 ml-auto">
                                   <Button 
                                     size="sm" 
                                     variant="ghost"
