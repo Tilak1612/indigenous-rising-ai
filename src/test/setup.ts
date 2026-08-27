@@ -29,6 +29,20 @@ if (!Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = function scrollIntoView() { /* no-op in jsdom */ };
 }
 
+// jsdom implements none of the Pointer Capture APIs. Radix Select calls
+// them while opening its listbox, so without these the options never
+// render and a test looking for role="option" finds nothing — the
+// component works fine in a real browser.
+if (!Element.prototype.hasPointerCapture) {
+  Element.prototype.hasPointerCapture = function hasPointerCapture() { return false; };
+}
+if (!Element.prototype.setPointerCapture) {
+  Element.prototype.setPointerCapture = function setPointerCapture() { /* no-op in jsdom */ };
+}
+if (!Element.prototype.releasePointerCapture) {
+  Element.prototype.releasePointerCapture = function releasePointerCapture() { /* no-op in jsdom */ };
+}
+
 // Mock ResizeObserver which is not available in jsdom
 global.ResizeObserver = class ResizeObserver {
   observe() {}

@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import InProgressApplications from '@/components/dashboard/InProgressApplications';
+import { FLAGS } from '@/lib/flags';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -177,6 +179,8 @@ const SavedMatches: React.FC = () => {
           </Button>
         </div>
 
+        <InProgressApplications />
+
         {/* Status summary */}
         {rows.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
@@ -278,6 +282,13 @@ const SavedMatches: React.FC = () => {
                         </Select>
                       </div>
                       <div className="flex gap-2">
+                        {FLAGS.readinessWorkspace && (
+                          <Button asChild size="sm">
+                            <Link to={`/dashboard/funding/readiness/${row.grant_id}`}>
+                              Prepare application
+                            </Link>
+                          </Button>
+                        )}
                         <Button asChild variant="outline" size="sm">
                           <a href={g.application_url} target="_blank" rel="noopener noreferrer">
                             Apply
