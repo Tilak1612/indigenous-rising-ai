@@ -197,11 +197,11 @@ export default function Integrations() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {integrations.filter(i => !i.connected).map(integration => (
-                <div key={integration.id} className="flex items-center justify-between p-4 border rounded-lg hover:border-primary/50 transition-colors">
-                  <div className="flex items-center gap-4">
+                <div key={integration.id} className="flex items-center justify-between gap-3 p-4 border rounded-lg hover:border-primary/50 transition-colors">
+                  <div className="flex min-w-0 items-center gap-4">
                     <span className="text-2xl">{integration.icon}</span>
-                    <div>
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
                         <p className="font-medium">{integration.name}</p>
                         {integration.popular && (
                           <Badge variant="secondary">Popular</Badge>
@@ -210,7 +210,7 @@ export default function Integrations() {
                       <p className="text-sm text-muted-foreground">{integration.description}</p>
                     </div>
                   </div>
-                  <Button size="sm">Connect</Button>
+                  <Button size="sm" className="shrink-0">Connect</Button>
                 </div>
               ))}
             </div>

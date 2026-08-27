@@ -293,7 +293,7 @@ export default function CompliancePage() {
                           )}
                         />
                         <div className="flex-1">
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <h4 className="font-medium">{item.title}</h4>
                             <Badge variant="outline" className="text-xs">
                               {catInfo.title}

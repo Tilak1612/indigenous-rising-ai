@@ -343,11 +343,11 @@ export default function ResourcesPage() {
                       <Card key={resource.id} className="border-primary/20 bg-gradient-to-br from-primary/5 to-background">
                         <CardContent className="p-6">
                           <div className="flex items-start gap-4">
-                            <div className={cn("h-12 w-12 rounded-lg flex items-center justify-center", categoryColors[resource.category])}>
+                            <div className={cn("h-12 w-12 shrink-0 rounded-lg flex items-center justify-center", categoryColors[resource.category])}>
                               <Icon className="h-6 w-6" />
                             </div>
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
+                            <div className="min-w-0 flex-1">
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
                                 <Badge variant="secondary">{resource.type}</Badge>
                                 <Badge variant="outline" className="text-warning">
                                   <Star className="h-3 w-3 mr-1 fill-current" />
@@ -356,7 +356,7 @@ export default function ResourcesPage() {
                               </div>
                               <h3 className="font-semibold">{resource.title}</h3>
                               <p className="text-sm text-muted-foreground mt-1">{resource.description}</p>
-                              <div className="flex items-center gap-4 mt-3">
+                              <div className="flex flex-wrap items-center gap-4 mt-3">
                                 {resource.rating > 0 && (
                                   <span className="text-sm flex items-center gap-1">
                                     <Star className="h-4 w-4 text-warning fill-warning" />
@@ -369,7 +369,7 @@ export default function ResourcesPage() {
                                     {resource.downloads.toLocaleString()}
                                   </span>
                                 )}
-                                <div className="flex items-center gap-2 ml-auto">
+                                <div className="flex flex-wrap items-center gap-2 ml-auto">
                                   <Button 
                                     size="sm" 
                                     variant="ghost"
