@@ -418,6 +418,11 @@ const PricingSection = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {/* These rows are the SECOND place entitlements are written,
+                      alongside src/data/plans.ts — they drifted apart, so Growth
+                      showed Free's support level here and both claimed
+                      "Unlimited" matching while the matcher caps Growth at 50.
+                      A test now asserts the two agree; see plans.test.ts. */}
                   {[
                     { feature: 'Business planning assistant', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Funding opportunity browser', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
@@ -426,8 +431,8 @@ const PricingSection = () => {
                     { feature: 'Multi-language support (EN/FR)', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Full data export', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Cultural competency training', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'Priority support', free: 'Email', growth: 'Email', pro: 'Phone+Chat', enterprise: '24/7' },
-                    { feature: 'AI funding matching', free: '3/mo', growth: 'Unlimited', pro: 'Unlimited', enterprise: 'Unlimited' },
+                    { feature: 'Priority support', free: 'Email', growth: 'Priority email', pro: 'Phone+Chat', enterprise: '24/7' },
+                    { feature: 'AI funding matching', free: '3/mo', growth: '50/mo', pro: 'Unlimited', enterprise: 'Unlimited' },
                     { feature: 'Grant writing assistant', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Multi-entity support', free: '—', growth: '—', pro: '✓', enterprise: '✓' },
                     { feature: 'IFI Connection Engine', free: '—', growth: '—', pro: '✓', enterprise: '✓' },

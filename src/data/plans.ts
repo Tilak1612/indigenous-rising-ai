@@ -37,7 +37,7 @@ const growthFeatures: PlanFeature[] = [
   { text: 'Everything in Free', available: true },
   { text: 'Priority email support', available: true },
   { text: 'Cultural competency training programs', available: true },
-  { text: 'AI-powered funding navigator (unlimited matches)', available: true },
+  { text: 'AI-powered funding navigator (50 matches/month)', available: true },
   { text: 'Grant writing assistant', available: true },
   { text: 'Funding deadline alerts (email + SMS)', available: true },
   { text: 'Quarterly impact report PDF', available: true },
