@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist-ssr",
-    "dev:harness": "vite --config vite.harness.config.ts"
+    "dev:harness": "vite --config vite.harness.config.ts",
+    "verify:auth-journey": "node scripts/verify-authenticated-journey.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
