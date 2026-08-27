@@ -8,10 +8,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Check } from 'lucide-react';
+import { Check, Eye, EyeOff } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { z } from 'zod';
-import { useNavigate, Link } from 'react-router-dom';
+import { DATA_RESIDENCY_LINE } from '@/lib/trust-copy';
+import { PasswordStrength } from '@/components/auth/PasswordStrength';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const loginSchema = z.object({
@@ -34,33 +36,53 @@ export default function Auth() {
   // Default to SIGN-UP when the visitor arrived via a signup CTA. This was
   // hardcoded `useState(true)` — sign-in — so "Start free account", the primary
   // homepage CTA, landed new users on a login form.
+  const location = useLocation();
+
+  // Derived from the route, not captured once. Both /auth and /signup render
+  // this same element, so React Router re-renders rather than remounts when
+  // you move between them — the useState initializer never re-ran, and a
+  // client-side <Link to="/signup"> from /auth left the SIGN-IN form on
+  // screen. Verified in a browser: fresh /auth showed "Welcome Back", and
+  // after an in-app navigation to /signup it still said "Welcome Back".
+  const routeWantsSignup = (pathname: string, search: string) => {
+    const p = new URLSearchParams(search);
+    return pathname === '/signup' || p.get('intent') === 'signup' || p.has('plan');
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [isLogin, setIsLogin] = useState(() => {
     if (typeof window === 'undefined') return true;
-    const p = new URLSearchParams(window.location.search);
-    const wantsSignup =
-      window.location.pathname === '/signup' ||
-      p.get('intent') === 'signup' ||
-      p.has('plan');
-    return !wantsSignup;
+    return !routeWantsSignup(window.location.pathname, window.location.search);
   });
+
+  // Re-sync on every route change. The toggle below still wins afterwards,
+  // because this only fires when the path or query actually changes.
+  useEffect(() => {
+    setIsLogin(!routeWantsSignup(location.pathname, location.search));
+  }, [location.pathname, location.search]);
 
   // Plan + campaign context, captured on arrival so it survives the
   // email-verification round trip (a full page load from another origin).
-  const [selectedPlan] = useState<PlanKey | undefined>(() => {
-    if (typeof window === 'undefined') return undefined;
-    return (new URLSearchParams(window.location.search).get('plan') as PlanKey) ?? undefined;
-  });
+
+  // Read from the router's location, not window.location, and re-read when
+  // it changes. Previously this was parsed once from window.location inside
+  // a mount-only effect, so arriving at /signup?plan=Growth through an
+  // in-app link captured no plan at all — the same defect as the sign-in
+  // mode not following the route.
+  const searchParams = new URLSearchParams(location.search);
+  const planFromUrl = (searchParams.get('plan') as PlanKey) ?? undefined;
+  const selectedPlan = planFromUrl;
+  const billingFromUrl = (searchParams.get('billing') as 'monthly' | 'annual') ?? undefined;
+  const campaign = readCampaign(location.search);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const params = new URLSearchParams(window.location.search);
-    const campaign = readCampaign(window.location.search);
-    const plan = (params.get('plan') as PlanKey) ?? undefined;
-    const billing = (params.get('billing') as 'monthly' | 'annual') ?? undefined;
-    if (plan || billing || Object.keys(campaign).length > 0) {
-      saveSignupIntent({ plan, billing, campaign });
+    if (planFromUrl || billingFromUrl || Object.keys(campaign).length > 0) {
+      saveSignupIntent({ plan: planFromUrl, billing: billingFromUrl, campaign });
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed on the query string
+  }, [location.search]);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [isRecovery, setIsRecovery] = useState(false);
   const [email, setEmail] = useState('');
@@ -87,6 +109,41 @@ export default function Auth() {
       navigate('/dashboard');
     }
   }, [user, navigate, isRecovery]);
+
+  // Google is the only external provider enabled on this project. Verified
+  // against the live GoTrue settings endpoint: external.google === true,
+  // external.azure === false — so no Microsoft button is offered, rather
+  // than shipping one that fails on click.
+  const [oauthLoading, setOauthLoading] = useState(false);
+
+  const signInWithGoogle = async () => {
+    setError('');
+    setOauthLoading(true);
+    try {
+      // Persist first: OAuth leaves this origin, and the plan/campaign must
+      // still be attached when the user comes back.
+      saveSignupIntent({ plan: planFromUrl, billing: billingFromUrl, campaign });
+
+      // Carried in the redirect URL as well as sessionStorage, so the context
+      // survives even where storage is unavailable (private browsing).
+      const back = new URL(`${window.location.origin}/auth`);
+      if (planFromUrl) back.searchParams.set('plan', planFromUrl);
+      if (billingFromUrl) back.searchParams.set('billing', billingFromUrl);
+      for (const [k, v] of Object.entries(campaign)) back.searchParams.set(k, v);
+
+      trackEvent('signup_oauth_started', { provider: 'google', plan: planFromUrl ?? 'none' });
+
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: back.toString() },
+      });
+      if (oauthError) throw oauthError;
+      // On success the browser navigates away; nothing after this runs.
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not start Google sign-in');
+      setOauthLoading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -246,7 +303,22 @@ export default function Auth() {
                     Every figure here is the enforced one: free tier is
                     QUOTA_BY_TIER.free = 3 in match-funding-opportunities, and
                     the free plan genuinely takes no card. */}
+                {/* Sets the expectation that a six-question profile follows,
+                    so the profile screen does not read as an unannounced
+                    second form. Registration only — there is no step 2 when
+                    signing in. */}
                 {!isLogin && !isForgotPassword && !isRecovery && (
+                  <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    Step 1 of 2: Create your account
+                  </p>
+                )}
+
+                {/* Also shown on the default /auth view. It used to render only
+                    in registration mode, and the bare /auth route defaults to
+                    sign-in — so the front door of the funnel stated no value
+                    at all. Every bullet is true for a returning free user too,
+                    so it is accurate in both modes. */}
+                {!isForgotPassword && !isRecovery && (
                   <ul className="mb-6 space-y-2 rounded-lg border border-border bg-muted/40 p-4 text-sm">
                     {[
                       '3 free funding matches every month',
@@ -334,6 +406,40 @@ export default function Auth() {
                   </form>
                 ) : null}
 
+                {/* Google only: verified against the live GoTrue settings
+                    endpoint, external.google is true and external.azure is
+                    false. Offering a Microsoft button the provider cannot
+                    service would be worse than offering none. Plan and
+                    campaign are re-attached to the redirect URL as well as
+                    sessionStorage, so the context survives the round trip
+                    even in private browsing. */}
+                {!isForgotPassword && !isRecovery && (
+                  <div className="mb-5">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={signInWithGoogle}
+                      disabled={oauthLoading || loading}
+                    >
+                      <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" />
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.65l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.15-4.53H2.18v2.84A11 11 0 0 0 12 23z" />
+                        <path fill="#FBBC05" d="M5.85 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.67-2.84z" />
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.67 2.84C6.71 7.31 9.14 5.38 12 5.38z" />
+                      </svg>
+                      {oauthLoading
+                        ? 'Opening Google…'
+                        : isLogin ? 'Sign in with Google' : 'Sign up with Google'}
+                    </Button>
+                    <div className="my-4 flex items-center gap-3">
+                      <span className="h-px flex-1 bg-border" />
+                      <span className="text-xs uppercase tracking-wide text-muted-foreground">or</span>
+                      <span className="h-px flex-1 bg-border" />
+                    </div>
+                  </div>
+                )}
+
                 {!isForgotPassword && !isRecovery && <form onSubmit={handleSubmit}>
                   <div className="space-y-5">
                     {!isLogin && (
@@ -374,21 +480,42 @@ export default function Auth() {
                       <Label htmlFor="password" className="block text-sm font-medium text-foreground mb-1">
                         Password
                       </Label>
-                      <Input
-                        type="password"
-                        id="password"
-                        name="password"
-                        autoComplete={isLogin ? 'current-password' : 'new-password'}
-                        className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="••••••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          id="password"
+                          name="password"
+                          autoComplete={isLogin ? 'current-password' : 'new-password'}
+                          className="w-full px-4 py-2 pr-11 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                          placeholder="••••••••"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((v) => !v)}
+                          aria-label={showPassword ? 'Hide password' : 'Show password'}
+                          aria-pressed={showPassword}
+                          className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                        >
+                          {showPassword
+                            ? <EyeOff className="h-4 w-4" aria-hidden="true" />
+                            : <Eye className="h-4 w-4" aria-hidden="true" />}
+                        </button>
+                      </div>
                       {!isLogin && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                          Password must be at least 8 characters long
-                        </p>
+                        <>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Password must be at least 8 characters long
+                          </p>
+                          <PasswordStrength value={password} />
+                          {/* Verbatim from /canadian-compliance via a shared
+                              constant, so the two surfaces cannot drift. */}
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            {DATA_RESIDENCY_LINE}
+                          </p>
+                        </>
                       )}
                     </div>
 
@@ -398,16 +525,29 @@ export default function Auth() {
                           <Label htmlFor="confirm-password" className="block text-sm font-medium text-foreground mb-1">
                             Confirm Password
                           </Label>
-                          <Input
-                            type="password"
-                            id="confirm-password"
-                            autoComplete="new-password"
-                            className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            placeholder="••••••••"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                          />
+                          <div className="relative">
+                            <Input
+                              type={showConfirmPassword ? 'text' : 'password'}
+                              id="confirm-password"
+                              autoComplete="new-password"
+                              className="w-full px-4 py-2 pr-11 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                              placeholder="••••••••"
+                              value={confirmPassword}
+                              onChange={(e) => setConfirmPassword(e.target.value)}
+                              required
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowConfirmPassword((v) => !v)}
+                              aria-label={showConfirmPassword ? 'Hide confirmed password' : 'Show confirmed password'}
+                              aria-pressed={showConfirmPassword}
+                              className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded text-muted-foreground hover:text-foreground"
+                            >
+                              {showConfirmPassword
+                                ? <EyeOff className="h-4 w-4" aria-hidden="true" />
+                                : <Eye className="h-4 w-4" aria-hidden="true" />}
+                            </button>
+                          </div>
                         </div>
 
                         <div className="flex items-center space-x-2">
