@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PLAN_FEATURES } from '@/data/plans';
+import { signupHref, saveSignupIntent, readCampaign, type PlanKey } from '@/lib/signup-intent';
 
 type Feature = { text: string; available: boolean };
 
@@ -60,8 +61,9 @@ const PricingSection = () => {
     // Free plan
     if (planName === "Maadaadiziwin") {
       if (!user) {
-        toast.error("Please sign in to start with the free plan");
-        navigate('/auth');
+        // Carry the plan through so it is still known after verification.
+        saveSignupIntent({ plan: planName as PlanKey, billing: billingCycle, campaign: readCampaign(location.search) });
+        navigate(signupHref(planName as PlanKey, billingCycle));
         return;
       }
       toast.success("You're already on the free plan!");
@@ -87,8 +89,8 @@ const PricingSection = () => {
     }
 
     if (!user) {
-      toast.error("Please sign in to subscribe");
-      navigate('/auth');
+      saveSignupIntent({ plan: planName as PlanKey, billing: billingCycle, campaign: readCampaign(location.search) });
+      navigate(signupHref(planName as PlanKey, billingCycle));
       return;
     }
 

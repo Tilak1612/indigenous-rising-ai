@@ -149,6 +149,17 @@ const App = () => (
               <Route path="/v1" element={<Navigate to="/" replace />} />
               <Route path="/landing-v2" element={<Navigate to="/" replace />} />
               {/* The sign-in page lives at /auth; /login was a dead end (404). */}
+              {/* Dedicated signup entry. Auth defaults to sign-IN; this path
+                  (and ?intent=signup / ?plan=) opens it in registration mode so
+                  "Start free account" no longer lands on a login form. */}
+              <Route
+                path="/signup"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <Auth />
+                  </Suspense>
+                }
+              />
               <Route path="/login" element={<Navigate to="/auth" replace />} />
               <Route path="/signin" element={<Navigate to="/auth" replace />} />
               <Route
