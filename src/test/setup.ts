@@ -16,6 +16,16 @@ if (!window.matchMedia) {
   };
 }
 
+// Radix primitives (Select, Dropdown, Popover) call the Pointer Capture API on
+// open. jsdom implements none of it, so any test that opens a Select fails with
+// "Unable to find role=option" — the listbox never renders. These are browser
+// APIs the components legitimately use.
+if (!Element.prototype.hasPointerCapture) {
+  Element.prototype.hasPointerCapture = () => false;
+  Element.prototype.setPointerCapture = function setPointerCapture() { /* no-op */ };
+  Element.prototype.releasePointerCapture = function releasePointerCapture() { /* no-op */ };
+}
+
 // jsdom implements neither of these. They are browser APIs the app legitimately
 // uses, so they are stubbed here rather than worked around in product code.
 // Element.scrollTo is missing entirely — Assistant scrolls its transcript to the
