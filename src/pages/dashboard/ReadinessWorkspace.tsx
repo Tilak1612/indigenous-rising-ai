@@ -285,7 +285,7 @@ const ReadinessWorkspace: React.FC = () => {
                                 void onPatchItem(item.id, { document_id: v === 'none' ? null : v })
                               }
                             >
-                              <SelectTrigger className="w-64" aria-label={`Attach a document to ${item.label}`}>
+                              <SelectTrigger className="w-full sm:w-64" aria-label={`Attach a document to ${item.label}`}>
                                 <SelectValue placeholder="Attach a document" />
                               </SelectTrigger>
                               <SelectContent>
