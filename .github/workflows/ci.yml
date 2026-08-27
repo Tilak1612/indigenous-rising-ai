@@ -45,3 +45,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # P0-1 gate: every sitemap URL must ship a distinct title, a complete
+      # (non-truncated) description, and >=200 words of body content that does
+      # not depend on client-side JS. Before the SSG work this failed on all 71.
+      - name: Verify prerendered content
+        run: node scripts/check-prerender.mjs

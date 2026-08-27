@@ -103,7 +103,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
           'Python proficiency; experience with NLP/LLM pipelines a strong asset',
         ],
         hiringNowReason:
-          'The Business Planning Assistant and Funding Navigator recommendation engine are the core AI differentiators of the platform. We need a responsible AI engineer who can build these systems in ways that are explainable, community-governed, and OCAP®-compliant from day one — before user scale makes course-correction difficult. Getting this right early is essential to community trust.',
+          'The Business Planning Assistant and Funding Navigator recommendation engine are the core AI differentiators of the platform. We need a responsible AI engineer who can build these systems in ways that are explainable, community-governed, and OCAP®-aligned from day one — before user scale makes course-correction difficult. Getting this right early is essential to community trust.',
       },
     ],
   },
@@ -265,7 +265,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
           "Own and maintain the platform's data governance framework, grounded in OCAP® principles and Canadian privacy law (PIPEDA)",
           'Conduct regular data audits and impact assessments for platform features, partner integrations, and AI models',
           'Develop and maintain community-facing data sovereignty documentation, consent frameworks, and plain-language privacy policies',
-          'Work with the ML Engineer to review AI training data pipelines for OCAP® compliance and community consent',
+          'Work with the ML Engineer to review AI training data pipelines for OCAP® alignment and community consent',
           'Train all team members on data stewardship practices and cultural safety obligations',
           'Serve as the primary point of contact for community questions or concerns about data use',
           'Stay current on evolving Indigenous data governance frameworks and emerging Canadian privacy legislation',
@@ -278,7 +278,7 @@ const rolesByCategory: Array<{ category: string; roles: Role[] }> = [
           'Strong ethical grounding and comfort raising concerns about data practices at any level of the organization',
         ],
         hiringNowReason:
-          'Every new user, every partner integration, and every AI feature we ship carries data governance implications. Indigenous communities have legitimate reasons to be cautious about how their data is handled. Having a dedicated steward of OCAP® compliance in place at launch — rather than retrofitting governance after the fact — is both an ethical obligation and a trust signal to the communities we serve.',
+          'Every new user, every partner integration, and every AI feature we ship carries data governance implications. Indigenous communities have legitimate reasons to be cautious about how their data is handled. Having a dedicated steward of OCAP® alignment in place at launch — rather than retrofitting governance after the fact — is both an ethical obligation and a trust signal to the communities we serve.',
       },
     ],
   },

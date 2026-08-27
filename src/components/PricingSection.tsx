@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PLAN_FEATURES } from '@/data/plans';
+import { signupHref, saveSignupIntent, readCampaign, type PlanKey } from '@/lib/signup-intent';
 
 type Feature = { text: string; available: boolean };
 
@@ -60,8 +61,9 @@ const PricingSection = () => {
     // Free plan
     if (planName === "Maadaadiziwin") {
       if (!user) {
-        toast.error("Please sign in to start with the free plan");
-        navigate('/auth');
+        // Carry the plan through so it is still known after verification.
+        saveSignupIntent({ plan: planName as PlanKey, billing: billingCycle, campaign: readCampaign(location.search) });
+        navigate(signupHref(planName as PlanKey, billingCycle));
         return;
       }
       toast.success("You're already on the free plan!");
@@ -87,8 +89,8 @@ const PricingSection = () => {
     }
 
     if (!user) {
-      toast.error("Please sign in to subscribe");
-      navigate('/auth');
+      saveSignupIntent({ plan: planName as PlanKey, billing: billingCycle, campaign: readCampaign(location.search) });
+      navigate(signupHref(planName as PlanKey, billingCycle));
       return;
     }
 
@@ -416,16 +418,21 @@ const PricingSection = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {/* These rows are the SECOND place entitlements are written,
+                      alongside src/data/plans.ts — they drifted apart, so Growth
+                      showed Free's support level here and both claimed
+                      "Unlimited" matching while the matcher caps Growth at 50.
+                      A test now asserts the two agree; see plans.test.ts. */}
                   {[
                     { feature: 'Business planning assistant', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Funding opportunity browser', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'OCAP® compliant data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
+                    { feature: 'OCAP®-aligned data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Community forum + resources', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Multi-language support (EN/FR)', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Full data export', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Cultural competency training', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'Priority support', free: 'Email', growth: 'Email', pro: 'Phone+Chat', enterprise: '24/7' },
-                    { feature: 'AI funding matching', free: '3/mo', growth: 'Unlimited', pro: 'Unlimited', enterprise: 'Unlimited' },
+                    { feature: 'Priority support', free: 'Email', growth: 'Priority email', pro: 'Phone+Chat', enterprise: '24/7' },
+                    { feature: 'AI funding matching', free: '3/mo', growth: '50/mo', pro: 'Unlimited', enterprise: 'Unlimited' },
                     { feature: 'Grant writing assistant', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Multi-entity support', free: '—', growth: '—', pro: '✓', enterprise: '✓' },
                     { feature: 'IFI Connection Engine', free: '—', growth: '—', pro: '✓', enterprise: '✓' },
@@ -466,7 +473,7 @@ const PricingSection = () => {
               Indigenous values built in
             </h4>
             <p className="text-sm text-muted-foreground">
-              Indigenous-led, OCAP® compliant, data stored in Canada (ca-central-1), and a portion of profits returned to communities.
+              Indigenous-led, OCAP®-aligned, data stored in Canada (ca-central-1), and a portion of profits returned to communities.
             </p>
           </Card>
         </div>
