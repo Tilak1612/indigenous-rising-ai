@@ -111,12 +111,16 @@ function MarketingAssistant() {
   );
 }
 
-const App = () => (
-  <ErrorBoundary>
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <RouteChangeTracker />
+/**
+ * The whole tree below the router. Extracted so the prerender build can render
+ * the identical markup under StaticRouter — previously prerendering injected
+ * <head> metadata only and shipped an empty <div id="root">, so crawlers got
+ * roughly 336 words of nav/JSON-LD boilerplate and no page content on every
+ * route.
+ */
+export const AppTree = () => (
+  <>
+    <RouteChangeTracker />
           <AuthProvider>
             <TooltipProvider>
             {/* The .skip-link styles existed in index.css but nothing ever
@@ -664,11 +668,22 @@ const App = () => (
               <ComplianceBanner />
             </TooltipProvider>
           </AuthProvider>
+  </>
+);
+
+const App = () => (
+  <ErrorBoundary>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AppTree />
         </BrowserRouter>
       </QueryClientProvider>
     </HelmetProvider>
     <SpeedInsights />
   </ErrorBoundary>
 );
+
+export { queryClient };
 
 export default App;
