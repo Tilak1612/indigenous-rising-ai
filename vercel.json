@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "indigenousrising.ai"
+        }
+      ],
+      "destination": "https://www.indigenousrising.ai/:path*",
+      "permanent": true
+    },
+    {
       "source": "/partnerships",
       "destination": "/",
       "permanent": true

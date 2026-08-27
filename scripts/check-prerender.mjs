@@ -57,6 +57,14 @@ for (const url of urls) {
   // A truncated description forfeits control of the search snippet.
   if (/[.…]{3}$|…$/.test(desc)) failures.push(`${route} — meta description is truncated`);
   if (words < MIN_WORDS) failures.push(`${route} — only ${words} words of body content (min ${MIN_WORDS})`);
+
+  // P0-2: canonical must match the URL the page is actually served from, on the
+  // canonical host. Both hosts returned 200 with identical content before the
+  // edge 301 was added, which split signals across two effective domains.
+  const canonical = tag(html, /<link rel="canonical" href="([^"]*)"/i);
+  if (!canonical) failures.push(`${route} — no canonical tag`);
+  else if (canonical !== url) failures.push(`${route} — canonical is ${canonical}, expected ${url}`);
+  else if (!canonical.startsWith('https://www.')) failures.push(`${route} — canonical is not on the canonical host`);
 }
 
 if (failures.length) {
