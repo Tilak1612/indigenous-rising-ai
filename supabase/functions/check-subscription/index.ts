@@ -25,6 +25,42 @@ const logStep = (step: string, details?: unknown) => {
   console.log(`[CHECK-SUBSCRIPTION] ${step}${detailsStr}`);
 };
 
+
+// ---------------------------------------------------------------------------
+// Stripe REMOVED subscription-level current_period_start / current_period_end
+// in API version 2025-03-31.basil; they moved to items.data[].current_period_*.
+// This SDK pins 2025-08-27.basil and the webhook destination is on
+// 2026-02-25.clover — both AFTER that change — so the top-level fields are
+// `undefined` on every payload we receive.
+//
+// The old code did `new Date(undefined * 1000).toISOString()`, which is
+// `new Date(NaN).toISOString()` -> RangeError: Invalid time value. That threw
+// on every single subscription event, which is why `subscriptions` has 0 rows
+// and the webhook destination shows 0 successful deliveries.
+//
+// `?? ` keeps older API versions working if the pin is ever rolled back.
+// toIso() returns null rather than throwing, and both period columns are
+// nullable, so a missing period can never again block the entitlement-critical
+// fields (status, stripe_price_id) from being written.
+// ---------------------------------------------------------------------------
+type PeriodBearing = {
+  items?: { data?: Array<{ current_period_start?: number | null; current_period_end?: number | null }> };
+  current_period_start?: number | null;
+  current_period_end?: number | null;
+};
+
+function periodStart(s: PeriodBearing): number | null | undefined {
+  return s.items?.data?.[0]?.current_period_start ?? s.current_period_start;
+}
+function periodEnd(s: PeriodBearing): number | null | undefined {
+  return s.items?.data?.[0]?.current_period_end ?? s.current_period_end;
+}
+function toIso(epochSeconds?: number | null): string | null {
+  return typeof epochSeconds === 'number' && Number.isFinite(epochSeconds)
+    ? new Date(epochSeconds * 1000).toISOString()
+    : null;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: getCorsHeaders(req) });
@@ -131,7 +167,7 @@ serve(async (req) => {
 
     if (hasActiveSub) {
       const subscription = subscriptions.data[0];
-      subscriptionEnd = new Date(subscription.current_period_end * 1000).toISOString();
+      subscriptionEnd = toIso(periodEnd(subscription as unknown as PeriodBearing));
       productId = subscription.items.data[0].price.product as string;
       priceId = subscription.items.data[0].price.id;
       logStep("Active subscription", { productId, priceId, subscriptionEnd });
