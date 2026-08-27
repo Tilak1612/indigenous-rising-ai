@@ -98,3 +98,66 @@ describe('no client write sends a value Postgres would reject', () => {
       .toBeGreaterThan(3);
   });
 });
+
+/**
+ * The sweep above only sees `col: 'value'`. A component can just as easily
+ * hold its options in a union type or a `{ value: 'x' }` array — which is
+ * exactly how SavedMatches declares its six statuses. Those are the values
+ * the UI can actually send, so they are checked too.
+ *
+ * A union counts as "for" a constrained column when it already overlaps
+ * that column's allowed set; a member outside the set is then a value the
+ * database would reject.
+ */
+const unionMembers = (decl: string) =>
+  [...decl.matchAll(/'([^']+)'/g)].map((m) => m[1]);
+
+describe('option lists cannot drift from the constraint', () => {
+  test('no union or value-list adds a member Postgres would reject', () => {
+    const violations: string[] = [];
+    for (const file of walk('src')) {
+      const src = readFileSync(file, 'utf8');
+      const tables = Object.keys(CONSTRAINTS).filter((t) => src.includes(t));
+      if (!tables.length) continue;
+
+      const candidates: { label: string; members: string[]; line: number }[] = [];
+      // type Status = 'interested' | 'applied' | ...
+      for (const m of src.matchAll(/type\s+(\w+)\s*=\s*((?:\s*'[^']+'\s*\|?)+)/g)) {
+        candidates.push({ label: `type ${m[1]}`, members: unionMembers(m[2]),
+          line: src.slice(0, m.index).split('\n').length });
+      }
+      // const X = [{ value: 'interested', ... }, ...]
+      for (const m of src.matchAll(/const\s+(\w+)[^=]*=\s*\[([\s\S]{0,900}?)\];/g)) {
+        const members = [...m[2].matchAll(/value:\s*'([^']+)'/g)].map((v) => v[1]);
+        if (members.length >= 2) {
+          candidates.push({ label: `const ${m[1]}`, members,
+            line: src.slice(0, m.index).split('\n').length });
+        }
+      }
+
+      for (const cand of candidates) {
+        for (const table of tables) {
+          for (const [col, allowed] of Object.entries(CONSTRAINTS[table])) {
+            const overlap = cand.members.filter((v) => allowed.includes(v));
+            // Two or more shared members means this list is describing that
+            // column, not coincidentally sharing a word.
+            if (overlap.length < 2) continue;
+            const strays = cand.members.filter((v) => !allowed.includes(v));
+            if (strays.length) {
+              // Concatenation, not a nested template literal: CLAUDE.md
+              // forbids nesting backticks, and doing it here is what made
+              // this file fail to parse with "Unterminated string constant".
+              const quoted = strays.map((v) => "'" + v + "'").join(', ');
+              violations.push(
+                file + ':' + cand.line + '  ' + cand.label +
+                ' feeds ' + table + '.' + col +
+                ' but adds ' + quoted +
+                ' (allowed: ' + allowed.join(', ') + ')');
+            }
+          }
+        }
+      }
+    }
+    expect(violations).toEqual([]);
+  });
+});
