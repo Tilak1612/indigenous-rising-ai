@@ -31,6 +31,7 @@ vi.mock('@/lib/supabase', () => ({
 
 import { MemoryRouter } from 'react-router-dom';
 import Funding from '../Funding';
+import { DEFAULT_SAVED_STATUS, SAVED_MATCH_STATUSES } from '@/lib/funding-status';
 
 const renderPage = () => render(<MemoryRouter><Funding /></MemoryRouter>);
 
@@ -102,6 +103,10 @@ describe('saving an opportunity persists', () => {
     // never appeared in Saved Matches.
     await waitFor(() => expect(upsertMock).toHaveBeenCalledTimes(1));
     const [payload] = upsertMock.mock.calls[0] as [Record<string, unknown>];
-    expect(payload).toMatchObject({ user_id: 'u1', grant_id: 'g1', status: 'saved' });
+    // Asserted against the shared constant, not a literal. The literal
+    // 'saved' was asserted here and passed, because the mock accepts any
+    // string while Postgres rejects anything outside the CHECK constraint.
+    expect(payload).toMatchObject({ user_id: 'u1', grant_id: 'g1', status: DEFAULT_SAVED_STATUS });
+    expect(SAVED_MATCH_STATUSES).toContain(payload.status);
   });
 });
