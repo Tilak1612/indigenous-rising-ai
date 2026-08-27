@@ -52,10 +52,14 @@ export default function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [isLogin, setIsLogin] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    return !routeWantsSignup(window.location.pathname, window.location.search);
-  });
+  // Seeded from the ROUTER's location, which works under StaticRouter during
+  // prerendering. Reading window.location here meant the initializer hit the
+  // `typeof window === 'undefined'` branch on every server render and returned
+  // sign-in, so the prerendered /signup shipped "Welcome Back" markup and only
+  // became a registration form once React hydrated.
+  const [isLogin, setIsLogin] = useState(
+    () => !routeWantsSignup(location.pathname, location.search),
+  );
 
   // Re-sync on every route change. The toggle below still wins afterwards,
   // because this only fires when the path or query actually changes.
