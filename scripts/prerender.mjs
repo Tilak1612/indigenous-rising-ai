@@ -40,6 +40,14 @@ const HOME_DESC = 'Find funding, build your business plan, access training, and 
 const MARKETING = [
   { p: '/', t: HOME_TITLE, d: HOME_DESC },
   { p: '/auth', t: 'Sign in | Indigenous Rising AI', d: 'Sign in to your Indigenous Rising AI account.', robots: 'noindex, nofollow' },
+  // /signup was NOT prerendered, so Vercel's SPA fallback served index.html —
+  // the HOMEPAGE markup, with the homepage title — until React hydrated and
+  // routed. Every "Start free account" click landed on the wrong page's HTML
+  // first, on the exact route P0-0 made the primary CTA target. Verified on
+  // production: /signup returned 97,980 bytes titled "Indigenous Rising AI —
+  // The AI platform for Indigenous business growth". noindex like /auth: this
+  // is a conversion surface, not a search landing page.
+  { p: '/signup', t: 'Create your account | Indigenous Rising AI', d: 'Create a free Indigenous Rising AI account. Three funding matches a month, a guided business plan, and no credit card required.', robots: 'noindex, nofollow' },
   { p: '/pricing', t: 'Pricing — Free, Growth & Nations plans | Indigenous Rising AI', d: 'Transparent pricing for Indigenous entrepreneurs. Start free, no credit card. Growth is $49/mo. OCAP®-aligned, with your data stored in Canada.' },
   { p: '/blog', t: 'Blog — Indigenous business funding & growth | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications and business planning for First Nations, Métis and Inuit entrepreneurs across Canada.' },
   { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada | Indigenous Rising AI', d: 'Indigenous business grants, loans and non-repayable funding across Canada, by province and by community, plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding', faqs: [
