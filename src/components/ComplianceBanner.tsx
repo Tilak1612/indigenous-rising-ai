@@ -70,7 +70,13 @@ const ComplianceBanner = () => {
             type="button"
             onClick={handleAccept}
             aria-label="Dismiss compliance notice"
-            className="p-0.5 rounded text-[#a5d6a7] hover:text-white hover:bg-white/10 transition-colors"
+            // p-0.5 around a 14px icon gave an 18px-wide target, under the
+            // 24px WCAG 2.2 minimum. Matched to the 44px height the base
+            // stylesheet already gives buttons — a Tailwind min-h utility
+            // overrides that base rule, so setting only 24px would have
+            // shrunk the target. The icon keeps its size; only the hit area
+            // grows, so the banner looks unchanged.
+            className="inline-flex items-center justify-center min-w-[44px] min-h-[44px] p-1 rounded text-[#a5d6a7] hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-3.5 h-3.5" />
           </button>

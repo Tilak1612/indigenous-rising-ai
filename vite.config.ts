@@ -11,6 +11,10 @@ export default defineConfig(({ mode }) => {
 
   return {
     base,
+    // react-helmet-async ships CommonJS. Left external, the ESM prerender
+    // bundle fails with "Named export 'HelmetProvider' not found". Bundling it
+    // resolves the interop. Only affects the --ssr build.
+    ssr: { noExternal: ['react-helmet-async'] },
   server: {
     host: "::",
     port: 8080,

@@ -63,14 +63,11 @@ export default function RecentActivity() {
             <Clock className="h-5 w-5 text-primary" />
             <CardTitle className="text-lg">Recent Activity</CardTitle>
           </div>
-          {!isEmpty && (
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/dashboard/activity">
-                View All
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Link>
-            </Button>
-          )}
+          {/* "View All" used to sit here, linking to /dashboard/activity —
+              a route that is not registered, so it rendered NotFound. It
+              only appeared once the user HAD activity, so the people most
+              likely to click it were the ones with something to look at.
+              Restore this when the page is built. */}
         </div>
       </CardHeader>
       <CardContent className="space-y-3">

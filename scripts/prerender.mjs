@@ -7,14 +7,20 @@
 // index.html with the correct <title>, description, canonical, Open Graph /
 // Twitter tags, and route JSON-LD (BlogPosting schema for blog posts).
 //
-// It is intentionally resilient: any failure is caught and logged, and the
-// process still exits 0, so a prerender hiccup can never fail the Vercel build
-// (worst case: fewer routes get prerendered, the SPA still works).
+// It also renders each route's real markup into #root via the SSR bundle in
+// dist-ssr (see src/entry-server.tsx). Before that, the shipped HTML carried an
+// empty <div id="root"> and a crawler saw ~336 words of nav/JSON-LD boilerplate
+// on every route.
+//
+// Head-only failures stay non-fatal (worst case: fewer routes prerendered, the
+// SPA still works), but an SSR failure sets a non-zero exit code — shipping an
+// empty body while claiming the page is prerendered is the exact regression
+// this exists to prevent.
 
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { build } from 'esbuild';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -28,12 +34,15 @@ const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 const HOME_TITLE = 'Indigenous Rising AI — The AI platform for Indigenous business growth';
 const HOME_DESC = 'Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.';
 
+// /about, /mission and /partnerships are NOT listed here. They 301 to / at the
+// edge (vercel.json). Prerendering a redirect target produced an indexed URL
+// that returned 200 with an empty body while browsers were bounced home.
 const MARKETING = [
   { p: '/', t: HOME_TITLE, d: HOME_DESC },
   { p: '/auth', t: 'Sign in | Indigenous Rising AI', d: 'Sign in to your Indigenous Rising AI account.', robots: 'noindex, nofollow' },
-  { p: '/pricing', t: 'Pricing — Free, Growth & Nations plans | Indigenous Rising AI', d: 'Honest, transparent pricing for Indigenous entrepreneurs. Start free; Growth is $49/mo. OCAP®-aligned, data stored in Canada, and you are never billed for a feature before it ships.' },
-  { p: '/blog', t: 'Blog — Indigenous business funding & growth | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications, business planning, and growth across Canada — written for First Nations, Métis, and Inuit entrepreneurs.' },
-  { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada | Indigenous Rising AI', d: 'A hub of guides to Indigenous business grants, loans, and non-repayable funding across Canada — by province and by community (First Nations, Métis, Inuit), plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding', faqs: [
+  { p: '/pricing', t: 'Pricing — Free, Growth & Nations plans | Indigenous Rising AI', d: 'Transparent pricing for Indigenous entrepreneurs. Start free, no credit card. Growth is $49/mo. OCAP®-aligned, with your data stored in Canada.' },
+  { p: '/blog', t: 'Blog — Indigenous business funding & growth | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications and business planning for First Nations, Métis and Inuit entrepreneurs across Canada.' },
+  { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada | Indigenous Rising AI', d: 'Indigenous business grants, loans and non-repayable funding across Canada, by province and by community, plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding', faqs: [
     { q: 'What Indigenous business grants are available in Canada?', a: 'Indigenous entrepreneurs can access a mix of federal and provincial programs, non-repayable contributions, and loans from Indigenous Financial Institutions. Availability depends on your province, community (First Nations, Métis, or Inuit), industry, and stage.' },
     { q: 'Do I need Indian status to get Indigenous business funding?', a: 'Not always. Many programs serve Status and Non-Status First Nations, Métis, and Inuit entrepreneurs, using community membership, Métis citizenship, or Inuit beneficiary status as proof of identity rather than Indian status specifically. Always check each program’s eligibility.' },
     { q: 'Are Indigenous business grants the same as loans?', a: 'No. Grants and non-repayable contributions do not have to be paid back (subject to using funds for the approved purpose and meeting reporting requirements), while loans do. Many entrepreneurs combine both.' },
@@ -41,13 +50,11 @@ const MARKETING = [
   ] },
   { p: '/contact', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
   { p: '/faq', t: 'Frequently asked questions | Indigenous Rising AI', d: 'Answers about funding matching, business planning, OCAP® data sovereignty, pricing, and what is live today versus coming soon on Indigenous Rising AI.' },
-  { p: '/about', t: 'About Indigenous Rising AI', d: 'The AI platform for Indigenous business growth — funding, planning, training, and growth, built around your community’s data sovereignty.' },
-  { p: '/mission', t: 'Our mission | Indigenous Rising AI', d: 'Why we build Indigenous Rising AI: practical, respectful tools for Indigenous entrepreneurs, designed around OCAP® principles and Canadian data residency.' },
   { p: '/success-stories', t: 'Success stories | Indigenous Rising AI', d: 'Stories from Indigenous entrepreneurs growing their businesses with funding, planning, and training support — shared with permission.' },
   { p: '/careers', t: 'Careers | Indigenous Rising AI', d: 'Join the team building the AI platform for Indigenous business growth. See open roles and how we work with communities.' },
   { p: '/training', t: 'AI training program | Indigenous Rising AI', d: 'Live training on AI, data sovereignty, and practical business skills for Indigenous communities — monthly sessions and a growing library.' },
   { p: '/community', t: 'Community forum | Indigenous Rising AI', d: 'Connect with other Indigenous entrepreneurs — ask questions, share wins, and find resources in the Indigenous Rising community.' },
-  { p: '/compliance', t: 'Canadian Regulatory Alignment - Indigenous Rising AI', d: 'How Indigenous Rising AI is built in alignment with Canadian federal and provincial regulations — PIPEDA-aligned, CASL-aligned, AODA-aligned, and designed around OCAP® data sovereignty. Not third-party certifications.' },
+  { p: '/compliance', t: 'Canadian Regulatory Alignment - Indigenous Rising AI', d: 'How Indigenous Rising AI aligns with Canadian regulation — PIPEDA, CASL, AODA — and is built around OCAP® data sovereignty. Not a third-party certification.' },
   { p: '/privacy', t: 'Privacy Policy | Indigenous Rising AI', d: 'How Indigenous Rising AI collects, uses, and protects your information, with data stored in Canada and full export available at any time.' },
   { p: '/terms', t: 'Terms of Service | Indigenous Rising AI', d: 'The terms that govern your use of the Indigenous Rising AI platform.' },
   { p: '/accessibility', t: 'Accessibility statement | Indigenous Rising AI', d: 'Our commitment to an accessible platform for all Indigenous entrepreneurs, and how to reach us with accessibility feedback.' },
@@ -57,8 +64,8 @@ const MARKETING = [
   // shipped the HOMEPAGE <title>. That is a WCAG 2.4.2 (Page Titled) failure —
   // a screen reader announces the same name on five different pages — and five
   // duplicate title tags for search engines.
-  { p: '/funding', t: 'Find Indigenous business funding | Indigenous Rising AI', d: 'Browse real funding and financing programs for First Nations, Métis, and Inuit entrepreneurs across Canada — grants, non-repayable contributions, and loans from Indigenous Financial Institutions.' },
-  { p: '/funding/alerts', t: 'Free weekly funding alerts | Indigenous Rising AI', d: 'Get a free weekly email of Indigenous business funding opportunities matched to your province and industry. CASL-compliant double opt-in; unsubscribe in one click.' },
+  { p: '/funding', t: 'Find Indigenous business funding | Indigenous Rising AI', d: 'Browse real funding and financing for Indigenous entrepreneurs across Canada: grants, non-repayable contributions and loans from Indigenous institutions.' },
+  { p: '/funding/alerts', t: 'Free weekly funding alerts | Indigenous Rising AI', d: 'A free weekly email of Indigenous business funding matched to your province and industry. CASL double opt-in, and one-click unsubscribe.' },
   { p: '/impact', t: 'Measure your community impact | Indigenous Rising AI', d: 'Track and report the community impact of your Indigenous business — jobs, training, and local spend — in a form funders and your Nation recognise.' },
   { p: '/plan', t: 'Build your business plan with AI guidance | Indigenous Rising AI', d: 'Write a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Free to start, no credit card.' },
   { p: '/track-request', t: 'Track a data request | Indigenous Rising AI', d: 'Check the status of a data access, export, correction, or deletion request — OCAP® Possession in practice.', robots: 'noindex, nofollow' },
@@ -94,13 +101,22 @@ async function loadBlogPosts() {
 
 // Trim a meta description to a SERP-safe length on a word boundary (mirrors
 // src/lib/seo.ts so the static HTML and the client-rendered tags agree).
+// Never emit a fragment. The old version cut at a word boundary and appended
+// an ellipsis, which produced 57 descriptions ending mid-phrase — "…you are
+// never billed for a…" — forfeiting control of the search snippet on every one.
+// Prefer the last COMPLETE sentence inside the limit; fall back to the last
+// clause and close it with a period rather than trailing off.
 function truncateDesc(text, max = 160) {
   const t = String(text || '').trim().replace(/\s+/g, ' ');
   if (t.length <= max) return t;
   const cut = t.slice(0, max);
-  const lastSpace = cut.lastIndexOf(' ');
-  const base = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut;
-  return base.replace(/[\s,.;:–—-]+$/, '') + '…';
+
+  const lastStop = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+  if (lastStop > max * 0.5) return cut.slice(0, lastStop + 1).trim();
+
+  const lastClause = Math.max(cut.lastIndexOf(', '), cut.lastIndexOf('; '), cut.lastIndexOf(' — '));
+  const base = lastClause > max * 0.5 ? cut.slice(0, lastClause) : cut.slice(0, cut.lastIndexOf(' '));
+  return base.replace(/[\s,;:–—-]+$/, '') + '.';
 }
 
 function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd, robots }) {
@@ -130,10 +146,41 @@ function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd
   return out;
 }
 
+// Loaded lazily so prerendering still degrades to head-only if the SSR bundle
+// is missing, rather than failing the whole build.
+let ssrRender = null;
+async function getSsrRender() {
+  if (ssrRender !== null) return ssrRender;
+  try {
+    const mod = await import(pathToFileURL(path.join(ROOT, 'dist-ssr', 'entry-server.js')).href);
+    ssrRender = mod.render;
+  } catch (err) {
+    console.warn('[prerender] SSR bundle unavailable — head-only output:', err.message);
+    ssrRender = false;
+  }
+  return ssrRender;
+}
+
 async function writeRoute(template, route) {
   const dir = path.join(DIST, route.p.replace(/^\//, ''));
   await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, 'index.html'), applyHead(template, route));
+  let html = applyHead(template, route);
+
+  // Render the route's real markup into #root. Without this the shipped HTML
+  // carried <div id="root"></div> and a crawler saw ~336 words of nav/JSON-LD
+  // boilerplate on EVERY route — distinct titles over identical empty bodies.
+  const render = await getSsrRender();
+  if (render) {
+    try {
+      const { html: body } = await render(route.p);
+      html = html.replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+    } catch (err) {
+      // Loud, and non-fatal: a broken route must not silently ship empty.
+      console.error(`[prerender] SSR FAILED for ${route.p}: ${err.message}`);
+      process.exitCode = 1;
+    }
+  }
+  await writeFile(path.join(dir, 'index.html'), html);
 }
 
 async function main() {

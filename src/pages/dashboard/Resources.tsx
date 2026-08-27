@@ -133,10 +133,25 @@ const regions = ['All Regions', 'National', 'Ontario', 'British Columbia', 'Albe
 const stages = ['All Stages', 'Startup', 'Growth', 'Established'];
 const languages = ['All Languages', 'English', 'French', 'Cree', 'Ojibwe', 'Inuktitut'];
 
+const FAVORITES_KEY = 'ir:resource-favorites';
+
 export default function ResourcesPage() {
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('all');
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  // Favourites persist to this device. They used to live in component
+  // state only, so "Added to favorites" was reported to the user and the
+  // favourite was gone on the next render — the same shape of defect as a
+  // save button that toasts success while writing nothing. Device-local
+  // rather than server-side: there is no favourites table, and inventing
+  // one would put a new class of user data on the server without asking.
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const raw = localStorage.getItem(FAVORITES_KEY);
+      return raw ? new Set(JSON.parse(raw) as string[]) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
   const [previewResource, setPreviewResource] = useState<Resource | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   
@@ -173,10 +188,18 @@ export default function ResourcesPage() {
       const newFavorites = new Set(prev);
       if (newFavorites.has(resourceId)) {
         newFavorites.delete(resourceId);
-        toast.success('Removed from favorites');
       } else {
         newFavorites.add(resourceId);
-        toast.success('Added to favorites');
+      }
+      // Report success only once the write has actually happened.
+      try {
+        localStorage.setItem(FAVORITES_KEY, JSON.stringify([...newFavorites]));
+        toast.success(newFavorites.has(resourceId)
+          ? 'Added to favourites'
+          : 'Removed from favourites');
+      } catch {
+        toast.error('Could not save your favourites on this device');
+        return prev;
       }
       return newFavorites;
     });
