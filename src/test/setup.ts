@@ -46,6 +46,11 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
 };
 
+import { configure } from '@testing-library/react';
+
+// waitFor carries its own 1s budget, independent of vitest's testTimeout.
+configure({ asyncUtilTimeout: 10_000 });
+
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { DATA_RESIDENCY_LINE } from '@/lib/trust-copy';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Shield, Check, MapPin, Globe, Lock, FileText } from 'lucide-react';
@@ -210,7 +211,7 @@ const CanadianCompliance = () => {
                       Your data stays in Canada
                     </p>
                     <p className="text-muted-foreground">
-                      All user data is stored exclusively on Canadian servers, subject to Canadian jurisdiction.
+                      {DATA_RESIDENCY_LINE}
                     </p>
                   </div>
                 </div>
