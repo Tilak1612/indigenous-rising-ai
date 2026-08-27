@@ -259,7 +259,12 @@ export default function CompliancePage() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="all">
-              <TabsList>
+              {/* h-auto + flex-wrap: the bare inline-flex list was 392px
+                  wide against ~278px of available width at 375px and
+                  pushed the page into horizontal scroll. Wrapping keeps
+                  all four OCAP principles visible; scrolling would hide
+                  some of them off-screen. */}
+              <TabsList className="h-auto flex-wrap justify-start">
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="ownership">Ownership</TabsTrigger>
                 <TabsTrigger value="control">Control</TabsTrigger>
@@ -288,7 +293,7 @@ export default function CompliancePage() {
                           )}
                         />
                         <div className="flex-1">
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <h4 className="font-medium">{item.title}</h4>
                             <Badge variant="outline" className="text-xs">
                               {catInfo.title}

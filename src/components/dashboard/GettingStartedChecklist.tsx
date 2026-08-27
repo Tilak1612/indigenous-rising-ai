@@ -191,11 +191,15 @@ export default function GettingStartedChecklist() {
                 </div>
 
                 {!isComplete && (
-                  <Link 
+                  <Link
                     to={item.link}
-                    className="text-primary hover:text-primary/80 transition-colors"
+                    // The link's only content is a chevron icon, so without a
+                    // name a screen reader announces just "link" — three times
+                    // on this page, each going somewhere different.
+                    aria-label={`Start: ${item.title}`}
+                    className="inline-flex min-h-[24px] min-w-[24px] items-center justify-center text-primary hover:text-primary/80 transition-colors"
                   >
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-4 w-4" aria-hidden="true" />
                   </Link>
                 )}
               </div>

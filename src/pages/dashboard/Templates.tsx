@@ -103,12 +103,12 @@ export default function Templates() {
               </CardHeader>
               <CardContent className="space-y-4 mt-auto">
                 <Badge variant="secondary">{template.category}</Badge>
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" className="flex-1" onClick={() => setPreview(template)}>
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" variant="outline" className="flex-1 min-w-0" onClick={() => setPreview(template)}>
                     <Eye className="h-4 w-4 mr-2" />
                     Preview
                   </Button>
-                  <Button size="sm" className="flex-1" onClick={() => downloadTemplate(template)}>
+                  <Button size="sm" className="flex-1 min-w-0" onClick={() => downloadTemplate(template)}>
                     <Download className="h-4 w-4 mr-2" />
                     Download
                   </Button>

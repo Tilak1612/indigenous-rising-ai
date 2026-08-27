@@ -51,3 +51,4 @@ supabase/.temp/
 # brand/README.txt IS tracked — it carries the canonical colour spec.
 brand/*
 !brand/README.txt
+

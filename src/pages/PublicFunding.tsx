@@ -368,7 +368,7 @@ const PublicFunding: React.FC = () => {
             <p className="text-muted-foreground mb-8">
               Get a short email every Friday morning with new and upcoming grants for Indigenous businesses in your province and industry. Free, no spam, unsubscribe any time.
             </p>
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="h-auto max-w-full whitespace-normal py-3">
               <Link to="/funding/alerts">
                 <Bell className="w-4 h-4 mr-2" />
                 Subscribe to free weekly alerts

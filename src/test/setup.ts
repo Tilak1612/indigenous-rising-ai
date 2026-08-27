@@ -16,6 +16,16 @@ if (!window.matchMedia) {
   };
 }
 
+// Radix primitives (Select, Dropdown, Popover) call the Pointer Capture API on
+// open. jsdom implements none of it, so any test that opens a Select fails with
+// "Unable to find role=option" — the listbox never renders. These are browser
+// APIs the components legitimately use.
+if (!Element.prototype.hasPointerCapture) {
+  Element.prototype.hasPointerCapture = () => false;
+  Element.prototype.setPointerCapture = function setPointerCapture() { /* no-op */ };
+  Element.prototype.releasePointerCapture = function releasePointerCapture() { /* no-op */ };
+}
+
 // jsdom implements neither of these. They are browser APIs the app legitimately
 // uses, so they are stubbed here rather than worked around in product code.
 // Element.scrollTo is missing entirely — Assistant scrolls its transcript to the
@@ -29,20 +39,6 @@ if (!Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = function scrollIntoView() { /* no-op in jsdom */ };
 }
 
-// jsdom implements none of the Pointer Capture APIs. Radix Select calls
-// them while opening its listbox, so without these the options never
-// render and a test looking for role="option" finds nothing — the
-// component works fine in a real browser.
-if (!Element.prototype.hasPointerCapture) {
-  Element.prototype.hasPointerCapture = function hasPointerCapture() { return false; };
-}
-if (!Element.prototype.setPointerCapture) {
-  Element.prototype.setPointerCapture = function setPointerCapture() { /* no-op in jsdom */ };
-}
-if (!Element.prototype.releasePointerCapture) {
-  Element.prototype.releasePointerCapture = function releasePointerCapture() { /* no-op in jsdom */ };
-}
-
 // Mock ResizeObserver which is not available in jsdom
 global.ResizeObserver = class ResizeObserver {
   observe() {}
@@ -54,10 +50,7 @@ import { configure } from '@testing-library/react';
 
 // waitFor/findBy carry their own 1s budget, independent of vitest's
 // testTimeout. Under CPU contention an awaited write settles later than
-// that and the assertion reports a failure that is not a defect. Raised
-// so the suite is stable on a loaded machine and in CI; a passing test
-// still returns as soon as its condition holds, so this costs nothing
-// except when something is genuinely wrong.
+// that and the assertion reports a failure that is not a defect.
 configure({ asyncUtilTimeout: 10_000 });
 
 import '@testing-library/jest-dom';

@@ -163,7 +163,7 @@ const Training = () => {
                       <p className="text-sm text-muted-foreground">
                         You have full access to all training materials, workshops, and community resources.
                       </p>
-                      <div className="flex gap-3">
+                      <div className="flex flex-wrap gap-3">
                         <Button onClick={handleManageSubscription} disabled={portalLoading} variant="outline">
                           {portalLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
                           Manage Subscription

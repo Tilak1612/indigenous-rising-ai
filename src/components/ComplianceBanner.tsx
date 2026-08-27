@@ -42,7 +42,10 @@ const ComplianceBanner = () => {
       <div className="w-full px-3 sm:px-5 py-2 flex flex-row flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
         <div className="flex items-center gap-2 flex-1 min-w-[200px]">
           <Shield className="w-3.5 h-3.5 text-[#a5d6a7] shrink-0" aria-hidden="true" />
-          <p className="text-[11px] sm:text-xs text-[#e8f5e9] leading-tight">
+          {/* Floored at 12px: this carries consent and compliance wording
+              (PIPEDA / CASL / AODA / OCAP) plus the Accept control, and it
+              was rendering at 11px with a 1.25 line-height on phones. */}
+          <p className="text-xs sm:text-sm text-[#e8f5e9] leading-normal">
             Cookies enabled. Built in alignment with{' '}
             <span className="font-semibold text-white">PIPEDA · CASL · AODA · OCAP®</span>.
             Data stored in Canada.
@@ -52,14 +55,14 @@ const ComplianceBanner = () => {
         <div className="flex items-center gap-2 shrink-0">
           <Link
             to="/privacy"
-            className="text-[11px] sm:text-xs text-[#a5d6a7] underline underline-offset-2 hover:text-white transition-colors whitespace-nowrap"
+            className="text-xs sm:text-sm text-[#a5d6a7] underline underline-offset-2 hover:text-white transition-colors whitespace-nowrap"
           >
             Privacy
           </Link>
           <button
             type="button"
             onClick={handleAccept}
-            className="px-3 py-1 text-[11px] sm:text-xs font-semibold rounded bg-[#4caf50] hover:bg-[#388e3c] text-white transition-colors"
+            className="px-3 py-1 text-xs sm:text-sm font-semibold rounded bg-[#4caf50] hover:bg-[#388e3c] text-white transition-colors"
           >
             Accept
           </button>

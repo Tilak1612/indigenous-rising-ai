@@ -222,15 +222,15 @@ export default function Team() {
             <div className="divide-y">
               {/* Real owner = the signed-in user */}
               <div className="py-4 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <Avatar className="h-10 w-10">
+                <div className="flex min-w-0 items-center gap-4">
+                  <Avatar className="h-10 w-10 shrink-0">
                     <AvatarFallback className="bg-primary/10 text-primary">
                       {initials(user?.email ?? '?')}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{user?.email ?? 'You'}</p>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="min-w-0 truncate font-medium">{user?.email ?? 'You'}</p>
                       <Badge className={roleColors.owner} variant="secondary">
                         <Crown className="h-3 w-3 mr-1" /> owner
                       </Badge>

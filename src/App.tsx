@@ -112,12 +112,16 @@ function MarketingAssistant() {
   );
 }
 
-const App = () => (
-  <ErrorBoundary>
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <RouteChangeTracker />
+/**
+ * The whole tree below the router. Extracted so the prerender build can render
+ * the identical markup under StaticRouter — previously prerendering injected
+ * <head> metadata only and shipped an empty <div id="root">, so crawlers got
+ * roughly 336 words of nav/JSON-LD boilerplate and no page content on every
+ * route.
+ */
+export const AppTree = () => (
+  <>
+    <RouteChangeTracker />
           <AuthProvider>
             <TooltipProvider>
             {/* The .skip-link styles existed in index.css but nothing ever
@@ -150,6 +154,17 @@ const App = () => (
               <Route path="/v1" element={<Navigate to="/" replace />} />
               <Route path="/landing-v2" element={<Navigate to="/" replace />} />
               {/* The sign-in page lives at /auth; /login was a dead end (404). */}
+              {/* Dedicated signup entry. Auth defaults to sign-IN; this path
+                  (and ?intent=signup / ?plan=) opens it in registration mode so
+                  "Start free account" no longer lands on a login form. */}
+              <Route
+                path="/signup"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <Auth />
+                  </Suspense>
+                }
+              />
               <Route path="/login" element={<Navigate to="/auth" replace />} />
               <Route path="/signin" element={<Navigate to="/auth" replace />} />
               <Route
@@ -675,11 +690,22 @@ const App = () => (
               <ComplianceBanner />
             </TooltipProvider>
           </AuthProvider>
+  </>
+);
+
+const App = () => (
+  <ErrorBoundary>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AppTree />
         </BrowserRouter>
       </QueryClientProvider>
     </HelmetProvider>
     <SpeedInsights />
   </ErrorBoundary>
 );
+
+export { queryClient };
 
 export default App;

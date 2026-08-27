@@ -500,11 +500,11 @@ export default function BusinessPlannerPage() {
                     concrete guidance. Re-add only with a real handler plus
                     loading, empty and error states. */}
 
-                <div className="flex items-center justify-between pt-4 border-t">
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t">
                   <div className="text-sm text-muted-foreground">
                     {answers[STEPS[currentStep].id]?.length || 0} characters
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
                       disabled={currentStep === 0}

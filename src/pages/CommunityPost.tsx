@@ -124,20 +124,27 @@ const CommunityPost = () => {
     }
     if (!postId) return;
 
-    if (hasVoted) {
-      setHasVoted(false);
-      setLocalUpvotes((prev) => prev - 1);
-      await (supabase as any)
-        .from('community_votes')
-        .delete()
-        .eq('post_id', postId)
-        .eq('user_id', user.id);
-    } else {
-      setHasVoted(true);
-      setLocalUpvotes((prev) => prev + 1);
-      await (supabase as any)
-        .from('community_votes')
-        .insert({ post_id: postId, user_id: user.id });
+    // Optimistic, but reverted if the write is rejected. Without this the
+    // vote appeared to register and quietly vanished on the next load.
+    const wasVoted = hasVoted;
+    setHasVoted(!wasVoted);
+    setLocalUpvotes((prev) => prev + (wasVoted ? -1 : 1));
+
+    const { error } = wasVoted
+      ? await (supabase as any)
+          .from('community_votes')
+          .delete()
+          .eq('post_id', postId)
+          .eq('user_id', user.id)
+      : await (supabase as any)
+          .from('community_votes')
+          .insert({ post_id: postId, user_id: user.id });
+
+    if (error) {
+      setHasVoted(wasVoted);
+      setLocalUpvotes((prev) => prev + (wasVoted ? 1 : -1));
+      setToastMsg('Could not save your vote — please try again');
+      setTimeout(() => setToastMsg(''), 3000);
     }
   };
 
@@ -148,12 +155,22 @@ const CommunityPost = () => {
     const displayName =
       user.user_metadata?.full_name || user.email || 'Community Member';
 
-    await (supabase as any).from('community_comments').insert({
+    const { error } = await (supabase as any).from('community_comments').insert({
       user_id: user.id,
       post_id: postId,
       display_name: displayName,
       body: commentBody.trim(),
     });
+
+    if (error) {
+      // The box is NOT cleared here. Clearing it unconditionally destroyed
+      // what the person had written whenever the insert failed, and told
+      // them nothing.
+      setToastMsg('Could not post your comment — your text has been kept');
+      setTimeout(() => setToastMsg(''), 4000);
+      setSubmitting(false);
+      return;
+    }
 
     setCommentBody('');
     await fetchComments();
@@ -256,8 +273,14 @@ const CommunityPost = () => {
                 size="sm"
                 onClick={handleVote}
                 className="gap-2"
+                aria-pressed={hasVoted}
+                // The button's only text is the count, so it announced just
+                // a number. Naming it says what pressing it does.
+                aria-label={hasVoted
+                  ? `Remove your upvote (${localUpvotes} total)`
+                  : `Upvote this post (${localUpvotes} total)`}
               >
-                <ThumbsUp className="w-4 h-4" />
+                <ThumbsUp className="w-4 h-4" aria-hidden="true" />
                 {localUpvotes}
               </Button>
               <span className="text-sm text-muted-foreground flex items-center gap-1">
