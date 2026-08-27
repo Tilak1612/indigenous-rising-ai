@@ -321,7 +321,13 @@ const SidebarInset = React.forwardRef<
     <main
       ref={ref}
       className={cn(
-        "relative flex min-h-svh flex-1 flex-col bg-background",
+        // min-w-0 is load-bearing: a flex item's automatic minimum size is
+        // its min-content width, so this pane refused to shrink below its
+        // widest child and pushed the whole dashboard into horizontal
+        // scroll (measured 535px on a 375px viewport on /dashboard/api,
+        // where a long curl command sets min-content). flex-1 does not
+        // override that; only min-width: 0 does.
+        "relative flex min-h-svh w-full min-w-0 flex-1 flex-col bg-background",
         "peer-data-[variant=inset]:min-h-[calc(100svh-theme(spacing.4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[state=collapsed]:peer-data-[variant=inset]:ml-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow",
         className
       )}

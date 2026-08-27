@@ -12,7 +12,8 @@
     "prerender": "node scripts/prerender.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:harness": "vite --config vite.harness.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
