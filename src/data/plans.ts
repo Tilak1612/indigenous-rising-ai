@@ -25,7 +25,7 @@ const freeFeatures: PlanFeature[] = [
   { text: 'Indigenous business planning assistant (auto-saved)', available: true },
   { text: 'Funding opportunity browser', available: true },
   { text: 'Community forum and resource library', available: true },
-  { text: 'OCAP® compliant data handling, stored in Canada', available: true },
+  { text: 'OCAP®-aligned data handling, stored in Canada', available: true },
   { text: 'Multi-language support — English & French (interface translations rolling out)', available: true },
   { text: 'Full data export at any time', available: true },
   { text: 'Email support', available: true },

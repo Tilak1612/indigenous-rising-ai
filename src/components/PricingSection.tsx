@@ -419,7 +419,7 @@ const PricingSection = () => {
                   {[
                     { feature: 'Business planning assistant', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Funding opportunity browser', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'OCAP® compliant data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
+                    { feature: 'OCAP®-aligned data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Community forum + resources', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Multi-language support (EN/FR)', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Full data export', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
@@ -466,7 +466,7 @@ const PricingSection = () => {
               Indigenous values built in
             </h4>
             <p className="text-sm text-muted-foreground">
-              Indigenous-led, OCAP® compliant, data stored in Canada (ca-central-1), and a portion of profits returned to communities.
+              Indigenous-led, OCAP®-aligned, data stored in Canada (ca-central-1), and a portion of profits returned to communities.
             </p>
           </Card>
         </div>

@@ -54,7 +54,7 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
     },
     {
       question: 'Is my data protected under OCAP® principles?',
-      answer: 'Absolutely. All plans include OCAP® compliant data handling. You maintain Ownership of your data, Control over how it is used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure.'
+      answer: 'Absolutely. All plans include data handling built in alignment with OCAP® principles (not a third-party certification). You maintain Ownership of your data, Control over how it is used, Access to export it anytime, and Possession on secure Indigenous-informed infrastructure.'
     },
     {
       question: 'Can I get help with grant applications?',
