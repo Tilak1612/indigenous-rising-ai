@@ -50,6 +50,16 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
 };
 
+import { configure } from '@testing-library/react';
+
+// waitFor/findBy carry their own 1s budget, independent of vitest's
+// testTimeout. Under CPU contention an awaited write settles later than
+// that and the assertion reports a failure that is not a defect. Raised
+// so the suite is stable on a loaded machine and in CI; a passing test
+// still returns as soon as its condition holds, so this costs nothing
+// except when something is genuinely wrong.
+configure({ asyncUtilTimeout: 10_000 });
+
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
