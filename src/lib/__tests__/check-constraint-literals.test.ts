@@ -43,6 +43,15 @@ const CONSTRAINTS: Record<string, Record<string, string[]>> = {
   team_invitations:        { role: ['admin', 'member', 'viewer'], status: ['pending', 'accepted', 'revoked'] },
 };
 
+/**
+ * Whole-identifier match. A bare src.includes('profiles') also matches
+ * 'business_profiles', which made the sweep attribute OnboardingWizard's
+ * option lists to public.profiles and report two violations that were not
+ * real: business_profiles carries no CHECK constraints at all.
+ */
+const referencesTable = (src: string, table: string) =>
+  new RegExp('(?<![A-Za-z0-9_])' + table + '(?![A-Za-z0-9_])').test(src);
+
 const walk = (dir: string): string[] =>
   readdirSync(dir).flatMap((entry) => {
     const full = join(dir, entry);
@@ -72,7 +81,7 @@ describe('no client write sends a value Postgres would reject', () => {
       const src = readFileSync(file, 'utf8');
       const lines = src.split('\n');
       for (const [table, cols] of Object.entries(CONSTRAINTS)) {
-        if (!src.includes(table)) continue;
+        if (!referencesTable(src, table)) continue;
         for (const [col, allowed] of Object.entries(cols)) {
           const re = new RegExp(`\\b${col}\\s*:\\s*'([^']+)'`, 'g');
           for (const m of src.matchAll(re)) {
@@ -117,7 +126,7 @@ describe('option lists cannot drift from the constraint', () => {
     const violations: string[] = [];
     for (const file of walk('src')) {
       const src = readFileSync(file, 'utf8');
-      const tables = Object.keys(CONSTRAINTS).filter((t) => src.includes(t));
+      const tables = Object.keys(CONSTRAINTS).filter((t) => referencesTable(src, t));
       if (!tables.length) continue;
 
       const candidates: { label: string; members: string[]; line: number }[] = [];
