@@ -320,7 +320,9 @@ export default function ResourcesPage() {
 
         {/* Category Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList>
+          {/* h-auto + flex-wrap: the bare inline-flex list was 439px wide on a
+                375px viewport and pushed the page into horizontal scroll. */}
+              <TabsList className="h-auto flex-wrap justify-start">
             <TabsTrigger value="all">All Resources</TabsTrigger>
             <TabsTrigger value="guide">Guides</TabsTrigger>
             <TabsTrigger value="template">Templates</TabsTrigger>

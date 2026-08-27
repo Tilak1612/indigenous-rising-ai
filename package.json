@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "preview": "vite preview",
-    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist-ssr"
+    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir dist-ssr",
+    "dev:harness": "vite --config vite.harness.config.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
