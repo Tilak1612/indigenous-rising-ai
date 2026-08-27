@@ -12,7 +12,8 @@
     "prerender": "node scripts/prerender.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "verify:auth-journey": "node scripts/verify-authenticated-journey.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
