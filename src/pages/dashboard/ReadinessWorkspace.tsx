@@ -180,7 +180,14 @@ const ReadinessWorkspace: React.FC = () => {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <Link to="/dashboard/funding/saved" className="text-sm text-muted-foreground hover:underline">
+          {/* inline-flex + min-h: as a bare inline link this measured 118x17
+              in a browser at 375px, under the 24px WCAG 2.2 minimum. It is a
+              standalone navigation control, so the inline-link exemption
+              does not apply. */}
+          <Link
+            to="/dashboard/funding/saved"
+            className="inline-flex min-h-[24px] items-center py-1 text-sm text-muted-foreground hover:underline"
+          >
             ← Saved matches
           </Link>
           <h1 className="mt-2 text-2xl font-semibold">
