@@ -597,6 +597,25 @@ export default function Auth() {
                       }
                     </Button>
 
+                    {/* Shown on BOTH sign-in and sign-up, and positioned under
+                        the primary action so it covers the Google button as
+                        well as this form. That matters: OAuth sign-up skips
+                        the form entirely, so before this line an account could
+                        be created through Google without ever passing the
+                        terms checkbox below. Not shown on password reset or
+                        recovery, where no agreement is being entered into. */}
+                    <p className="text-center text-xs text-muted-foreground">
+                      By continuing, you agree to our{' '}
+                      <Link to="/terms" className="text-primary underline underline-offset-2 hover:text-primary/80">
+                        Terms of Service
+                      </Link>{' '}
+                      and{' '}
+                      <Link to="/privacy" className="text-primary underline underline-offset-2 hover:text-primary/80">
+                        Privacy Policy
+                      </Link>
+                      .
+                    </p>
+
                     {isLogin && (
                       <div className="text-center">
                         <button
