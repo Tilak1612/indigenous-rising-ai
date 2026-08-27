@@ -191,3 +191,46 @@ describe('no invented statistics or quotes', () => {
     expect(src).not.toMatch(/thousands of (entrepreneurs|businesses|users)/i);
   });
 });
+
+describe('terms and privacy consent', () => {
+  test('the "By continuing" line appears on sign-in', () => {
+    renderAt('/auth');
+    expect(screen.getByText(/By continuing, you agree to our/i)).toBeInTheDocument();
+  });
+
+  test('the "By continuing" line appears on sign-up', () => {
+    renderAt('/signup');
+    expect(screen.getByText(/By continuing, you agree to our/i)).toBeInTheDocument();
+  });
+
+  test('both documents are linked, to routes that exist', () => {
+    renderAt('/auth');
+    expect(screen.getByRole('link', { name: /Terms of Service/i })).toHaveAttribute('href', '/terms');
+    expect(screen.getByRole('link', { name: /Privacy Policy/i })).toHaveAttribute('href', '/privacy');
+  });
+
+  test('it is not shown during password reset — no agreement is being entered', async () => {
+    const user = userEvent.setup();
+    renderAt('/auth');
+    await user.click(screen.getByRole('button', { name: /forgot your password/i }));
+    expect(screen.queryByText(/By continuing, you agree to our/i)).not.toBeInTheDocument();
+  });
+
+  test('the OAuth path is covered by the line, since it skips the form', () => {
+    // Google sign-up bypasses the form entirely, so the terms CHECKBOX never
+    // applies to it. Before this line an account could be created through
+    // Google without agreeing to anything.
+    renderAt('/signup');
+    expect(screen.getByRole('button', { name: /with google/i })).toBeInTheDocument();
+    expect(screen.getByText(/By continuing, you agree to our/i)).toBeInTheDocument();
+  });
+
+  test('express consent is still required on the email path', () => {
+    // The checkbox is retained deliberately: dropping it would convert
+    // express consent into implied consent, which is a downgrade for a
+    // PIPEDA/CASL-positioned product.
+    renderAt('/signup');
+    const box = document.getElementById('terms');
+    expect(box, 'the express-consent checkbox was removed').toBeTruthy();
+  });
+});
