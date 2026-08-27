@@ -1,9 +1,51 @@
 {
   "redirects": [
-    { "source": "/blog/indigenous-business-grants-alberta-2025", "destination": "/blog/indigenous-business-funding-alberta-complete-guide", "permanent": true },
-    { "source": "/blog/indigenous-business-grants-british-columbia-2025", "destination": "/blog/bc-indigenous-business-grants-loans-complete-resource", "permanent": true },
-    { "source": "/blog/indigenous-business-grants-ontario-2025", "destination": "/blog/ontario-indigenous-business-funding-programs-grants-support", "permanent": true },
-    { "source": "/blog/how-to-apply-indigenous-business-funding-canada", "destination": "/blog/how-to-apply-indigenous-business-funding-step-by-step", "permanent": true }
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "indigenousrising.ai"
+        }
+      ],
+      "destination": "https://www.indigenousrising.ai/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/partnerships",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/mission",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/about",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/indigenous-business-grants-alberta-2025",
+      "destination": "/blog/indigenous-business-funding-alberta-complete-guide",
+      "permanent": true
+    },
+    {
+      "source": "/blog/indigenous-business-grants-british-columbia-2025",
+      "destination": "/blog/bc-indigenous-business-grants-loans-complete-resource",
+      "permanent": true
+    },
+    {
+      "source": "/blog/indigenous-business-grants-ontario-2025",
+      "destination": "/blog/ontario-indigenous-business-funding-programs-grants-support",
+      "permanent": true
+    },
+    {
+      "source": "/blog/how-to-apply-indigenous-business-funding-canada",
+      "destination": "/blog/how-to-apply-indigenous-business-funding-step-by-step",
+      "permanent": true
+    }
   ],
   "rewrites": [
     {

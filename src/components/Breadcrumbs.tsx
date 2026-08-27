@@ -122,7 +122,7 @@ export const Breadcrumbs = ({ customItems, className = '' }: BreadcrumbsProps) =
                     itemProp="name"
                     aria-current="page"
                   >
-                    {index === 0 ? <Home className="h-4 w-4" aria-label="Home" /> : item.name}
+                    {index === 0 ? <Home className="h-4 w-4" role="img" aria-label="Home" /> : item.name}
                   </span>
                 ) : item.navigable === false ? (
                   <span className="flex items-center">
@@ -133,9 +133,16 @@ export const Breadcrumbs = ({ customItems, className = '' }: BreadcrumbsProps) =
                     to={item.path}
                     className="hover:text-primary transition-colors flex items-center"
                     itemProp="item"
+                    // The home crumb's only content is an icon. aria-label on a
+                    // bare <svg> is not reliably exposed (no role="img"), so the
+                    // link had an empty accessible name and announced only
+                    // "link". Naming the link itself is what screen readers read.
+                    aria-label={index === 0 ? 'Home' : undefined}
                   >
                     <span itemProp="name">
-                      {index === 0 ? <Home className="h-4 w-4" aria-label="Home" /> : item.name}
+                      {index === 0
+                        ? <Home className="h-4 w-4" role="img" aria-label="Home" />
+                        : item.name}
                     </span>
                   </Link>
                 )}
