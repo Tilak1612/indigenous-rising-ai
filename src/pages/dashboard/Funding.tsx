@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase } from '@/lib/supabase';
+import { DEFAULT_SAVED_STATUS } from '@/lib/funding-status';
 import { toast } from 'sonner';
 import {
   Search,
@@ -197,7 +198,7 @@ export default function Funding() {
 
     const { error } = nowSaved
       ? await supabase.from('funding_saved_matches')
-          .upsert({ user_id: userId, grant_id: id, status: 'saved' }, { onConflict: 'user_id,grant_id' })
+          .upsert({ user_id: userId, grant_id: id, status: DEFAULT_SAVED_STATUS }, { onConflict: 'user_id,grant_id' })
       : await supabase.from('funding_saved_matches')
           .delete().eq('user_id', userId).eq('grant_id', id);
 
