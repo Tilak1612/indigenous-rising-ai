@@ -249,14 +249,13 @@ export function NotificationPanel() {
           )}
         </ScrollArea>
 
-        <Separator />
-        <div className="p-2">
-          <Link to="/dashboard/notifications">
-            <Button variant="ghost" className="w-full text-sm">
-              View all notifications
-            </Button>
-          </Link>
-        </div>
+        {/* "View all notifications" used to sit here, linking to
+            /dashboard/notifications — a route that is not registered, so it
+            fell through to the catch-all and rendered NotFound. It also
+            nested a <button> inside an <a>. Removed rather than pointed
+            somewhere arbitrary: the panel already lists the notifications,
+            and advertising a page that does not exist is worse than not
+            offering one. Restore this when the page is built. */}
       </PopoverContent>
     </Popover>
   );

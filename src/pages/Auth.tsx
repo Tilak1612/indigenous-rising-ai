@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { readCampaign, saveSignupIntent, readSignupIntent, type PlanKey } from '@/lib/signup-intent';
 import { trackEvent } from '@/utils/analytics';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
@@ -7,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Check } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { z } from 'zod';
 import { useNavigate, Link } from 'react-router-dom';
@@ -29,7 +31,36 @@ const signupSchema = z.object({
 });
 
 export default function Auth() {
-  const [isLogin, setIsLogin] = useState(true);
+  // Default to SIGN-UP when the visitor arrived via a signup CTA. This was
+  // hardcoded `useState(true)` — sign-in — so "Start free account", the primary
+  // homepage CTA, landed new users on a login form.
+  const [isLogin, setIsLogin] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    const p = new URLSearchParams(window.location.search);
+    const wantsSignup =
+      window.location.pathname === '/signup' ||
+      p.get('intent') === 'signup' ||
+      p.has('plan');
+    return !wantsSignup;
+  });
+
+  // Plan + campaign context, captured on arrival so it survives the
+  // email-verification round trip (a full page load from another origin).
+  const [selectedPlan] = useState<PlanKey | undefined>(() => {
+    if (typeof window === 'undefined') return undefined;
+    return (new URLSearchParams(window.location.search).get('plan') as PlanKey) ?? undefined;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const campaign = readCampaign(window.location.search);
+    const plan = (params.get('plan') as PlanKey) ?? undefined;
+    const billing = (params.get('billing') as 'monthly' | 'annual') ?? undefined;
+    if (plan || billing || Object.keys(campaign).length > 0) {
+      saveSignupIntent({ plan, billing, campaign });
+    }
+  }, []);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [isRecovery, setIsRecovery] = useState(false);
   const [email, setEmail] = useState('');
@@ -206,6 +237,34 @@ export default function Auth() {
                     {isRecovery ? 'Choose a new password for your account' : isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Join our community today'}
                   </p>
                 </div>
+
+                {/* Value recap at the moment of commitment. The registration
+                    screen restated nothing about what the account gives you, so
+                    a visitor who arrived from "Start free account" had to
+                    remember the pitch from two pages back. Shown only while
+                    registering — it is noise on sign-in and password reset.
+                    Every figure here is the enforced one: free tier is
+                    QUOTA_BY_TIER.free = 3 in match-funding-opportunities, and
+                    the free plan genuinely takes no card. */}
+                {!isLogin && !isForgotPassword && !isRecovery && (
+                  <ul className="mb-6 space-y-2 rounded-lg border border-border bg-muted/40 p-4 text-sm">
+                    {[
+                      '3 free funding matches every month',
+                      'Guided business plan, built section by section',
+                      'No credit card required',
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-2">
+                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                        <span className="text-muted-foreground">{item}</span>
+                      </li>
+                    ))}
+                    <li className="pt-1 text-xs text-muted-foreground">
+                      Your data is stored in Canada and you can export or delete it at any
+                      time — see{' '}
+                      <Link to="/data-rights" className="underline">your data rights</Link>.
+                    </li>
+                  </ul>
+                )}
 
                 {isRecovery ? (
                   <form onSubmit={handleSetNewPassword}>
