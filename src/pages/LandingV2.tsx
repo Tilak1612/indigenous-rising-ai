@@ -471,12 +471,20 @@ const LandingV2 = () => {
           <picture>
             <source
               media="(max-width: 767px)"
+              type="image/avif"
+              srcSet="/img/sovereignty-land-mobile.avif"
+              width={1080}
+              height={1440}
+            />
+            <source
+              media="(max-width: 767px)"
               type="image/webp"
               srcSet="/img/sovereignty-land-mobile.webp"
               width={1080}
               height={1440}
             />
             <source media="(max-width: 767px)" srcSet="/img/sovereignty-land-mobile.jpg" width={1080} height={1440} />
+            <source type="image/avif" srcSet="/img/sovereignty-land-desktop.avif" width={1920} height={1080} />
             <source type="image/webp" srcSet="/img/sovereignty-land-desktop.webp" width={1920} height={1080} />
             <img
               src="/img/sovereignty-land-desktop.jpg"
