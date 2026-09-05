@@ -13,6 +13,14 @@ export const FLAGS = {
    * behaviour: the Saved Matches list with no workspace entry points.
    */
   readinessWorkspace: on(import.meta.env.VITE_FEATURE_READINESS_WORKSPACE),
+
+  /**
+   * Consent-gated testimonials (public display). Off until real approved
+   * content exists — the component renders nothing when the list is empty,
+   * so this flag is about the section heading and layout, never about
+   * showing a placeholder.
+   */
+  testimonials: on(import.meta.env.VITE_FEATURE_TESTIMONIALS),
 } as const;
 
 export type FlagName = keyof typeof FLAGS;

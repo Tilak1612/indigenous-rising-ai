@@ -7,6 +7,7 @@ import { Users, Mail, FileText, Settings, LogOut } from 'lucide-react';
 import NewsletterManagement from '@/components/admin/NewsletterManagement';
 import DataRequestsManagement from '@/components/admin/DataRequestsManagement';
 import ContentManagement from '@/components/admin/ContentManagement';
+import TestimonialsManagement from '@/components/admin/TestimonialsManagement';
 
 export default function Admin() {
   const { user, signOut, isAdmin } = useAuth();
@@ -56,11 +57,18 @@ export default function Admin() {
                 <FileText className="w-4 h-4 mr-2" />
                 Data Requests
               </TabsTrigger>
+              <TabsTrigger value="testimonials">
+                Testimonials
+              </TabsTrigger>
               <TabsTrigger value="content">
                 <Settings className="w-4 h-4 mr-2" />
                 Content
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="testimonials">
+              <TestimonialsManagement />
+            </TabsContent>
 
             <TabsContent value="newsletter">
               <NewsletterManagement />
