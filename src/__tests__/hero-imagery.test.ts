@@ -16,9 +16,11 @@ import { readFileSync, existsSync, statSync } from 'node:fs';
 const page = readFileSync('src/pages/LandingV2.tsx', 'utf8');
 
 describe('sovereignty background imagery', () => {
-  test('both art-directed sources exist in webp and jpeg', () => {
+  test('both art-directed sources exist in avif, webp and jpeg', () => {
+    // AVIF is the smallest by a wide margin and must be offered: 12K/8K
+    // against WebP's 20K/12K and JPEG's 100K/52K.
     for (const base of ['sovereignty-land-desktop', 'sovereignty-land-mobile']) {
-      for (const ext of ['webp', 'jpg']) {
+      for (const ext of ['avif', 'webp', 'jpg']) {
         const p = `public/img/${base}.${ext}`;
         expect(existsSync(p), `${p} is missing`).toBe(true);
         // A background that outweighs the page defeats the point.
@@ -114,5 +116,27 @@ describe('final CTA band', () => {
     const m = /rgba\(18,76,59,\.(\d+)\)/.exec(after);
     expect(m, 'the scrim over the CTA image is gone').not.toBeNull();
     expect(Number('0.' + m![1])).toBeGreaterThanOrEqual(0.86);
+  });
+});
+
+describe('every backdrop offers AVIF first', () => {
+  test('no <picture> lists webp ahead of avif', () => {
+    // Source order decides the winner: a webp listed first is always taken
+    // and the avif never used, silently wasting the smaller file.
+    const blocks = page.split('<picture>').slice(1).map((b) => b.split('</picture>')[0]);
+    expect(blocks.length).toBeGreaterThanOrEqual(3);
+    for (const b of blocks) {
+      // Presence first. Skipping blocks without avif meant deleting every
+      // avif <source> passed this test — it only policed ordering.
+      if (b.includes('image/webp')) {
+        expect(b, 'a <picture> offers webp but no avif').toContain('image/avif');
+      }
+      if (!b.includes('image/avif')) continue;
+      const perMedia = b.split('<source').filter((x) => x.includes('type="image/'));
+      const seenWebpBeforeAvif = /image\/webp[\s\S]*?image\/avif/.test(
+        perMedia.filter((x) => x.includes('max-width')).join(''),
+      );
+      expect(seenWebpBeforeAvif, 'webp precedes avif in a media branch').toBe(false);
+    }
   });
 });
