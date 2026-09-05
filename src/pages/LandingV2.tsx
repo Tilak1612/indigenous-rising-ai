@@ -360,42 +360,31 @@ const LandingV2 = () => {
                 <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#6FA37C' }} />
                 <span style={{ marginLeft: 14, fontSize: 12.5, color: '#5C554B' }}>app.indigenousrising.ai / funding</span>
               </div>
-              <div className="ir-mock-grid" style={{ display: 'grid', gridTemplateColumns: '200px 1fr', minHeight: 300 }}>
-                <div style={{ background: '#F4ECE0', borderRight: '1px solid rgba(74,56,38,.08)', padding: '18px 14px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  {[
-                    { icon: 'solar:wallet-money-linear', label: 'Funding', active: true },
-                    { icon: 'solar:document-text-linear', label: 'Business plan' },
-                    { icon: 'solar:square-academic-cap-linear', label: 'Training' },
-                    { icon: 'solar:chart-2-linear', label: 'Growth' },
-                  ].map((it) => (
-                    <div key={it.label} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', borderRadius: 9, background: it.active ? '#124C3B' : 'transparent', color: it.active ? '#F5F0E8' : '#6B5645', fontSize: 13.5, fontWeight: it.active ? 600 : 500 }}>
-                      <Icon icon={it.icon} size={17} /> {it.label}
-                    </div>
-                  ))}
-                </div>
-                <div style={{ padding: '22px 24px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 18 }}>
-                    <div style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 21, color: '#111111', margin: 0 }}>Funding matches</div>
-                    <span style={{ fontSize: 12.5, color: '#5C554B' }}>Sorted by fit</span>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                    {[
-                      { pct: '94%', pctColor: '#124C3B', pctBg: 'rgba(18,76,59,.12)', name: 'Aboriginal Business Financing Program', meta: 'Grant · up to $99,999 · closes in 21 days', tag: 'Eligible', tagColor: '#0F3F31', tagBg: 'rgba(18,76,59,.12)' },
-                      { pct: '88%', pctColor: '#6B4A05', pctBg: 'rgba(215,154,39,.18)', name: 'Indigenous Growth Fund — Working Capital', meta: 'Loan · flexible terms · rolling intake', tag: 'Check terms', tagColor: '#6B4A05', tagBg: 'rgba(215,154,39,.18)' },
-                      { pct: '81%', pctColor: '#124C3B', pctBg: 'rgba(18,76,59,.12)', name: 'Community Futures — Start-up Support', meta: 'Loan + mentorship · regional', tag: 'Saved', tagColor: '#3D3A34', tagBg: 'rgba(61,58,52,.12)' },
-                    ].map((m) => (
-                      <div key={m.name} style={{ border: '1px solid rgba(74,56,38,.1)', borderRadius: 13, padding: '15px 16px', display: 'flex', alignItems: 'center', gap: 14 }}>
-                        <div style={{ width: 46, height: 46, borderRadius: 11, background: m.pctBg, color: m.pctColor, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontWeight: 700, fontSize: 14 }}>{m.pct}</div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontWeight: 600, color: '#111111', fontSize: 14.5 }}>{m.name}</div>
-                          <div style={{ fontSize: 12.5, color: '#5C554B', marginTop: 3 }}>{m.meta}</div>
-                        </div>
-                        <span style={{ fontSize: 12, fontWeight: 600, color: m.tagColor, background: m.tagBg, padding: '5px 10px', borderRadius: 100, whiteSpace: 'nowrap' }}>{m.tag}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              {/* A REAL screenshot of /funding, inside the browser frame above.
+                  What stood here was a hand-built mock whose match scores —
+                  94%, 88%, 81% — were invented and attached to real programme
+                  names. That is a fabricated business result on the most-seen
+                  surface of the site, and no amount of styling makes it true.
+                  This is the actual product with actual programmes and actual
+                  amounts, captured from production.
+
+                  Art-directed: the 1280-wide capture is unreadable on a phone,
+                  so below 768px a tighter 640 crop is served instead of
+                  shrinking the whole thing to illegibility. */}
+              <picture>
+                <source media="(max-width: 767px)" type="image/webp" srcSet="/img/shot-funding-640.webp" />
+                <source type="image/avif" srcSet="/img/shot-funding-1280.avif" />
+                <source type="image/webp" srcSet="/img/shot-funding-1280.webp" />
+                <img
+                  src="/img/shot-funding-1280.jpg"
+                  alt="The funding page of Indigenous Rising AI, listing current programmes with their funder, amount range and intake status."
+                  width={1280}
+                  height={860}
+                  loading="lazy"
+                  decoding="async"
+                  style={{ display: 'block', width: '100%', height: 'auto', borderTop: '1px solid rgba(74,56,38,.08)' }}
+                />
+              </picture>
             </div>
             <div style={{ height: 90 }} />
           </div>
@@ -551,7 +540,7 @@ const LandingV2 = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 22 }}>
                   <div>
                     <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 23, color: '#111111', margin: 0 }}>Funding Navigator</h3>
-                    <p style={{ fontSize: 14, color: '#5C554B', margin: '5px 0 0' }}>12 programs match your profile · 3 closing soon</p>
+                    <p style={{ fontSize: 14, color: '#5C554B', margin: '5px 0 0' }}>Programs matched to your profile, sorted by fit</p>
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <span style={{ fontSize: 13, color: '#6B5645', border: '1px solid rgba(74,56,38,.15)', padding: '8px 14px', borderRadius: 10 }}>Grants</span>
@@ -779,6 +768,30 @@ const LandingV2 = () => {
         {/* ===== FINAL CTA ===== */}
         <section id="start" style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 24px 100px' }}>
           <div data-reveal style={{ background: '#124C3B', borderRadius: 26, padding: 'clamp(40px,6vw,76px)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            {/* Prairie at golden hour, decorative, behind a heavy scrim. The
+                21:9 desktop frame is nearly a letterbox strip on a phone, so
+                a square composition is served below 768px instead of cropping.
+                Contrast over the brightest pixel is asserted in
+                hero-imagery.test.ts — the CTA text is the whole point of the
+                section and must never be the thing that degrades. */}
+            <picture>
+              <source media="(max-width: 767px)" type="image/avif" srcSet="/img/cta-prairie-mobile.avif" />
+              <source media="(max-width: 767px)" type="image/webp" srcSet="/img/cta-prairie-mobile.webp" />
+              <source media="(max-width: 767px)" srcSet="/img/cta-prairie-mobile.jpg" />
+              <source type="image/avif" srcSet="/img/cta-prairie-desktop.avif" />
+              <source type="image/webp" srcSet="/img/cta-prairie-desktop.webp" />
+              <img
+                src="/img/cta-prairie-desktop.jpg"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                width={1920}
+                height={720}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 60%' }}
+              />
+            </picture>
+            <div style={{ position: 'absolute', inset: 0, background: 'rgba(18,76,59,.86)' }} />
             <div style={{ position: 'absolute', top: -80, left: -40, width: 300, height: 300, borderRadius: '50%', background: 'rgba(255,255,255,.1)', filter: 'blur(60px)' }} />
             <div style={{ position: 'absolute', bottom: -100, right: -40, width: 320, height: 320, borderRadius: '50%', background: 'rgba(36,25,16,.22)', filter: 'blur(80px)' }} />
             <div style={{ position: 'relative', zIndex: 1 }}>
