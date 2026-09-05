@@ -56,15 +56,15 @@ const MARKETING = [
     { q: 'Are Indigenous business grants the same as loans?', a: 'No. Grants and non-repayable contributions do not have to be paid back (subject to using funds for the approved purpose and meeting reporting requirements), while loans do. Many entrepreneurs combine both.' },
     { q: 'How do I find the grants I am actually eligible for?', a: 'Start with the guide for your province and your community, then use Indigenous Rising AI’s funding matching to scan programs against your profile. A clear business plan makes every application stronger.' },
   ] },
-  { p: '/contact', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
+  { p: '/contact', img: '/og-contact.jpg', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
   { p: '/faq', t: 'Frequently asked questions | Indigenous Rising AI', d: 'Answers about funding matching, business planning, OCAP® data sovereignty, pricing, and what is live today versus coming soon on Indigenous Rising AI.' },
   { p: '/success-stories', t: 'Success stories | Indigenous Rising AI', d: 'Stories from Indigenous entrepreneurs growing their businesses with funding, planning, and training support — shared with permission.' },
   { p: '/careers', t: 'Careers | Indigenous Rising AI', d: 'Join the team building the AI platform for Indigenous business growth. See open roles and how we work with communities.' },
   { p: '/training', t: 'AI training program | Indigenous Rising AI', d: 'Live training on AI, data sovereignty, and practical business skills for Indigenous communities — monthly sessions and a growing library.' },
   { p: '/community', t: 'Community forum | Indigenous Rising AI', d: 'Connect with other Indigenous entrepreneurs — ask questions, share wins, and find resources in the Indigenous Rising community.' },
-  { p: '/compliance', t: 'Canadian Regulatory Alignment - Indigenous Rising AI', d: 'How Indigenous Rising AI aligns with Canadian regulation — PIPEDA, CASL, AODA — and is built around OCAP® data sovereignty. Not a third-party certification.' },
-  { p: '/privacy', t: 'Privacy Policy | Indigenous Rising AI', d: 'How Indigenous Rising AI collects, uses, and protects your information, with data stored in Canada and full export available at any time.' },
-  { p: '/terms', t: 'Terms of Service | Indigenous Rising AI', d: 'The terms that govern your use of the Indigenous Rising AI platform.' },
+  { p: '/compliance', img: '/og-compliance.jpg', t: 'Canadian Regulatory Alignment - Indigenous Rising AI', d: 'How Indigenous Rising AI aligns with Canadian regulation — PIPEDA, CASL, AODA — and is built around OCAP® data sovereignty. Not a third-party certification.' },
+  { p: '/privacy', img: '/og-privacy.jpg', t: 'Privacy Policy | Indigenous Rising AI', d: 'How Indigenous Rising AI collects, uses, and protects your information, with data stored in Canada and full export available at any time.' },
+  { p: '/terms', img: '/og-terms.jpg', t: 'Terms of Service | Indigenous Rising AI', d: 'The terms that govern your use of the Indigenous Rising AI platform.' },
   { p: '/accessibility', t: 'Accessibility statement | Indigenous Rising AI', d: 'Our commitment to an accessible platform for all Indigenous entrepreneurs, and how to reach us with accessibility feedback.' },
   { p: '/cookies', t: 'Cookie Policy | Indigenous Rising AI', d: 'How Indigenous Rising AI uses cookies and similar technologies, and the choices available to you.' },
   // These five render fine but were absent from MARKETING, so no per-route HTML
@@ -77,7 +77,7 @@ const MARKETING = [
   { p: '/impact', t: 'Measure your community impact | Indigenous Rising AI', d: 'Track and report the community impact of your Indigenous business — jobs, training, and local spend — in a form funders and your Nation recognise.' },
   { p: '/plan', t: 'Build your business plan with AI guidance | Indigenous Rising AI', d: 'Write a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Free to start, no credit card.' },
   { p: '/track-request', t: 'Track a data request | Indigenous Rising AI', d: 'Check the status of a data access, export, correction, or deletion request — OCAP® Possession in practice.', robots: 'noindex, nofollow' },
-  { p: '/data-rights', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
+  { p: '/data-rights', img: '/og-data-rights.jpg', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
 ];
 
 // ── Load blog posts via esbuild, stubbing asset imports + the @/ alias ──────
@@ -230,7 +230,18 @@ async function main() {
           })),
         });
       }
-      await writeRoute(template, { p: m.p, url, title: m.t, description: m.d, robots: m.robots, ...(jsonLd.length ? { jsonLd } : {}) });
+      await writeRoute(template, {
+        p: m.p, url, title: m.t, description: m.d, robots: m.robots,
+        // Per-route social image. applyHead OVERWRITES og:image on every
+        // route, so without this the page component's own <meta og:image>
+        // is discarded at build time and every marketing page shipped
+        // og-home.jpg — including the five pages that already had bespoke
+        // images sitting in public/ and correctly referenced in their
+        // components. Blog posts already did this (see ogForPost below);
+        // marketing routes simply had no field for it.
+        ...(m.img ? { ogImage: `${BASE}${m.img}` } : {}),
+        ...(jsonLd.length ? { jsonLd } : {}),
+      });
       count++;
       if (!/noindex/i.test(m.robots || '')) {
         sitemap.push({ loc: url, changefreq: m.p === '/' ? 'weekly' : 'monthly', priority: m.p === '/' ? '1.0' : '0.8' });
