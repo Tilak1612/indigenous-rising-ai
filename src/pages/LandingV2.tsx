@@ -472,6 +472,35 @@ const LandingV2 = () => {
 
         {/* ===== DATA SOVEREIGNTY ===== */}
         <section id="sovereignty" style={{ background: '#241910', color: '#F3E9DB', position: 'relative', overflow: 'hidden' }}>
+          {/* Boreal forest at dusk, behind a heavy scrim. Decorative only —
+              empty alt and aria-hidden, because it carries no information the
+              heading does not already state. Art-directed per breakpoint: the
+              16:9 desktop frame crops the treeline out at phone widths, so the
+              vertical composition is a separate source rather than a crop.
+              Lazy-loaded and sized so it reserves no layout. The scrim keeps
+              the reversed cream text above 4.5:1 — measured, not assumed. */}
+          <picture>
+            <source
+              media="(max-width: 767px)"
+              type="image/webp"
+              srcSet="/img/sovereignty-land-mobile.webp"
+              width={1080}
+              height={1440}
+            />
+            <source media="(max-width: 767px)" srcSet="/img/sovereignty-land-mobile.jpg" width={1080} height={1440} />
+            <source type="image/webp" srcSet="/img/sovereignty-land-desktop.webp" width={1920} height={1080} />
+            <img
+              src="/img/sovereignty-land-desktop.jpg"
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              width={1920}
+              height={1080}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 35%' }}
+            />
+          </picture>
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(36,25,16,.88)' }} />
           <div style={{ position: 'absolute', top: -120, right: -80, width: 380, height: 380, borderRadius: '50%', background: 'rgba(18,76,59,.18)', filter: 'blur(110px)' }} />
           <div style={{ position: 'absolute', bottom: -140, left: -60, width: 360, height: 360, borderRadius: '50%', background: 'rgba(62,107,79,.22)', filter: 'blur(120px)' }} />
           <div style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '100px 24px' }}>
