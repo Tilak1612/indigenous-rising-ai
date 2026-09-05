@@ -44,6 +44,21 @@
   transform: none;
 }
 
+/* Someone who asks for reduced motion should not be shown a fade-in at all,
+   and should never be waiting on JavaScript to see the page. The global rule
+   in index.css collapses the transition DURATION, but the element still
+   starts at opacity 0 and stays there until the IntersectionObserver adds
+   .irv2-revealed — so 25 sections of the homepage are invisible until a
+   script runs. This makes the content unconditionally visible for those
+   users; the reveal is decoration, not layout. */
+@media (prefers-reduced-motion: reduce) {
+  .irv2-root [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ----- hover states (prototype style-hover attributes) ----- */
 .irv2-hov-cta:hover            { background: #0F3F31 !important; }
 .irv2-hov-cta-lift:hover       { background: #0F3F31 !important; transform: translateY(-2px); }
