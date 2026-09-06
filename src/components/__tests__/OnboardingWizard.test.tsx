@@ -10,11 +10,14 @@ const toastError = vi.fn();
 vi.mock('sonner', () => ({ toast: { error: (...a: unknown[]) => toastError(...a), success: vi.fn() } }));
 
 const upsertMock = vi.fn(() => Promise.resolve({ error: null }));
+const profilesUpdateMock = vi.fn(() => Promise.resolve({ error: null }));
 let grantsResult: unknown = { data: [], error: null };
 vi.mock('@/lib/supabase', () => ({
   supabase: {
     from: (t: string) =>
-      t === 'business_profiles'
+      t === 'profiles'
+        ? { update: (...a: unknown[]) => ({ eq: () => profilesUpdateMock(...a) }) }
+      : t === 'business_profiles'
         ? { upsert: (...a: unknown[]) => upsertMock(...a) }
         : { select: () => ({ eq: () => Promise.resolve(grantsResult) }) },
   },
@@ -27,12 +30,12 @@ import OnboardingWizard from '../OnboardingWizard';
 const GRANT = {
   id: 'g1', name: 'Aboriginal Business Financing Program', funder: 'NACCA',
   funding_type: 'grant', is_repayable: false, source_url: 'https://nacca.ca',
-  last_verified: '2026-08-01', provinces: ['ON'], industries: ['Technology'],
+  last_verified: '2026-08-01', provinces: ['ON'], industries: ['Construction'],
   business_stages: ['startup'],
 };
 
 const answerAll = async (u: ReturnType<typeof userEvent.setup>) => {
-  const picks = ['First Nations', 'ON', 'Starting — first customers', 'Technology', 'No revenue yet', 'Find funding'];
+  const picks = ['First Nations', 'ON', 'Starting — first customers', 'Construction', 'No revenue yet', 'Find funding'];
   for (const choice of picks) {
     await u.click(screen.getByRole('combobox'));
     await u.click(await screen.findByRole('option', { name: choice }));
@@ -43,7 +46,7 @@ const answerAll = async (u: ReturnType<typeof userEvent.setup>) => {
 
 beforeEach(() => {
   localStorage.clear();
-  upsertMock.mockClear(); toastError.mockClear();
+  upsertMock.mockClear(); profilesUpdateMock.mockClear(); toastError.mockClear();
   grantsResult = { data: [GRANT], error: null };
 });
 afterEach(() => localStorage.clear());
@@ -85,7 +88,7 @@ describe('onboarding asks six questions and delivers a first win', () => {
     // The old wizard wrote NOTHING here; answers were collected and discarded.
     expect(payload).toMatchObject({
       user_id: 'u1', ownership_type: 'first_nations', province: 'ON',
-      stage: 'startup', sector: 'Technology', revenue_range: 'pre_revenue', goals: 'find_funding',
+      stage: 'startup', sector: 'Construction', revenue_range: 'pre_revenue', goals: 'find_funding',
     });
   });
 
@@ -97,14 +100,14 @@ describe('onboarding asks six questions and delivers a first win', () => {
     expect(await screen.findByText(/Aboriginal Business Financing Program/)).toBeInTheDocument();
     // A match without a rationale is the thing P0-4 forbids.
     expect(screen.getByText(/Open in ON/)).toBeInTheDocument();
-    expect(screen.getByText(/Covers Technology/)).toBeInTheDocument();
+    expect(screen.getByText(/Covers Construction/)).toBeInTheDocument();
     expect(screen.getByText(/last verified 2026-08-01/i)).toBeInTheDocument();
   });
 
   test('marks skipped identity as not assessed rather than guessing', async () => {
     const u = userEvent.setup();
     renderWizard();
-    const picks = ['Prefer not to say', 'ON', 'Starting — first customers', 'Technology', 'No revenue yet', 'Find funding'];
+    const picks = ['Prefer not to say', 'ON', 'Starting — first customers', 'Construction', 'No revenue yet', 'Find funding'];
     for (const choice of picks) {
       await u.click(screen.getByRole('combobox'));
       await u.click(await screen.findByRole('option', { name: choice }));
@@ -123,5 +126,27 @@ describe('onboarding asks six questions and delivers a first win', () => {
     await u.click(screen.getByRole('button', { name: /see my matches/i }));
     await waitFor(() => expect(toastError).toHaveBeenCalled());
     expect(screen.queryByText(/Here is what you can apply for/)).not.toBeInTheDocument();
+  });
+});
+
+describe('onboarding feeds the matcher', () => {
+  test('it also writes the columns match-funding-opportunities reads', async () => {
+    // The wizard wrote only business_profiles.{province,stage,sector} while
+    // the matcher reads profiles.{territory,industry,business_stage}. A user
+    // finished all six questions and matching still answered "Complete your
+    // profile to find matches" — verified live, HTTP 400 with
+    // missing_fields ["territory","industry","business_stage"].
+    const user = userEvent.setup();
+    renderWizard();
+    await answerAll(user);
+    // answerAll only answers the six questions; finishing is a separate click.
+    await user.click(screen.getByRole('button', { name: /see my matches/i }));
+    await waitFor(() => expect(profilesUpdateMock).toHaveBeenCalledTimes(1));
+    const [payload] = profilesUpdateMock.mock.calls[0] as [Record<string, unknown>];
+    expect(payload).toMatchObject({
+      territory: 'ON',
+      industry: 'Construction',
+      business_stage: 'startup',
+    });
   });
 });

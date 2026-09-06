@@ -32,13 +32,30 @@ const IDENTITY = [
   { value: 'prefer_not_to_say', label: 'Prefer not to say' },
 ];
 const PROVINCES = ['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'];
+// These VALUES are matched against grants.business_stages with an exact
+// includes(), so they are the grant vocabulary verbatim, not our own words.
+// They previously read idea / startup / early / established, of which only
+// two existed in the data — 'idea' and 'early' matched nothing, and 'growth'
+// was never offered at all, so those users could not match a grant that
+// named their stage. Labels stay human; values must not.
 const STAGES = [
-  { value: 'idea', label: 'Idea — not started yet' },
+  { value: 'ideation', label: 'Idea — not started yet' },
   { value: 'startup', label: 'Starting — first customers' },
-  { value: 'early', label: 'Early — growing steadily' },
+  { value: 'early-stage', label: 'Early — growing steadily' },
+  { value: 'growth', label: 'Growing — scaling up' },
   { value: 'established', label: 'Established — several years in' },
 ];
-const SECTORS = ['Agriculture','Arts & Culture','Construction','Energy','Food & Beverage','Health','Manufacturing','Professional Services','Retail','Technology','Tourism','Transportation','Other'];
+// Same rule as STAGES: matched verbatim against grants.industries. The list
+// below is the vocabulary the grant data actually uses. It previously offered
+// thirteen sectors of which only two ("Construction", "Transportation")
+// existed in the data — "Agriculture" never matched "Agriculture & Forestry",
+// "Tourism" never matched "Hospitality & Tourism", and seven of the options
+// appeared in no grant at all.
+//
+// A sector nobody funds yet is still a real answer, so "Other" is offered and
+// stored as null. The matcher treats a null industry as 'unknown', never
+// 'unmet' — not being listed must not read as a rejection.
+const SECTORS = ['Agriculture & Forestry','Arts & Crafts','Construction','Energy & Mining','Hospitality & Tourism','Transportation','Other'];
 const REVENUE = [
   { value: 'pre_revenue', label: 'No revenue yet' },
   { value: 'under_50k', label: 'Under $50,000' },
@@ -151,6 +168,27 @@ const OnboardingWizard: React.FC = () => {
         { onConflict: 'user_id' }
       );
       if (error) throw error;
+
+      // The matcher reads public.profiles.{territory,industry,business_stage}
+      // — a DIFFERENT TABLE from the one above. Writing only
+      // business_profiles meant a user finished all six questions and
+      // match-funding-opportunities still answered "Complete your profile to
+      // find matches", because the columns it reads were never populated.
+      // Verified against production: the function returned HTTP 400 with
+      // missing_fields ["territory","industry","business_stage"] for a user
+      // whose business_profiles row was complete.
+      //
+      // business_profiles stays as the richer record (revenue, goals) that
+      // the profile page and data export use; profiles carries the three
+      // fields matching depends on.
+      const { error: pErr } = await supabase.from('profiles').update({
+        territory: answers.province || null,
+        // 'Other' is stored as null so the matcher reports 'unknown' rather
+        // than 'unmet' — a sector we have no grants for is not a rejection.
+        industry: answers.sector && answers.sector !== 'Other' ? answers.sector : null,
+        business_stage: answers.stage || null,
+      }).eq('id', user.id);
+      if (pErr) throw pErr;
 
       const { data, error: gErr } = await supabase
         .from('grants')

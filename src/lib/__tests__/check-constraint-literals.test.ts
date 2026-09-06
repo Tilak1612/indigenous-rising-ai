@@ -49,6 +49,9 @@ const CONSTRAINTS: Record<string, Record<string, string[]>> = {
  * option lists to public.profiles and report two violations that were not
  * real: business_profiles carries no CHECK constraints at all.
  */
+const referencesColumn = (src: string, col: string) =>
+  new RegExp('(?<![A-Za-z0-9_])' + col + '(?![A-Za-z0-9_])').test(src);
+
 const referencesTable = (src: string, table: string) =>
   new RegExp('(?<![A-Za-z0-9_])' + table + '(?![A-Za-z0-9_])').test(src);
 
@@ -147,6 +150,13 @@ describe('option lists cannot drift from the constraint', () => {
       for (const cand of candidates) {
         for (const table of tables) {
           for (const [col, allowed] of Object.entries(CONSTRAINTS[table])) {
+            // A file that never names the column cannot be feeding it.
+            // Shared members alone are not enough: OnboardingWizard offers
+            // first_nations / metis / inuit, which overlap
+            // profiles.indigenous_identity, but it writes ownership_type on
+            // a different table and never touches that column. Without this
+            // the sweep reported a violation that could not happen.
+            if (!referencesColumn(src, col)) continue;
             const overlap = cand.members.filter((v) => allowed.includes(v));
             // Two or more shared members means this list is describing that
             // column, not coincidentally sharing a word.
