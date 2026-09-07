@@ -22,6 +22,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Data sovereignty', to: '/#sovereignty' },
       { name: 'Training', to: '/training' },
       { name: 'Pricing', to: '/pricing' },
+      { name: 'Book a demo', to: '/demo' },
     ],
   },
   {

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import DemoCta from '@/components/DemoCta';
+import { signupHref } from '@/lib/signup-intent';
 import { Menu, X, Users, TrendingUp, Target, Award, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -81,8 +83,12 @@ const Navigation = () => {
                 >
                   Log in
                 </Link>
+                <DemoCta
+                  placement="nav"
+                  className="hidden md:inline-flex items-center text-sm font-medium text-[#3D3A34] hover:text-[#111111] transition"
+                />
                 <Link
-                  to="/auth"
+                  to={signupHref()}
                   className="hidden md:inline-flex items-center rounded-[10px] bg-[#124C3B] px-5 py-2.5 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
                 >
                   Start free account
@@ -142,9 +148,14 @@ const Navigation = () => {
             );
           })}
 
-          <div className="pt-4 px-2 border-t border-[#3D3A34]/10 mt-4">
+          <div className="pt-4 px-2 border-t border-[#3D3A34]/10 mt-4 space-y-2">
+            <DemoCta
+              placement="nav_mobile"
+              onNavigate={() => setIsOpen(false)}
+              className="flex items-center justify-center rounded-[10px] border border-[#124C3B]/25 px-5 py-3 text-sm font-semibold text-[#124C3B] hover:bg-[#124C3B]/5 transition"
+            />
             <Link
-              to={user ? '/dashboard' : '/auth'}
+              to={user ? '/dashboard' : signupHref()}
               onClick={() => setIsOpen(false)}
               className="flex items-center justify-center rounded-[10px] bg-[#124C3B] px-5 py-3 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
             >

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AmbientVideo from '@/components/media/AmbientVideo';
 import { signupHref } from '@/lib/signup-intent';
+import DemoCta from '@/components/DemoCta';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
@@ -347,6 +348,13 @@ const LandingV2 = () => {
                 See the platform
                 <Icon icon="solar:play-circle-linear" size={19} />
               </a>
+              <DemoCta
+                placement="hero"
+                className="irv2-hov-link"
+                style={{ color: 'var(--ir-green)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 14px', display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(18,76,59,.28)', borderRadius: 12 }}
+              >
+                Book a demo
+              </DemoCta>
             </div>
             <p data-reveal style={{ marginTop: 20, fontSize: 13.5, color: 'var(--ir-stone)', display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:check-circle-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Free to start</span>
@@ -737,7 +745,10 @@ const LandingV2 = () => {
                   Maadaadiziwin: { to: signupHref('Maadaadiziwin'), label: 'Start free account', variant: 'dark' },
                   Ogichidaakwe: { to: signupHref('Ogichidaakwe'), label: 'Start free account', variant: 'terracotta' },
                   Bimaadiziwin: { to: signupHref('Bimaadiziwin'), label: 'Get Started', variant: 'outline' },
-                  Gimishoomis: { to: '/contact', label: 'Talk to our team', variant: 'outline' },
+                  // Enterprise has no self-serve checkout, so its action is a
+                  // conversation. A booked demo is a better first step than a
+                  // contact form for a Nation evaluating the platform.
+                  Gimishoomis: { to: '/demo', label: 'Book a demo', variant: 'outline' },
                 }[p.key];
                 const btnBase = { textAlign: 'center' as const, textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 };
                 const btnStyle = cta.variant === 'dark'
