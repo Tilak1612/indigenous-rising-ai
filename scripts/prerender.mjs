@@ -56,6 +56,7 @@ const MARKETING = [
     { q: 'Are Indigenous business grants the same as loans?', a: 'No. Grants and non-repayable contributions do not have to be paid back (subject to using funds for the approved purpose and meeting reporting requirements), while loans do. Many entrepreneurs combine both.' },
     { q: 'How do I find the grants I am actually eligible for?', a: 'Start with the guide for your province and your community, then use Indigenous Rising AI’s funding matching to scan programs against your profile. A clear business plan makes every application stronger.' },
   ] },
+  { p: '/demo', t: 'Book a demo | Indigenous Rising AI', d: 'Book a 30-minute walkthrough of Indigenous Rising AI — funding matching, the business plan assistant, and the controls that decide who sees your data.', breadcrumb: 'Book a demo' },
   { p: '/contact', img: '/og-contact.jpg', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
   { p: '/faq', t: 'Frequently asked questions | Indigenous Rising AI', d: 'Answers about funding matching, business planning, OCAP® data sovereignty, pricing, and what is live today versus coming soon on Indigenous Rising AI.' },
   { p: '/success-stories', t: 'Success stories | Indigenous Rising AI', d: 'Stories from Indigenous entrepreneurs growing their businesses with funding, planning, and training support — shared with permission.' },

@@ -44,9 +44,16 @@ describe('homepage pricing CTAs preserve signup intent', () => {
     expect(href).toContain('plan=Ogichidaakwe');
   });
 
-  test('the enterprise plan still routes to contact, not signup', () => {
-    // It has no self-serve checkout; sending it to signup would be wrong.
-    expect(ctaBlock()).toContain("Gimishoomis: { to: '/contact'");
+  test('the enterprise plan never routes to self-serve signup', () => {
+    // It has no self-serve checkout, so its action must be a conversation.
+    // It pointed at /contact and now points at /demo — either is correct;
+    // what must never happen is a signup URL, which would put a Nation
+    // through a card-less trial flow instead of talking to someone.
+    const block = ctaBlock();
+    const line = block.split('\n').find((l) => l.includes('Gimishoomis')) ?? '';
+    expect(line, 'no enterprise CTA found').not.toBe('');
+    expect(line, 'enterprise was sent to signup').not.toMatch(/signupHref|\/signup/);
+    expect(line).toMatch(/'\/(contact|demo)'/);
   });
 
   test('the header Log in link still points at /auth', () => {

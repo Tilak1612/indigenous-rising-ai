@@ -51,6 +51,7 @@ const FundingAlertUnsubscribe = lazy(() => import("./pages/FundingAlertUnsubscri
 const PublicPlan = lazy(() => import("./pages/PublicPlan"));
 const PublicImpact = lazy(() => import("./pages/PublicImpact"));
 const SuccessStories = lazy(() => import("./pages/SuccessStories"));
+const BookDemo = lazy(() => import("./pages/BookDemo"));
 const Careers = lazy(() => import("./pages/Careers"));
 const Community = lazy(() => import("./pages/Community"));
 const CommunityPost = lazy(() => import("./pages/CommunityPost"));
@@ -343,6 +344,14 @@ export const AppTree = () => (
                     <ProtectedRoute requirePaid>
                       <ReadinessWorkspace />
                     </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/demo"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <BookDemo />
                   </Suspense>
                 }
               />
