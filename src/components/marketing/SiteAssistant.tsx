@@ -1,7 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, X, Send, Loader2, Sparkles } from 'lucide-react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import {
+  subscribeConsentOverlay,
+  isConsentOverlayOpen,
+  isConsentOverlayOpenOnServer,
+} from '@/lib/consent-overlay';
 
 // Public marketing chatbot widget ("Ask Agent"). Talks to the hardened
 // site-assistant Supabase Edge Function. Renders answers as PLAIN TEXT (the
@@ -80,13 +85,23 @@ const SiteAssistant = () => {
     }
   };
 
+  // Hidden while a consent surface owns the bottom of the viewport. Both sit
+  // over this button, so on a first visit it was visible and dead — measured
+  // on production, elementFromPoint at its centre returned the consent UI at
+  // every width tested.
+  const consentOverlayOpen = useSyncExternalStore(
+    subscribeConsentOverlay,
+    isConsentOverlayOpen,
+    isConsentOverlayOpenOnServer,
+  );
+
   const lastAssistant = [...messages].reverse().find((m) => m.role === 'assistant');
   const chips = messages.length === 0 ? STARTERS : lastAssistant ? nextChips(lastAssistant.content, asked.current) : [];
 
   return (
     <>
       {/* Launcher */}
-      {!open && (
+      {!open && !consentOverlayOpen && (
         <button
           onClick={() => setOpen(true)}
           aria-label="Ask Agent about Indigenous Rising AI"

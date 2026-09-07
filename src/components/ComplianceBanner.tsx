@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, X } from 'lucide-react';
+import { setConsentOverlay } from '@/lib/consent-overlay';
 
 /**
  * Slim, fixed-bottom compliance notice. Replaces the previous large dialog
@@ -20,6 +21,12 @@ const ComplianceBanner = () => {
       setIsVisible(true);
     }
   }, []);
+
+  // The strip covers the assistant launcher's slot while it is up.
+  useEffect(() => {
+    setConsentOverlay('compliance-banner', isVisible);
+    return () => setConsentOverlay('compliance-banner', false);
+  }, [isVisible]);
 
   const handleAccept = () => {
     localStorage.setItem('compliance-accepted', 'true');

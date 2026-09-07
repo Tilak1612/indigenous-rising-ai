@@ -4,6 +4,7 @@ import { Card } from './ui/card';
 import { Switch } from './ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Cookie, Settings, ChevronDown, ChevronUp } from 'lucide-react';
+import { setConsentOverlay } from '@/lib/consent-overlay';
 
 interface CookiePreferences {
   necessary: boolean;
@@ -32,6 +33,14 @@ const CookieConsent: React.FC = () => {
       setPreferences(savedPreferences);
     }
   }, []);
+
+  // Only the full card covers the launcher. Minimized, this is a 44px icon
+  // at bottom-4, clear of the launcher's bottom-20 slot.
+  useEffect(() => {
+    const covering = showBanner && !isMinimized;
+    setConsentOverlay('cookie-consent', covering);
+    return () => setConsentOverlay('cookie-consent', false);
+  }, [showBanner, isMinimized]);
 
   const handleAcceptAll = () => {
     const allAccepted = {
