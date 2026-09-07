@@ -95,7 +95,13 @@ const SiteAssistant = () => {
           className="fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-elevated px-4 py-3 hover:opacity-90 transition-opacity"
         >
           <MessageCircle className="w-5 h-5" />
-          <span className="text-sm font-semibold hidden sm:inline">Ask Agent</span>
+          {/* Shown at every width. It was `hidden sm:inline`, so below 640px
+              the launcher was an unlabelled icon and the name existed only in
+              the aria-label — visible to a screen reader, invisible to
+              everyone else. Measured at 375px: button 52px, no text. The
+              labelled pill is 130px, which still leaves most of a 320px
+              screen clear. */}
+          <span className="text-sm font-semibold">Ask Agent</span>
         </button>
       )}
 
