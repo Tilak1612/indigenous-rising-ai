@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import AmbientVideo from '@/components/media/AmbientVideo';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
@@ -352,8 +353,29 @@ const LandingV2 = () => {
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:lock-keyhole-bold" size={15} style={{ color: '#124C3B' }} /> Export anytime</span>
             </p>
 
-            {/* Hero product mock */}
-            <div data-reveal style={{ marginTop: 64, maxWidth: 980, marginLeft: 'auto', marginRight: 'auto', background: '#FFFDF9', border: '1px solid rgba(74,56,38,.1)', borderRadius: 20, boxShadow: '0 30px 80px -30px rgba(44,30,18,.35)', overflow: 'hidden', textAlign: 'left' }}>
+            {/* Hero product mock, seated on a slow timber loop.
+                The motion is atmosphere only: it sits BEHIND the browser
+                frame and never under the headline or the screenshot, so
+                nothing readable moves. AmbientVideo does not render a
+                <video> at all under reduced motion, below 768px, on
+                Save-Data, or before it scrolls into view — it shows the
+                poster instead, so a phone never spends the 120KB. */}
+            <div data-reveal style={{ position: 'relative', marginTop: 64, maxWidth: 1060, marginLeft: 'auto', marginRight: 'auto' }}>
+              <AmbientVideo
+                webm="/video/hero-ambient.webm"
+                mp4="/video/hero-ambient.mp4"
+                poster="/video/hero-ambient-poster.jpg"
+                posterAvif="/video/hero-ambient-poster.avif"
+                posterWebp="/video/hero-ambient-poster.webp"
+                style={{
+                  position: 'absolute', inset: '-6% -3%', borderRadius: 28,
+                  overflow: 'hidden', opacity: 0.28, filter: 'saturate(.85)',
+                  // Fades out at the edges so it reads as depth, not a panel.
+                  maskImage: 'radial-gradient(120% 90% at 50% 45%, #000 55%, transparent 100%)',
+                  WebkitMaskImage: 'radial-gradient(120% 90% at 50% 45%, #000 55%, transparent 100%)',
+                }}
+              />
+            <div style={{ position: 'relative', maxWidth: 980, marginLeft: 'auto', marginRight: 'auto', background: '#FFFDF9', border: '1px solid rgba(74,56,38,.1)', borderRadius: 20, boxShadow: '0 30px 80px -30px rgba(44,30,18,.35)', overflow: 'hidden', textAlign: 'left' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: '1px solid rgba(74,56,38,.08)', background: '#F7F1E8' }}>
                 <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#D9694A' }} />
                 <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#E0B23E' }} />
@@ -385,6 +407,7 @@ const LandingV2 = () => {
                   style={{ display: 'block', width: '100%', height: 'auto', borderTop: '1px solid rgba(74,56,38,.08)' }}
                 />
               </picture>
+            </div>
             </div>
             <div style={{ height: 90 }} />
           </div>
