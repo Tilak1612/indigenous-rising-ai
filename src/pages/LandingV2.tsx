@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AmbientVideo from '@/components/media/AmbientVideo';
+import { signupHref } from '@/lib/signup-intent';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
@@ -723,10 +724,19 @@ const LandingV2 = () => {
             <div className="ir-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 20, marginTop: 50, alignItems: 'stretch' }}>
               {PLANS.map((p) => {
                 const dark = p.popular;
+                // These pointed at /auth, which defaults to SIGN IN — so
+                // "Start free account" on a pricing card put a brand new
+                // visitor on a login form, and the plan they clicked was
+                // dropped. That is the P0-0 defect; it was fixed in
+                // PricingSection.tsx but this page carries its own pricing
+                // block, which nobody updated. signupHref() lands on the
+                // registration form with the plan preserved through
+                // verification. "Log in" above and "Talk to our team" below
+                // are correct as they are.
                 const cta = {
-                  Maadaadiziwin: { to: '/auth', label: 'Start free account', variant: 'dark' },
-                  Ogichidaakwe: { to: '/auth', label: 'Start free account', variant: 'terracotta' },
-                  Bimaadiziwin: { to: '/auth', label: 'Get Started', variant: 'outline' },
+                  Maadaadiziwin: { to: signupHref('Maadaadiziwin'), label: 'Start free account', variant: 'dark' },
+                  Ogichidaakwe: { to: signupHref('Ogichidaakwe'), label: 'Start free account', variant: 'terracotta' },
+                  Bimaadiziwin: { to: signupHref('Bimaadiziwin'), label: 'Get Started', variant: 'outline' },
                   Gimishoomis: { to: '/contact', label: 'Talk to our team', variant: 'outline' },
                 }[p.key];
                 const btnBase = { textAlign: 'center' as const, textDecoration: 'none', fontSize: 15, fontWeight: 600, padding: 13, borderRadius: 11, marginBottom: 24 };
