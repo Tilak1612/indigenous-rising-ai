@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { MessageCircle, X, Send, Loader2, Sparkles } from 'lucide-react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 
-// Public marketing chatbot widget ("Rising AI"). Talks to the hardened
+// Public marketing chatbot widget ("Ask Agent"). Talks to the hardened
 // site-assistant Supabase Edge Function. Renders answers as PLAIN TEXT (the
 // function strips markdown), sends the last 8 turns for context, and shows
 // code-generated follow-up chips (never model-generated, so a chip can't tee up
@@ -89,13 +89,13 @@ const SiteAssistant = () => {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          aria-label="Ask Rising AI about Indigenous Rising AI"
+          aria-label="Ask Agent about Indigenous Rising AI"
           /* Sits ABOVE the accessibility toolbar toggle (fixed bottom-4 right-4
              z-50) so the a11y control is never obscured or crowded. */
           className="fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-elevated px-4 py-3 hover:opacity-90 transition-opacity"
         >
           <MessageCircle className="w-5 h-5" />
-          <span className="text-sm font-semibold hidden sm:inline">Ask Rising AI</span>
+          <span className="text-sm font-semibold hidden sm:inline">Ask Agent</span>
         </button>
       )}
 
@@ -103,7 +103,7 @@ const SiteAssistant = () => {
       {open && (
         <div
           role="dialog"
-          aria-label="Rising AI assistant"
+          aria-label="Ask Agent"
           /* Anchored above the accessibility toolbar toggle, matching the launcher. */
           className="fixed bottom-20 right-4 z-40 w-[92vw] max-w-sm rounded-2xl border border-border bg-card shadow-elevated flex flex-col overflow-hidden"
           style={{ height: 'min(70vh, 560px)' }}
@@ -114,7 +114,7 @@ const SiteAssistant = () => {
                 <Sparkles className="w-4 h-4 text-primary" />
               </span>
               <div className="leading-tight">
-                <p className="font-display font-bold text-sm text-foreground">Rising AI</p>
+                <p className="font-display font-bold text-sm text-foreground">Ask Agent</p>
                 <p className="text-[11px] text-muted-foreground">Funding, plans & getting started</p>
               </div>
             </div>

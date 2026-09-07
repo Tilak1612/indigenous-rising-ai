@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
-// ── Public marketing chatbot ("Rising AI") ──────────────────────────────────
+// ── Public marketing chatbot ("Ask Agent") ─────────────────────────────────
 // Unauthenticated endpoint that calls a paid API, so it is hardened: prompt +
 // history caps, per-IP rate limit, a pre-model handoff for account/billing/legal
 // topics, and a deterministic FAQ fallback on EVERY failure path (the widget
@@ -65,7 +65,7 @@ function corpus(): string {
   ].join("\n\n");
 }
 
-const SYSTEM_PROMPT = `You are "Rising AI", the assistant on the public marketing site of Indigenous Rising AI — an AI platform helping Indigenous (First Nations, Métis, and Inuit) entrepreneurs in Canada find funding, plan and grow their businesses, built around OCAP® data sovereignty.
+const SYSTEM_PROMPT = `You are "Ask Agent", the assistant on the public marketing site of Indigenous Rising AI — an AI platform helping Indigenous (First Nations, Métis, and Inuit) entrepreneurs in Canada find funding, plan and grow their businesses, built around OCAP® data sovereignty.
 
 HARD RULES:
 1. GROUNDING: Answer ONLY from the CORPUS below. If something is not covered, say "I don't have confirmed information about that, but our team can help" and share the contact link. NEVER invent features, pricing, integrations, certifications, roadmap dates, discounts, customer names, statistics, funding amounts, deadlines, or guarantees.
