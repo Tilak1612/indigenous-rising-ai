@@ -105,10 +105,27 @@ const Navigation = () => {
       </div>
 
       {/* Mobile menu — cream panel, dark text (matches the header) */}
-      <div id="mobile-navigation" className={cn(
-        "md:hidden overflow-hidden border-t border-[#3D3A34]/10 bg-[#F5F0E8] transition-all duration-300 ease-in-out",
-        isOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
-      )}>
+      {/* `inert` when closed. The panel collapses with max-height and
+          opacity so it can animate, which leaves it in the layout: measured
+          at 375px, all five links kept full 343x48 boxes and tabIndex 0
+          while invisible, so a keyboard user tabbed through five links they
+          could not see before reaching the page. max-h-0 + overflow-hidden
+          hides them visually but does nothing for the tab order.
+          `inert` removes them from focus AND hit-testing without touching
+          the transition — `display:none` would kill the animation. */}
+      <div
+        id="mobile-navigation"
+        // React 18 drops unknown BOOLEAN attributes, so inert={true} never
+        // reached the DOM — measured: inert:false on a closed menu with all
+        // six links still tabbable. An empty string renders the attribute.
+        // (React 19 supports inert natively; this project is on 18.3.1.)
+        {...(!isOpen ? { inert: '' as unknown as boolean } : {})}
+        aria-hidden={!isOpen}
+        className={cn(
+          "md:hidden overflow-hidden border-t border-[#3D3A34]/10 bg-[#F5F0E8] transition-all duration-300 ease-in-out",
+          isOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
+        )}
+      >
         <div className="px-4 py-4 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
