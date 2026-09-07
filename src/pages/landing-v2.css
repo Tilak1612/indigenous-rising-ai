@@ -1,3 +1,40 @@
+/* ---------------------------------------------------------------------------
+   Landing palette tokens.
+
+   The page carried 197 hardcoded hex literals across 35 values, so the same
+   green appeared 47 times and could drift 47 ways. These are the exact
+   values that were already in use — nothing was re-picked, so the render is
+   unchanged; they simply now have one definition each.
+
+   --ir-green is the same colour as --primary in index.css (162 62% 27%).
+   Kept as hex here because this file styles a page written in inline hex,
+   and converting to the HSL triple would change how the value is authored
+   without changing what it paints.
+   --------------------------------------------------------------------------- */
+.irv2-root {
+  --ir-green: #124C3B;  /* primary brand green; matches --primary in index.css */
+  --ir-ink: #111111;  /* headings and primary text */
+  --ir-bark: #6B5645;  /* secondary text on cream */
+  --ir-stone: #5C554B;  /* tertiary/meta text */
+  --ir-cream: #F5F0E8;  /* page and header cream */
+  --ir-paper: #FFFDF9;  /* raised card surface */
+  --ir-gold: #D79A27;  /* accent, used sparingly */
+  --ir-cream-light: #FBF5EC;  /* reversed text on dark */
+  --ir-sand: #F4ECE0;  /* banded section background */
+  --ir-clay: #C8B6A2;  /* muted text on dark */
+  --ir-umber: #4A3826;  /* border and shadow base */
+  --ir-blush: #FFF7F0;  /* soft tint surface */
+  --ir-linen: #F7F1E8;  /* browser-chrome surface */
+  --ir-sand-deep: #E6D8C4;  /* divider on sand */
+  --ir-terracotta: #E0926E;  /* eyebrow accent */
+  --ir-bark-light: #8A7560;  /* muted label */
+  --ir-sage: #6FA37C;  /* positive dot */
+  --ir-cream-warm: #F3E9DB;  /* reversed body text */
+  --ir-amber: #E0B23E;  /* chrome dot */
+  --ir-brass: #D9B45A;  /* chrome dot */
+  --ir-brown-deep: #241910;  /* dark section ground */
+}
+
 /*
  * Indigenous Rising AI — landing redesign (Claude Design handoff)
  * Scoped to .irv2-root so it never touches the app's global shadcn theme.
