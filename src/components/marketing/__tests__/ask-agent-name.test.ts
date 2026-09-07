@@ -44,6 +44,17 @@ describe('the chatbot is named Ask Agent', () => {
     expect(fn.match(bareOldName) ?? []).toEqual([]);
   });
 
+
+  test('the name is visible on screen, not only to screen readers', () => {
+    // It was `hidden sm:inline`, so below 640px the launcher was an
+    // unlabelled icon: the name existed in the aria-label but nobody could
+    // see it. Measured at 375px — button 52px, no text. Now 134px with the
+    // label, which still fits a 320px screen.
+    const span = /<span className="([^"]*)">Ask Agent<\/span>/.exec(widget);
+    expect(span, 'launcher label span not found').not.toBeNull();
+    expect(span![1], 'the label is hidden at some widths').not.toMatch(/hidden/);
+  });
+
   test('the internal message role is untouched', () => {
     // role: 'assistant' is the transcript schema, not a display name.
     expect(widget).toMatch(/role: 'user' \| 'assistant'/);
