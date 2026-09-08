@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import DemoCta from '@/components/DemoCta';
 import { signupHref } from '@/lib/signup-intent';
+import { trackSignupCta } from '@/lib/conversion-events';
 import { Menu, X, Users, TrendingUp, Target, Award, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -89,6 +90,7 @@ const Navigation = () => {
                 />
                 <Link
                   to={signupHref()}
+                  onClick={() => trackSignupCta('nav')}
                   className="hidden md:inline-flex items-center rounded-[10px] bg-[#124C3B] px-5 py-2.5 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
                 >
                   Start free account
@@ -156,7 +158,12 @@ const Navigation = () => {
             />
             <Link
               to={user ? '/dashboard' : signupHref()}
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                // The same link is "Dashboard" when signed in — that click is
+                // navigation, not a conversion, so it is not counted.
+                if (!user) trackSignupCta('nav_mobile');
+                setIsOpen(false);
+              }}
               className="flex items-center justify-center rounded-[10px] bg-[#124C3B] px-5 py-3 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
             >
               {user ? 'Dashboard' : 'Start free account'}

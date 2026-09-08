@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PLAN_FEATURES } from '@/data/plans';
 import { signupHref, saveSignupIntent, readCampaign, type PlanKey } from '@/lib/signup-intent';
+import { trackPricingPlanSelected, trackSignupCta } from '@/lib/conversion-events';
 
 type Feature = { text: string; available: boolean };
 
@@ -61,17 +62,21 @@ const PricingSection = () => {
     // Free plan
     if (planName === "Maadaadiziwin") {
       if (!user) {
+        trackPricingPlanSelected(planName, billingCycle, 'signup');
+        trackSignupCta('pricing_card', planName);
         // Carry the plan through so it is still known after verification.
         saveSignupIntent({ plan: planName as PlanKey, billing: billingCycle, campaign: readCampaign(location.search) });
         navigate(signupHref(planName as PlanKey, billingCycle));
         return;
       }
+      trackPricingPlanSelected(planName, billingCycle, 'already_free');
       toast.success("You're already on the free plan!");
       return;
     }
 
     // Enterprise → contact sales
     if (planName === "Gimishoomis") {
+      trackPricingPlanSelected(planName, billingCycle, 'contact_sales');
       navigate('/contact');
       toast.info("Redirecting to contact form...");
       return;
@@ -84,15 +89,20 @@ const PricingSection = () => {
     // No Stripe price wired for this plan + cycle yet → don't risk charging the
     // wrong amount; point the user to a real path instead of a dead button.
     if (!priceId) {
+      trackPricingPlanSelected(planName, billingCycle, 'no_price');
       toast.info("To get started on this plan, email help@indigenousrising.ai and we'll set you up.");
       return;
     }
 
     if (!user) {
+      trackPricingPlanSelected(planName, billingCycle, 'signup');
+      trackSignupCta('pricing_card', planName);
       saveSignupIntent({ plan: planName as PlanKey, billing: billingCycle, campaign: readCampaign(location.search) });
       navigate(signupHref(planName as PlanKey, billingCycle));
       return;
     }
+
+    trackPricingPlanSelected(planName, billingCycle, 'checkout');
 
     setLoadingPlan(planName);
 
