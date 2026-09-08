@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ShinyButton } from '@/components/ui/shiny-button';
@@ -9,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
 import { Mail, MapPin, Clock } from 'lucide-react';
 import { contactSchema, type ContactFormData } from '@/lib/validation-schemas';
+import { trackFormStart, trackFormSubmitted } from '@/lib/conversion-events';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -40,6 +42,15 @@ const Contact = () => {
     },
   });
 
+  // Once per mount: the funnel needs "started filling the form", not a
+  // keystroke count.
+  const formStarted = useRef(false);
+  const onFormStart = () => {
+    if (formStarted.current) return;
+    formStarted.current = true;
+    trackFormStart('contact');
+  };
+
   const onSubmit = async (data: ContactFormData) => {
     // Client-side rate limiting: 3 submissions per hour
     const rateLimitConfig = {
@@ -67,6 +78,7 @@ const Contact = () => {
 
       // Record successful submission for rate limiting
       recordSubmission('contact');
+      trackFormSubmitted('contact');
 
       toast({
         title: 'Message sent!',
@@ -146,7 +158,7 @@ const Contact = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit)} onFocusCapture={onFormStart} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="full_name">Full Name *</Label>
                 <Input

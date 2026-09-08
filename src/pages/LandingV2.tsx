@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AmbientVideo from '@/components/media/AmbientVideo';
 import { signupHref } from '@/lib/signup-intent';
+import { trackSignupCta } from '@/lib/conversion-events';
 import DemoCta from '@/components/DemoCta';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -86,18 +87,20 @@ const LinkTo = ({
   children,
   className,
   style,
+  onClick,
 }: {
   to: string;
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
+  onClick?: () => void;
 }) =>
   to.startsWith('/') ? (
-    <Link to={to} className={className} style={style}>
+    <Link to={to} className={className} style={style} onClick={onClick}>
       {children}
     </Link>
   ) : (
-    <a href={to} className={className} style={style}>
+    <a href={to} className={className} style={style} onClick={onClick}>
       {children}
     </a>
   );
@@ -308,7 +311,7 @@ const LandingV2 = () => {
             </nav>
             <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
               <LinkTo to="/auth" className="ir-login-link" style={{ fontSize: 14.5, color: 'var(--ir-bark)', textDecoration: 'none', fontWeight: 500 }}>Log in</LinkTo>
-              <LinkTo to="/signup" className="irv2-hov-cta" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 14, fontWeight: 600, padding: '11px 20px', borderRadius: 10, boxShadow: '0 2px 10px rgba(18,76,59,.28)' }}><span className="ir-cta-long">Start free account</span><span className="ir-cta-short">Get Started</span></LinkTo>
+              <LinkTo to="/signup" onClick={() => trackSignupCta('landing_nav')} className="irv2-hov-cta" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 14, fontWeight: 600, padding: '11px 20px', borderRadius: 10, boxShadow: '0 2px 10px rgba(18,76,59,.28)' }}><span className="ir-cta-long">Start free account</span><span className="ir-cta-short">Get Started</span></LinkTo>
               <button onClick={() => setMenuOpen((v) => !v)} aria-label="Menu" className="ir-burger" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--ir-ink)', padding: 4 }}>
                 <Icon icon="solar:hamburger-menu-linear" size={26} />
               </button>
@@ -340,7 +343,7 @@ const LandingV2 = () => {
               Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.
             </p>
             <div data-reveal style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', alignItems: 'center', marginTop: 38 }}>
-              <LinkTo to="/signup" className="irv2-hov-cta-lift" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 30px', borderRadius: 12, boxShadow: '0 6px 20px rgba(18,76,59,.3)', display: 'inline-flex', alignItems: 'center', gap: 9 }}>
+              <LinkTo to="/signup" onClick={() => trackSignupCta('hero')} className="irv2-hov-cta-lift" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 30px', borderRadius: 12, boxShadow: '0 6px 20px rgba(18,76,59,.3)', display: 'inline-flex', alignItems: 'center', gap: 9 }}>
                 Start free account
                 <Icon icon="solar:arrow-right-linear" size={19} />
               </LinkTo>
@@ -850,7 +853,7 @@ const LandingV2 = () => {
               <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(32px,4.5vw,54px)', lineHeight: 1.06, letterSpacing: '-.02em', color: 'var(--ir-blush)', margin: '0 auto', maxWidth: 680 }}>Start building your business today.</h2>
               <p style={{ fontSize: 18, lineHeight: 1.6, color: '#FCE3D6', margin: '20px auto 0', maxWidth: 480 }}>Free to start. Your data stays in Canada, and stays yours.</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', marginTop: 34 }}>
-                <LinkTo to="/signup" className="irv2-hov-lift" style={{ background: 'var(--ir-blush)', color: 'var(--ir-green)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 32px', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 9, boxShadow: '0 8px 24px rgba(36,25,16,.2)' }}>
+                <LinkTo to="/signup" onClick={() => trackSignupCta('footer_cta')} className="irv2-hov-lift" style={{ background: 'var(--ir-blush)', color: 'var(--ir-green)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 32px', borderRadius: 12, display: 'inline-flex', alignItems: 'center', gap: 9, boxShadow: '0 8px 24px rgba(36,25,16,.2)' }}>
                   Start free account <Icon icon="solar:arrow-right-linear" size={19} />
                 </LinkTo>
                 <LinkTo to="/contact" className="irv2-hov-soft" style={{ background: 'rgba(255,255,255,.18)', color: 'var(--ir-blush)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 28px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,.6)' }}>
