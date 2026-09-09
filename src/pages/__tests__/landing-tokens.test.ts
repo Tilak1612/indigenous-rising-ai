@@ -48,8 +48,14 @@ describe('landing palette tokens', () => {
   });
 
   test('the page actually references the tokens', () => {
+    // >150 was calibrated when the funding and plan tabs were hand-built
+    // mocks stuffed with token-styled markup; replacing them with real
+    // screenshots (#185) removed ~40 references and left exactly 150. The
+    // guard exists to catch the page abandoning the token system, not to
+    // freeze its size — 100 still means token styling everywhere while
+    // failing loudly if the page were restyled with hardcoded colours.
     const refs = [...page.matchAll(/var\(--ir-[a-z-]+\)/g)];
-    expect(refs.length, 'the page stopped using tokens').toBeGreaterThan(150);
+    expect(refs.length, 'the page stopped using tokens').toBeGreaterThan(100);
   });
 
   test('--ir-green is the same colour as --primary', () => {
