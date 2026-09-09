@@ -427,10 +427,29 @@ const LandingV2 = () => {
 
         {/* ===== WHO IT HELPS ===== */}
         <section style={{ maxWidth: 1180, margin: '0 auto', padding: '96px 24px' }}>
-          <div data-reveal style={{ maxWidth: 680 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ir-green)' }}>Who it helps</span>
-            <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(30px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-.02em', color: 'var(--ir-ink)', margin: '14px 0 0' }}>Built for the people doing the work.</h2>
-            <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ir-bark)', margin: '18px 0 0' }}>Whether you're starting your first business or supporting hundreds across a Nation, the tools meet you where you are.</p>
+          <div className="ir-who-head">
+            <div data-reveal style={{ maxWidth: 680 }}>
+              <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ir-green)' }}>Who it helps</span>
+              <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(30px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-.02em', color: 'var(--ir-ink)', margin: '14px 0 0' }}>Built for the people doing the work.</h2>
+              <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ir-bark)', margin: '18px 0 0' }}>Whether you're starting your first business or supporting hundreds across a Nation, the tools meet you where you are.</p>
+            </div>
+            {/* Reviewed Higgsfield output (Track A of docs/higgsfield-asset-plan.md,
+                asset A2): hands only, no face — Track B (any identifiable person)
+                is commissioned photography, never generated. */}
+            <picture data-reveal>
+              <source media="(max-width: 920px)" type="image/webp" srcSet="/img/section-hands-ledger-640.webp" width={640} height={478} />
+              <source type="image/avif" srcSet="/img/section-hands-ledger-1600.avif" width={1600} height={1194} />
+              <source type="image/webp" srcSet="/img/section-hands-ledger-1600.webp" width={1600} height={1194} />
+              <img
+                src="/img/section-hands-ledger-1600.jpg"
+                alt="Hands writing in a paper ledger on a workshop bench beside an enamel mug."
+                width={1600}
+                height={1194}
+                loading="lazy"
+                decoding="async"
+                style={{ width: '100%', height: 'auto', borderRadius: 18, border: '1px solid rgba(74,56,38,.12)', boxShadow: '0 10px 30px rgba(36,25,16,.12)' }}
+              />
+            </picture>
           </div>
           <div className="ir-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 22, marginTop: 48 }}>
             {[
