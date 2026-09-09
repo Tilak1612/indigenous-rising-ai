@@ -158,20 +158,33 @@ export default function GettingStartedChecklist() {
                     : "bg-background hover:bg-muted/50 border-border"
                 )}
               >
+                {/* Icon-only toggle: without a name a screen reader announces
+                    four identical unlabelled buttons, and aria-pressed carries
+                    the state so colour is not the only signal. The visual
+                    circle stays 24px; the hit area is 44px (WCAG 2.2 target
+                    size), pulled back with a negative margin so the layout
+                    does not move. */}
                 <button
                   onClick={() => toggleComplete(item.id)}
-                  className={cn(
-                    "h-6 w-6 rounded-full flex items-center justify-center transition-colors",
-                    isComplete 
-                      ? "bg-primary text-primary-foreground" 
-                      : "border-2 border-muted-foreground/30 hover:border-primary"
-                  )}
+                  aria-label={`Mark "${item.title}" as ${isComplete ? 'not done' : 'done'}`}
+                  aria-pressed={isComplete}
+                  className="h-11 w-11 -m-2.5 shrink-0 rounded-full flex items-center justify-center"
                 >
-                  {isComplete ? (
-                    <CheckCircle2 className="h-4 w-4" />
-                  ) : (
-                    <Circle className="h-3 w-3 text-transparent" />
-                  )}
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "h-6 w-6 rounded-full flex items-center justify-center transition-colors",
+                      isComplete
+                        ? "bg-primary text-primary-foreground"
+                        : "border-2 border-muted-foreground/30 hover:border-primary"
+                    )}
+                  >
+                    {isComplete ? (
+                      <CheckCircle2 className="h-4 w-4" />
+                    ) : (
+                      <Circle className="h-3 w-3 text-transparent" />
+                    )}
+                  </span>
                 </button>
 
                 <div className={cn(

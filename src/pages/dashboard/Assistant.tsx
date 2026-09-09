@@ -243,6 +243,7 @@ export default function Assistant() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(input); }
                 }}
+                aria-label="Ask the assistant a question"
                 placeholder="Ask a question…  (Enter to send, Shift+Enter for a new line)"
                 className="min-h-[44px] max-h-32 resize-none"
                 disabled={sending}

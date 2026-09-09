@@ -414,7 +414,9 @@ function DashboardHeader() {
   return (
     <header className="h-14 border-b border-border flex items-center justify-between px-4 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
       <div className="flex items-center gap-4">
-        <SidebarTrigger />
+        {/* The shadcn default is h-7 w-7 — a 28px-wide control on the one
+            button every phone user needs. 44px is the WCAG 2.2 target size. */}
+        <SidebarTrigger className="h-11 w-11" />
         {/* A "Search features, resources…" input sat here with no onChange, no
             handler and no results UI — typing did nothing. Worse, it had no id,
             name, label or autocomplete, so on the settings page (which contains
@@ -490,7 +492,7 @@ function DashboardHeader() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" aria-label="Change language">
               <Globe className="h-5 w-5" />
             </Button>
           </DropdownMenuTrigger>
@@ -505,7 +507,7 @@ function DashboardHeader() {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" aria-label="Account menu">
               <Avatar className="h-8 w-8">
                 {avatarUrl && <AvatarImage src={avatarUrl} alt="Profile" className="object-cover" />}
                 <AvatarFallback className="bg-primary/10 text-primary text-sm">
