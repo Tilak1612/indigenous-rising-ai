@@ -117,7 +117,19 @@
    the logo + hamburger. */
 .ir-cta-short { display: none; }
 
+/* "Who it helps" header: text + photo side by side, photo dropped-in last
+   on narrow screens. The photo column is capped so the heading keeps its
+   measure. */
+.irv2-root .ir-who-head {
+  display: grid;
+  grid-template-columns: minmax(0, 680px) minmax(280px, 420px);
+  gap: 40px;
+  align-items: center;
+  justify-content: space-between;
+}
 @media (max-width: 920px) {
+  .irv2-root .ir-who-head  { grid-template-columns: 1fr !important; }
+
   .irv2-root .ir-desktop-nav { display: none !important; }
   .irv2-root .ir-login-link  { display: none !important; }
   .irv2-root .ir-burger      { display: inline-flex !important; }
