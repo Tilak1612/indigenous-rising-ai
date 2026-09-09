@@ -440,9 +440,9 @@ export default function Settings() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium">Email Address</label>
+                      <label className="text-sm font-medium" htmlFor="account-email">Email Address</label>
                       <div className="flex gap-2 mt-1">
-                        <Input value={user?.email || ''} disabled className="flex-1" />
+                        <Input id="account-email" value={user?.email || ''} disabled className="flex-1" />
                         <Button 
                           variant="outline" 
                           onClick={() => {
@@ -458,7 +458,7 @@ export default function Settings() {
                     </div>
                     <div>
                       <label className="text-sm font-medium">Account ID</label>
-                      <Input value={user?.id?.slice(0, 8) + '...' || ''} disabled className="mt-1 font-mono" />
+                      <Input id="account-id" aria-label="Account ID" value={user?.id?.slice(0, 8) + '...' || ''} disabled className="mt-1 font-mono" />
                     </div>
                   </CardContent>
                 </Card>
@@ -485,7 +485,8 @@ export default function Settings() {
                         <button
                           type="button"
                           onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          aria-label={showCurrentPassword ? 'Hide current password' : 'Show current password'}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 -m-2 text-muted-foreground hover:text-foreground"
                         >
                           {showCurrentPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>
@@ -508,7 +509,8 @@ export default function Settings() {
                         <button
                           type="button"
                           onClick={() => setShowNewPassword(!showNewPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          aria-label={showNewPassword ? 'Hide new password' : 'Show new password'}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 -m-2 text-muted-foreground hover:text-foreground"
                         >
                           {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                         </button>

@@ -54,7 +54,10 @@ const Navigation = () => {
           </Link>
 
           {/* Desktop marketing nav — centered */}
-          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          {/* lg, not md: this nav is absolutely centred, so at 768px it lands on
+              top of the logo (measured: logo right edge 218px, "Platform" left
+              edge 167px — 51px overlap). Tablet uses the menu button instead. */}
+          <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             {navItems.map((item) => (
               <a
                 key={item.name}
@@ -72,7 +75,7 @@ const Navigation = () => {
             {user ? (
               <Link
                 to="/dashboard"
-                className="hidden md:inline-flex items-center rounded-[10px] bg-[#124C3B] px-5 py-2.5 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
+                className="hidden lg:inline-flex items-center rounded-[10px] bg-[#124C3B] px-5 py-2.5 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
               >
                 Dashboard
               </Link>
@@ -80,18 +83,18 @@ const Navigation = () => {
               <>
                 <Link
                   to="/auth"
-                  className="hidden md:inline-flex items-center text-sm font-medium text-[#3D3A34] hover:text-[#111111] transition"
+                  className="hidden lg:inline-flex items-center text-sm font-medium text-[#3D3A34] hover:text-[#111111] transition"
                 >
                   Log in
                 </Link>
                 <DemoCta
                   placement="nav"
-                  className="hidden md:inline-flex items-center text-sm font-medium text-[#3D3A34] hover:text-[#111111] transition"
+                  className="hidden lg:inline-flex items-center text-sm font-medium text-[#3D3A34] hover:text-[#111111] transition"
                 />
                 <Link
                   to={signupHref()}
                   onClick={() => trackSignupCta('nav')}
-                  className="hidden md:inline-flex items-center rounded-[10px] bg-[#124C3B] px-5 py-2.5 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
+                  className="hidden lg:inline-flex items-center rounded-[10px] bg-[#124C3B] px-5 py-2.5 text-sm font-semibold text-[#F5F0E8] hover:bg-[#0F3F31] transition"
                 >
                   Start free account
                 </Link>
@@ -104,7 +107,7 @@ const Navigation = () => {
               aria-expanded={isOpen}
               aria-controls="mobile-navigation"
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
-              className="md:hidden p-2 text-[#111111] hover:text-[#124C3B] transition"
+              className="lg:hidden p-2 min-w-[44px] min-h-[44px] inline-flex items-center justify-center text-[#111111] hover:text-[#124C3B] transition"
             >
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -130,7 +133,7 @@ const Navigation = () => {
         {...(!isOpen ? { inert: '' as unknown as boolean } : {})}
         aria-hidden={!isOpen}
         className={cn(
-          "md:hidden overflow-hidden border-t border-[#3D3A34]/10 bg-[#F5F0E8] transition-all duration-300 ease-in-out",
+          "lg:hidden overflow-hidden border-t border-[#3D3A34]/10 bg-[#F5F0E8] transition-all duration-300 ease-in-out",
           isOpen ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"
         )}
       >

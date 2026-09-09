@@ -243,12 +243,14 @@ export default function Tasks() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Input
+              aria-label="Task title"
               placeholder="e.g. Submit IBDP grant application"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); addTask(); } }}
             />
             <Textarea
+              aria-label="Notes (optional)"
               placeholder="Notes (optional)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
