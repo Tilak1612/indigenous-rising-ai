@@ -57,7 +57,11 @@ describe('sovereignty background imagery', () => {
   test('the scrim is deep enough for WCAG AA over the brightest pixel', () => {
     // Measured: at .88 the eyebrow clears 4.5 on both sources (5.04 desktop,
     // 5.40 mobile). At .82 it was 4.68 — passing, but with no headroom.
-    const m = /rgba\(36,25,16,\.(\d+)\)/.exec(page);
+    // Anchored after the sovereignty image, the same way the CTA test is:
+    // matching the first rgba(36,25,16,…) in the whole file broke when an
+    // unrelated box-shadow using that colour landed earlier in the page.
+    const after = page.slice(page.indexOf('sovereignty-land-desktop.jpg'));
+    const m = /rgba\(36,25,16,\.(\d+)\)/.exec(after);
     expect(m, 'the scrim over the sovereignty image is gone').not.toBeNull();
     expect(Number('0.' + m![1])).toBeGreaterThanOrEqual(0.88);
   });
