@@ -598,69 +598,53 @@ const LandingV2 = () => {
 
           <div data-reveal style={{ marginTop: 30, background: 'var(--ir-paper)', border: '1px solid rgba(74,56,38,.12)', borderRadius: 20, boxShadow: '0 24px 60px -30px rgba(44,30,18,.3)', overflow: 'hidden', minHeight: 420 }}>
             {tab === 'funding' && (
-              <div style={{ padding: 32 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 22 }}>
-                  <div>
-                    <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 23, color: 'var(--ir-ink)', margin: 0 }}>Funding Navigator</h3>
-                    <p style={{ fontSize: 14, color: 'var(--ir-stone)', margin: '5px 0 0' }}>Programs matched to your profile, sorted by fit</p>
-                  </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <span style={{ fontSize: 13, color: 'var(--ir-bark)', border: '1px solid rgba(74,56,38,.15)', padding: '8px 14px', borderRadius: 10 }}>Grants</span>
-                    <span style={{ fontSize: 13, color: 'var(--ir-cream)', background: 'var(--ir-green)', padding: '8px 14px', borderRadius: 10, fontWeight: 600 }}>All · 12</span>
-                  </div>
-                </div>
-                <div className="ir-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                  {[
-                    { fit: '94% fit', fitColor: '#0F3F31', fitBg: 'rgba(18,76,59,.12)', right: '21 days left', rightColor: 'var(--ir-green)', title: 'Aboriginal Business Financing Program', desc: 'Non-repayable contribution toward business start-up and expansion costs.', amount: 'up to $99,999' },
-                    { fit: '88% fit', fitColor: '#6B4A05', fitBg: 'rgba(215,154,39,.18)', right: 'Rolling', rightColor: 'var(--ir-stone)', title: 'Indigenous Growth Fund', desc: 'Flexible working-capital loans for established Indigenous businesses.', amount: 'flexible terms' },
-                  ].map((c) => (
-                    <div key={c.title} style={{ border: '1px solid rgba(74,56,38,.1)', borderRadius: 14, padding: 18 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                        <span style={{ fontSize: 12, fontWeight: 600, color: c.fitColor, background: c.fitBg, padding: '4px 10px', borderRadius: 100 }}>{c.fit}</span>
-                        <span style={{ fontSize: 12.5, color: c.rightColor, fontWeight: 600 }}>{c.right}</span>
-                      </div>
-                      <h4 style={{ fontSize: 16, fontWeight: 600, color: 'var(--ir-ink)', margin: '13px 0 5px' }}>{c.title}</h4>
-                      <p style={{ fontSize: 13.5, color: 'var(--ir-bark)', margin: '0 0 14px', lineHeight: 1.55 }}>{c.desc}</p>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ ...FONT_HEAD, fontSize: 22, color: 'var(--ir-ink)' }}>{c.amount}</span>
-                        <span style={{ fontSize: 13, color: 'var(--ir-green)', fontWeight: 600 }}>View →</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 10, background: 'var(--ir-sand)', borderRadius: 12, padding: '14px 18px' }}>
-                  <Icon icon="solar:bell-bing-linear" size={20} style={{ color: 'var(--ir-green)' }} />
-                  <span style={{ fontSize: 14, color: 'var(--ir-bark)' }}>Deadline reminders are on. We'll email you 7 days before anything you've saved closes.</span>
-                </div>
+              /* A real screenshot of /dashboard/funding/matches, captured with
+                 a throwaway sample account. It replaces a hand-built mock that
+                 showed invented fit percentages (94%, 88%) attached to real
+                 programme names — the same fabrication the hero shed in #171,
+                 which its test only policed there. The real screen carries the
+                 product's own "how to read these results" disclaimer. */
+              <div style={{ padding: 18 }}>
+                <picture>
+                  <source media="(max-width: 700px)" type="image/webp" srcSet="/img/shot-matches-640.webp" width={640} height={538} />
+                  <source type="image/avif" srcSet="/img/shot-matches-1024.avif" width={1024} height={860} />
+                  <source type="image/webp" srcSet="/img/shot-matches-1024.webp" width={1024} height={860} />
+                  <img
+                    src="/img/shot-matches-1024.jpg"
+                    alt="The Funding Matches screen: real programs found for a sample profile, each showing the criteria it meets, with a note explaining how to read the results."
+                    width={1024}
+                    height={860}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ width: '100%', height: 'auto', borderRadius: 12, border: '1px solid rgba(74,56,38,.12)', display: 'block' }}
+                  />
+                </picture>
+                <p style={{ fontSize: 13, color: 'var(--ir-stone)', margin: '12px 4px 0', textAlign: 'center' }}>
+                  The real Funding Matches screen, shown with a sample account. Programs come from our database — always confirm details with the funder.
+                </p>
               </div>
             )}
 
             {tab === 'plan' && (
-              <div className="ir-mock-grid" style={{ display: 'grid', gridTemplateColumns: '230px 1fr', minHeight: 420 }}>
-                <div style={{ background: 'var(--ir-sand)', borderRight: '1px solid rgba(74,56,38,.08)', padding: '24px 18px' }}>
-                  <h4 style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '.1em', color: 'var(--ir-stone)', margin: '0 0 16px' }}>Your plan · 60%</h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', borderRadius: 9, fontSize: 14, color: 'var(--ir-ink)', background: 'var(--ir-paper)', fontWeight: 600 }}><Icon icon="solar:check-circle-bold" size={17} style={{ color: 'var(--ir-green)' }} /> Executive summary</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', borderRadius: 9, fontSize: 14, color: 'var(--ir-ink)', background: 'var(--ir-paper)', fontWeight: 600 }}><Icon icon="solar:check-circle-bold" size={17} style={{ color: 'var(--ir-green)' }} /> Market & customers</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', borderRadius: 9, fontSize: 14, color: 'var(--ir-green)', border: '1px solid rgba(18,76,59,.3)', fontWeight: 600 }}><Icon icon="solar:pen-2-linear" size={17} /> Financial plan</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '9px 11px', borderRadius: 9, fontSize: 14, color: 'var(--ir-stone)' }}><Icon icon="solar:lock-keyhole-minimalistic-linear" size={17} /> Operations</div>
-                  </div>
-                </div>
-                <div style={{ padding: '30px 32px' }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--ir-green)' }}>Financial plan</span>
-                  <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 24, color: 'var(--ir-ink)', margin: '8px 0 16px' }}>Let's project your first year.</h3>
-                  <div style={{ background: 'var(--ir-linen)', border: '1px solid rgba(74,56,38,.1)', borderRadius: 14, padding: 20, marginBottom: 16 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                      <div style={{ width: 30, height: 30, borderRadius: 8, background: 'var(--ir-green)', color: 'var(--ir-cream)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon icon="solar:stars-minimalistic-linear" size={17} /></div>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--ir-stone)' }}>Assistant</span>
-                    </div>
-                    <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--ir-umber)', margin: 0 }}>Based on your catering business, most plans like yours estimate <strong>$4,000–$6,000</strong> in monthly revenue by month six. Want me to draft a conservative and an optimistic scenario?</p>
-                  </div>
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    <span style={{ fontSize: 14, color: 'var(--ir-cream)', background: 'var(--ir-green)', padding: '10px 16px', borderRadius: 10, fontWeight: 600 }}>Draft both scenarios</span>
-                    <span style={{ fontSize: 14, color: 'var(--ir-bark)', border: '1px solid rgba(74,56,38,.18)', padding: '10px 16px', borderRadius: 10 }}>Enter my own numbers</span>
-                  </div>
-                </div>
+              /* A real screenshot of /dashboard/plan, same sample account. */
+              <div style={{ padding: 18 }}>
+                <picture>
+                  <source media="(max-width: 700px)" type="image/webp" srcSet="/img/shot-plan-640.webp" width={640} height={538} />
+                  <source type="image/avif" srcSet="/img/shot-plan-1024.avif" width={1024} height={860} />
+                  <source type="image/webp" srcSet="/img/shot-plan-1024.webp" width={1024} height={860} />
+                  <img
+                    src="/img/shot-plan-1024.jpg"
+                    alt="The Business Planning Assistant: six guided sections from Vision and Mission to Community Impact, with a rich text editor and plan completion tracking."
+                    width={1024}
+                    height={860}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ width: '100%', height: 'auto', borderRadius: 12, border: '1px solid rgba(74,56,38,.12)', display: 'block' }}
+                  />
+                </picture>
+                <p style={{ fontSize: 13, color: 'var(--ir-stone)', margin: '12px 4px 0', textAlign: 'center' }}>
+                  The real Business Planner, shown with a sample account — six guided sections, saved versions, and export.
+                </p>
               </div>
             )}
 
