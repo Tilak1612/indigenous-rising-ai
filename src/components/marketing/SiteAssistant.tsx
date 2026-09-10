@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, X, Send, Loader2, Sparkles } from 'lucide-react';
+import { X, Send, Loader2 } from 'lucide-react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import {
   subscribeConsentOverlay,
@@ -109,7 +109,11 @@ const SiteAssistant = () => {
              z-50) so the a11y control is never obscured or crowded. */
           className="fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-elevated px-4 py-3 hover:opacity-90 transition-opacity"
         >
-          <MessageCircle className="w-5 h-5" />
+          {/* Brand chatbot mark (reviewed Higgsfield/Recraft vector output):
+              the site's rising-rings motif inside a speech bubble. Cream-line
+              variant for this green pill; decorative — the button's
+              aria-label carries the name. */}
+          <img src="/img/ask-agent-icon-cream.svg" alt="" aria-hidden="true" width={20} height={20} className="w-5 h-5" />
           {/* Shown at every width. It was `hidden sm:inline`, so below 640px
               the launcher was an unlabelled icon and the name existed only in
               the aria-label — visible to a screen reader, invisible to
@@ -132,7 +136,7 @@ const SiteAssistant = () => {
           <header className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border bg-primary/5">
             <div className="flex items-center gap-2">
               <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-primary" />
+                <img src="/img/ask-agent-icon.svg" alt="" aria-hidden="true" width={20} height={20} className="w-5 h-5" />
               </span>
               <div className="leading-tight">
                 <p className="font-display font-bold text-sm text-foreground">Ask Agent</p>
