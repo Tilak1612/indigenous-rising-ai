@@ -494,7 +494,10 @@ const BlogPost = () => {
           <Button
             variant="default"
             size="icon"
-            className="fixed bottom-8 right-8 z-50 rounded-full shadow-lg"
+            aria-label="Back to top"
+            /* Phones: stacked above the Ask Agent launcher, which now owns
+               the corner; md+: its old spot (the launcher sits higher there). */
+            className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 rounded-full shadow-lg"
             onClick={scrollToTop}
           >
             <ChevronUp className="w-5 h-5" />
