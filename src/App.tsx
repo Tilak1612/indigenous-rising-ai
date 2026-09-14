@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense, useEffect } from "react";
 import { trackPageView } from "./utils/analytics";
-import AccessibilityToolbar from "./components/AccessibilityToolbar";
 import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -694,7 +693,15 @@ export const AppTree = () => (
               />
             </Routes>
             </div>
-              <AccessibilityToolbar />
+              {/* AccessibilityToolbar unmounted on request (2026-09-14):
+                  the floating gear is hidden everywhere now, not just on
+                  phones. Unmounting (rather than CSS-hiding) also stops the
+                  component's mount effect from re-applying settings a visitor
+                  saved earlier — with no UI left to change them, a stored
+                  130% text size would otherwise be stuck forever. The
+                  component file stays for an easy revert. WCAG conformance
+                  does not depend on this widget; OS zoom and system contrast
+                  cover the same needs. */}
               <CookieConsent />
               <ComplianceBanner />
             </TooltipProvider>
