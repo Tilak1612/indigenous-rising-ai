@@ -108,9 +108,15 @@ const AccessibilityToolbar: React.FC = () => {
   return (
     <>
       {/* Accessibility Button - Always visible */}
+      {/* Hidden below md: on phones this gear stacked under the Ask Agent
+          launcher as a second floating control nobody asked for, and the
+          panel's text-size / contrast toggles are duplicated there by OS
+          zoom and system settings. Tablet and desktop keep it. WCAG
+          conformance does not depend on this widget — it is an enhancement,
+          and hiding the trigger hides the feature, not the compliance. */}
       <Button
         onClick={() => toggleSetting('isOpen')}
-        className="fixed bottom-4 right-4 z-50 rounded-full p-3 shadow-elevated bg-primary text-primary-foreground hover:bg-primary-hover"
+        className="hidden md:inline-flex fixed bottom-4 right-4 z-50 rounded-full p-3 shadow-elevated bg-primary text-primary-foreground hover:bg-primary-hover"
         aria-label="Open accessibility toolbar"
         size="icon"
       >
@@ -119,7 +125,10 @@ const AccessibilityToolbar: React.FC = () => {
 
       {/* Accessibility Toolbar Panel */}
       {accessibility.isOpen && (
-        <Card className="fixed bottom-20 right-4 z-50 p-4 w-80 shadow-elevated bg-card border border-border">
+        /* Matches the trigger's breakpoint: without this, a panel opened on
+           desktop would survive a resize below md with its only re-open
+           control gone. (It still has its own Close button either way.) */
+        <Card className="hidden md:block fixed bottom-20 right-4 z-50 p-4 w-80 shadow-elevated bg-card border border-border">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-card-foreground">Accessibility Options</h3>
             <Button
