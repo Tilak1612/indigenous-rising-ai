@@ -105,9 +105,11 @@ const SiteAssistant = () => {
         <button
           onClick={() => setOpen(true)}
           aria-label="Ask Agent about Indigenous Rising AI"
-          /* Sits ABOVE the accessibility toolbar toggle (fixed bottom-4 right-4
-             z-50) so the a11y control is never obscured or crowded. */
-          className="fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-elevated px-4 py-3 hover:opacity-90 transition-opacity"
+          /* Phones: the true bottom-right corner — the a11y gear is hidden
+             below md (#189), so there is nothing to clear and the raised
+             position just looked un-anchored. md and up: above the gear
+             (fixed bottom-4 right-4 z-50) so it is never obscured. */
+          className="fixed bottom-4 md:bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-primary text-primary-foreground shadow-elevated px-4 py-3 hover:opacity-90 transition-opacity"
         >
           {/* Brand chatbot mark (reviewed Higgsfield/Recraft vector output):
               the site's rising-rings motif inside a speech bubble. Cream-line
@@ -129,8 +131,9 @@ const SiteAssistant = () => {
         <div
           role="dialog"
           aria-label="Ask Agent"
-          /* Anchored above the accessibility toolbar toggle, matching the launcher. */
-          className="fixed bottom-20 right-4 z-40 w-[92vw] max-w-sm rounded-2xl border border-border bg-card shadow-elevated flex flex-col overflow-hidden"
+          /* Anchored where the launcher is: corner on phones, above the
+             a11y gear from md up. */
+          className="fixed bottom-4 md:bottom-20 right-4 z-40 w-[92vw] max-w-sm rounded-2xl border border-border bg-card shadow-elevated flex flex-col overflow-hidden"
           style={{ height: 'min(70vh, 560px)' }}
         >
           <header className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border bg-primary/5">
