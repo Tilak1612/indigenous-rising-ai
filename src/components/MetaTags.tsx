@@ -64,7 +64,6 @@ const MetaTags = ({
             registered. */}
 
         {/* Additional SEO */}
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="7 days" />
         <meta name="author" content="Indigenous Rising AI" />
@@ -73,12 +72,15 @@ const MetaTags = ({
         <meta name="geo.region" content="CA" />
         <meta name="geo.placename" content="Canada" />
 
-        {/* Canonical — self-referential per page for correct indexing */}
-        <link rel="canonical" href={canonicalUrl} />
-
-        {/* Alternate languages */}
-        <link rel="alternate" hrefLang="en-ca" href={canonicalUrl} />
-        <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
+        {/* No canonical, robots or hreflang here on purpose.
+            scripts/prerender.mjs writes the canonical and robots tags per
+            route into the static HTML and owns them. react-helmet-async only
+            replaces tags it owns (data-rh), so emitting a canonical here
+            produced two canonical links in the rendered DOM — and on pages
+            whose Helmet had none (e.g. /pricing) a data-rh canonical was
+            deleted outright, leaving the page with none at all.
+            Self-referential hreflang added nothing on a single-language site;
+            it comes back properly when French pages ship. */}
       </Helmet>
       
       {/* Structured Data */}

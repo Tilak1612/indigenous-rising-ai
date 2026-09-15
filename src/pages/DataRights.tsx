@@ -66,9 +66,6 @@ const DataRights = () => {
         <meta name="twitter:title" content="Your Data Rights - PIPEDA Compliance" />
         <meta name="twitter:description" content="Exercise your data rights under PIPEDA." />
         <meta name="twitter:image" content="https://www.indigenousrising.ai/og-data-rights.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/data-rights" />
       </Helmet>
 
       <Navigation />

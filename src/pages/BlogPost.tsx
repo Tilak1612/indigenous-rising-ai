@@ -157,7 +157,6 @@ const BlogPost = () => {
         <title>{pageTitle(post.seoTitle ?? post.title)}</title>
         <meta name="description" content={metaDesc} />
         <meta name="keywords" content={post.keywords.join(', ')} />
-        <link rel="canonical" href={shareUrl} />
         
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={metaDesc} />
@@ -175,65 +174,9 @@ const BlogPost = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={metaDesc} />
-        
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
-              { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${BASE_URL}/blog` },
-              { "@type": "ListItem", "position": 3, "name": post.title, "item": shareUrl }
-            ]
-          })}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.summary,
-            "image": absoluteImage,
-            "url": shareUrl,
-            "datePublished": post.publishedAt,
-            "dateModified": post.updatedAt,
-            "author": {
-              "@type": "Organization",
-              "name": post.author.name
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Indigenous Rising AI",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.indigenousrising.ai/logo-icon.png"
-              }
-            },
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": shareUrl
-            },
-            "keywords": post.keywords.join(', '),
-            "articleSection": post.category,
-            "wordCount": post.introduction.split(' ').length +
-              post.sections.reduce((acc, s) =>
-                acc + s.content.split(' ').length +
-                (s.subsections?.reduce((a, sub) => a + sub.content.split(' ').length, 0) ?? 0), 0)
-          })}
-        </script>
-        {post.faqs && post.faqs.length > 0 && (
-          <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": post.faqs.map((f) => ({
-                "@type": "Question",
-                "name": f.question,
-                "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-              }))
-            })}
-          </script>
-        )}
+        {/* BlogPosting, BreadcrumbList and FAQPage JSON-LD are written into the
+            static HTML by scripts/prerender.mjs. Emitting them here as well put
+            two of each in the rendered DOM. */}
       </Helmet>
 
       <div className="min-h-screen bg-background">

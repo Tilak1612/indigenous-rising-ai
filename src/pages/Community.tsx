@@ -134,7 +134,6 @@ const Community = () => {
           name="description"
           content="Join the Indigenous Rising AI community. Share funding tips, business advice, success stories, and connect with Indigenous entrepreneurs across Canada."
         />
-        <link rel="canonical" href="https://www.indigenousrising.ai/community" />
       </Helmet>
 
       <div className="min-h-screen warm-bg">

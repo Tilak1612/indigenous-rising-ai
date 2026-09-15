@@ -29,9 +29,6 @@ const CanadianCompliance = () => {
         <meta name="twitter:title" content="Canadian Regulatory Alignment" />
         <meta name="twitter:description" content="PIPEDA-aligned, CASL-aligned, and AODA-aligned for Indigenous businesses." />
         <meta name="twitter:image" content="https://www.indigenousrising.ai/og-compliance.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/compliance" />
       </Helmet>
       <Navigation />
       

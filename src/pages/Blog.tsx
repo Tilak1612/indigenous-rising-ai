@@ -54,7 +54,6 @@ const Blog = () => {
         <title>Indigenous Business Funding Blog | Indigenous Rising AI</title>
         <meta name="description" content="Expert guides on Indigenous business grants, First Nations funding, Métis entrepreneur programs, and Inuit business support. Learn how to access funding for your Indigenous business." />
         <meta name="keywords" content="Indigenous business grants Canada, First Nations funding, Métis entrepreneur grants, Inuit business support, Indigenous small business" />
-        <link rel="canonical" href="https://www.indigenousrising.ai/blog" />
         
         <meta property="og:title" content="Indigenous Business Funding Blog | Indigenous Rising AI" />
         <meta property="og:description" content="Expert guides on Indigenous business grants, First Nations funding, Métis entrepreneur programs, and Inuit business support." />

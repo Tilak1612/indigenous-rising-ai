@@ -39,9 +39,6 @@ const AccessibilityStatement: React.FC = () => {
         <meta name="twitter:title" content="Accessibility Statement - Indigenous Rising AI" />
         <meta name="twitter:description" content="WCAG 2.1 compliant platform for Indigenous entrepreneurs." />
         <meta name="twitter:image" content="https://www.indigenousrising.ai/og-home.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/accessibility" />
       </Helmet>
       <Navigation />
       

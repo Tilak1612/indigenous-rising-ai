@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
 
 // Must match MetaTags' BASE_URL — the canonical host is www. Emitting the
 // bare apex here put a non-canonical URL in every BreadcrumbList.
@@ -70,28 +69,14 @@ export const Breadcrumbs = ({ customItems, className = '' }: BreadcrumbsProps) =
   // Don't show breadcrumbs on homepage
   if (location.pathname === '/') return null;
   
-  // Generate JSON-LD schema
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": breadcrumbs.map((item, index) => ({
-      "@type": "ListItem",
-      "position": index + 1,
-      "name": item.name,
-      // A namespace segment has no page to point at; omitting `item` is valid
-      // for BreadcrumbList and avoids publishing a URL that 404s.
-      ...(item.navigable === false ? {} : { "item": `${BASE_URL}${item.path}` })
-    }))
-  };
-  
+  // No JSON-LD here: scripts/prerender.mjs writes the BreadcrumbList into the
+  // static HTML from the same rules (routeNames + NON_ROUTE_SEGMENTS), so a
+  // non-rendering crawler sees it too. Emitting it here as well put two
+  // BreadcrumbLists in the rendered DOM. The visible trail below keeps its
+  // microdata.
+
   return (
     <>
-      <Helmet>
-        <script type="application/ld+json">
-          {JSON.stringify(breadcrumbSchema)}
-        </script>
-      </Helmet>
-      
       <nav 
         aria-label="Breadcrumb" 
         className={`py-4 px-4 text-sm border-b bg-muted ${className}`}

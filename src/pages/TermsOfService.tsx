@@ -28,9 +28,6 @@ const TermsOfService: React.FC = () => {
         <meta name="twitter:title" content="Terms of Service - Indigenous Rising AI" />
         <meta name="twitter:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
         <meta name="twitter:image" content="https://www.indigenousrising.ai/og-terms.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/terms" />
       </Helmet>
       <Navigation />
       

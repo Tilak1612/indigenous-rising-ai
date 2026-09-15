@@ -37,6 +37,12 @@ const HOME_DESC = 'Find funding, build your business plan, access training, and 
 // /about, /mission and /partnerships are NOT listed here. They 301 to / at the
 // edge (vercel.json). Prerendering a redirect target produced an indexed URL
 // that returned 200 with an empty body while browsers were bounced home.
+// Routes whose page component renders <Breadcrumbs /> with no customItems.
+// /guides and /demo instead carry an explicit `breadcrumb` label below.
+const BREADCRUMB_ROUTES = new Set([
+  '/funding/alerts', '/contact', '/privacy', '/success-stories', '/cookies', '/training', '/faq', '/careers',
+]);
+
 const MARKETING = [
   { p: '/', t: HOME_TITLE, d: HOME_DESC, software: true },
   { p: '/auth', t: 'Sign in | Indigenous Rising AI', d: 'Sign in to your Indigenous Rising AI account.', robots: 'noindex, nofollow' },
@@ -50,12 +56,7 @@ const MARKETING = [
   { p: '/signup', t: 'Create your account | Indigenous Rising AI', d: 'Create a free Indigenous Rising AI account. Three funding matches a month, a guided business plan, and no credit card required.', robots: 'noindex, nofollow' },
   { p: '/pricing', img: '/og-pricing.jpg', t: 'Pricing: Free, Growth & Nations Plans | Indigenous Rising AI', d: 'Transparent pricing for Indigenous entrepreneurs. Start free, no credit card. Growth is $49/mo. OCAP®-aligned, with your data stored in Canada.' },
   { p: '/blog', t: 'Indigenous Business Funding Blog | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications and business planning for First Nations, Métis and Inuit entrepreneurs across Canada.' },
-  { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada', d: 'Indigenous business grants, loans and non-repayable funding across Canada, by province and by community, plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding', faqs: [
-    { q: 'What Indigenous business grants are available in Canada?', a: 'Indigenous entrepreneurs can access a mix of federal and provincial programs, non-repayable contributions, and loans from Indigenous Financial Institutions. Availability depends on your province, community (First Nations, Métis, or Inuit), industry, and stage.' },
-    { q: 'Do I need Indian status to get Indigenous business funding?', a: 'Not always. Many programs serve Status and Non-Status First Nations, Métis, and Inuit entrepreneurs, using community membership, Métis citizenship, or Inuit beneficiary status as proof of identity rather than Indian status specifically. Always check each program’s eligibility.' },
-    { q: 'Are Indigenous business grants the same as loans?', a: 'No. Grants and non-repayable contributions do not have to be paid back (subject to using funds for the approved purpose and meeting reporting requirements), while loans do. Many entrepreneurs combine both.' },
-    { q: 'How do I find the grants I am actually eligible for?', a: 'Start with the guide for your province and your community, then use Indigenous Rising AI’s funding matching to scan programs against your profile. A clear business plan makes every application stronger.' },
-  ] },
+  { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada', d: 'Indigenous business grants, loans and non-repayable funding across Canada, by province and by community, plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding' },
   { p: '/demo', t: 'Book a demo | Indigenous Rising AI', d: 'Book a 30-minute walkthrough of Indigenous Rising AI — funding matching, the business plan assistant, and the controls that decide who sees your data.', breadcrumb: 'Book a demo' },
   { p: '/contact', img: '/og-contact.jpg', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
   { p: '/faq', t: 'Frequently asked questions | Indigenous Rising AI', d: 'Answers about funding matching, business planning, OCAP® data sovereignty, pricing, and what is live today versus coming soon on Indigenous Rising AI.' },
@@ -81,6 +82,61 @@ const MARKETING = [
   { p: '/data-rights', img: '/og-data-rights.jpg', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
 ];
 
+// ── Breadcrumbs ────────────────────────────────────────────────────────────
+// Mirrors src/components/Breadcrumbs.tsx (routeNames + NON_ROUTE_SEGMENTS +
+// trail building) so the static BreadcrumbList matches the trail a visitor
+// sees. The component no longer emits its own JSON-LD — it did, which put two
+// BreadcrumbLists in the rendered DOM on every page that also had a
+// prerendered one. Guarded by src/__tests__/seo-breadcrumbs.test.ts, which
+// fails if the two maps drift.
+const NON_ROUTE_SEGMENTS = new Set(['/guides', '/features']);
+const ROUTE_NAMES = {
+  '/': 'Home',
+  '/guides': 'Guides',
+  '/features': 'Features',
+  '/privacy': 'Privacy Policy',
+  '/terms': 'Terms of Service',
+  '/cookies': 'Cookie Policy',
+  '/accessibility': 'Accessibility',
+  '/compliance': 'Canadian Compliance',
+  '/data-rights': 'Data Rights',
+  '/contact': 'Contact',
+  '/training': 'Training Programs',
+  '/auth': 'Sign In',
+  '/admin': 'Admin Dashboard',
+  '/track-request': 'Track Request',
+  '/unsubscribe': 'Unsubscribe',
+  '/faq': 'FAQ',
+  '/success-stories': 'Success Stories',
+};
+
+/** The visible trail for a path, as the component builds it. */
+function breadcrumbTrail(p) {
+  const items = [{ name: 'Home', path: '/' }];
+  let current = '';
+  for (const segment of p.split('/').filter(Boolean)) {
+    current += `/${segment}`;
+    const name = ROUTE_NAMES[current] || segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+    items.push({ name, path: current, navigable: !NON_ROUTE_SEGMENTS.has(current) });
+  }
+  return items;
+}
+
+function breadcrumbJsonLd(items) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      // A namespace segment (/guides) has no page behind it: omitting `item`
+      // is valid and avoids publishing a URL that 404s.
+      ...(item.navigable === false ? {} : { item: `${BASE}${item.path === '/' ? '/' : item.path}` }),
+    })),
+  };
+}
+
 // Mirrors pageTitle() in src/data/blogSeoTitles.ts — the site name is appended
 // only when the whole title still fits in ~60 characters.
 const SITE_SUFFIX = ' | Indigenous Rising AI';
@@ -90,6 +146,25 @@ function pageTitle(title) {
 }
 
 // ── Load blog posts via esbuild, stubbing asset imports + the @/ alias ──────
+/** Load a TS data module through esbuild (same trick as loadBlogPosts). */
+async function loadDataModule(relPath, exportName) {
+  try {
+    const result = await build({
+      entryPoints: [path.join(ROOT, relPath)],
+      bundle: true, write: false, format: 'esm', platform: 'node', logLevel: 'silent',
+      plugins: [{
+        name: 'alias-only',
+        setup(b) { b.onResolve({ filter: /^@\// }, (a) => ({ path: path.join(ROOT, 'src', a.path.slice(2)) })); },
+      }],
+    });
+    const mod = await import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
+    return mod[exportName] ?? null;
+  } catch (e) {
+    console.warn(`[prerender] could not load ${relPath}:`, e.message);
+    return null;
+  }
+}
+
 async function loadBlogPosts() {
   try {
     const result = await build({
@@ -155,22 +230,27 @@ function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd
     if (jsonLd) out = out.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n  </head>`);
     return out;
   }
-  // Hand these tags to react-helmet-async on hydration. Helmet only replaces
-  // tags carrying data-rh; without it every page ended up with TWO canonical
-  // links, two descriptions and two og:title tags in the rendered DOM Google
-  // indexes — often with different values. Deliberately NOT marked: robots
-  // (Google skips rendering a raw-HTML noindex page, so the static tag must
-  // stand on its own) and verification/viewport/charset (no page re-emits them,
-  // so Helmet would delete them).
+  // Hand the tags pages re-emit to react-helmet-async on hydration. Helmet
+  // only replaces tags carrying data-rh; without it every page ended up with
+  // two descriptions and two og:title tags in the rendered DOM Google indexes,
+  // often with different values.
+  //
+  // NOT marked, on purpose:
+  //  - canonical and robots: prerender owns them outright and no page emits
+  //    them any more. Marking canonical deleted it entirely on pages whose own
+  //    Helmet had none (measured on /pricing), and Google skips rendering a
+  //    page whose raw HTML says noindex, so robots must stand alone.
+  //  - verification / viewport / charset: no page re-emits them, so Helmet
+  //    would simply delete them.
   out = out.replace(
     /<meta\s+(name="description"|property="og:(?:title|description|url|image|type)"|name="twitter:(?:title|description|image)")/gi,
     '<meta data-rh="true" $1',
   );
   // Canonical: replace if present, else inject before </head>
-  const inject = [`<link data-rh="true" rel="canonical" href="${U}" />`];
+  const inject = [`<link rel="canonical" href="${U}" />`];
   if (jsonLd) inject.push(`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`);
   if (/<link\s+rel="canonical"/i.test(out)) {
-    out = out.replace(/<link\s+rel="canonical"[^>]*>/i, `<link data-rh="true" rel="canonical" href="${U}" />`);
+    out = out.replace(/<link\s+rel="canonical"[^>]*>/i, `<link rel="canonical" href="${U}" />`);
     if (jsonLd) out = out.replace('</head>', `  ${inject[1]}\n  </head>`);
   } else {
     out = out.replace('</head>', `  ${inject.join('\n  ')}\n  </head>`);
@@ -222,6 +302,16 @@ async function main() {
     return;
   }
   const template = await readFile(path.join(DIST, 'index.html'), 'utf8');
+
+  // FAQPage for the grants hub comes from the same module the page renders,
+  // so the markup and the visible Q&A cannot drift apart.
+  const hubFaqs = await loadDataModule('src/data/grantsHubFaqs.ts', 'grantsHubFaqs');
+  if (Array.isArray(hubFaqs) && hubFaqs.length) {
+    const hub = MARKETING.find((m) => m.p === '/guides/indigenous-business-grants');
+    if (hub) hub.faqs = hubFaqs.map((f) => ({ q: f.question, a: f.answer }));
+  } else {
+    console.warn('[prerender] grants-hub FAQs unavailable — page ships without FAQPage');
+  }
   let count = 0;
   // Collected live and indexable URLs — written to dist/sitemap.xml at the end so
   // the sitemap is generated from the SAME source as the prerendered pages and can
@@ -234,15 +324,12 @@ async function main() {
       // Optional structured data for content hubs (mirrors the client-rendered
       // Helmet tags so non-JS crawlers / AI extractors see it in the raw HTML).
       const jsonLd = [];
+      // Pages that render <Breadcrumbs /> (or pass customItems) — the visible
+      // trail and this markup are generated from the same rules.
       if (m.breadcrumb) {
-        jsonLd.push({
-          '@context': 'https://schema.org',
-          '@type': 'BreadcrumbList',
-          itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
-            { '@type': 'ListItem', position: 2, name: m.breadcrumb, item: url },
-          ],
-        });
+        jsonLd.push(breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: m.breadcrumb, path: m.p }]));
+      } else if (BREADCRUMB_ROUTES.has(m.p)) {
+        jsonLd.push(breadcrumbJsonLd(breadcrumbTrail(m.p)));
       }
       if (m.software) {
         // Homepage only. Offers mirror the live pricing page: Free ($0) and
