@@ -1,4 +1,5 @@
 {
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/:path*",
@@ -45,11 +46,68 @@
       "source": "/blog/how-to-apply-indigenous-business-funding-canada",
       "destination": "/blog/how-to-apply-indigenous-business-funding-step-by-step",
       "permanent": true
+    },
+    {
+      "source": "/learning",
+      "destination": "/training",
+      "permanent": true
+    },
+    {
+      "source": "/v1",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/landing-v2",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/login",
+      "destination": "/auth",
+      "permanent": true
+    },
+    {
+      "source": "/signin",
+      "destination": "/auth",
+      "permanent": true
     }
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/dashboard",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dashboard/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/onboarding",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/unsubscribe",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/funding/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/features/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/community/(.*)",
       "destination": "/index.html"
     }
   ],
