@@ -48,11 +48,13 @@ describe('search-result titles fit', () => {
 });
 
 describe('prerendered head tags hand over to Helmet', () => {
-  test('description, canonical and og/twitter tags carry data-rh', () => {
-    // Without it the rendered DOM Google indexes had two canonicals, two
-    // descriptions and two og:titles — sometimes with different values.
+  test('description and the og/twitter pairs carry data-rh', () => {
+    // Without it the rendered DOM Google indexes had two descriptions and two
+    // og:titles, sometimes with different values. Canonical is deliberately
+    // NOT marked — see the single-source test: Helmet deletes data-rh tags a
+    // page does not re-emit, which left /pricing with no canonical at all.
     expect(prerender).toMatch(/data-rh="true" \$1/);
-    expect(prerender).toMatch(/<link data-rh="true" rel="canonical"/);
+    expect(prerender).toMatch(/<link rel="canonical" href="\$\{U\}" \/>/);
   });
 
   test('robots is NOT handed over', () => {
@@ -158,8 +160,10 @@ describe('layout stability and internal links', () => {
 
   test('the funding-guide FAQ answers ship in the static HTML', () => {
     // The prerendered FAQPage block is the only copy a non-rendering crawler
-    // sees; keep it non-empty.
-    expect(prerender).toMatch(/faqs: \[/);
+    // sees. It is loaded from the module the page renders (see
+    // seo-schema-single-source.test.ts) so the two cannot drift.
+    expect(prerender).toMatch(/hub\.faqs = hubFaqs\.map/);
+    expect(prerender).toMatch(/'@type': 'FAQPage'/);
   });
 
   test('every asset referenced by the sitemap build exists', () => {
