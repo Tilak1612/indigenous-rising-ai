@@ -20,6 +20,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import { sanitizeInput } from '@/lib/sanitize';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 interface CommunityPost {
   id: string;
@@ -129,7 +130,7 @@ const Community = () => {
   return (
     <>
       <Helmet>
-        <title>Community Forum | Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/community']}</title>
       </Helmet>
 
       <div className="min-h-screen warm-bg">

@@ -3,6 +3,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import PricingSection from '@/components/PricingSection';
 import { StructuredData } from '@/components/StructuredData';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const Pricing = () => {
   return (
@@ -10,7 +11,7 @@ const Pricing = () => {
       {/* Title + description kept in sync with scripts/prerender.mjs so the
           static (crawler) and hydrated (runtime) head don't drift. */}
       <Helmet>
-        <title>Pricing: Free, Growth & Nations Plans | Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/pricing']}</title>
       </Helmet>
 
       <StructuredData

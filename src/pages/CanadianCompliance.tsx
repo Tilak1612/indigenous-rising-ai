@@ -5,12 +5,13 @@ import Footer from '../components/Footer';
 import { Shield, Check, MapPin, Globe, Lock, FileText } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const CanadianCompliance = () => {
   return (
     <div className="min-h-screen warm-page">
       <Helmet>
-        <title>Canadian Regulatory Alignment - Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/compliance']}</title>
         
         {/* Open Graph */}
         <meta property="og:image:width" content="1200" />

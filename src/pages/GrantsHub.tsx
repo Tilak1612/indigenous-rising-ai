@@ -6,6 +6,7 @@ import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { getAllPosts, type BlogPost } from '@/data/blogPosts';
 import { grantsHubFaqs as FAQS } from '@/data/grantsHubFaqs';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 // Indigenous business grants & funding hub. This is a PILLAR page: it does not
 // invent programs, amounts, or deadlines — it organizes and links to the site's
@@ -82,7 +83,7 @@ const GrantsHub = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags
-        title="Indigenous Business Grants & Funding in Canada"
+        title={ROUTE_TITLES['/guides/indigenous-business-grants']}
         description="A hub of guides to Indigenous business grants, loans, and non-repayable funding across Canada — by province and by community (First Nations, Métis, Inuit), plus how to apply and get procurement-ready."
         keywords="Indigenous business grants, Indigenous business funding Canada, First Nations business grants, Métis business grants, Inuit business grants, Indigenous startup funding, Indigenous business loans"
         url="https://www.indigenousrising.ai/guides/indigenous-business-grants"

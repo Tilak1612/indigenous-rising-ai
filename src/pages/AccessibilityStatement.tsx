@@ -15,12 +15,13 @@ import {
   Mail,
   FileText
 } from 'lucide-react';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const AccessibilityStatement: React.FC = () => {
   return (
     <div className="min-h-screen warm-page">
       <Helmet>
-        <title>Accessibility Statement - Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/accessibility']}</title>
         
         {/* Open Graph */}
         <meta property="og:image:width" content="1200" />

@@ -16,6 +16,7 @@ import Footer from '@/components/Footer';
 import { PLANS } from '@/data/plans';
 import { BrandMark } from '@/components/BrandMark';
 import './landing-v2.css';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 /**
  * Indigenous Rising AI — landing page redesign.
@@ -284,7 +285,7 @@ const LandingV2 = () => {
       {/* Homepage SEO: title, description, OpenGraph/Twitter, canonical, JSON-LD. */}
       <MetaTags
         isHomePage
-        title="Indigenous Business Funding Platform | Indigenous Rising AI"
+        title={ROUTE_TITLES['/']}
         description="Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community."
         faqs={FAQS.map((f) => ({ question: f.q, answer: f.a }))}
       />

@@ -296,6 +296,20 @@ async function main() {
 
   // FAQPage for the grants hub comes from the same module the page renders,
   // so the markup and the visible Q&A cannot drift apart.
+  // Titles come from the same module the page components import, so the
+  // static <title> and the one Helmet sets after hydration cannot drift.
+  // They had, on 12 of 23 routes.
+  const routeTitles = await loadDataModule('src/data/routeTitles.ts', 'ROUTE_TITLES');
+  if (routeTitles) {
+    for (const m of MARKETING) {
+      const t = routeTitles[m.p];
+      if (t) m.t = t;
+      else console.warn(`[prerender] no shared title for ${m.p} — using the local one`);
+    }
+  } else {
+    console.warn('[prerender] shared route titles unavailable — using local titles');
+  }
+
   const hubFaqs = await loadDataModule('src/data/grantsHubFaqs.ts', 'grantsHubFaqs');
   if (Array.isArray(hubFaqs) && hubFaqs.length) {
     const hub = MARKETING.find((m) => m.p === '/guides/indigenous-business-grants');

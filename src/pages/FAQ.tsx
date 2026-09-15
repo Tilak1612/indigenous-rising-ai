@@ -3,12 +3,13 @@ import Footer from '../components/Footer';
 import FAQSection from '../components/FAQSection';
 import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const FAQ = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags 
-        title="Frequently Asked Questions | Indigenous Rising AI"
+        title={ROUTE_TITLES['/faq']}
         description="Find answers to common questions about Indigenous Rising AI, OCAP® principles, funding opportunities, training programs, and how our platform supports Indigenous entrepreneurs."
         keywords="FAQ, Indigenous business questions, OCAP, funding help, training programs, Indigenous Rising AI"
       />

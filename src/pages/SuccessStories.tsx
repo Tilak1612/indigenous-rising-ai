@@ -3,12 +3,13 @@ import Footer from '../components/Footer';
 import SuccessGallery from '../components/SuccessGallery';
 import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const SuccessStories = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags 
-        title="Success Stories | Indigenous Rising AI"
+        title={ROUTE_TITLES['/success-stories']}
         description="Explore Indigenous entrepreneur success stories and community impact across Canada."
         keywords="Indigenous success stories, entrepreneurship, community impact, Indigenous Rising AI"
       />

@@ -4,12 +4,13 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Card } from '@/components/ui/card';
 import { Scale, FileText, AlertTriangle, Shield, Users, Gavel } from 'lucide-react';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const TermsOfService: React.FC = () => {
   return (
     <div className="min-h-screen warm-page">
       <Helmet>
-        <title>Terms of Service - Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/terms']}</title>
         
         {/* Open Graph */}
         <meta property="og:image:width" content="1200" />

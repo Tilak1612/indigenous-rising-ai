@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const PROVINCES = [
   { code: 'AB', name: 'Alberta' },
@@ -104,7 +105,7 @@ const FundingAlerts: React.FC = () => {
   return (
     <div className="min-h-screen bg-background">
       <MetaTags
-        title="Free Weekly Funding Alerts | Indigenous Rising AI"
+        title={ROUTE_TITLES['/funding/alerts']}
         description="Get free weekly emails on Indigenous business funding opportunities, filtered by your province and industry. CASL-compliant double opt-in. Unsubscribe any time."
         keywords="Indigenous funding alerts, free funding newsletter, Aboriginal business grants, weekly funding email"
       />

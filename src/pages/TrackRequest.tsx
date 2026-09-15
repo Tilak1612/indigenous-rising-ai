@@ -11,6 +11,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 interface RequestStatus {
   tracking_number: string;
@@ -112,7 +113,7 @@ const TrackRequest = () => {
   return (
     <>
       <Helmet>
-        <title>Track Data Request - Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/track-request']}</title>
         <meta name="robots" content="noindex, nofollow" />
         
         {/* Open Graph */}

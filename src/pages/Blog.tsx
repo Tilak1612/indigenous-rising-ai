@@ -18,6 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const Blog = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,7 +52,7 @@ const Blog = () => {
   return (
     <>
       <Helmet>
-        <title>Indigenous Business Funding Blog | Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/blog']}</title>
         
         <script type="application/ld+json">
           {JSON.stringify({

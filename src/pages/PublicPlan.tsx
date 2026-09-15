@@ -8,6 +8,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
 import { useAuth } from '@/hooks/useAuth';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const planSections = [
   {
@@ -59,7 +60,7 @@ const PublicPlan: React.FC = () => {
   return (
     <>
       <MetaTags
-        title="Indigenous Business Plan Builder | Indigenous Rising AI"
+        title={ROUTE_TITLES['/plan']}
         description="Create a professional business plan with AI-powered guidance. Sector-specific templates and step-by-step assistance for Indigenous entrepreneurs."
       />
       

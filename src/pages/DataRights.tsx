@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const DataRights = () => {
   const rights = [
@@ -44,7 +45,7 @@ const DataRights = () => {
   return (
     <div className="min-h-screen warm-page">
       <Helmet>
-        <title>Your Data Rights | PIPEDA Compliance | Indigenous Rising AI</title>
+        <title>{ROUTE_TITLES['/data-rights']}</title>
         
         {/* Open Graph */}
         <meta property="og:image:width" content="1200" />

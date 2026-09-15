@@ -15,6 +15,7 @@ import { DATA_RESIDENCY_LINE } from '@/lib/trust-copy';
 import { PasswordStrength } from '@/components/auth/PasswordStrength';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -270,7 +271,7 @@ export default function Auth() {
   return (
     <>
       <Helmet>
-        <title>{isLogin ? 'Sign In' : 'Create Account'} - Indigenous Rising AI</title>
+        <title>{isLogin ? ROUTE_TITLES['/auth'] : ROUTE_TITLES['/signup']}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 

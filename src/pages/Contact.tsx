@@ -22,6 +22,7 @@ import {
   getTimeUntilReset,
   formatTimeRemaining 
 } from '@/lib/rate-limiter';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -99,7 +100,7 @@ const Contact = () => {
   return (
     <>
       <MetaTags
-        title="Contact Us | Get Support | Indigenous Rising AI"
+        title={ROUTE_TITLES['/contact']}
         description="Get in touch with Indigenous Rising AI. We're here to help Indigenous entrepreneurs succeed. Email, phone, and contact form available."
         ogImage="https://www.indigenousrising.ai/og-contact.jpg"
       />
