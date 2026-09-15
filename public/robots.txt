@@ -2,53 +2,29 @@
 User-agent: *
 Allow: /
 
-# Block admin, auth, and private areas
+# Block private, tokenised and app-only areas.
+# /auth and /signup are NOT disallowed on purpose: they carry
+# <meta name="robots" content="noindex"> and are linked from every page.
+# Blocking them here would stop Google reading that noindex, so they could be
+# indexed as bare "blocked by robots.txt" URLs instead of being dropped.
 Disallow: /dashboard
 Disallow: /dashboard/
 Disallow: /admin
 Disallow: /admin/
 Disallow: /api/
-Disallow: /auth
-Disallow: /login
-Disallow: /signup
-Disallow: /profile
-Disallow: /test-subscription
 Disallow: /unsubscribe
-Disallow: /v1
-
-# Allow search engines to crawl public pages
-Allow: /privacy
-Allow: /terms
-Allow: /accessibility
-Allow: /compliance
-Allow: /data-rights
-Allow: /contact
-Allow: /training
-Allow: /track-request
-
-# Crawl delay for politeness
-Crawl-delay: 1
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
 
 # Sitemap location
 Sitemap: https://www.indigenousrising.ai/sitemap.xml
 
-# Google specific
-User-agent: Googlebot
-Allow: /
-
-# Bing specific (important for Canadian audience)
-User-agent: Bingbot
-Allow: /
-
-# Social media bots
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
+# NOTE: there are deliberately NO separate "User-agent: Googlebot" /
+# "Bingbot" / social-bot groups. A crawler obeys only the MOST SPECIFIC group
+# that names it, so the old "User-agent: Googlebot / Allow: /" group made
+# Googlebot and Bingbot ignore every Disallow above (dashboard, admin, auth).
+# Those bots now follow the * group like everyone else.
 
 # AI crawler policy — sovereignty-aligned middle path:
 # ALLOW retrieval / answer engines on PUBLIC content (they surface live, ATTRIBUTED

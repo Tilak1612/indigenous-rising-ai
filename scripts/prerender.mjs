@@ -128,7 +128,7 @@ function truncateDesc(text, max = 160) {
   return base.replace(/[\s,;:–—-]+$/, '') + '.';
 }
 
-function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd, robots }) {
+function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd, robots, noCanonical = false }) {
   let out = html;
   const T = esc(title), D = esc(truncateDesc(description)), U = esc(url), I = esc(ogImage);
   out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${T}</title>`);
@@ -143,6 +143,10 @@ function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd
   out = out.replace(/(<meta\s+name="twitter:title"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${T}$2`);
   out = out.replace(/(<meta\s+name="twitter:description"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${D}$2`);
   out = out.replace(/(<meta\s+name="twitter:image"\s+content=")[\s\S]*?("\s*\/?>)/i, `$1${I}$2`);
+  if (noCanonical) {
+    if (jsonLd) out = out.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n  </head>`);
+    return out;
+  }
   // Canonical: replace if present, else inject before </head>
   const inject = [`<link rel="canonical" href="${U}" />`];
   if (jsonLd) inject.push(`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`);
@@ -172,7 +176,8 @@ async function getSsrRender() {
 
 async function writeRoute(template, route) {
   const dir = path.join(DIST, route.p.replace(/^\//, ''));
-  await mkdir(dir, { recursive: true });
+  const outFile = route.file ? path.join(DIST, route.file) : path.join(dir, 'index.html');
+  if (!route.file) await mkdir(dir, { recursive: true });
   let html = applyHead(template, route);
 
   // Render the route's real markup into #root. Without this the shipped HTML
@@ -189,7 +194,7 @@ async function writeRoute(template, route) {
       process.exitCode = 1;
     }
   }
-  await writeFile(path.join(dir, 'index.html'), html);
+  await writeFile(outFile, html);
 }
 
 async function main() {
@@ -309,6 +314,23 @@ async function main() {
       sitemap.push({ loc: url, ...(lastmod ? { lastmod } : {}), changefreq: 'monthly', priority: '0.7' });
     } catch (e) { console.warn('[prerender] blog route failed', post.slug, e.message); }
   }
+
+  // Real 404 page. vercel.json no longer rewrites every path to index.html, so
+  // unknown URLs fall through to dist/404.html and return HTTP 404. Before,
+  // every URL — /this-page-does-not-exist, /blog/not-a-real-post — returned
+  // 200 with the homepage HTML: a soft 404 on every mistyped or stale link.
+  // It is the full SPA shell, so if a legitimate client-only route were ever
+  // missed from the rewrites it would still render correctly for users (React
+  // Router reads the URL); only the status code would be wrong.
+  try {
+    await writeRoute(template, {
+      p: '/__prerender-404__', file: '404.html', url: `${BASE}/404`,
+      title: 'Page not found | Indigenous Rising AI',
+      description: 'The page you are looking for does not exist. Find Indigenous business funding guides, pricing, and support from the Indigenous Rising AI homepage.',
+      robots: 'noindex, follow', noCanonical: true,
+    });
+    count++;
+  } catch (e) { console.warn('[prerender] 404 page failed:', e.message); }
 
   await writeSitemap(sitemap);
 
