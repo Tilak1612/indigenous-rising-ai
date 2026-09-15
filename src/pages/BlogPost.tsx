@@ -11,6 +11,7 @@ import {
   ArrowRight, ChevronUp, Facebook, Twitter, Linkedin, Link as LinkIcon
 } from 'lucide-react';
 import { getBlogBySlug, getRelatedPosts, getPostImage } from '@/data/blogPosts';
+import { pageTitle } from '@/data/blogSeoTitles';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { truncateDescription } from '@/lib/seo';
@@ -153,7 +154,7 @@ const BlogPost = () => {
   return (
     <>
       <Helmet>
-        <title>{post.title} | Indigenous Rising AI</title>
+        <title>{pageTitle(post.seoTitle ?? post.title)}</title>
         <meta name="description" content={metaDesc} />
         <meta name="keywords" content={post.keywords.join(', ')} />
         <link rel="canonical" href={shareUrl} />

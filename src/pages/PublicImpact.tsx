@@ -162,7 +162,7 @@ const PublicImpact: React.FC = () => {
                         <area.icon className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold mb-1">{area.title}</h4>
+                        <h3 className="text-white font-semibold mb-1">{area.title}</h3>
                         <p className="text-sm text-white/60">{area.description}</p>
                       </div>
                     </div>

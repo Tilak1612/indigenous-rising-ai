@@ -115,9 +115,9 @@ const DataRights = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-bold text-lg mb-2 text-foreground">
+                <h2 className="font-bold text-lg mb-2 text-foreground">
                   {right.title}
-                </h3>
+                </h2>
                 <p className="text-sm text-muted-foreground">
                   {right.description}
                 </p>
@@ -129,9 +129,9 @@ const DataRights = () => {
         {/* Information Cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           <Card className="p-6">
-            <h3 className="font-bold text-lg mb-3 text-foreground">
+            <h2 className="font-bold text-lg mb-3 text-foreground">
               How We Process Your Request
-            </h3>
+            </h2>
             <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
               <li>Submit your request using the form below</li>
               <li>We verify your identity to protect your privacy</li>
@@ -142,9 +142,9 @@ const DataRights = () => {
           </Card>
 
           <Card className="p-6">
-            <h3 className="font-bold text-lg mb-3 text-foreground">
+            <h2 className="font-bold text-lg mb-3 text-foreground">
               What Information Do We Need?
-            </h3>
+            </h2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>• Your full legal name</li>
               <li>• Email address associated with your account</li>

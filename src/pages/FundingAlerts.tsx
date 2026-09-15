@@ -151,7 +151,7 @@ const FundingAlerts: React.FC = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Subscribe</CardTitle>
+                    <h2 className="text-2xl font-semibold leading-none tracking-tight">Subscribe</h2>
                     <CardDescription>
                       Tell us where you operate and what industries you work in. We will only include grants relevant to you.
                     </CardDescription>

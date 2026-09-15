@@ -37,7 +37,7 @@ if (urls.length === 0) {
 
 const home = await readFile(path.join(DIST, 'index.html'), 'utf8');
 const homeTitle = tag(home, /<title>([^<]*)<\/title>/i);
-const homeDesc = tag(home, /<meta name="description" content="([^"]*)"/i);
+const homeDesc = tag(home, /<meta[^>]*name="description"[^>]*content="([^"]*)"/i);
 
 const failures = [];
 for (const url of urls) {
@@ -47,7 +47,7 @@ for (const url of urls) {
 
   const html = await readFile(file, 'utf8');
   const title = tag(html, /<title>([^<]*)<\/title>/i);
-  const desc = tag(html, /<meta name="description" content="([^"]*)"/i);
+  const desc = tag(html, /<meta[^>]*name="description"[^>]*content="([^"]*)"/i);
   const words = textOf(html).split(' ').filter(Boolean).length;
 
   if (!title) failures.push(`${route} — empty <title>`);
@@ -61,7 +61,7 @@ for (const url of urls) {
   // P0-2: canonical must match the URL the page is actually served from, on the
   // canonical host. Both hosts returned 200 with identical content before the
   // edge 301 was added, which split signals across two effective domains.
-  const canonical = tag(html, /<link rel="canonical" href="([^"]*)"/i);
+  const canonical = tag(html, /<link[^>]*rel="canonical"[^>]*href="([^"]*)"/i);
   if (!canonical) failures.push(`${route} — no canonical tag`);
   else if (canonical !== url) failures.push(`${route} — canonical is ${canonical}, expected ${url}`);
   else if (!canonical.startsWith('https://www.')) failures.push(`${route} — canonical is not on the canonical host`);

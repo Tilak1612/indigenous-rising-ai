@@ -42,7 +42,7 @@ const PrivacyPolicy: React.FC = () => {
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-6 w-6 text-primary mt-1" />
               <div>
-                <h3 className="font-semibold text-foreground mb-2">PIPEDA Compliance</h3>
+                <h2 className="font-semibold text-foreground mb-2">PIPEDA Compliance</h2>
                 <p className="text-muted-foreground">
                   This privacy policy complies with the Personal Information Protection and Electronic Documents Act (PIPEDA) 
                   and other applicable Canadian privacy legislation. We are committed to protecting the privacy and confidentiality 

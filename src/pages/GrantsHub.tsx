@@ -103,7 +103,7 @@ const GrantsHub = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags
-        title="Indigenous Business Grants & Funding in Canada | Indigenous Rising AI"
+        title="Indigenous Business Grants & Funding in Canada"
         description="A hub of guides to Indigenous business grants, loans, and non-repayable funding across Canada — by province and by community (First Nations, Métis, Inuit), plus how to apply and get procurement-ready."
         keywords="Indigenous business grants, Indigenous business funding Canada, First Nations business grants, Métis business grants, Inuit business grants, Indigenous startup funding, Indigenous business loans"
         url="https://www.indigenousrising.ai/guides/indigenous-business-grants"

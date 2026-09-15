@@ -10,7 +10,7 @@ const Pricing = () => {
       {/* Title + description kept in sync with scripts/prerender.mjs so the
           static (crawler) and hydrated (runtime) head don't drift. */}
       <Helmet>
-        <title>Pricing — Free, Growth & Nations plans | Indigenous Rising AI</title>
+        <title>Pricing: Free, Growth & Nations Plans | Indigenous Rising AI</title>
         <meta
           name="description"
           content="Honest, transparent pricing for Indigenous entrepreneurs. Start free; Growth is $49/mo. OCAP®-aligned, data stored in Canada, and you are never billed for a feature before it ships."

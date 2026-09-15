@@ -31,14 +31,14 @@ const OG_DEFAULT = `${BASE}/og-home.jpg`;
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // ── Static marketing routes (unique title + description per page) ───────────
-const HOME_TITLE = 'Indigenous Rising AI — The AI platform for Indigenous business growth';
+const HOME_TITLE = 'Indigenous Business Funding Platform | Indigenous Rising AI';
 const HOME_DESC = 'Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.';
 
 // /about, /mission and /partnerships are NOT listed here. They 301 to / at the
 // edge (vercel.json). Prerendering a redirect target produced an indexed URL
 // that returned 200 with an empty body while browsers were bounced home.
 const MARKETING = [
-  { p: '/', t: HOME_TITLE, d: HOME_DESC },
+  { p: '/', t: HOME_TITLE, d: HOME_DESC, software: true },
   { p: '/auth', t: 'Sign in | Indigenous Rising AI', d: 'Sign in to your Indigenous Rising AI account.', robots: 'noindex, nofollow' },
   // /signup was NOT prerendered, so Vercel's SPA fallback served index.html —
   // the HOMEPAGE markup, with the homepage title — until React hydrated and
@@ -48,9 +48,9 @@ const MARKETING = [
   // The AI platform for Indigenous business growth". noindex like /auth: this
   // is a conversion surface, not a search landing page.
   { p: '/signup', t: 'Create your account | Indigenous Rising AI', d: 'Create a free Indigenous Rising AI account. Three funding matches a month, a guided business plan, and no credit card required.', robots: 'noindex, nofollow' },
-  { p: '/pricing', img: '/og-pricing.jpg', t: 'Pricing — Free, Growth & Nations plans | Indigenous Rising AI', d: 'Transparent pricing for Indigenous entrepreneurs. Start free, no credit card. Growth is $49/mo. OCAP®-aligned, with your data stored in Canada.' },
-  { p: '/blog', t: 'Blog — Indigenous business funding & growth | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications and business planning for First Nations, Métis and Inuit entrepreneurs across Canada.' },
-  { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada | Indigenous Rising AI', d: 'Indigenous business grants, loans and non-repayable funding across Canada, by province and by community, plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding', faqs: [
+  { p: '/pricing', img: '/og-pricing.jpg', t: 'Pricing: Free, Growth & Nations Plans | Indigenous Rising AI', d: 'Transparent pricing for Indigenous entrepreneurs. Start free, no credit card. Growth is $49/mo. OCAP®-aligned, with your data stored in Canada.' },
+  { p: '/blog', t: 'Indigenous Business Funding Blog | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications and business planning for First Nations, Métis and Inuit entrepreneurs across Canada.' },
+  { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada', d: 'Indigenous business grants, loans and non-repayable funding across Canada, by province and by community, plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding', faqs: [
     { q: 'What Indigenous business grants are available in Canada?', a: 'Indigenous entrepreneurs can access a mix of federal and provincial programs, non-repayable contributions, and loans from Indigenous Financial Institutions. Availability depends on your province, community (First Nations, Métis, or Inuit), industry, and stage.' },
     { q: 'Do I need Indian status to get Indigenous business funding?', a: 'Not always. Many programs serve Status and Non-Status First Nations, Métis, and Inuit entrepreneurs, using community membership, Métis citizenship, or Inuit beneficiary status as proof of identity rather than Indian status specifically. Always check each program’s eligibility.' },
     { q: 'Are Indigenous business grants the same as loans?', a: 'No. Grants and non-repayable contributions do not have to be paid back (subject to using funds for the approved purpose and meeting reporting requirements), while loans do. Many entrepreneurs combine both.' },
@@ -65,7 +65,7 @@ const MARKETING = [
   { p: '/community', t: 'Community forum | Indigenous Rising AI', d: 'Connect with other Indigenous entrepreneurs — ask questions, share wins, and find resources in the Indigenous Rising community.' },
   { p: '/compliance', img: '/og-compliance.jpg', t: 'Canadian Regulatory Alignment - Indigenous Rising AI', d: 'How Indigenous Rising AI aligns with Canadian regulation — PIPEDA, CASL, AODA — and is built around OCAP® data sovereignty. Not a third-party certification.' },
   { p: '/privacy', img: '/og-privacy.jpg', t: 'Privacy Policy | Indigenous Rising AI', d: 'How Indigenous Rising AI collects, uses, and protects your information, with data stored in Canada and full export available at any time.' },
-  { p: '/terms', img: '/og-terms.jpg', t: 'Terms of Service | Indigenous Rising AI', d: 'The terms that govern your use of the Indigenous Rising AI platform.' },
+  { p: '/terms', img: '/og-terms.jpg', t: 'Terms of Service | Indigenous Rising AI', d: 'Legal terms for using Indigenous Rising AI: user responsibilities, intellectual property, liability, termination, and Canadian governing law.' },
   { p: '/accessibility', t: 'Accessibility statement | Indigenous Rising AI', d: 'Our commitment to an accessible platform for all Indigenous entrepreneurs, and how to reach us with accessibility feedback.' },
   { p: '/cookies', t: 'Cookie Policy | Indigenous Rising AI', d: 'How Indigenous Rising AI uses cookies and similar technologies, and the choices available to you.' },
   // These five render fine but were absent from MARKETING, so no per-route HTML
@@ -76,10 +76,18 @@ const MARKETING = [
   { p: '/funding', t: 'Find Indigenous business funding | Indigenous Rising AI', d: 'Browse real funding and financing for Indigenous entrepreneurs across Canada: grants, non-repayable contributions and loans from Indigenous institutions.' },
   { p: '/funding/alerts', t: 'Free weekly funding alerts | Indigenous Rising AI', d: 'A free weekly email of Indigenous business funding matched to your province and industry. CASL double opt-in, and one-click unsubscribe.' },
   { p: '/impact', t: 'Measure your community impact | Indigenous Rising AI', d: 'Track and report the community impact of your Indigenous business — jobs, training, and local spend — in a form funders and your Nation recognise.' },
-  { p: '/plan', t: 'Build your business plan with AI guidance | Indigenous Rising AI', d: 'Write a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Free to start, no credit card.' },
+  { p: '/plan', t: 'Indigenous Business Plan Builder | Indigenous Rising AI', d: 'Write a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Free to start, no credit card.' },
   { p: '/track-request', t: 'Track a data request | Indigenous Rising AI', d: 'Check the status of a data access, export, correction, or deletion request — OCAP® Possession in practice.', robots: 'noindex, nofollow' },
   { p: '/data-rights', img: '/og-data-rights.jpg', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
 ];
+
+// Mirrors pageTitle() in src/data/blogSeoTitles.ts — the site name is appended
+// only when the whole title still fits in ~60 characters.
+const SITE_SUFFIX = ' | Indigenous Rising AI';
+function pageTitle(title) {
+  const t = String(title || '').trim();
+  return (t + SITE_SUFFIX).length <= 60 ? t + SITE_SUFFIX : t;
+}
 
 // ── Load blog posts via esbuild, stubbing asset imports + the @/ alias ──────
 async function loadBlogPosts() {
@@ -147,11 +155,22 @@ function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd
     if (jsonLd) out = out.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n  </head>`);
     return out;
   }
+  // Hand these tags to react-helmet-async on hydration. Helmet only replaces
+  // tags carrying data-rh; without it every page ended up with TWO canonical
+  // links, two descriptions and two og:title tags in the rendered DOM Google
+  // indexes — often with different values. Deliberately NOT marked: robots
+  // (Google skips rendering a raw-HTML noindex page, so the static tag must
+  // stand on its own) and verification/viewport/charset (no page re-emits them,
+  // so Helmet would delete them).
+  out = out.replace(
+    /<meta\s+(name="description"|property="og:(?:title|description|url|image|type)"|name="twitter:(?:title|description|image)")/gi,
+    '<meta data-rh="true" $1',
+  );
   // Canonical: replace if present, else inject before </head>
-  const inject = [`<link rel="canonical" href="${U}" />`];
+  const inject = [`<link data-rh="true" rel="canonical" href="${U}" />`];
   if (jsonLd) inject.push(`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`);
   if (/<link\s+rel="canonical"/i.test(out)) {
-    out = out.replace(/<link\s+rel="canonical"[^>]*>/i, `<link rel="canonical" href="${U}" />`);
+    out = out.replace(/<link\s+rel="canonical"[^>]*>/i, `<link data-rh="true" rel="canonical" href="${U}" />`);
     if (jsonLd) out = out.replace('</head>', `  ${inject[1]}\n  </head>`);
   } else {
     out = out.replace('</head>', `  ${inject.join('\n  ')}\n  </head>`);
@@ -225,6 +244,23 @@ async function main() {
           ],
         });
       }
+      if (m.software) {
+        // Homepage only. Offers mirror the live pricing page: Free ($0) and
+        // Growth ($49/mo) are the purchasable fixed-price plans; Nations is
+        // custom-quoted, so it is not advertised as a price.
+        jsonLd.push({
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          '@id': `${BASE}/#software`,
+          name: 'Indigenous Rising AI',
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'Web',
+          url: `${BASE}/`,
+          description: 'Funding matching, business planning and training tools for First Nations, Inuit and Métis entrepreneurs in Canada, designed around OCAP® principles with data stored in Canada.',
+          offers: { '@type': 'AggregateOffer', priceCurrency: 'CAD', lowPrice: '0', highPrice: '49', offerCount: 2 },
+          provider: { '@id': `${BASE}/#organization` },
+        });
+      }
       if (Array.isArray(m.faqs) && m.faqs.length) {
         jsonLd.push({
           '@context': 'https://schema.org',
@@ -269,7 +305,7 @@ async function main() {
   for (const post of posts) {
     if (!post?.slug) continue;
     const url = `${BASE}/blog/${post.slug}`;
-    const title = `${post.title} | Indigenous Rising AI`;
+    const title = pageTitle(post.seoTitle || post.title);
     const description = post.summary || post.excerpt || '';
     const ogImage = ogForPost(post.id);
     const jsonLd = [
@@ -283,7 +319,12 @@ async function main() {
         datePublished: post.publishedAt || post.date,
         dateModified: post.updatedAt || post.publishedAt || post.date,
         author: { '@type': 'Organization', name: post.author?.name || 'Indigenous Rising AI' },
-        publisher: { '@type': 'Organization', name: 'Indigenous Rising AI' },
+        publisher: {
+          '@type': 'Organization',
+          '@id': `${BASE}/#organization`,
+          name: 'Indigenous Rising AI',
+          logo: { '@type': 'ImageObject', url: `${BASE}/logo-icon.png`, width: 512, height: 512 },
+        },
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       },
       {

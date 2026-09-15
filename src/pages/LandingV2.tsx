@@ -284,7 +284,7 @@ const LandingV2 = () => {
       {/* Homepage SEO: title, description, OpenGraph/Twitter, canonical, JSON-LD. */}
       <MetaTags
         isHomePage
-        title="Indigenous Rising AI — The AI platform for Indigenous business growth"
+        title="Indigenous Business Funding Platform | Indigenous Rising AI"
         description="Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community."
         faqs={FAQS.map((f) => ({ question: f.q, answer: f.a }))}
       />
@@ -816,7 +816,10 @@ const LandingV2 = () => {
                     {f.q}
                     <Icon icon={open ? 'solar:minus-circle-linear' : 'solar:add-circle-linear'} size={22} style={{ color: 'var(--ir-green)', flexShrink: 0 }} aria-hidden="true" />
                   </button>
-                  {open && <div id={`faq-panel-${i}`} role="region" aria-labelledby={`faq-trigger-${i}`} style={{ padding: '0 24px 22px', fontSize: 15.5, lineHeight: 1.7, color: 'var(--ir-bark)' }}>{f.a}</div>}
+                  {/* Always rendered, hidden when closed. `{open && …}` removed the
+                      answer from the page entirely, so crawlers saw one answer
+                      of ten and aria-controls pointed at nothing. */}
+                  <div id={`faq-panel-${i}`} role="region" aria-labelledby={`faq-trigger-${i}`} hidden={!open} style={{ padding: '0 24px 22px', fontSize: 15.5, lineHeight: 1.7, color: 'var(--ir-bark)' }}>{f.a}</div>
                 </div>
               );
             })}

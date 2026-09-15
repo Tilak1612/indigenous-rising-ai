@@ -10,7 +10,7 @@ const TermsOfService: React.FC = () => {
     <div className="min-h-screen warm-page">
       <Helmet>
         <title>Terms of Service - Indigenous Rising AI</title>
-        <meta name="description" content="Legal terms governing your use of the Indigenous Rising AI Business Support Platform. Read our terms and conditions, user responsibilities, and service guidelines." />
+        <meta name="description" content="Legal terms for using Indigenous Rising AI: user responsibilities, intellectual property, liability, termination, and Canadian governing law." />
         <meta name="robots" content="index, follow" />
         
         {/* Open Graph */}
@@ -57,7 +57,7 @@ const TermsOfService: React.FC = () => {
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-6 w-6 text-primary mt-1" />
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Governed by Canadian Law</h3>
+                <h2 className="font-semibold text-foreground mb-2">Governed by Canadian Law</h2>
                 <p className="text-muted-foreground">
                   These terms are governed by the laws of Canada and the province in which you reside. 
                   They comply with Canadian consumer protection laws, privacy legislation (PIPEDA), 

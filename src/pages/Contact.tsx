@@ -120,7 +120,7 @@ const Contact = () => {
           <Card>
             <CardHeader>
               <Mail className="w-8 h-8 text-primary mb-2" />
-              <CardTitle>Email</CardTitle>
+              <h2 className="text-2xl font-semibold leading-none tracking-tight">Email</h2>
             </CardHeader>
             <CardContent>
               <a href="mailto:help@indigenousrising.ai" className="text-muted-foreground hover:text-primary transition-smooth">
@@ -132,7 +132,7 @@ const Contact = () => {
           <Card>
             <CardHeader>
               <Clock className="w-8 h-8 text-primary mb-2" />
-              <CardTitle>Response time</CardTitle>
+              <h2 className="text-2xl font-semibold leading-none tracking-tight">Response time</h2>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">We reply within 1 business day.</p>
@@ -142,7 +142,7 @@ const Contact = () => {
           <Card>
             <CardHeader>
               <MapPin className="w-8 h-8 text-primary mb-2" />
-              <CardTitle>Location</CardTitle>
+              <h2 className="text-2xl font-semibold leading-none tracking-tight">Location</h2>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">Traditional Territory of the Anishinaabe, Toronto, ON</p>
@@ -152,7 +152,7 @@ const Contact = () => {
 
         <Card className="max-w-2xl mx-auto">
           <CardHeader>
-            <CardTitle>Send us a message</CardTitle>
+            <h2 className="text-2xl font-semibold leading-none tracking-tight">Send us a message</h2>
             <CardDescription>
               Fill out the form below and we'll get back to you within 24 hours.
             </CardDescription>

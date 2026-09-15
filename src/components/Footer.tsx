@@ -19,6 +19,10 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
     title: 'Platform',
     links: [
       { name: 'The platform', to: '/#platform' },
+      { name: 'Find funding', to: '/funding' },
+      { name: 'Business plan builder', to: '/plan' },
+      { name: 'Community impact tracking', to: '/impact' },
+      { name: 'Free funding alerts', to: '/funding/alerts' },
       { name: 'Data sovereignty', to: '/#sovereignty' },
       { name: 'Training', to: '/training' },
       { name: 'Pricing', to: '/pricing' },
@@ -148,7 +152,7 @@ const Footer = () => {
           {/* Newsletter (double opt-in via the newsletter-subscribe function) */}
           <div className="rounded-2xl border border-border/50 bg-muted/20 p-6 space-y-4">
             <div>
-              <h3 className="font-display text-xl font-semibold text-foreground">Stay connected</h3>
+              <h2 className="font-display text-xl font-semibold text-foreground">Stay connected</h2>
               <p className="text-sm text-muted-foreground mt-1">
                 Updates on new features, funding opportunities, and Indigenous business resources.
                 We&apos;ll only email you after you confirm your subscription.
@@ -164,7 +168,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {SECTIONS.map((section) => (
             <div key={section.title} className="space-y-3">
-              <h4 className="font-medium text-foreground text-sm">{section.title}</h4>
+              <h3 className="font-medium text-foreground text-sm">{section.title}</h3>
               {/* No extra gap on mobile — the 44px link min-height provides the
                   rhythm; desktop keeps the original 2.5 spacing. */}
               <ul className="space-y-0 md:space-y-2.5">

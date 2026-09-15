@@ -156,9 +156,11 @@ const Blog = () => {
               <Card className="overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all">
                 <div className="grid md:grid-cols-2 gap-0">
                   <div className="aspect-video md:aspect-auto overflow-hidden">
-                    <img 
-                      src={getPostImage(featuredPost.id)} 
+                    <img
+                      src={getPostImage(featuredPost.id)}
                       alt={featuredPost.title}
+                      width={1920}
+                      height={1080}
                       className="w-full h-full object-cover transition-transform group-hover:scale-105"
                     />
                   </div>
@@ -200,6 +202,8 @@ const Blog = () => {
                       <img
                         src={getPostImage(post.id)}
                         alt={post.title}
+                        width={1920}
+                        height={1080}
                         className="w-full h-full object-cover transition-transform group-hover:scale-105"
                         loading="lazy"
                       />
