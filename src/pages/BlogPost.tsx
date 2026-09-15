@@ -155,25 +155,6 @@ const BlogPost = () => {
     <>
       <Helmet>
         <title>{pageTitle(post.seoTitle ?? post.title)}</title>
-        <meta name="description" content={metaDesc} />
-        <meta name="keywords" content={post.keywords.join(', ')} />
-        
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={metaDesc} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={shareUrl} />
-        <meta property="og:image" content={absoluteImage} />
-        <meta property="article:published_time" content={post.publishedAt} />
-        <meta property="article:modified_time" content={post.updatedAt} />
-        <meta property="article:author" content={post.author.name} />
-        <meta property="article:section" content={post.category} />
-        {post.keywords.map((kw, i) => (
-          <meta key={i} property="article:tag" content={kw} />
-        ))}
-        
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={metaDesc} />
         {/* BlogPosting, BreadcrumbList and FAQPage JSON-LD are written into the
             static HTML by scripts/prerender.mjs. Emitting them here as well put
             two of each in the rendered DOM. */}

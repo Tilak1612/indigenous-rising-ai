@@ -130,10 +130,6 @@ const Community = () => {
     <>
       <Helmet>
         <title>Community Forum | Indigenous Rising AI</title>
-        <meta
-          name="description"
-          content="Join the Indigenous Rising AI community. Share funding tips, business advice, success stories, and connect with Indigenous entrepreneurs across Canada."
-        />
       </Helmet>
 
       <div className="min-h-screen warm-bg">

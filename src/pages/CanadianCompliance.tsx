@@ -11,24 +11,12 @@ const CanadianCompliance = () => {
     <div className="min-h-screen warm-page">
       <Helmet>
         <title>Canadian Regulatory Alignment - Indigenous Rising AI</title>
-        <meta name="description" content="How Indigenous Rising AI is built in alignment with Canadian federal and provincial regulations — PIPEDA-aligned, CASL-aligned, AODA-aligned, and designed around OCAP® data sovereignty. Not third-party certifications." />
-        <meta name="robots" content="index, follow" />
         
         {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.indigenousrising.ai/compliance" />
-        <meta property="og:title" content="Canadian Regulatory Alignment - Indigenous Rising AI" />
-        <meta property="og:description" content="PIPEDA-aligned, CASL-aligned, and AODA-aligned platform for Indigenous entrepreneurs in Canada — not third-party certifications." />
-        <meta property="og:image" content="https://www.indigenousrising.ai/og-compliance.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.indigenousrising.ai/compliance" />
-        <meta name="twitter:title" content="Canadian Regulatory Alignment" />
-        <meta name="twitter:description" content="PIPEDA-aligned, CASL-aligned, and AODA-aligned for Indigenous businesses." />
-        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-compliance.jpg" />
       </Helmet>
       <Navigation />
       

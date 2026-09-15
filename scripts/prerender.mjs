@@ -230,22 +230,13 @@ function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd
     if (jsonLd) out = out.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n  </head>`);
     return out;
   }
-  // Hand the tags pages re-emit to react-helmet-async on hydration. Helmet
-  // only replaces tags carrying data-rh; without it every page ended up with
-  // two descriptions and two og:title tags in the rendered DOM Google indexes,
-  // often with different values.
-  //
-  // NOT marked, on purpose:
-  //  - canonical and robots: prerender owns them outright and no page emits
-  //    them any more. Marking canonical deleted it entirely on pages whose own
-  //    Helmet had none (measured on /pricing), and Google skips rendering a
-  //    page whose raw HTML says noindex, so robots must stand alone.
-  //  - verification / viewport / charset: no page re-emits them, so Helmet
-  //    would simply delete them.
-  out = out.replace(
-    /<meta\s+(name="description"|property="og:(?:title|description|url|image|type)"|name="twitter:(?:title|description|image)")/gi,
-    '<meta data-rh="true" $1',
-  );
+  // No data-rh anywhere. react-helmet-async only replaces tags carrying that
+  // attribute — and it DELETES marked tags a page does not re-emit. Measured
+  // on a preview: marking canonical left /pricing with none at all, and
+  // marking og:title emptied it on /pricing and /community. The page
+  // components for prerendered routes no longer emit description, canonical,
+  // robots or og/twitter at all, so these static tags are the only copy and
+  // must survive hydration untouched.
   // Canonical: replace if present, else inject before </head>
   const inject = [`<link rel="canonical" href="${U}" />`];
   if (jsonLd) inject.push(`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`);

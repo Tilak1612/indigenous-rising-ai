@@ -10,24 +10,12 @@ const TermsOfService: React.FC = () => {
     <div className="min-h-screen warm-page">
       <Helmet>
         <title>Terms of Service - Indigenous Rising AI</title>
-        <meta name="description" content="Legal terms for using Indigenous Rising AI: user responsibilities, intellectual property, liability, termination, and Canadian governing law." />
-        <meta name="robots" content="index, follow" />
         
         {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.indigenousrising.ai/terms" />
-        <meta property="og:title" content="Terms of Service - Indigenous Rising AI" />
-        <meta property="og:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
-        <meta property="og:image" content="https://www.indigenousrising.ai/og-terms.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.indigenousrising.ai/terms" />
-        <meta name="twitter:title" content="Terms of Service - Indigenous Rising AI" />
-        <meta name="twitter:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
-        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-terms.jpg" />
       </Helmet>
       <Navigation />
       

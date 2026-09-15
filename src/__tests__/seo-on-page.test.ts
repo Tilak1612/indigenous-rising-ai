@@ -47,22 +47,37 @@ describe('search-result titles fit', () => {
   });
 });
 
-describe('prerendered head tags hand over to Helmet', () => {
-  test('description and the og/twitter pairs carry data-rh', () => {
-    // Without it the rendered DOM Google indexes had two descriptions and two
-    // og:titles, sometimes with different values. Canonical is deliberately
-    // NOT marked — see the single-source test: Helmet deletes data-rh tags a
-    // page does not re-emit, which left /pricing with no canonical at all.
-    expect(prerender).toMatch(/data-rh="true" \$1/);
-    expect(prerender).toMatch(/<link rel="canonical" href="\$\{U\}" \/>/);
+describe('the prerender is the only source of search and social head tags', () => {
+  test('nothing is marked data-rh', () => {
+    // react-helmet-async DELETES tags carrying data-rh that the current page
+    // does not re-emit. Measured on a preview: marking canonical left
+    // /pricing with none at all; marking og:title emptied it on /pricing and
+    // /community. The static tags are now the only copy, so they must not be
+    // marked at all.
+    // Checks emitted markup, not the comment that explains why.
+    expect(prerender).not.toMatch(/data-rh="true"/);
   });
 
-  test('robots is NOT handed over', () => {
-    // Google skips rendering a page whose raw HTML says noindex, so the static
-    // robots tag has to survive on its own.
-    const marking = /out = out\.replace\(\s*\/<meta\\s\+\(([^)]*)\)/.exec(prerender)?.[1] ?? '';
-    expect(marking).not.toMatch(/robots/);
-    expect(marking).toMatch(/description/);
+  test('prerendered pages do not emit description, canonical, robots or og/twitter', () => {
+    const files = ['src/components/MetaTags.tsx', 'src/pages/Pricing.tsx', 'src/pages/Blog.tsx',
+      'src/pages/BlogPost.tsx', 'src/pages/TermsOfService.tsx', 'src/pages/DataRights.tsx',
+      'src/pages/CanadianCompliance.tsx', 'src/pages/AccessibilityStatement.tsx', 'src/pages/Community.tsx'];
+    for (const f of files) {
+      const src = read(f);
+      expect(src, `${f} emits its own description`).not.toMatch(/<meta\s+name="description"/);
+      expect(src, `${f} emits its own canonical`).not.toMatch(/rel="canonical"/);
+      expect(src, `${f} emits og tags`).not.toMatch(/property="og:(?:title|description|url|image)"/);
+      // noindex is the one robots value a page may still set for itself.
+      const robots = src.match(/<meta\s+name="robots"[^>]*>/g) ?? [];
+      for (const tag of robots) expect(tag, `${f} sets an index robots value`).toMatch(/noindex/);
+    }
+  });
+
+  test('the prerender writes them for every marketing route', () => {
+    expect(prerender).toMatch(/name="description"/);
+    expect(prerender).toMatch(/<link rel="canonical" href="\$\{U\}" \/>/);
+    expect(prerender).toMatch(/property="og:title"/);
+    expect(prerender).toMatch(/name="twitter:title"/);
   });
 });
 
