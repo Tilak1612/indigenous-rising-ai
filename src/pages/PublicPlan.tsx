@@ -8,6 +8,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
 import { useAuth } from '@/hooks/useAuth';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const planSections = [
   {
@@ -59,7 +60,7 @@ const PublicPlan: React.FC = () => {
   return (
     <>
       <MetaTags
-        title="Business Planning Assistant | Indigenous Rising AI"
+        title={ROUTE_TITLES['/plan']}
         description="Create a professional business plan with AI-powered guidance. Sector-specific templates and step-by-step assistance for Indigenous entrepreneurs."
       />
       
@@ -165,7 +166,7 @@ const PublicPlan: React.FC = () => {
                       <Lightbulb className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-foreground font-semibold">AI Copilot</h4>
+                      <h3 className="text-foreground font-semibold">AI Copilot</h3>
                       <p className="text-sm text-muted-foreground">Get writing assistance as you go</p>
                     </div>
                   </div>
@@ -174,7 +175,7 @@ const PublicPlan: React.FC = () => {
                       <FileText className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-foreground font-semibold">PDF Export</h4>
+                      <h3 className="text-foreground font-semibold">PDF Export</h3>
                       <p className="text-sm text-muted-foreground">Bank-ready professional format</p>
                     </div>
                   </div>
@@ -183,7 +184,7 @@ const PublicPlan: React.FC = () => {
                       <BarChart3 className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-foreground font-semibold">Auto-Save</h4>
+                      <h3 className="text-foreground font-semibold">Auto-Save</h3>
                       <p className="text-sm text-muted-foreground">Never lose your progress</p>
                     </div>
                   </div>

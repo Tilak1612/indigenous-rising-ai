@@ -5,6 +5,8 @@ import Footer from '../components/Footer';
 import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { getAllPosts, type BlogPost } from '@/data/blogPosts';
+import { grantsHubFaqs as FAQS } from '@/data/grantsHubFaqs';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 // Indigenous business grants & funding hub. This is a PILLAR page: it does not
 // invent programs, amounts, or deadlines — it organizes and links to the site's
@@ -12,28 +14,6 @@ import { getAllPosts, type BlogPost } from '@/data/blogPosts';
 // topical structure. All specifics live in the linked articles, which cite real
 // programs (ISC, NACCA, Indigenous Financial Institutions, provincial bodies).
 
-const FAQS = [
-  {
-    question: 'What Indigenous business grants are available in Canada?',
-    answer:
-      'Indigenous entrepreneurs can access a mix of federal and provincial programs, non-repayable contributions, and loans from Indigenous Financial Institutions. Availability depends on your province, community (First Nations, Métis, or Inuit), industry, and stage. The guides below break these down by region and audience.',
-  },
-  {
-    question: 'Do I need Indian status to get Indigenous business funding?',
-    answer:
-      'Not always. Many programs serve Status and Non-Status First Nations, Métis, and Inuit entrepreneurs, using community membership, Métis citizenship, or Inuit beneficiary status as proof of identity rather than Indian status specifically. Always check each program’s eligibility.',
-  },
-  {
-    question: 'Are Indigenous business grants the same as loans?',
-    answer:
-      'No. Grants and non-repayable contributions do not have to be paid back (subject to using funds for the approved purpose and meeting reporting requirements), while loans do. Many entrepreneurs combine both.',
-  },
-  {
-    question: 'How do I find the grants I’m actually eligible for?',
-    answer:
-      'Start with the guide for your province and your community, then use Indigenous Rising AI’s funding matching to scan programs against your profile. A clear business plan makes every application stronger.',
-  },
-];
 
 const HubList = ({ posts }: { posts: BlogPost[] }) => (
   <ul className="grid sm:grid-cols-2 gap-4">
@@ -103,11 +83,10 @@ const GrantsHub = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags
-        title="Indigenous Business Grants & Funding in Canada | Indigenous Rising AI"
+        title={ROUTE_TITLES['/guides/indigenous-business-grants']}
         description="A hub of guides to Indigenous business grants, loans, and non-repayable funding across Canada — by province and by community (First Nations, Métis, Inuit), plus how to apply and get procurement-ready."
         keywords="Indigenous business grants, Indigenous business funding Canada, First Nations business grants, Métis business grants, Inuit business grants, Indigenous startup funding, Indigenous business loans"
         url="https://www.indigenousrising.ai/guides/indigenous-business-grants"
-        faqs={FAQS}
       />
       <Navigation />
       <main className="pt-24">

@@ -1,4 +1,5 @@
 import { extraBlogPosts, extraPostImages } from './blogPostsExtra';
+import { blogSeoTitles } from './blogSeoTitles';
 import { blogFaqs } from './blogFaqs';
 import fundingGuidesImage from '@/assets/blog/funding-guides.jpg';
 import howToGuidesImage from '@/assets/blog/how-to-guides.jpg';
@@ -79,6 +80,8 @@ export interface BlogPost {
   id: string;
   slug: string;
   title: string;
+  /** Short search-result title (<title>/og:title). Merged from blogSeoTitles.ts. */
+  seoTitle?: string;
   summary: string;
   keywords: string[];
   searchIntent: string;
@@ -2915,6 +2918,8 @@ const allPosts = [...blogPosts, ...extraBlogPosts];
 // Attach FAQ Q&A (kept in a separate file) onto matching posts → visible FAQ
 // block + FAQPage schema. Posts without an entry simply have no faqs.
 for (const post of allPosts) {
+  const seoTitle = blogSeoTitles[post.slug];
+  if (seoTitle) post.seoTitle = seoTitle;
   const faqs = blogFaqs[post.slug];
   if (faqs && faqs.length) post.faqs = faqs;
 }

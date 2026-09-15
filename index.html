@@ -21,10 +21,10 @@
     <meta name="author" content="Indigenous Rising AI Business Support Platform" />
     
     <!-- Accessibility and SEO enhancements -->
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="google-site-verification" content="nhG3_XrSJWGxkk3DDufYU5DyI_LhkGmHI5uGSRk6wog" />
     <meta name="language" content="English" />
-    <meta name="theme-color" content="#059669" />
+    <meta name="theme-color" content="#124C3B" />
 
     <!-- Open Graph / Facebook (static defaults so non-JS social scrapers get a
          valid preview; react-helmet/MetaTags refines these per route for crawlers
@@ -54,13 +54,13 @@
       "@type": "Organization",
       "@id": "https://www.indigenousrising.ai/#organization",
       "name": "Indigenous Rising AI",
-      "url": "https://www.indigenousrising.ai",
+      "url": "https://www.indigenousrising.ai/",
       "logo": "https://www.indigenousrising.ai/logo-icon.png",
       "description": "AI-powered business support platform for Indigenous entrepreneurs in Canada, harmonizing traditional knowledge with modern business tools while honoring data sovereignty principles.",
       "areaServed": { "@type": "Country", "name": "Canada" },
       "contactPoint": [
-        { "@type": "ContactPoint", "contactType": "Customer Support", "email": "support@indigenousrising.ai" },
-        { "@type": "ContactPoint", "contactType": "Privacy Officer", "email": "privacy@indigenousrising.ai" }
+        { "@type": "ContactPoint", "contactType": "customer support", "email": "help@indigenousrising.ai" },
+        { "@type": "ContactPoint", "contactType": "privacy", "email": "privacy@indigenousrising.ai" }
       ]
     }
     </script>
@@ -70,31 +70,16 @@
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://www.indigenousrising.ai/#website",
       "name": "Indigenous Rising AI",
-      "url": "https://www.indigenousrising.ai",
+      "alternateName": "Indigenous Rising",
+      "url": "https://www.indigenousrising.ai/",
+      "publisher": { "@id": "https://www.indigenousrising.ai/#organization" },
       "description": "AI-powered business support platform for Indigenous entrepreneurs in Canada",
       "inLanguage": ["en-CA"]
     }
     </script>
     
-    <!-- SoftwareApplication JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Indigenous Rising AI",
-      "url": "https://www.indigenousrising.ai",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "description": "Culturally respectful AI-powered platform supporting Indigenous entrepreneurs across Canada.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "CAD",
-        "description": "Free to start"
-      }
-    }
-    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />

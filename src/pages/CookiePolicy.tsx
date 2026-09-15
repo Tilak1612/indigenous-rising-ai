@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Cookie, Shield, Settings, BarChart3, Megaphone, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 interface CookieInfo {
   name: string;
@@ -150,7 +151,7 @@ const CookiePolicy = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags
-        title="Cookie Policy | Indigenous Rising AI"
+        title={ROUTE_TITLES['/cookies']}
         description="Learn about the cookies we use on Indigenous Rising AI. Detailed information about necessary, functional, analytics, and marketing cookies in compliance with PIPEDA."
 
       />

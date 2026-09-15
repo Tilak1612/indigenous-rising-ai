@@ -4,33 +4,19 @@ import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Card } from '@/components/ui/card';
 import { Scale, FileText, AlertTriangle, Shield, Users, Gavel } from 'lucide-react';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const TermsOfService: React.FC = () => {
   return (
     <div className="min-h-screen warm-page">
       <Helmet>
-        <title>Terms of Service - Indigenous Rising AI</title>
-        <meta name="description" content="Legal terms governing your use of the Indigenous Rising AI Business Support Platform. Read our terms and conditions, user responsibilities, and service guidelines." />
-        <meta name="robots" content="index, follow" />
+        <title>{ROUTE_TITLES['/terms']}</title>
         
         {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.indigenousrising.ai/terms" />
-        <meta property="og:title" content="Terms of Service - Indigenous Rising AI" />
-        <meta property="og:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
-        <meta property="og:image" content="https://www.indigenousrising.ai/og-terms.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.indigenousrising.ai/terms" />
-        <meta name="twitter:title" content="Terms of Service - Indigenous Rising AI" />
-        <meta name="twitter:description" content="Legal terms governing your use of Indigenous Rising AI platform." />
-        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-terms.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/terms" />
       </Helmet>
       <Navigation />
       
@@ -57,7 +43,7 @@ const TermsOfService: React.FC = () => {
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-6 w-6 text-primary mt-1" />
               <div>
-                <h3 className="font-semibold text-foreground mb-2">Governed by Canadian Law</h3>
+                <h2 className="font-semibold text-foreground mb-2">Governed by Canadian Law</h2>
                 <p className="text-muted-foreground">
                   These terms are governed by the laws of Canada and the province in which you reside. 
                   They comply with Canadian consumer protection laws, privacy legislation (PIPEDA), 

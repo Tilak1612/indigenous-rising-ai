@@ -36,13 +36,12 @@ export const organizationSchema = {
   "contactPoint": [
     {
       "@type": "ContactPoint",
-      "contactType": "Customer Support",
-      "email": "support@indigenousrising.ai",
-      "availableLanguage": ["English", "French"]
+      "contactType": "customer support",
+      "email": "help@indigenousrising.ai"
     },
     {
       "@type": "ContactPoint",
-      "contactType": "Privacy Officer",
+      "contactType": "privacy",
       "email": "privacy@indigenousrising.ai"
     }
   ],
@@ -90,19 +89,15 @@ export const websiteSchema = {
   "@type": "WebSite",
   "@id": `${BASE_URL}/#website`,
   "name": "Indigenous Rising AI",
-  "url": BASE_URL,
+  "alternateName": "Indigenous Rising",
+  "url": `${BASE_URL}/`,
   "publisher": {
     "@id": `${BASE_URL}/#organization`
   },
-  "inLanguage": ["en-CA", "fr-CA"],
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": `${BASE_URL}/search?q={search_term_string}`
-    },
-    "query-input": "required name=search_term_string"
-  }
+  // No SearchAction: there is no /search route (it returns 404), and Google
+  // retired the sitelinks search box in November 2024. No fr-CA either — the
+  // site has no French pages yet.
+  "inLanguage": "en-CA"
 };
 
 // FAQ Schema generator
@@ -129,7 +124,7 @@ export const generateWebPageSchema = (page: {
 }) => ({
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "@id": `${page.url}/#webpage`,
+  "@id": `${page.url.replace(/\/$/, '')}/#webpage`,
   "name": page.name,
   "description": page.description,
   "url": page.url,
@@ -139,8 +134,11 @@ export const generateWebPageSchema = (page: {
   "about": {
     "@id": `${BASE_URL}/#organization`
   },
-  "datePublished": page.datePublished || "2025-01-01",
-  "dateModified": page.dateModified || new Date().toISOString().split('T')[0],
+  // Dates only when the page actually knows them. The defaults were
+  // "2025-01-01" for every page and dateModified = the visitor's current date,
+  // which told Google every page changed on every crawl.
+  ...(page.datePublished ? { "datePublished": page.datePublished } : {}),
+  ...(page.dateModified ? { "dateModified": page.dateModified } : {}),
   "inLanguage": "en-CA"
 });
 
@@ -182,9 +180,11 @@ export const StructuredData = ({ type = 'page', pageData, faqs }: StructuredData
   // no-JS crawlers see them). Re-emitting them here duplicated each block once
   // the app hydrated. Keep only the SoftwareApplication schema in React, which
   // index.html does not include.
-  if (type === 'home') {
-    schemas.push(softwareApplicationSchema);
-  }
+  // SoftwareApplication is emitted once, statically, on the homepage by
+  // scripts/prerender.mjs. Pushing it here as well put two conflicting
+  // SoftwareApplication entities on the homepage after hydration (and
+  // index.html used to add a third on every page).
+  void type;
   
   // Add page-specific schema
   if (pageData) {

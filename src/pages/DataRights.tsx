@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const DataRights = () => {
   const rights = [
@@ -44,31 +45,13 @@ const DataRights = () => {
   return (
     <div className="min-h-screen warm-page">
       <Helmet>
-        <title>Your Data Rights | PIPEDA Compliance | Indigenous Rising AI</title>
-        <meta 
-          name="description" 
-          content="Exercise your PIPEDA data rights. Request access, correction, or deletion of your personal information under Canadian privacy law." 
-        />
-        <meta name="robots" content="index, follow" />
+        <title>{ROUTE_TITLES['/data-rights']}</title>
         
         {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.indigenousrising.ai/data-rights" />
-        <meta property="og:title" content="Your Data Rights - PIPEDA Compliance" />
-        <meta property="og:description" content="Exercise your data rights under PIPEDA. Access, correct, or delete your personal information." />
-        <meta property="og:image" content="https://www.indigenousrising.ai/og-data-rights.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.indigenousrising.ai/data-rights" />
-        <meta name="twitter:title" content="Your Data Rights - PIPEDA Compliance" />
-        <meta name="twitter:description" content="Exercise your data rights under PIPEDA." />
-        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-data-rights.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/data-rights" />
       </Helmet>
 
       <Navigation />
@@ -115,9 +98,9 @@ const DataRights = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
                   <Icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="font-bold text-lg mb-2 text-foreground">
+                <h2 className="font-bold text-lg mb-2 text-foreground">
                   {right.title}
-                </h3>
+                </h2>
                 <p className="text-sm text-muted-foreground">
                   {right.description}
                 </p>
@@ -129,9 +112,9 @@ const DataRights = () => {
         {/* Information Cards */}
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           <Card className="p-6">
-            <h3 className="font-bold text-lg mb-3 text-foreground">
+            <h2 className="font-bold text-lg mb-3 text-foreground">
               How We Process Your Request
-            </h3>
+            </h2>
             <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
               <li>Submit your request using the form below</li>
               <li>We verify your identity to protect your privacy</li>
@@ -142,9 +125,9 @@ const DataRights = () => {
           </Card>
 
           <Card className="p-6">
-            <h3 className="font-bold text-lg mb-3 text-foreground">
+            <h2 className="font-bold text-lg mb-3 text-foreground">
               What Information Do We Need?
-            </h3>
+            </h2>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>• Your full legal name</li>
               <li>• Email address associated with your account</li>

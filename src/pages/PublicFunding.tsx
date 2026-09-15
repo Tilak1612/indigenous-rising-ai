@@ -16,6 +16,7 @@ import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 interface Grant {
   id: string;
@@ -158,7 +159,7 @@ const PublicFunding: React.FC = () => {
   return (
     <>
       <MetaTags
-        title="Indigenous Business Funding Navigator | Indigenous Rising AI"
+        title={ROUTE_TITLES['/funding']}
         description="Browse current grants, loans, and equity opportunities for Indigenous entrepreneurs in Canada. Free weekly funding alerts available."
       />
 

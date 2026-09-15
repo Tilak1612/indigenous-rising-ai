@@ -23,6 +23,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const Training = () => {
   const navigate = useNavigate();
@@ -105,7 +106,7 @@ const Training = () => {
   return (
     <>
       <MetaTags
-        title="AI Training Program | Indigenous Rising AI"
+        title={ROUTE_TITLES['/training']}
         description="Join our comprehensive AI training program designed for Indigenous communities. Learn AI ethics, data sovereignty, and practical implementation."
 
       />

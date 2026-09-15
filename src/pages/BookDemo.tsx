@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { trackEvent } from '@/utils/analytics';
 import { loadAndMountCal, CAL_DIRECT_URL } from '@/lib/cal-embed';
 import { ExternalLink, Loader2, ShieldCheck, Clock, Video } from 'lucide-react';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 /**
  * Demo booking.
@@ -69,7 +70,7 @@ const BookDemo = () => {
   return (
     <div className="min-h-screen bg-[var(--ir-cream,#F5F0E8)]">
       <MetaTags
-        title="Book a demo | Indigenous Rising AI"
+        title={ROUTE_TITLES['/demo']}
         description="Book a walkthrough of Indigenous Rising AI. See funding matching, business planning, and the data-sovereignty controls that keep your information yours."
         url="/demo"
       />

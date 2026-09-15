@@ -66,9 +66,6 @@ const Unsubscribe = () => {
         <meta property="og:image" content="https://www.indigenousrising.ai/og-home.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/unsubscribe" />
       </Helmet>
 
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-primary/5">

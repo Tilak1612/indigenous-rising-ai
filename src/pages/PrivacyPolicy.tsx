@@ -5,12 +5,13 @@ import { Card } from '@/components/ui/card';
 import { Shield, Eye, Lock, FileText, AlertTriangle, Mail } from 'lucide-react';
 import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const PrivacyPolicy: React.FC = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags
-        title="Privacy Policy | PIPEDA-aligned | Indigenous Rising AI"
+        title={ROUTE_TITLES['/privacy']}
         description="Our commitment to protecting your privacy in accordance with Canadian privacy laws, including PIPEDA. Learn how we collect, use, and protect your personal information."
         ogImage="https://www.indigenousrising.ai/og-privacy.jpg"
       />
@@ -42,7 +43,7 @@ const PrivacyPolicy: React.FC = () => {
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-6 w-6 text-primary mt-1" />
               <div>
-                <h3 className="font-semibold text-foreground mb-2">PIPEDA Compliance</h3>
+                <h2 className="font-semibold text-foreground mb-2">PIPEDA Compliance</h2>
                 <p className="text-muted-foreground">
                   This privacy policy complies with the Personal Information Protection and Electronic Documents Act (PIPEDA) 
                   and other applicable Canadian privacy legislation. We are committed to protecting the privacy and confidentiality 

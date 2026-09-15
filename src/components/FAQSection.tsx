@@ -1,11 +1,7 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { HelpCircle } from 'lucide-react';
+import { ChevronDown, HelpCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +11,7 @@ interface FAQSectionProps {
 }
 
 const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const faqs = [
     {
       question: 'What is OCAP® and why does it matter?',
@@ -122,22 +119,45 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
 
           {/* FAQ Accordion */}
           <Card className="p-8 bg-card/50 backdrop-blur-sm">
-            <Accordion type="single" collapsible className="space-y-4">
-              {displayedFaqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
-                  value={`item-${index}`}
-                  className="border-b border-border/50 last:border-0"
-                >
-                  <AccordionTrigger className="text-left hover:text-primary transition-colors">
-                    <span className="font-semibold text-foreground">{faq.question}</span>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed pt-2">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            {/* Not the Radix Accordion: it unmounts closed content (children
+                render only while open, even with forceMount), so all 15 answers
+                were absent from the prerendered HTML and from the rendered DOM
+                Google indexes. This keeps every answer in the page and hides
+                closed ones with the `hidden` attribute. */}
+            <div className="space-y-4">
+              {displayedFaqs.map((faq, index) => {
+                const open = openIndex === index;
+                return (
+                  <div key={faq.question} className="border-b border-border/50 last:border-0">
+                    <h3 className="flex">
+                      <button
+                        type="button"
+                        id={`faq-q-${index}`}
+                        aria-expanded={open}
+                        aria-controls={`faq-a-${index}`}
+                        onClick={() => setOpenIndex(open ? null : index)}
+                        className="flex flex-1 items-center justify-between gap-4 py-4 text-left font-medium hover:text-primary transition-colors"
+                      >
+                        <span className="font-semibold text-foreground">{faq.question}</span>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className={cn('h-4 w-4 shrink-0 transition-transform duration-200', open && 'rotate-180')}
+                        />
+                      </button>
+                    </h3>
+                    <div
+                      id={`faq-a-${index}`}
+                      role="region"
+                      aria-labelledby={`faq-q-${index}`}
+                      hidden={!open}
+                      className="pb-4 pt-2 text-sm text-muted-foreground leading-relaxed"
+                    >
+                      {faq.answer}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </Card>
 
           {typeof maxItems === 'number' && (

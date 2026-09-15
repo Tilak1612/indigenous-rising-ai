@@ -116,9 +116,11 @@ const SuccessGallery = ({ limit, showCta = true }: SuccessGalleryProps) => {
             >
               {/* Image */}
               <div className="aspect-square overflow-hidden">
-                <img 
-                  src={item.image} 
+                <img
+                  src={item.image}
                   alt={item.title}
+                  width={1024}
+                  height={1024}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   loading="lazy"
                 />
@@ -178,9 +180,11 @@ const SuccessGallery = ({ limit, showCta = true }: SuccessGalleryProps) => {
                 </button>
                 
                 {/* Image */}
-                <img 
-                  src={visibleItems[selectedIndex].image} 
+                <img
+                  src={visibleItems[selectedIndex].image}
                   alt={visibleItems[selectedIndex].title}
+                  width={1024}
+                  height={1024}
                   className="w-full max-h-[70vh] object-contain"
                 />
                 

@@ -15,33 +15,19 @@ import {
   Mail,
   FileText
 } from 'lucide-react';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const AccessibilityStatement: React.FC = () => {
   return (
     <div className="min-h-screen warm-page">
       <Helmet>
-        <title>Accessibility Statement - Indigenous Rising AI</title>
-        <meta name="description" content="Our commitment to digital accessibility for Indigenous entrepreneurs. WCAG 2.1 Level AA compliance, assistive technology support, and inclusive design." />
-        <meta name="robots" content="index, follow" />
+        <title>{ROUTE_TITLES['/accessibility']}</title>
         
         {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.indigenousrising.ai/accessibility" />
-        <meta property="og:title" content="Accessibility Statement - Indigenous Rising AI" />
-        <meta property="og:description" content="WCAG 2.1 compliant platform for Indigenous entrepreneurs across Canada." />
-        <meta property="og:image" content="https://www.indigenousrising.ai/og-home.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         
         {/* Twitter Card */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content="https://www.indigenousrising.ai/accessibility" />
-        <meta name="twitter:title" content="Accessibility Statement - Indigenous Rising AI" />
-        <meta name="twitter:description" content="WCAG 2.1 compliant platform for Indigenous entrepreneurs." />
-        <meta name="twitter:image" content="https://www.indigenousrising.ai/og-home.jpg" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/accessibility" />
       </Helmet>
       <Navigation />
       
@@ -70,7 +56,7 @@ const AccessibilityStatement: React.FC = () => {
             <div className="flex items-start gap-3">
               <CheckCircle className="h-6 w-6 text-primary mt-1" />
               <div>
-                <h3 className="font-semibold text-foreground mb-2">AODA & WCAG 2.1 AA Compliance</h3>
+                <h2 className="font-semibold text-foreground mb-2">AODA & WCAG 2.1 AA Compliance</h2>
                 <p className="text-muted-foreground">
                   This website is designed to comply with the Accessibility for Ontarians with Disabilities Act (AODA) 
                   and meets Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards. We are committed to 

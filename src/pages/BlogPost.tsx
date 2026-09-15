@@ -11,6 +11,7 @@ import {
   ArrowRight, ChevronUp, Facebook, Twitter, Linkedin, Link as LinkIcon
 } from 'lucide-react';
 import { getBlogBySlug, getRelatedPosts, getPostImage } from '@/data/blogPosts';
+import { pageTitle } from '@/data/blogSeoTitles';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { truncateDescription } from '@/lib/seo';
@@ -153,86 +154,10 @@ const BlogPost = () => {
   return (
     <>
       <Helmet>
-        <title>{post.title} | Indigenous Rising AI</title>
-        <meta name="description" content={metaDesc} />
-        <meta name="keywords" content={post.keywords.join(', ')} />
-        <link rel="canonical" href={shareUrl} />
-        
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={metaDesc} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={shareUrl} />
-        <meta property="og:image" content={absoluteImage} />
-        <meta property="article:published_time" content={post.publishedAt} />
-        <meta property="article:modified_time" content={post.updatedAt} />
-        <meta property="article:author" content={post.author.name} />
-        <meta property="article:section" content={post.category} />
-        {post.keywords.map((kw, i) => (
-          <meta key={i} property="article:tag" content={kw} />
-        ))}
-        
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={metaDesc} />
-        
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
-              { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${BASE_URL}/blog` },
-              { "@type": "ListItem", "position": 3, "name": post.title, "item": shareUrl }
-            ]
-          })}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "headline": post.title,
-            "description": post.summary,
-            "image": absoluteImage,
-            "url": shareUrl,
-            "datePublished": post.publishedAt,
-            "dateModified": post.updatedAt,
-            "author": {
-              "@type": "Organization",
-              "name": post.author.name
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Indigenous Rising AI",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://www.indigenousrising.ai/logo-icon.png"
-              }
-            },
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": shareUrl
-            },
-            "keywords": post.keywords.join(', '),
-            "articleSection": post.category,
-            "wordCount": post.introduction.split(' ').length +
-              post.sections.reduce((acc, s) =>
-                acc + s.content.split(' ').length +
-                (s.subsections?.reduce((a, sub) => a + sub.content.split(' ').length, 0) ?? 0), 0)
-          })}
-        </script>
-        {post.faqs && post.faqs.length > 0 && (
-          <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": post.faqs.map((f) => ({
-                "@type": "Question",
-                "name": f.question,
-                "acceptedAnswer": { "@type": "Answer", "text": f.answer }
-              }))
-            })}
-          </script>
-        )}
+        <title>{pageTitle(post.seoTitle ?? post.title)}</title>
+        {/* BlogPosting, BreadcrumbList and FAQPage JSON-LD are written into the
+            static HTML by scripts/prerender.mjs. Emitting them here as well put
+            two of each in the rendered DOM. */}
       </Helmet>
 
       <div className="min-h-screen bg-background">

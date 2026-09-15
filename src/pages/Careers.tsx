@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 type Role = {
   title: string;
@@ -446,7 +447,7 @@ const Careers = () => {
   return (
     <div className="min-h-screen warm-page">
       <MetaTags
-        title="Careers | Indigenous Rising AI"
+        title={ROUTE_TITLES['/careers']}
         description="Explore careers at Indigenous Rising AI and apply to build OCAP®-aligned, community-driven technology with First Nations, Métis, and Inuit communities across Turtle Island."
         keywords="Indigenous careers, OCAP, Indigenous data sovereignty, community-driven AI, Indigenous Rising AI jobs"
       />

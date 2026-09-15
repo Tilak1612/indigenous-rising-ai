@@ -11,6 +11,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabase';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 interface RequestStatus {
   tracking_number: string;
@@ -112,21 +113,12 @@ const TrackRequest = () => {
   return (
     <>
       <Helmet>
-        <title>Track Data Request - Indigenous Rising AI</title>
-        <meta name="description" content="Track your PIPEDA data rights request status using your tracking number." />
+        <title>{ROUTE_TITLES['/track-request']}</title>
         <meta name="robots" content="noindex, nofollow" />
         
         {/* Open Graph */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.indigenousrising.ai/track-request" />
-        <meta property="og:title" content="Track Your Data Request" />
-        <meta property="og:description" content="Check the status of your PIPEDA data rights request." />
-        <meta property="og:image" content="https://www.indigenousrising.ai/og-data-rights.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.indigenousrising.ai/track-request" />
       </Helmet>
 
       <div className="min-h-screen flex flex-col warm-page">

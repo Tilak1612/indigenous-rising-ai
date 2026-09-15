@@ -7,6 +7,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
 import { useAuth } from '@/hooks/useAuth';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 // What the impact tracker does — described as capabilities, not fabricated
 // platform-wide totals. We do not publish aggregate impact numbers we can't
@@ -63,7 +64,7 @@ const PublicImpact: React.FC = () => {
   return (
     <>
       <MetaTags
-        title="Community Impact Tracker | Indigenous Rising AI"
+        title={ROUTE_TITLES['/impact']}
         description="Measure and report your business's community impact. Track jobs, youth engagement, cultural preservation, and environmental stewardship."
       />
       
@@ -162,7 +163,7 @@ const PublicImpact: React.FC = () => {
                         <area.icon className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold mb-1">{area.title}</h4>
+                        <h3 className="text-white font-semibold mb-1">{area.title}</h3>
                         <p className="text-sm text-white/60">{area.description}</p>
                       </div>
                     </div>
