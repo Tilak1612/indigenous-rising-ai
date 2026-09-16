@@ -64,6 +64,15 @@ describe('index.html sets a consent default before GA4 initialises', () => {
     expect(configAt).toBeGreaterThan(consentAt);
   });
 
+  test('page views have exactly one source, so a landing is counted once', () => {
+    // gtag config with send_page_view: true AND RouteChangeTracker's manual
+    // page_view on mount sent two page_view hits per landing.
+    const config = runHeadScript(null).find((c) => c[0] === 'config');
+    expect(config?.[2]).toMatchObject({ send_page_view: false });
+    const app = readFileSync('src/App.tsx', 'utf8');
+    expect(app).toMatch(/trackPageView\(location\.pathname, document\.title\);\s*\n\s*\}, \[location\.pathname\]\);/);
+  });
+
   test('the head script and the app agree on what each choice means', () => {
     for (const prefs of [null,
       { necessary: true, functional: false, analytics: false, marketing: false },
