@@ -17,6 +17,7 @@
 // empty body while claiming the page is prerendered is the exact regression
 // this exists to prevent.
 
+import { buildLlmsTxt } from './llms-txt.mjs';
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
@@ -393,7 +394,7 @@ async function main() {
       });
       count++;
       if (!/noindex/i.test(m.robots || '')) {
-        sitemap.push({ loc: url, changefreq: m.p === '/' ? 'weekly' : 'monthly', priority: m.p === '/' ? '1.0' : '0.8' });
+        sitemap.push({ loc: url, title: m.t, description: m.d, changefreq: m.p === '/' ? 'weekly' : 'monthly', priority: m.p === '/' ? '1.0' : '0.8' });
       }
     } catch (e) { console.warn('[prerender] route failed', m.p, e.message); }
   }
@@ -459,7 +460,7 @@ async function main() {
       await writeRoute(template, { p: `/blog/${post.slug}`, url, title, description, ogImage, jsonLd });
       count++;
       const lastmod = toISODate(post.updatedAt || post.publishedAt || post.date);
-      sitemap.push({ loc: url, ...(lastmod ? { lastmod } : {}), changefreq: 'monthly', priority: '0.7' });
+      sitemap.push({ loc: url, title, description, ...(lastmod ? { lastmod } : {}), changefreq: 'monthly', priority: '0.7' });
     } catch (e) { console.warn('[prerender] blog route failed', post.slug, e.message); }
   }
 
@@ -481,6 +482,7 @@ async function main() {
   } catch (e) { console.warn('[prerender] 404 page failed:', e.message); }
 
   await writeSitemap(sitemap);
+  await writeLlmsTxt(sitemap);
 
   console.log(`[prerender] wrote ${count} static route file(s) (${MARKETING.length} marketing + ${posts.length} blog).`);
 }
@@ -490,6 +492,32 @@ function toISODate(v) {
   if (!v) return null;
   const d = new Date(v);
   return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+}
+
+/** Write dist/llms.txt from the indexable URL list plus plan and entity facts. */
+async function writeLlmsTxt(entries) {
+  try {
+    const [plans, planFeatures, liveFeatureList, definition, audience] = await Promise.all([
+      loadDataModule('src/data/plans.ts', 'PLANS'),
+      loadDataModule('src/data/plans.ts', 'PLAN_FEATURES'),
+      loadDataModule('src/data/entityFacts.ts', 'liveFeatureList'),
+      loadDataModule('src/data/entityFacts.ts', 'PRODUCT_DEFINITION'),
+      loadDataModule('src/data/entityFacts.ts', 'PRODUCT_AUDIENCE'),
+    ]);
+    if (!plans || !planFeatures || typeof liveFeatureList !== 'function' || !definition) {
+      console.warn('[prerender] llms.txt skipped: a data module failed to load');
+      return;
+    }
+    const planned = Object.values(planFeatures).flat().filter((f) => !f.available).map((f) => f.text);
+    const text = buildLlmsTxt({
+      base: BASE, definition, audience, plans,
+      available: liveFeatureList(), planned, pages: entries,
+    });
+    await writeFile(path.join(DIST, 'llms.txt'), text, 'utf8');
+    console.log(`[prerender] wrote dist/llms.txt (${entries.length} URLs)`);
+  } catch (e) {
+    console.warn('[prerender] llms.txt write failed:', e.message);
+  }
 }
 
 /** Write dist/sitemap.xml from the live, indexable URL list. */
