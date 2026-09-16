@@ -24,7 +24,11 @@
         });
       })();
       gtag('js', new Date());
-      gtag('config', 'G-WB8K26EHYC', { send_page_view: true });
+      // send_page_view: false — RouteChangeTracker in App.tsx sends every
+      // page_view, including the landing one. With both enabled, each landing
+      // was counted twice (measured on production: 2 page_view hits for one
+      // load of /pricing; an in-app navigation sent 1).
+      gtag('config', 'G-WB8K26EHYC', { send_page_view: false });
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WB8K26EHYC"></script>
     <script>
