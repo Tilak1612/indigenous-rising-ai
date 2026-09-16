@@ -1,27 +1,42 @@
 // ============================================================================
 // Indigenous Rising AI · send-funding-digest
-// PROPOSED REPLACEMENT — NOT DEPLOYED
 // ============================================================================
 //
-// WHAT CHANGES, AND WHY
-// ---------------------
-// The live version selects grants like this:
+// THIS IS THE DEPLOYED VERSION. It went live on 2026-08-26 in the same deploy
+// run that created check-funding-freshness. The header used to say "PROPOSED
+// REPLACEMENT — NOT DEPLOYED"; that was written while the code was still being
+// drafted and was never updated after the deploy, so for weeks the repo claimed
+// the unsafe predecessor was live when it was not. Do not describe code in this
+// directory as undeployed — see the guard in
+// src/__tests__/edge-deploy-claims.test.ts.
+//
+// WHY IT READS FROM A VIEW
+// ------------------------
+// The predecessor selected grants like this:
 //
 //     .eq('is_published', true)
 //     .or(`deadline.gte.${today},is_recurring.eq.true`)
 //
-// It never looks at last_verified. Right now 16 of 17 published grants have
-// never been verified and the 17th was verified 138 days ago, and every one of
-// them is is_recurring = true — so all 17 pass, and all 17 are being emailed
-// weekly with amounts and apply links.
+// It never looked at last_verified, and since every published grant is
+// is_recurring = true, all of them passed — so unverified funding amounts and
+// apply links went out weekly.
 //
-// This version reads from public.sendable_grants, which is verified-only. With
-// today's data that returns zero rows and the digest sends nothing. That is the
-// correct behaviour: no email is better than a stale funding amount that sends
-// someone to a programme that has changed or closed.
+// This version reads public.sendable_grants, which is verified-only: no email
+// is better than a stale funding amount that sends someone to a programme that
+// has changed or closed.
 //
-// Also changed:
-//   * HTML-escapes grant fields (the live version interpolates name, funder and
+// OPERATIONAL STATE — READ BEFORE DEBUGGING "the digest isn't sending"
+// --------------------------------------------------------------------
+// It is not sending, and that is this function working as designed. Of 17
+// published grants only 1 has ever been verified, so sendable_grants returns
+// zero rows and every subscriber is skipped. It will stay that way until
+// grants are verified: check-funding-freshness is deployed but has NO cron
+// schedule (cron.job holds only funding-digest-friday), so nothing refreshes
+// last_verified. Scheduling that job is what turns this feature on — and note
+// that doing so will start sending real email, so it is an owner decision.
+//
+// Also changed from the predecessor:
+//   * HTML-escapes grant fields (the predecessor interpolated name, funder and
 //     description straight into the template).
 //   * Shows each programme's last-verified date, so the reader can judge it.
 //   * Links to source_url — the provider's own page — not just a form deep link.
