@@ -47,7 +47,7 @@ const FAQS: Faq[] = [
 // Mirrors src/data/plans.ts. Only capabilities that actually exist are listed
 // as included; anything still in build is named as planned, so the assistant
 // cannot sell a visitor something the product does not do. Kept in sync by
-// src/__tests__/assistant-plan-claims.test.ts.
+// src/__tests__/plan-claims-verified.test.ts.
 const PLANS_TEXT = [
   "Free — $0 forever: business planning assistant (auto-saved), funding opportunity browser, community forum and resource library, OCAP®-aligned data handling stored in Canada, full data export any time, email support, 3 AI funding matches per month.",
   "Growth — $49/month (most popular): everything in Free, priority email support, training programs, AI funding navigator with 50 matches per month, funding deadline alerts by email, application readiness checklists.",
