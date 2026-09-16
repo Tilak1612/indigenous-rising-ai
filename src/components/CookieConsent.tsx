@@ -5,13 +5,7 @@ import { Switch } from './ui/switch';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Cookie, Settings, ChevronDown, ChevronUp } from 'lucide-react';
 import { setConsentOverlay } from '@/lib/consent-overlay';
-
-interface CookiePreferences {
-  necessary: boolean;
-  functional: boolean;
-  analytics: boolean;
-  marketing: boolean;
-}
+import { CONSENT_KEY, saveConsent, type CookiePreferences } from '@/lib/cookie-consent';
 
 const CookieConsent: React.FC = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -25,7 +19,7 @@ const CookieConsent: React.FC = () => {
   });
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie-consent');
+    const consent = localStorage.getItem(CONSENT_KEY);
     if (!consent) {
       setShowBanner(true);
     } else {
@@ -70,11 +64,6 @@ const CookieConsent: React.FC = () => {
     saveConsent(preferences);
     setShowBanner(false);
     setShowDetails(false);
-  };
-
-  const saveConsent = (prefs: CookiePreferences) => {
-    localStorage.setItem('cookie-consent', JSON.stringify(prefs));
-    localStorage.setItem('cookie-consent-date', new Date().toISOString());
   };
 
   const updatePreference = (key: keyof CookiePreferences, value: boolean) => {

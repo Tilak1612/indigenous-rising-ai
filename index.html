@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WB8K26EHYC"></script>
+    <!-- Google tag (gtag.js) with Consent Mode v2.
+         /cookies promises analytics and marketing cookies "Require your
+         consent", so storage is DENIED until the visitor opts in through the
+         banner. The stored choice is read here, before gtag initialises, so a
+         returning visitor who opted in is measured from their first hit.
+         The key must match CONSENT_KEY in src/lib/cookie-consent.ts —
+         src/__tests__/analytics-consent.test.ts executes this script. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){ dataLayer.push(arguments); }
+      (function () {
+        var prefs = null;
+        try { prefs = JSON.parse(localStorage.getItem('cookie-consent') || 'null'); } catch (e) {}
+        var analytics = prefs && prefs.analytics === true ? 'granted' : 'denied';
+        var marketing = prefs && prefs.marketing === true ? 'granted' : 'denied';
+        gtag('consent', 'default', {
+          analytics_storage: analytics,
+          ad_storage: marketing,
+          ad_user_data: marketing,
+          ad_personalization: marketing
+        });
+      })();
       gtag('js', new Date());
       gtag('config', 'G-WB8K26EHYC', { send_page_view: true });
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WB8K26EHYC"></script>
     <script>
       if (window.location.hostname === 'localhost') {
         window.gtag('set', { debug_mode: true });
