@@ -14,7 +14,7 @@ const ImpactLogForm: React.FC = () => {
     setJobs(0);
     setYouth(0);
     try {
-      import('@/lib/analytics').then((m) => m.trackEvent('impact_log_submitted', { jobs, youth }));
+      import('@/utils/analytics').then((m) => m.trackEvent('impact_log_submitted', { jobs, youth }));
     } catch {}
     alert('Impact log saved (placeholder)');
   };

@@ -17,7 +17,7 @@ const CourseCard: React.FC<{ course: { id: string; title: string; progress: numb
           <button
             className="px-3 py-1 bg-success rounded-md text-white text-sm"
             onClick={() => {
-              try { import('@/lib/analytics').then((m) => m.trackEvent('training_continue', { courseId: course.id })); } catch {}
+              try { import('@/utils/analytics').then((m) => m.trackEvent('training_continue', { courseId: course.id })); } catch {}
             }}
           >
             Continue

@@ -1,4 +1,4 @@
-import { trackEvent } from '@/lib/analytics';
+import { trackEvent } from '@/utils/analytics';
 
 /**
  * Conversion-funnel events, alongside the demo funnel in DemoCta.

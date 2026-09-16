@@ -1,8 +1,9 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { readFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 
-vi.mock('@/lib/analytics', () => ({ trackEvent: vi.fn() }));
-import { trackEvent } from '@/lib/analytics';
+vi.mock('@/utils/analytics', () => ({ trackEvent: vi.fn() }));
+import { trackEvent } from '@/utils/analytics';
 import {
   trackSignupCta,
   trackPricingPlanSelected,
@@ -39,6 +40,37 @@ describe('conversion event helpers', () => {
     trackFormSubmitted('contact');
     expect(trackEvent).toHaveBeenNthCalledWith(1, 'form_start', { form: 'contact' });
     expect(trackEvent).toHaveBeenNthCalledWith(2, 'form_submitted', { form: 'contact' });
+  });
+});
+
+describe('the helpers send to GA4, not to a stub', () => {
+  // These helpers used to import trackEvent from src/lib/analytics.ts — a stub
+  // that wrote to localStorage and never sent anything. Every test above still
+  // passed, because they mocked that stub: they proved the helper called
+  // *something*, not that the event reached GA4. So signup_cta_click,
+  // pricing_plan_selected, form_start and form_submitted never arrived.
+  test('conversion-events imports the gtag sender', () => {
+    const helper = read('src/lib/conversion-events.ts');
+    expect(helper).toMatch(/import \{ trackEvent \} from '@\/utils\/analytics';/);
+  });
+
+  test('the sender it imports actually calls gtag', () => {
+    const sender = read('src/utils/analytics.ts');
+    const body = /export const trackEvent = \([\s\S]*?\n\};/.exec(sender)?.[0] ?? '';
+    expect(body, 'trackEvent not found in src/utils/analytics.ts').not.toBe('');
+    expect(body).toMatch(/window\.gtag\('event', eventName/);
+  });
+
+  test('the non-sending stub is gone and nothing imports it', () => {
+    expect(() => read('src/lib/analytics.ts')).toThrow();
+    const out = (() => {
+      try {
+        // Static AND dynamic imports: FundingList and ImpactLogForm used
+        // import('@/lib/analytics'), which a from-only pattern missed.
+        return execSync(`git grep -lE "['\\"]@/lib/analytics['\\"]" -- src ':(exclude)*__tests__*'`, { encoding: 'utf8' });
+      } catch { return ''; }
+    })();
+    expect(out.trim()).toBe('');
   });
 });
 
