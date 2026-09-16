@@ -65,7 +65,9 @@ describe('the helpers send to GA4, not to a stub', () => {
     expect(() => read('src/lib/analytics.ts')).toThrow();
     const out = (() => {
       try {
-        return execSync(`git grep -lE "from ['\\"]@/lib/analytics['\\"]" -- src`, { encoding: 'utf8' });
+        // Static AND dynamic imports: FundingList and ImpactLogForm used
+        // import('@/lib/analytics'), which a from-only pattern missed.
+        return execSync(`git grep -lE "['\\"]@/lib/analytics['\\"]" -- src ':(exclude)*__tests__*'`, { encoding: 'utf8' });
       } catch { return ''; }
     })();
     expect(out.trim()).toBe('');

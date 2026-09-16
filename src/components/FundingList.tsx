@@ -65,7 +65,7 @@ const FundingList: React.FC<{ filters?: Record<string, any> }> = ({ filters = {}
               onClick={() => {
                 try {
                   // record analytics
-                  import('@/lib/analytics').then((m) => m.trackEvent('funding_application_started', { opportunityId: opp.id, title: opp.title }));
+                  import('@/utils/analytics').then((m) => m.trackEvent('funding_application_started', { opportunityId: opp.id, title: opp.title }));
                 } catch {}
                 alert('Open application workspace (placeholder)');
               }}
