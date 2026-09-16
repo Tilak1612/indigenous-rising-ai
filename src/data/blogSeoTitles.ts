@@ -10,7 +10,7 @@
  *
  * Years are deliberately left out: most titles said "2025", which reads as
  * stale in results from 2026 onward. Those posts are flagged for a content
- * refresh in SEO AUDIT.md — the fix for dated content is updating it, not
+ * refresh in SEO-AUDIT.md — the fix for dated content is updating it, not
  * re-dating the title.
  *
  * Guarded by src/__tests__/seo-titles.test.ts (length, uniqueness, coverage).
