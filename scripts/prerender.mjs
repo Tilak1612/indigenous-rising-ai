@@ -32,7 +32,7 @@ const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 
 // ── Static marketing routes (unique title + description per page) ───────────
 const HOME_TITLE = 'Indigenous Business Funding Platform | Indigenous Rising AI';
-const HOME_DESC = 'Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.';
+const HOME_DESC = 'Find funding, build your business plan and access training — all in one place, designed around OCAP® principles and the data sovereignty of your community.';
 
 // /about, /mission and /partnerships are NOT listed here. They 301 to / at the
 // edge (vercel.json). Prerendering a redirect target produced an indexed URL
@@ -311,6 +311,13 @@ async function main() {
   }
 
   const hubFaqs = await loadDataModule('src/data/grantsHubFaqs.ts', 'grantsHubFaqs');
+  // Entity facts for the homepage SoftwareApplication node (see entityFacts.ts).
+  const liveFeatureList = await loadDataModule('src/data/entityFacts.ts', 'liveFeatureList');
+  const productAudience = await loadDataModule('src/data/entityFacts.ts', 'PRODUCT_AUDIENCE');
+  const entityFacts = {
+    features: typeof liveFeatureList === 'function' ? liveFeatureList() : [],
+    audience: productAudience,
+  };
   if (Array.isArray(hubFaqs) && hubFaqs.length) {
     const hub = MARKETING.find((m) => m.p === '/guides/indigenous-business-grants');
     if (hub) hub.faqs = hubFaqs.map((f) => ({ q: f.question, a: f.answer }));
@@ -349,6 +356,11 @@ async function main() {
           operatingSystem: 'Web',
           url: `${BASE}/`,
           description: 'Funding matching, business planning and training tools for First Nations, Inuit and Métis entrepreneurs in Canada, designed around OCAP® principles with data stored in Canada.',
+          // Derived from plans.ts: only rows marked available on the
+          // self-serve plans, so nothing "coming soon" is declared a feature.
+          ...(entityFacts.features.length ? { featureList: entityFacts.features } : {}),
+          ...(entityFacts.audience ? { audience: { '@type': 'BusinessAudience', audienceType: entityFacts.audience } } : {}),
+          isAccessibleForFree: true,
           // Free $0, Growth $49 and Professional $149 all have live Stripe
           // prices (see STRIPE_PRICES + docs/STRIPE_GO_LIVE.md). Nations is
           // custom-quoted, so it is not advertised as a price.

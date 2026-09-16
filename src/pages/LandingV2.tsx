@@ -295,7 +295,7 @@ const LandingV2 = () => {
       <MetaTags
         isHomePage
         title={ROUTE_TITLES['/']}
-        description="Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community."
+        description="Find funding, build your business plan and access training — all in one place, designed around OCAP® principles and the data sovereignty of your community."
         faqs={FAQS.map((f) => ({ question: f.q, answer: f.a }))}
       />
 
@@ -350,7 +350,7 @@ const LandingV2 = () => {
               Get <span style={{ fontStyle: 'italic', color: '#D45B35' }}>funded.</span> Grow your business. Keep your data.
             </h1>
             <p data-reveal style={{ fontSize: 'clamp(17px,1.6vw,21px)', lineHeight: 1.65, color: 'var(--ir-bark)', maxWidth: 620, margin: '28px auto 0' }}>
-              Find funding, build your business plan, access training, and manage your growth — all in one place, designed around OCAP® principles and the data sovereignty of your community.
+              Find funding, build your business plan and access training — all in one place, designed around OCAP® principles and the data sovereignty of your community.
             </p>
             <div data-reveal style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', alignItems: 'center', marginTop: 38 }}>
               <LinkTo to="/signup" onClick={() => trackSignupCta('hero')} className="irv2-hov-cta-lift" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 30px', borderRadius: 12, boxShadow: '0 6px 20px rgba(18,76,59,.3)', display: 'inline-flex', alignItems: 'center', gap: 9 }}>
