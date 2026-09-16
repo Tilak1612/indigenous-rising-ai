@@ -109,6 +109,18 @@ describe('live-vs-roadmap labels match the product', () => {
     expect(landing).toMatch(/m\.live \? 'Live today' : 'Coming soon'/);
   });
 
+  test('no summary of the product claims growth management while that module is unbuilt', () => {
+    // The homepage hero, meta description, og:description and twitter:description
+    // all said "…access training, and manage your growth — all in one place"
+    // while the Growth & Data Tools card on the same page read "Coming soon".
+    const growth = /title: 'Growth & Data Tools',([\s\S]*?)\},/.exec(landing)?.[1] ?? '';
+    if (/live: false/.test(growth)) {
+      for (const [name, src] of [['landing', landing], ['prerender', read('scripts/prerender.mjs')], ['index.html', read('index.html')]] as const) {
+        expect(src, `${name} still promises to manage your growth`).not.toMatch(/manage your growth/i);
+      }
+    }
+  });
+
   test('the FAQ no longer says all four modules are live', () => {
     expect(landing).not.toMatch(/All four modules[^']*are live/);
     expect(landing).toMatch(/Three modules are live today/);
