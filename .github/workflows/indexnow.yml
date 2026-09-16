@@ -10,6 +10,10 @@ on:
 
 permissions:
   contents: read
+  # Read the manifest artifact saved by the previous run. actions/cache cannot
+  # be used here: it does not support deployment_status events (no branch ref),
+  # so every run found no state and resubmitted all 72 URLs.
+  actions: read
 
 concurrency:
   group: indexnow
@@ -30,19 +34,26 @@ jobs:
         with:
           node-version: 22
 
-      # The manifest from the last successful submission. restore-keys matches
-      # the most recently saved entry.
+      # The manifest recorded by the last accepted submission, kept as a
+      # workflow artifact (artifacts, unlike caches, work on any event).
       - name: Restore previous manifest
-        uses: actions/cache/restore@v4
-        with:
-          path: .indexnow/prev.json
-          key: indexnow-manifest-${{ github.run_id }}
-          restore-keys: indexnow-manifest-
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .indexnow
+          id=$(gh api "repos/${{ github.repository }}/actions/artifacts?name=indexnow-manifest&per_page=20" \
+            --jq '[.artifacts[] | select(.expired == false)] | sort_by(.created_at) | last | .id // empty')
+          if [ -n "$id" ]; then
+            gh api "repos/${{ github.repository }}/actions/artifacts/$id/zip" > .indexnow/prev.zip
+            unzip -o -q .indexnow/prev.zip -d .indexnow && rm .indexnow/prev.zip
+            echo "Restored manifest artifact $id"
+          else
+            echo "No manifest artifact yet"
+          fi
 
       - name: Submit changed URLs
         run: |
-          mkdir -p .indexnow
-          node scripts/indexnow-submit.mjs --prev .indexnow/prev.json --out .indexnow/next.json
+          node scripts/indexnow-submit.mjs --prev .indexnow/prev.json --out .indexnow/next.json --on-missing baseline
 
       - name: Promote manifest
         id: promote
@@ -54,7 +65,9 @@ jobs:
 
       - name: Save manifest for the next deploy
         if: steps.promote.outputs.saved == 'true'
-        uses: actions/cache/save@v4
+        uses: actions/upload-artifact@v4
         with:
+          name: indexnow-manifest
           path: .indexnow/prev.json
-          key: indexnow-manifest-${{ github.run_id }}
+          retention-days: 90
+          if-no-files-found: error

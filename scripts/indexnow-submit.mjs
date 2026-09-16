@@ -2,10 +2,18 @@
 // Post-deploy IndexNow submission. Run by .github/workflows/indexnow.yml after
 // a successful Production deployment. See scripts/indexnow.mjs for the design.
 //
-//   node scripts/indexnow-submit.mjs --prev <path> --out <path> [--dry-run]
+//   node scripts/indexnow-submit.mjs --prev <path> --out <path>
+//        [--on-missing baseline|submit-all] [--dry-run]
 //
-// --prev  manifest saved from the previous successful submission (may not exist)
-// --out   where to write the live manifest once this submission succeeds
+// --prev        manifest saved by the previous accepted submission (may not exist)
+// --out         where to write the live manifest once this submission succeeds
+// --on-missing  what to do when there is no previous manifest. Default
+//               "baseline": record the live manifest and submit nothing. A
+//               missing state file (first run, expired artifact, a failed
+//               restore) must never turn into a resubmission of every URL —
+//               which is exactly what happened on the first three production
+//               deploys, when actions/cache silently could not restore on
+//               deployment_status events. Use "submit-all" deliberately, once.
 //
 // Exit codes: 0 = submitted, nothing to submit, or a transient problem that
 // the next deploy will retry (the live manifest is then NOT saved, so the diff
@@ -24,6 +32,7 @@ const arg = (name) => {
 const prevPath = arg('--prev');
 const outPath = arg('--out');
 const dryRun = process.argv.includes('--dry-run');
+const onMissing = arg('--on-missing') ?? 'baseline';
 const site = `https://${HOST}`;
 
 async function fetchText(url) {
@@ -55,7 +64,12 @@ async function main() {
   }
 
   const prev = prevPath && existsSync(prevPath) ? JSON.parse(await readFile(prevPath, 'utf8')) : null;
-  if (!prev) console.log('No previous manifest: first run, submitting every URL once.');
+  if (!prev && onMissing !== 'submit-all') {
+    await writeFile(outPath, JSON.stringify(next, null, 2) + '\n');
+    console.log(`No previous manifest: recorded a baseline of ${Object.keys(next).length} URLs, submitted nothing.`);
+    return;
+  }
+  if (!prev) console.log('No previous manifest: --on-missing submit-all, submitting every URL once.');
   const { added, changed, removed, urls } = diffManifests(prev ?? {}, next);
   console.log(`added ${added.length}, changed ${changed.length}, removed ${removed.length}`);
   for (const u of urls) console.log(`  ${u}`);
