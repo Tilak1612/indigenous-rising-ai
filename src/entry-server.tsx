@@ -1,9 +1,8 @@
-import { renderToPipeableStream } from 'react-dom/server';
-import { PassThrough } from 'node:stream';
 import { StaticRouter } from 'react-router-dom/server';
 import { HelmetProvider, type HelmetServerState } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppTree } from './App';
+import { renderToHtml } from './lib/render-stream';
 
 /**
  * Server entry for the prerender build.
@@ -39,22 +38,8 @@ export function render(url: string): Promise<{ html: string; helmet: HelmetServe
 
   // renderToString does NOT await React.lazy — every route here is lazy behind
   // Suspense, so it emitted the loading skeleton (4 words) instead of the page.
-  // renderToPipeableStream resolves Suspense before onAllReady fires, which is
-  // what actually gets the page's content into the HTML.
-  return new Promise((resolve, reject) => {
-    const chunks: Buffer[] = [];
-    const sink = new PassThrough();
-    sink.on('data', (c: Buffer) => chunks.push(Buffer.from(c)));
-    sink.on('error', reject);
-    sink.on('end', () =>
-      resolve({ html: Buffer.concat(chunks).toString('utf8'), helmet: helmetContext.helmet })
-    );
-
-    const { pipe, abort } = renderToPipeableStream(tree, {
-      onAllReady() { pipe(sink); },
-      onError(err) { reject(err); },
-    });
-    // A hung route must fail the build loudly rather than emit a half page.
-    setTimeout(() => abort(new Error(`prerender timed out for ${url}`)), 20000);
-  });
+  // renderToHtml uses renderToPipeableStream and waits for onAllReady, which is
+  // what actually gets the page's content into the HTML. It also strips the NUL
+  // bytes React 18.3.1 inserts at buffer boundaries (see render-stream.ts).
+  return renderToHtml(tree, { label: url }).then((html) => ({ html, helmet: helmetContext.helmet }));
 }
