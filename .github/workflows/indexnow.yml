@@ -1,0 +1,60 @@
+name: IndexNow
+
+# Tells IndexNow engines (Bing, Yandex, Seznam, Naver, Yep…) which public URLs
+# changed, after Vercel reports a successful PRODUCTION deployment — so engines
+# fetch the new content, not the old. Google does not use IndexNow.
+# Design and change detection: scripts/indexnow.mjs. No secrets are needed: the
+# IndexNow key is public by design and served at /<key>.txt.
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The manifest from the last successful submission. restore-keys matches
+      # the most recently saved entry.
+      - name: Restore previous manifest
+        uses: actions/cache/restore@v4
+        with:
+          path: .indexnow/prev.json
+          key: indexnow-manifest-${{ github.run_id }}
+          restore-keys: indexnow-manifest-
+
+      - name: Submit changed URLs
+        run: |
+          mkdir -p .indexnow
+          node scripts/indexnow-submit.mjs --prev .indexnow/prev.json --out .indexnow/next.json
+
+      - name: Promote manifest
+        id: promote
+        run: |
+          if [ -f .indexnow/next.json ]; then
+            mv .indexnow/next.json .indexnow/prev.json
+            echo "saved=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Save manifest for the next deploy
+        if: steps.promote.outputs.saved == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .indexnow/prev.json
+          key: indexnow-manifest-${{ github.run_id }}
