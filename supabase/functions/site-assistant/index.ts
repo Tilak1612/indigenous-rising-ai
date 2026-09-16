@@ -35,20 +35,25 @@ const SITE = "https://www.indigenousrising.ai";
 interface Faq { q: string; a: string }
 const FAQS: Faq[] = [
   { q: "What is OCAP® and why does it matter?", a: "OCAP® stands for Ownership, Control, Access, and Possession — data governance principles affirming First Nations control over how their data is collected and used. Indigenous Rising AI is built around them: your community owns its data, controls access, can export it anytime, and it is stored in Canada." },
-  { q: "How much does it cost?", a: "There are four plans: Free ($0 forever), Growth ($49/month), Professional ($149/month), and Nations & Organizations (custom — let's talk). The free plan needs no credit card." },
-  { q: "How do I access funding opportunities?", a: "All members can browse the funding database. Free accounts get 3 AI-powered funding matches per month; paid plans (Growth and up) get unlimited matching. The AI matches your business profile against federal, provincial, and private programs." },
+  { q: "How much does it cost?", a: "There are four plans: Free ($0 forever, no credit card), Growth ($49/month), Professional ($149/month), and Nations & Organizations (custom — let's talk). Prices are in Canadian dollars." },
+  { q: "How do I access funding opportunities?", a: "All members can browse the funding database. Free accounts get 3 AI funding matches per month and Growth gets 50 per month. Matching compares your business profile against programs in our database — it is informational, so always confirm eligibility and deadlines with the funder before applying." },
   { q: "Is my business data stored in Canada?", a: "Yes. All data is stored on Canadian servers under Canadian jurisdiction, PIPEDA-aligned, and not transferred outside Canada without explicit consent — consistent with Indigenous data sovereignty (OCAP®)." },
   { q: "Is Indigenous Rising AI only for registered Indigenous businesses?", a: "No. It prioritizes Indigenous-owned and operated businesses but also supports businesses that work closely with Indigenous communities, employ Indigenous peoples, or operate on Indigenous lands." },
   { q: "Can I switch plans at any time?", a: "Yes. You can upgrade or downgrade at any time. Upgrades are prorated for the rest of the billing cycle; downgrades take effect at the start of the next billing period." },
-  { q: "What languages are supported?", a: "English and French today, with interface translations rolling out, plus work with language keepers on Indigenous languages including Anishinaabemowin, Cree, Inuktitut, and Mi'kmaw." },
+  { q: "What languages are supported?", a: "The platform is in English today. A French interface is planned and not available yet. We do not have Indigenous-language interfaces available — if that matters for your community, our team would like to hear from you at help@indigenousrising.ai." },
   { q: "What does the platform actually do?", a: "It helps First Nations, Métis, and Inuit entrepreneurs find funding (AI matching), write and export a business plan, prepare grant applications, and access training — with your data owned by you and stored in Canada." },
 ];
 
+// Mirrors src/data/plans.ts. Only capabilities that actually exist are listed
+// as included; anything still in build is named as planned, so the assistant
+// cannot sell a visitor something the product does not do. Kept in sync by
+// src/__tests__/assistant-plan-claims.test.ts.
 const PLANS_TEXT = [
-  "Free — $0 forever: business planning assistant, funding browser, community forum, OCAP®-compliant data in Canada, EN/FR support, full data export, email support, 3 AI funding matches/month, business health score.",
-  "Growth — $49/month (most popular): everything in Free, priority email support, cultural competency training, unlimited AI funding navigator, grant-writing assistant, funding deadline alerts (email + SMS), quarterly impact report, application checklist generator.",
-  "Professional — $149/month: everything in Growth, multi-entity support (up to 3 businesses), quarterly business review, IFI Connection Engine, priority phone + chat support, cohort matching, Grant Success Predictor, 7-generation planning canvas.",
-  "Nations & Organizations — custom pricing (contact the team): everything in Professional, unlimited entities, and community/organization features.",
+  "Free — $0 forever: business planning assistant (auto-saved), funding opportunity browser, community forum and resource library, OCAP®-aligned data handling stored in Canada, full data export any time, email support, 3 AI funding matches per month.",
+  "Growth — $49/month (most popular): everything in Free, priority email support, training programs, AI funding navigator with 50 matches per month, funding deadline alerts by email, application readiness checklists.",
+  "Professional — $149/month: everything in Growth, quarterly business review with the team, priority phone and chat support. (Several Professional extras are still in build — see the planned list below.)",
+  "Nations & Organizations — custom pricing (contact the team): everything in Professional, plus community and organization features — book a demo to talk through what a Nation or organization needs.",
+  "PLANNED, NOT AVAILABLE TODAY (never describe these as included): French interface translations, business health score, grant writing assistant, quarterly impact report, multi-entity support, Indigenous Financial Institution connections, cohort matching, seven-generation planning canvas, white-label platform, OCAP® governance console, government reporting module. If asked, say it is planned and not available yet.",
 ].join("\n");
 
 const LINKS = [

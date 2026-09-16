@@ -349,7 +349,10 @@ async function main() {
           operatingSystem: 'Web',
           url: `${BASE}/`,
           description: 'Funding matching, business planning and training tools for First Nations, Inuit and Métis entrepreneurs in Canada, designed around OCAP® principles with data stored in Canada.',
-          offers: { '@type': 'AggregateOffer', priceCurrency: 'CAD', lowPrice: '0', highPrice: '49', offerCount: 2 },
+          // Free $0, Growth $49 and Professional $149 all have live Stripe
+          // prices (see STRIPE_PRICES + docs/STRIPE_GO_LIVE.md). Nations is
+          // custom-quoted, so it is not advertised as a price.
+          offers: { '@type': 'AggregateOffer', priceCurrency: 'CAD', lowPrice: '0', highPrice: '149', offerCount: 3 },
           provider: { '@id': `${BASE}/#organization` },
         });
       }

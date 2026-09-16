@@ -26,11 +26,14 @@ const freeFeatures: PlanFeature[] = [
   { text: 'Funding opportunity browser', available: true },
   { text: 'Community forum and resource library', available: true },
   { text: 'OCAP®-aligned data handling, stored in Canada', available: true },
-  { text: 'Multi-language support — English & French (interface translations rolling out)', available: true },
+  // No i18n library is installed and there are no French routes, so this is
+  // planned, not available. (The dashboard language menu is also inert.)
+  { text: 'Interface in English & French', available: false },
   { text: 'Full data export at any time', available: true },
   { text: 'Email support', available: true },
   { text: '3 AI funding matches per month', available: true },
-  { text: 'Business health score', available: true },
+  // Nothing in the app computes a health score — searched the whole codebase.
+  { text: 'Business health score', available: false },
 ];
 
 const growthFeatures: PlanFeature[] = [
@@ -38,30 +41,41 @@ const growthFeatures: PlanFeature[] = [
   { text: 'Priority email support', available: true },
   { text: 'Cultural competency training programs', available: true },
   { text: 'AI-powered funding navigator (50 matches/month)', available: true },
-  { text: 'Grant writing assistant', available: true },
-  { text: 'Funding deadline alerts (email + SMS)', available: true },
-  { text: 'Quarterly impact report PDF', available: true },
-  { text: 'Application checklist generator', available: true },
+  { text: 'Grant writing assistant', available: false },
+  // Email only: send-funding-digest is live with CASL double opt-in. There is
+  // no SMS integration anywhere in the codebase, so "+ SMS" was a claim about
+  // a channel that cannot send.
+  { text: 'Funding deadline alerts by email', available: true },
+  // The impact export produces JSON, and the analytics page itself says
+  // "coming in a future release" — so a quarterly PDF is planned.
+  { text: 'Quarterly impact report', available: false },
+  // Real, but it is a checklist workspace the user fills in — not a generator.
+  { text: 'Application readiness checklists', available: true },
 ];
 
 const professionalFeatures: PlanFeature[] = [
   { text: 'Everything in Growth', available: true },
-  { text: 'Multi-entity support (up to 3 businesses)', available: true },
+  { text: 'Multi-entity support (up to 3 businesses)', available: false },
   { text: 'Quarterly business review with our team', available: true },
-  { text: 'IFI Connection Engine (50+ Indigenous Financial Institutions)', available: true },
+  // Planned, and without the "50+" count: no directory, dataset or
+  // integration with Indigenous Financial Institutions exists in the product,
+  // so the number could not be substantiated either.
+  { text: 'Indigenous Financial Institution connections', available: false },
   { text: 'Priority phone and chat support', available: true },
-  { text: 'Cohort matching with peers in your stage and industry', available: true },
-  { text: 'Grant Success Predictor', available: true },
-  { text: '7-generation planning canvas', available: true },
+  { text: 'Cohort matching with peers in your stage and industry', available: false },
+  // The live business planner has six sections (Vision & Mission, Market
+  // Analysis, Products/Services, Operations, Financial Projections, Community
+  // Impact) — no seven-generation canvas among them.
+  { text: 'Seven-generation planning canvas', available: false },
 ];
 
 const nationsFeatures: PlanFeature[] = [
   { text: 'Everything in Professional', available: true },
   { text: 'Unlimited business entities', available: true },
-  { text: "White-label platform with your Nation's branding", available: true },
-  { text: 'OCAP® data governance console', available: true },
-  { text: 'Government reporting module (ISC, AANDC formats)', available: true },
-  { text: "Custom AI training on your community's data", available: true },
+  { text: "White-label platform with your Nation's branding", available: false },
+  { text: 'OCAP® data governance console', available: false },
+  { text: 'Government reporting module (ISC, AANDC formats)', available: false },
+  { text: "Custom AI training on your community's data", available: false },
   { text: 'Dedicated account manager', available: true },
   { text: 'On-site training programs', available: true },
   { text: '24/7 priority support', available: true },
