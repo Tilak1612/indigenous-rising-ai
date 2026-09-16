@@ -23,7 +23,7 @@
   invented statistics, no appropriated visual motifs.
 
 ## Stack
-Vite + React 19 with SSR prerender · TypeScript strict · React Router 6 ·
+Vite + React 18 with SSR prerender · TypeScript strict · React Router 6 ·
 Tailwind + shadcn/ui · Supabase (Auth, RLS, Postgres — Canadian region, 17 Edge
 Functions, 38 migrations) · Stripe (CAD) · dompurify · recharts · Vitest ·
 Vercel + Speed Insights.
