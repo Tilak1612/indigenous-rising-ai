@@ -1,4 +1,5 @@
 import Navigation from '../components/Navigation';
+import { withdrawConsent } from '@/lib/cookie-consent';
 import Footer from '../components/Footer';
 import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -423,8 +424,11 @@ const CookiePolicy = () => {
                 <Button 
                   variant="outline"
                   onClick={() => {
-                    // Trigger cookie consent modal
-                    localStorage.removeItem('cookieConsent');
+                    // Clears the key the banner reads, stops measurement and
+                    // expires GA cookies, then reloads so the banner asks again.
+                    // This used to remove 'cookieConsent', which nothing reads,
+                    // so a visitor who had accepted could never withdraw.
+                    withdrawConsent();
                     window.location.reload();
                   }}
                 >
