@@ -17,6 +17,7 @@
 // empty body while claiming the page is prerendered is the exact regression
 // this exists to prevent.
 
+import { contentHash } from './indexnow.mjs';
 import { buildLlmsTxt } from './llms-txt.mjs';
 import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -502,6 +503,7 @@ async function main() {
 
   await writeSitemap(sitemap);
   await writeLlmsTxt(sitemap);
+  await writeIndexNowManifest(sitemap);
 
   console.log(`[prerender] wrote ${count} static route file(s) (${MARKETING.length} marketing + ${posts.length} blog).`);
 }
@@ -511,6 +513,26 @@ function toISODate(v) {
   if (!v) return null;
   const d = new Date(v);
   return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+}
+
+/**
+ * Write dist/indexnow-manifest.json: a content hash per sitemap URL, so the
+ * post-deploy IndexNow job can submit only pages that actually changed.
+ * See scripts/indexnow.mjs.
+ */
+async function writeIndexNowManifest(entries) {
+  try {
+    const manifest = {};
+    for (const e of entries) {
+      const rel = new URL(e.loc).pathname.replace(/^\//, '');
+      const file = path.join(DIST, rel, 'index.html');
+      manifest[e.loc] = contentHash(await readFile(file, 'utf8'));
+    }
+    await writeFile(path.join(DIST, 'indexnow-manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8');
+    console.log(`[prerender] wrote dist/indexnow-manifest.json (${Object.keys(manifest).length} URLs)`);
+  } catch (e) {
+    console.warn('[prerender] indexnow manifest write failed:', e.message);
+  }
 }
 
 /** Write dist/llms.txt from the indexable URL list plus plan and entity facts. */
