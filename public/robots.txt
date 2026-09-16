@@ -26,38 +26,119 @@ Sitemap: https://www.indigenousrising.ai/sitemap.xml
 # Googlebot and Bingbot ignore every Disallow above (dashboard, admin, auth).
 # Those bots now follow the * group like everyone else.
 
-# AI crawler policy — sovereignty-aligned middle path:
-# ALLOW retrieval / answer engines on PUBLIC content (they surface live, ATTRIBUTED
-# citations rather than silently ingesting for training); app + private areas stay
-# blocked. BLOCK bulk training crawlers entirely.
+# AI crawler policy — sovereignty-aligned middle path (owner policy):
+#   * ALLOW AI search / answer engines on PUBLIC content. They cite and link
+#     back to the page, rather than silently ingesting it.
+#   * BLOCK crawlers whose purpose is model training.
+#
+# Each answer engine below is named so the policy is explicit. Naming one has
+# a consequence: under RFC 9309 §2.2.1 a crawler obeys ONLY the group that
+# names it and ignores `User-agent: *` entirely. So every group here must
+# repeat the private Disallow list above in full. Until 2026-09 these groups
+# carried a shorter, hand-copied list, so OAI-SearchBot, ChatGPT-User and
+# PerplexityBot were allowed into tokenised /unsubscribe, /funding/confirm and
+# /funding/unsubscribe links and /onboarding. src/__tests__/robots-policy.test.ts
+# resolves each bot's group and fails if its access differs from `*`.
+#
+# /auth and /signup stay crawlable for the same reason as above: they carry a
+# noindex meta tag, which a crawler can only obey if it may fetch the page.
 
-# Retrieval / answer engines — public content only
+# OAI-SearchBot: ChatGPT search results
 User-agent: OAI-SearchBot
 Allow: /
 Disallow: /dashboard
+Disallow: /dashboard/
 Disallow: /admin
+Disallow: /admin/
 Disallow: /api/
-Disallow: /auth
-Disallow: /profile
+Disallow: /unsubscribe
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
 
+# ChatGPT-User: pages fetched when a ChatGPT user asks
 User-agent: ChatGPT-User
 Allow: /
 Disallow: /dashboard
+Disallow: /dashboard/
 Disallow: /admin
+Disallow: /admin/
 Disallow: /api/
-Disallow: /auth
-Disallow: /profile
+Disallow: /unsubscribe
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
 
+# Claude-SearchBot: Claude search results
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /unsubscribe
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
+
+# Claude-User: pages fetched when a Claude user asks
+User-agent: Claude-User
+Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /unsubscribe
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
+
+# PerplexityBot: Perplexity search results (not model training, per Perplexity)
 User-agent: PerplexityBot
 Allow: /
 Disallow: /dashboard
+Disallow: /dashboard/
 Disallow: /admin
+Disallow: /admin/
 Disallow: /api/
-Disallow: /auth
-Disallow: /profile
+Disallow: /unsubscribe
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
 
-# Bulk AI TRAINING crawlers — blocked entirely (protect Indigenous knowledge from
-# corpus ingestion; visibility comes from the retrieval engines above, with attribution)
+# Perplexity-User: pages fetched when a Perplexity user asks
+User-agent: Perplexity-User
+Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /unsubscribe
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
+
+# DuckAssistBot: DuckDuckGo AI answers (not model training, per DuckDuckGo)
+User-agent: DuckAssistBot
+Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+Disallow: /unsubscribe
+Disallow: /funding/confirm
+Disallow: /funding/unsubscribe
+Disallow: /onboarding
+
+# Model-training crawlers: blocked entirely (owner policy — protects
+# Indigenous knowledge from corpus ingestion). Left exactly as the owner set it.
+# Note for the owner: Google-Extended does NOT affect Google Search or AI
+# Overviews, but blocking it also opts these pages out of grounding in the
+# Gemini app. See SEO-AUDIT.md for tokens this list does not yet cover.
 User-agent: GPTBot
 Disallow: /
 
