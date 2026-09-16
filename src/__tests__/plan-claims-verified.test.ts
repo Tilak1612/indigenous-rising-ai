@@ -47,6 +47,9 @@ const NOT_BUILT: Array<{ label: string; planText: string; pattern: string }> = [
   { label: 'grant writing assistant', planText: 'Grant writing assistant', pattern: 'grantWriter|grant_writing|GrantWriting' },
   { label: 'quarterly impact report', planText: 'Quarterly impact report', pattern: 'quarterlyReport|impactReportPdf|impact_report_pdf' },
   { label: 'multi-entity support', planText: 'Multi-entity support', pattern: 'business_entities|multiEntity|entitySwitcher' },
+  // Same capability, worded differently on the Nations card — escaped the
+  // first sweep because it matched on the text, not the capability.
+  { label: 'unlimited business entities (Nations)', planText: 'Unlimited business entities', pattern: 'business_entities|multiEntity|entitySwitcher' },
   { label: 'IFI connections', planText: 'Indigenous Financial Institution connections', pattern: 'ifiConnection|ifi_connection|financial_institutions' },
   { label: 'cohort matching', planText: 'Cohort matching', pattern: 'cohortMatch|cohort_matching|cohorts' },
   { label: 'seven-generation canvas', planText: 'Seven-generation planning canvas', pattern: 'sevenGeneration|seven_generation' },
