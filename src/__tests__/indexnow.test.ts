@@ -82,7 +82,7 @@ describe('indexnow-submit.mjs behaviour', () => {
   const site = `https://${HOST}`;
   const liveManifest = { [`${site}/`]: 'h1', [`${site}/pricing`]: 'h2' };
 
-  function run(opts: { prev?: object; keyStatus?: number; postStatus?: number }) {
+  function run(opts: { prev?: object; keyStatus?: number; postStatus?: number; args?: string[] }) {
     const dir = mkdtempSync(join(tmpdir(), 'indexnow-'));
     const prev = join(dir, 'prev.json');
     const out = join(dir, 'next.json');
@@ -104,14 +104,22 @@ describe('indexnow-submit.mjs behaviour', () => {
         }
         return reply(404, '');
       };`);
-    const r = spawnSync(process.execPath, ['--import', stub, 'scripts/indexnow-submit.mjs', '--prev', prev, '--out', out], { encoding: 'utf8' });
+    const r = spawnSync(process.execPath, ['--import', stub, 'scripts/indexnow-submit.mjs', '--prev', prev, '--out', out, ...(opts.args ?? [])], { encoding: 'utf8' });
     const posts = existsSync(log) ? JSON.parse(readFileSync(log, 'utf8')) : [];
     return { code: r.status, saved: existsSync(out), posts, stdout: r.stdout + r.stderr };
   }
 
-  test('first run submits every URL once and saves the manifest', () => {
+  test('no previous state → records a baseline and submits NOTHING (the default)', () => {
+    // The first three production deploys each resubmitted all 72 URLs because
+    // the state never restored. A missing state file must not do that.
     const r = run({});
     expect(r.code).toBe(0);
+    expect(r.posts).toHaveLength(0);
+    expect(r.saved).toBe(true);
+  });
+
+  test('--on-missing submit-all is the deliberate, explicit way to send everything', () => {
+    const r = run({ args: ['--on-missing', 'submit-all'] });
     expect(r.posts).toHaveLength(1);
     expect(r.posts[0].urlList.sort()).toEqual(Object.keys(liveManifest).sort());
     expect(r.saved).toBe(true);
@@ -129,13 +137,13 @@ describe('indexnow-submit.mjs behaviour', () => {
   });
 
   test('rate limited → not saved, so the next deploy retries', () => {
-    const r = run({ postStatus: 429 });
+    const r = run({ prev: { ...liveManifest, [`${site}/pricing`]: 'old' }, postStatus: 429 });
     expect(r.code).toBe(0);
     expect(r.saved).toBe(false);
   });
 
   test('key rejected → fails loudly and saves nothing', () => {
-    const r = run({ postStatus: 403 });
+    const r = run({ prev: { ...liveManifest, [`${site}/pricing`]: 'old' }, postStatus: 403 });
     expect(r.code).toBe(1);
     expect(r.saved).toBe(false);
   });
@@ -160,5 +168,17 @@ describe('wiring', () => {
     expect(wf).toMatch(/github\.event\.deployment\.environment == 'Production'/);
     expect(wf).not.toMatch(/secrets\./);
     expect(wf).toMatch(/permissions:\s*\n\s*contents: read/);
+  });
+
+  test('state survives between deployment_status runs', () => {
+    // actions/cache does not support deployment_status events ("not tied to a
+    // branch or tag ref"): restore silently found nothing on every run.
+    const wf = readFileSync('.github/workflows/indexnow.yml', 'utf8');
+    const steps = wf.replace(/^\s*#.*$/gm, '');
+    expect(steps).not.toMatch(/actions\/cache/);
+    expect(steps).toMatch(/uses: actions\/upload-artifact@v4[\s\S]*?name: indexnow-manifest/);
+    expect(steps).toMatch(/actions\/artifacts\?name=indexnow-manifest/);
+    expect(steps).toMatch(/actions: read/);
+    expect(steps).toMatch(/--on-missing baseline/);
   });
 });
