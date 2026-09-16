@@ -50,6 +50,9 @@ for (const url of urls) {
   const desc = tag(html, /<meta[^>]*name="description"[^>]*content="([^"]*)"/i);
   const words = textOf(html).split(' ').filter(Boolean).length;
 
+  // React 18.3.1 can emit NUL bytes at stream-buffer boundaries (see
+  // src/lib/render-stream.ts). Tools and crawlers may treat such a page as binary.
+  if (html.includes(String.fromCharCode(0))) failures.push(`${route} — contains a NUL byte`);
   if (!title) failures.push(`${route} — empty <title>`);
   else if (route !== '/' && title === homeTitle) failures.push(`${route} — title duplicates the homepage`);
   if (!desc) failures.push(`${route} — empty meta description`);
