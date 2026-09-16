@@ -61,7 +61,7 @@ const MARKETING = [
   { p: '/demo', t: 'Book a demo | Indigenous Rising AI', d: 'Book a 30-minute walkthrough of Indigenous Rising AI — funding matching, the business plan assistant, and the controls that decide who sees your data.', breadcrumb: 'Book a demo' },
   { p: '/contact', img: '/og-contact.jpg', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
   { p: '/faq', t: 'Frequently asked questions | Indigenous Rising AI', d: 'Answers about funding matching, business planning, OCAP® data sovereignty, pricing, and what is live today versus coming soon on Indigenous Rising AI.' },
-  { p: '/success-stories', t: 'Success stories | Indigenous Rising AI', d: 'Stories from Indigenous entrepreneurs growing their businesses with funding, planning, and training support — shared with permission.' },
+  { p: '/success-stories', t: 'Success stories | Indigenous Rising AI', d: 'Illustrative examples of the kinds of Indigenous businesses the platform is built to support. Named stories will be added only with each entrepreneur’s consent.' },
   { p: '/careers', t: 'Careers | Indigenous Rising AI', d: 'Join the team building the AI platform for Indigenous business growth. See open roles and how we work with communities.' },
   { p: '/training', t: 'AI training program | Indigenous Rising AI', d: 'Live training on AI, data sovereignty, and practical business skills for Indigenous communities — monthly sessions and a growing library.' },
   { p: '/community', t: 'Community forum | Indigenous Rising AI', d: 'Connect with other Indigenous entrepreneurs — ask questions, share wins, and find resources in the Indigenous Rising community.' },
@@ -77,7 +77,7 @@ const MARKETING = [
   // duplicate title tags for search engines.
   { p: '/funding', t: 'Find Indigenous business funding | Indigenous Rising AI', d: 'Browse real funding and financing for Indigenous entrepreneurs across Canada: grants, non-repayable contributions and loans from Indigenous institutions.' },
   { p: '/funding/alerts', t: 'Free weekly funding alerts | Indigenous Rising AI', d: 'A free weekly email of Indigenous business funding matched to your province and industry. CASL double opt-in, and one-click unsubscribe.' },
-  { p: '/impact', t: 'Measure your community impact | Indigenous Rising AI', d: 'Track and report the community impact of your Indigenous business — jobs, training, and local spend — in a form funders and your Nation recognise.' },
+  { p: '/impact', t: 'Measure your community impact | Indigenous Rising AI', d: 'Coming soon: a community impact tracker for Indigenous businesses — jobs, youth programs and local spend, in a form funders recognise.' },
   { p: '/plan', t: 'Indigenous Business Plan Builder | Indigenous Rising AI', d: 'Write a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Free to start, no credit card.' },
   { p: '/track-request', t: 'Track a data request | Indigenous Rising AI', d: 'Check the status of a data access, export, correction, or deletion request — OCAP® Possession in practice.', robots: 'noindex, nofollow' },
   { p: '/data-rights', img: '/og-data-rights.jpg', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
@@ -367,6 +367,25 @@ async function main() {
           // custom-quoted, so it is not advertised as a price.
           offers: { '@type': 'AggregateOffer', priceCurrency: 'CAD', lowPrice: '0', highPrice: '149', offerCount: 3 },
           provider: { '@id': `${BASE}/#organization` },
+        });
+      }
+      if (!/noindex/i.test(m.robots || '')) {
+        // WebPage node written from the SAME title and description as this
+        // route's meta tags. It used to be injected client-side by MetaTags
+        // with a different, per-component description — and, where a page
+        // passed none, a default claiming the platform harmonized traditional
+        // knowledge. One owner now, visible without JavaScript.
+        jsonLd.push({
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          '@id': `${url}#webpage`,
+          url,
+          name: m.t,
+          // truncateDesc: the same clipping the meta description gets.
+          description: truncateDesc(m.d),
+          isPartOf: { '@id': `${BASE}/#website` },
+          about: { '@id': `${BASE}/#organization` },
+          inLanguage: 'en-CA',
         });
       }
       if (Array.isArray(m.faqs) && m.faqs.length) {

@@ -48,6 +48,30 @@ describe('structured data has one owner per type', () => {
     expect(prerender).toMatch(/<link rel="canonical" href="\$\{U\}" \/>/);
   });
 
+  test('WebPage is written by the prerender from the meta tags own inputs, never by the client', () => {
+    // MetaTags injected a WebPage node after hydration with each component's
+    // description prop — different from the prerendered meta description on
+    // every page — and, where a page passed none, a default claiming the
+    // platform harmonized traditional knowledge. /pricing hand-typed a third.
+    const meta = read('src/components/MetaTags.tsx');
+    const sd = read('src/components/StructuredData.tsx');
+    expect(meta).not.toMatch(/pageData=/);
+    expect(read('src/pages/Pricing.tsx')).not.toMatch(/pageData=/);
+    expect(sd).not.toMatch(/"@type": "WebPage"|'@type': 'WebPage'/);
+    expect(prerender).toMatch(/'@type': 'WebPage',[\s\S]{0,80}name: m\.t,\s*\n[\s\S]{0,120}description: truncateDesc\(m\.d\)/);
+    // and applyHead writes the meta description from the same clipping
+    expect(prerender).toMatch(/D = esc\(truncateDesc\(description\)\)/);
+  });
+
+  test('no component default makes claims the product cannot support', () => {
+    // Code only: the comments explaining what was removed may name the claim.
+    const code = (f: string) => read(f).replace(/\/\*[\s\S]*?\*\/|\{\/\*[\s\S]*?\*\/\}|^\s*\/\/.*$/gm, '');
+    for (const f of ['src/components/MetaTags.tsx', 'src/components/StructuredData.tsx']) {
+      expect(code(f), `${f} claims traditional knowledge`).not.toMatch(/traditional knowledge/i);
+      expect(code(f), `${f} declares an unbuilt analytics dashboard`).not.toMatch(/analytics dashboard/i);
+    }
+  });
+
   test('pages that must stay out of the index keep their own robots tag', () => {
     // These are either not prerendered (tokenised links) or need noindex after
     // a client-side transition.
