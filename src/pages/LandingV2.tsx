@@ -114,6 +114,7 @@ const MODULES = [
     accent: 'var(--ir-green)',
     soft: 'rgba(18,76,59,.12)',
     title: 'Funding Navigator',
+    live: true,
     desc: 'Search and match to grants, loans, and programs relevant to Indigenous businesses — with deadlines and eligibility written in plain language.',
     roadmap: 'auto-filled application drafts.',
   },
@@ -122,6 +123,7 @@ const MODULES = [
     accent: 'var(--ir-green)',
     soft: 'rgba(62,107,79,.12)',
     title: 'Business Planning Assistant',
+    live: true,
     desc: 'Build a lender-ready business plan section by section, with prompts written for Indigenous entrepreneurs — not generic templates.',
     roadmap: 'financial projection templates.',
   },
@@ -130,6 +132,7 @@ const MODULES = [
     accent: 'var(--ir-gold)',
     soft: 'rgba(201,150,46,.16)',
     title: 'Training & Certification',
+    live: true,
     desc: 'Short, practical lessons on financing, marketing, and operations. Learn at your own pace, track your progress, return anytime.',
     roadmap: 'issued certificates of completion.',
   },
@@ -138,8 +141,14 @@ const MODULES = [
     accent: '#8A5A2B',
     soft: 'rgba(138,90,43,.14)',
     title: 'Growth & Data Tools',
-    desc: 'Track revenue, customers, and goals in a simple dashboard you own — and export the data whenever you want.',
-    roadmap: 'benchmark insights across regions.',
+    // NOT live. Nothing in the app tracks revenue, customers or goals — there
+    // are no such screens and no metrics tables — and /dashboard/analytics
+    // itself says "Impact Analytics — Coming Soon". This card claimed
+    // "Live today" like the other three, and the description promised the
+    // tracking as if it existed. Data export IS live and is claimed elsewhere.
+    live: false,
+    desc: 'A simple dashboard for revenue, customers and goals that you own — in build now. Your data stays exportable whichever plan you are on.',
+    roadmap: 'revenue, customer and goal tracking, then benchmark insights across regions.',
   },
 ];
 
@@ -156,7 +165,7 @@ const FAQS = [
   { q: 'What does OCAP® mean here?', a: 'OCAP® is a set of First Nations principles for how data about a community should be governed. We design the platform around those principles. OCAP® is a registered trademark of the First Nations Information Governance Centre; we are designed around it, not certified by it.' },
   { q: 'Where is my information stored?', a: 'In Canada. Your data is stored in AWS ca-central-1, encrypted in transit and at rest, with role-based access you control. Some AI features process limited, non-identifying details through third-party providers — we disclose every one in our Privacy Policy.' },
   { q: 'Is my information shared with funders?', a: 'No. Nothing is shared with a funder unless you choose to submit it. We do not sell your data, and we do not share it with funders or third parties without your explicit action.' },
-  { q: 'What do I get when I sign up?', a: 'All four modules — Funding Navigator, Business Planning, Training, and Growth Tools — are live and available today. The free plan gets you started with no credit card: three funding matches a month, a guided business plan, the funding browser, and the community forum. Growth adds 50 matches a month, priority support, the training library, readiness checklists and email deadline alerts. Anything still in build is marked "coming soon" on the pricing page. You can export your data and cancel at any time.' },
+  { q: 'What do I get when I sign up?', a: 'Three modules are live today: Funding Navigator, Business Planning and Training. Growth & Data Tools is in build — revenue, customer and goal tracking are not available yet. The free plan gets you started with no credit card: three funding matches a month, a guided business plan, the funding browser, and the community forum. Growth adds 50 matches a month, priority support, the training library, readiness checklists and email deadline alerts. Anything still in build is marked "coming soon" on the pricing page. You can export your data and cancel at any time.' },
 ];
 
 // Brand display face — Manrope ExtraBold/Bold per brand/09-brand-system spec
@@ -499,8 +508,8 @@ const LandingV2 = () => {
               <div key={m.title} data-reveal className="irv2-hov-card" style={{ background: 'var(--ir-paper)', border: '1px solid rgba(74,56,38,.1)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14, marginBottom: 18 }}>
                   <div style={{ width: 56, height: 56, borderRadius: 14, background: m.soft, color: m.accent, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon icon={m.icon} size={28} /></div>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 600, color: 'var(--ir-green)', background: 'rgba(62,107,79,.1)', border: '1px solid rgba(62,107,79,.2)', padding: '6px 12px', borderRadius: 100, whiteSpace: 'nowrap' }}>
-                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ir-green)' }} /> Live today
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 600, color: m.live ? 'var(--ir-green)' : 'var(--ir-bark)', background: m.live ? 'rgba(62,107,79,.1)' : 'rgba(74,56,38,.07)', border: `1px solid ${m.live ? 'rgba(62,107,79,.2)' : 'rgba(74,56,38,.18)'}`, padding: '6px 12px', borderRadius: 100, whiteSpace: 'nowrap' }}>
+                    <span style={{ width: 7, height: 7, borderRadius: '50%', background: m.live ? 'var(--ir-green)' : 'var(--ir-bark)' }} /> {m.live ? 'Live today' : 'Coming soon'}
                   </span>
                 </div>
                 <h3 style={{ ...FONT_HEAD, fontWeight: 600, fontSize: 23, color: 'var(--ir-ink)', margin: '0 0 10px' }}>{m.title}</h3>

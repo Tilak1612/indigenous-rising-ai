@@ -91,6 +91,41 @@ describe('nothing unbuilt is advertised as included', () => {
   });
 });
 
+describe('live-vs-roadmap labels match the product', () => {
+  test('a module is only badged "Live today" if it exists', () => {
+    // All four module cards carried a hardcoded "Live today" badge. Growth &
+    // Data Tools is not built: nothing tracks revenue, customers or goals, and
+    // /dashboard/analytics says "Impact Analytics — Coming Soon".
+    const growth = /title: 'Growth & Data Tools',([\s\S]*?)\},/.exec(landing)?.[1] ?? '';
+    expect(growth).toMatch(/live: false/);
+    for (const t of ['Funding Navigator', 'Business Planning Assistant', 'Training & Certification']) {
+      const block = new RegExp(`title: '${t}',([\\s\\S]{0,200})`).exec(landing)?.[1] ?? '';
+      expect(block, `${t} has no live flag`).toMatch(/live: true/);
+    }
+    // the badge must read from the flag, not be hardcoded
+    expect(landing).toMatch(/m\.live \? 'Live today' : 'Coming soon'/);
+  });
+
+  test('the FAQ no longer says all four modules are live', () => {
+    expect(landing).not.toMatch(/All four modules[^']*are live/);
+    expect(landing).toMatch(/Three modules are live today/);
+  });
+
+  test('revenue, customer and goal tracking really is unbuilt', () => {
+    // If this starts failing, the feature shipped — flip live to true and
+    // update the module copy and the /impact page.
+    expect(implementationExists('business_metrics|revenue_entries|growth_goals|goalTracker')).toBe(false);
+  });
+
+  test('the impact page does not promise tracking today', () => {
+    const impact = read('src/pages/PublicImpact.tsx');
+    expect(impact).toMatch(/coming soon/i);
+    expect(impact, 'CTA still promises to start tracking').not.toMatch(/Start Tracking Impact/);
+    expect(impact, 'signed-in CTA still lands on the Coming Soon screen')
+      .not.toMatch(/to="\/dashboard\/analytics"/);
+  });
+});
+
 describe('claims the product must never make', () => {
   test('nothing predicts grant success', () => {
     // A feature named for predicting grant success implies approval odds.

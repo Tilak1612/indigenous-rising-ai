@@ -77,32 +77,38 @@ const PublicImpact: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent" />
           <div className="max-w-7xl mx-auto relative">
             <div className="text-center max-w-3xl mx-auto">
-              <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                <TrendingUp className="w-4 h-4" />
-                Impact Tracking
+              {/* This page promoted impact tracking as available and sent
+                  people to /dashboard/analytics, which says "Impact Analytics
+                  — Coming Soon". Nothing in the app tracks revenue, customers
+                  or goals yet, so the status is on the page itself now. */}
+              <div className="inline-flex items-center gap-2 bg-white/15 text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <TrendingUp className="w-4 h-4" aria-hidden="true" />
+                Impact Tracking — coming soon
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 Measure Your{' '}
                 <span className="text-primary">Community Impact</span>
               </h1>
               <p className="text-lg text-white/70 mb-8">
-                Track, measure, and report the positive impact your business has on Indigenous 
-                communities. Generate impact reports for funders and stakeholders.
+                We are building a way to track and report the impact your business has in your
+                community — jobs, training, local spend — in a form funders and your Nation
+                recognise. It is not available yet. Create a free account to start with funding
+                matching and your business plan, and you will have it when it ships.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {user ? (
                   <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-                    <Link to="/dashboard/analytics">
-                      View Impact Dashboard
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                    <Link to="/dashboard">
+                      Go to your dashboard
+                      <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
                     </Link>
                   </Button>
                 ) : (
                   <>
                     <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
                       <Link to="/auth">
-                        Start Tracking Impact
-                        <ArrowRight className="w-4 h-4 ml-2" />
+                        Create a free account
+                        <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
                       </Link>
                     </Button>
                     <Button asChild variant="outline" size="lg" className="border-primary/40 text-primary bg-white hover:bg-primary/5">
@@ -203,16 +209,17 @@ const PublicImpact: React.FC = () => {
         <section className="py-20 px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-white mb-4">
-              Start Measuring Your Impact
+              Be ready when impact reporting ships
             </h2>
             <p className="text-white/70 mb-8">
-              Show funders and stakeholders the real difference your business makes.
+              Start with funding matching and your business plan today. Impact tracking is in
+              build, and everything you enter now carries over.
             </p>
             {user ? (
               <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-                <Link to="/dashboard/analytics">
-                  Open Impact Dashboard
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                <Link to="/dashboard">
+                  Go to your dashboard
+                  <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
                 </Link>
               </Button>
             ) : (
