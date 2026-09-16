@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { lazy, Suspense, useEffect } from "react";
-import { trackPageView } from "./utils/analytics";
+import { trackPageView, trackAiReferral } from "./utils/analytics";
 import CookieConsent from "./components/CookieConsent";
 import ComplianceBanner from "./components/ComplianceBanner";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -94,6 +94,10 @@ const queryClient = new QueryClient({
 /** Track SPA page views on every route change */
 function RouteChangeTracker() {
   const location = useLocation();
+  useEffect(() => {
+    // Once per session, on the landing page, where the referrer is real.
+    trackAiReferral();
+  }, []);
   useEffect(() => {
     trackPageView(location.pathname, document.title);
   }, [location.pathname]);
