@@ -1,7 +1,7 @@
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Check, Sparkles, Crown, Building, ArrowRight, Briefcase } from 'lucide-react';
+import { Check, CircleDashed, Sparkles, Crown, Building, ArrowRight, Briefcase } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/hooks/useAuth';
 import { readStoredSession } from '@/lib/auth-storage';
@@ -381,11 +381,24 @@ const PricingSection = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-3 flex-1">
+                  {/* A planned feature must not get a check mark next to a Buy
+                      button. The homepage teaser already distinguished the two;
+                      these cards rendered <Check> for every feature regardless
+                      of `available`, so the capabilities still in build looked
+                      included on the page where people pay. The "coming soon"
+                      text carries the state — not the icon or colour alone. */}
                   {plan.features.map((feature, idx) => (
                     <div key={idx} className="flex items-start space-x-2">
-                      <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-foreground">
+                      {feature.available ? (
+                        <Check className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" aria-hidden="true" />
+                      ) : (
+                        <CircleDashed className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" aria-hidden="true" />
+                      )}
+                      <span className={feature.available ? 'text-sm text-foreground' : 'text-sm text-muted-foreground'}>
                         {feature.text}
+                        {!feature.available && (
+                          <span className="text-muted-foreground"> · coming soon</span>
+                        )}
                       </span>
                     </div>
                   ))}
@@ -428,7 +441,12 @@ const PricingSection = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* These rows are the SECOND place entitlements are written,
+                  {/* "Planned" means exactly that: the capability is not built
+                      yet. Six rows carried a check mark for features with no
+                      implementation anywhere in the codebase — including on
+                      Growth, which is purchasable. See src/data/plans.ts.
+
+                      These rows are the SECOND place entitlements are written,
                       alongside src/data/plans.ts — they drifted apart, so Growth
                       showed Free's support level here and both claimed
                       "Unlimited" matching while the matcher caps Growth at 50.
@@ -438,16 +456,16 @@ const PricingSection = () => {
                     { feature: 'Funding opportunity browser', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'OCAP®-aligned data handling', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Community forum + resources', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'Multi-language support (EN/FR)', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
+                    { feature: 'Interface in English & French', free: 'Planned', growth: 'Planned', pro: 'Planned', enterprise: 'Planned' },
                     { feature: 'Full data export', free: '✓', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Cultural competency training', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
                     { feature: 'Priority support', free: 'Email', growth: 'Priority email', pro: 'Phone+Chat', enterprise: '24/7' },
                     { feature: 'AI funding matching', free: '3/mo', growth: '50/mo', pro: 'Unlimited', enterprise: 'Unlimited' },
-                    { feature: 'Grant writing assistant', free: '—', growth: '✓', pro: '✓', enterprise: '✓' },
-                    { feature: 'Multi-entity support', free: '—', growth: '—', pro: '✓', enterprise: '✓' },
-                    { feature: 'IFI Connection Engine', free: '—', growth: '—', pro: '✓', enterprise: '✓' },
-                    { feature: 'OCAP® governance console', free: '—', growth: '—', pro: '—', enterprise: '✓' },
-                    { feature: 'White-label platform', free: '—', growth: '—', pro: '—', enterprise: '✓' },
+                    { feature: 'Grant writing assistant', free: '—', growth: 'Planned', pro: 'Planned', enterprise: 'Planned' },
+                    { feature: 'Multi-entity support', free: '—', growth: '—', pro: 'Planned', enterprise: 'Planned' },
+                    { feature: 'Indigenous Financial Institution connections', free: '—', growth: '—', pro: 'Planned', enterprise: 'Planned' },
+                    { feature: 'OCAP® governance console', free: '—', growth: '—', pro: '—', enterprise: 'Planned' },
+                    { feature: 'White-label platform', free: '—', growth: '—', pro: '—', enterprise: 'Planned' },
                     { feature: 'Dedicated account manager', free: '—', growth: '—', pro: '—', enterprise: '✓' },
                   ].map((row, idx) => (
                     <tr key={idx} className="border-b">

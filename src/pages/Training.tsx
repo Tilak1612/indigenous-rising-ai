@@ -72,7 +72,9 @@ const Training = () => {
     {
       icon: Award,
       title: 'Certificates',
-      description: 'Earn certificates of completion for finished modules',
+      // The homepage labels issued certificates as roadmap. This page said you
+      // could earn them today — the two contradicted each other.
+      description: 'Issued certificates of completion — coming soon',
     },
   ];
 
