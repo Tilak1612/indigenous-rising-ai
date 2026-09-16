@@ -2,7 +2,6 @@ import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import PricingSection from '@/components/PricingSection';
-import { StructuredData } from '@/components/StructuredData';
 import { ROUTE_TITLES } from '@/data/routeTitles';
 
 const Pricing = () => {
@@ -14,14 +13,6 @@ const Pricing = () => {
         <title>{ROUTE_TITLES['/pricing']}</title>
       </Helmet>
 
-      <StructuredData
-        type="page"
-        pageData={{
-          name: "Pricing — Indigenous Rising AI",
-          description: "Honest, transparent pricing for Indigenous entrepreneurs. Start free; Growth is $49/mo. OCAP®-aligned and data stored in Canada.",
-          url: "https://www.indigenousrising.ai/pricing"
-        }}
-      />
       
       <div className="min-h-screen warm-bg">
         {/* Hero header with gradient background */}

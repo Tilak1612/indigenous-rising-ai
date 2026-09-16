@@ -1,105 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Helmet } from 'react-helmet-async';
 
-const BASE_URL = 'https://www.indigenousrising.ai';
-
-// Organization Schema - main business info
-export const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${BASE_URL}/#organization`,
-  "name": "Indigenous Rising AI",
-  "alternateName": "Indigenous Rising",
-  "description": "AI-powered business support platform for Indigenous entrepreneurs in Canada, harmonizing traditional knowledge with modern business tools while honoring data sovereignty principles.",
-  "url": BASE_URL,
-  "logo": {
-    "@type": "ImageObject",
-    "url": `${BASE_URL}/logo-icon.png`,
-    "width": 512,
-    "height": 512
-  },
-  "image": `${BASE_URL}/og-home.jpg`,
-  "foundingDate": "2025",
-  "areaServed": {
-    "@type": "Country",
-    "name": "Canada",
-    "identifier": "CA"
-  },
-  "knowsAbout": [
-    "Indigenous entrepreneurship",
-    "First Nations business development",
-    "OCAP principles",
-    "Indigenous data sovereignty",
-    "Business funding for Indigenous peoples",
-    "Cultural competency training"
-  ],
-  "contactPoint": [
-    {
-      "@type": "ContactPoint",
-      "contactType": "customer support",
-      "email": "help@indigenousrising.ai"
-    },
-    {
-      "@type": "ContactPoint",
-      "contactType": "privacy",
-      "email": "privacy@indigenousrising.ai"
-    }
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "CA"
-  }
-};
-
-// SoftwareApplication Schema - for SaaS platform
-export const softwareApplicationSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": `${BASE_URL}/#software`,
-  "name": "Indigenous Rising AI Platform",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web Browser",
-  "offers": {
-    "@type": "AggregateOffer",
-    "priceCurrency": "CAD",
-    "lowPrice": "0",
-    // Fixed-price tiers with live Stripe prices: Free ($0), Growth ($49) and
-    // Professional ($149) — all three are purchasable (STRIPE_PRICES +
-    // docs/STRIPE_GO_LIVE.md list both cycles for Professional). The earlier
-    // note here said Professional was waitlisted; it is not. Nations is
-    // custom-quoted, so it stays out of the public price range.
-    "highPrice": "149",
-    "offerCount": 3
-  },
-  "provider": {
-    "@id": `${BASE_URL}/#organization`
-  },
-  "featureList": [
-    "AI-powered funding navigator",
-    "Business analytics dashboard",
-    "Cultural competency training",
-    "Grant tracking system",
-    "Community networking"
-  ],
-  "screenshot": `${BASE_URL}/og-home.jpg`
-};
-
-// WebSite Schema - for search features
-export const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": `${BASE_URL}/#website`,
-  "name": "Indigenous Rising AI",
-  "alternateName": "Indigenous Rising",
-  "url": `${BASE_URL}/`,
-  "publisher": {
-    "@id": `${BASE_URL}/#organization`
-  },
-  // No SearchAction: there is no /search route (it returns 404), and Google
-  // retired the sitelinks search box in November 2024. No fr-CA either — the
-  // site has no French pages yet.
-  "inLanguage": "en-CA"
-};
+// The Organization, WebSite and SoftwareApplication nodes are written
+// statically (index.html and scripts/prerender.mjs), and WebPage by the
+// prerender. The unused copies that lived here were deleted: they described
+// the product differently — a featureList claiming a "Business analytics
+// dashboard" and "Grant tracking system", and an Organization "harmonizing
+// traditional knowledge" — and were one import away from shipping.
 
 // FAQ Schema generator
 export const generateFAQSchema = (faqs: { question: string; answer: string }[]) => ({
@@ -115,66 +22,16 @@ export const generateFAQSchema = (faqs: { question: string; answer: string }[]) 
   }))
 });
 
-// WebPage Schema generator
-export const generateWebPageSchema = (page: {
-  name: string;
-  description: string;
-  url: string;
-  datePublished?: string;
-  dateModified?: string;
-}) => ({
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "@id": `${page.url.replace(/\/$/, '')}/#webpage`,
-  "name": page.name,
-  "description": page.description,
-  "url": page.url,
-  "isPartOf": {
-    "@id": `${BASE_URL}/#website`
-  },
-  "about": {
-    "@id": `${BASE_URL}/#organization`
-  },
-  // Dates only when the page actually knows them. The defaults were
-  // "2025-01-01" for every page and dateModified = the visitor's current date,
-  // which told Google every page changed on every crawl.
-  ...(page.datePublished ? { "datePublished": page.datePublished } : {}),
-  ...(page.dateModified ? { "dateModified": page.dateModified } : {}),
-  "inLanguage": "en-CA"
-});
-
-// Service Schema for specific offerings
-export const generateServiceSchema = (service: {
-  name: string;
-  description: string;
-  url: string;
-}) => ({
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": service.name,
-  "description": service.description,
-  "url": service.url,
-  "provider": {
-    "@id": `${BASE_URL}/#organization`
-  },
-  "areaServed": {
-    "@type": "Country",
-    "name": "Canada"
-  },
-  "serviceType": "Business Support Services"
-});
+// No WebPage generator here: scripts/prerender.mjs writes the WebPage node
+// from each route's own title and description, so it cannot disagree with
+// the meta tags or depend on JavaScript.
 
 interface StructuredDataProps {
   type?: 'home' | 'page';
-  pageData?: {
-    name: string;
-    description: string;
-    url: string;
-  };
   faqs?: { question: string; answer: string }[];
 }
 
-export const StructuredData = ({ type = 'page', pageData, faqs }: StructuredDataProps) => {
+export const StructuredData = ({ type = 'page', faqs }: StructuredDataProps) => {
   const schemas = [];
 
   // Organization + WebSite JSON-LD are emitted statically in index.html (so
@@ -186,11 +43,6 @@ export const StructuredData = ({ type = 'page', pageData, faqs }: StructuredData
   // SoftwareApplication entities on the homepage after hydration (and
   // index.html used to add a third on every page).
   void type;
-  
-  // Add page-specific schema
-  if (pageData) {
-    schemas.push(generateWebPageSchema(pageData));
-  }
   
   // Add FAQ schema if provided
   if (faqs && faqs.length > 0) {

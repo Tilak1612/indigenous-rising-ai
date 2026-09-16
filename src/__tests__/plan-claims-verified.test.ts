@@ -121,6 +121,26 @@ describe('live-vs-roadmap labels match the product', () => {
     }
   });
 
+  test('page descriptions do not promise more than the page delivers', () => {
+    const prerender = read('scripts/prerender.mjs');
+    const desc = (route: string) =>
+      new RegExp(`\\{ p: '${route.replace(/\//g, '\\/')}', t: '[^']*', d: '([^']*)'`).exec(prerender)?.[1] ?? '';
+
+    // /impact: the page says nothing tracks impact yet. Its description said
+    // "Track and report the community impact of your Indigenous business".
+    expect(read('src/pages/PublicImpact.tsx')).toMatch(/Nothing in the app tracks/);
+    expect(desc('/impact')).toMatch(/^Coming soon/);
+
+    // /success-stories: the gallery says its examples are illustrative. The
+    // description called them "Stories from Indigenous entrepreneurs growing
+    // their businesses … shared with permission" — real, consented outcomes.
+    expect(read('src/components/SuccessGallery.tsx')).toMatch(/illustrative/);
+    const stories = desc('/success-stories');
+    expect(stories.length).toBeGreaterThan(40);
+    expect(stories).toMatch(/illustrative/i);
+    expect(stories).not.toMatch(/shared with permission|growing their businesses with/i);
+  });
+
   test('the FAQ no longer says all four modules are live', () => {
     expect(landing).not.toMatch(/All four modules[^']*are live/);
     expect(landing).toMatch(/Three modules are live today/);

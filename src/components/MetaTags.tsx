@@ -1,9 +1,10 @@
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
 import { StructuredData } from './StructuredData';
 
 interface MetaTagsProps {
   title?: string;
+  // Accepted for existing call sites but not rendered: scripts/prerender.mjs
+  // owns description, keywords, og/twitter images and canonical per route.
   description?: string;
   keywords?: string;
   ogImage?: string;
@@ -14,23 +15,11 @@ interface MetaTagsProps {
   faqs?: { question: string; answer: string }[];
 }
 
-const BASE_URL = 'https://www.indigenousrising.ai';
-
 const MetaTags = ({
   title = 'Indigenous Rising AI - Business Support Platform',
-  description = 'Culturally respectful AI-powered platform supporting Indigenous entrepreneurs across Canada. Harmonizing traditional knowledge with modern business tools while honoring data sovereignty principles.',
-  keywords = 'Indigenous business, OCAP, First Nations entrepreneurship, Aboriginal business support, Indigenous AI, business funding, Canadian Indigenous business, traditional knowledge, data sovereignty',
-  ogImage = `${BASE_URL}/og-home.jpg`,
-  twitterImage = `${BASE_URL}/og-home.jpg`,
-  url,
-  type = 'website',
   isHomePage = false,
   faqs
 }: MetaTagsProps) => {
-  const location = useLocation();
-  // Self-referential canonical: use explicitly passed url, or derive from current route
-  const canonicalUrl = url || `${BASE_URL}${location.pathname === '/' ? '' : location.pathname}`;
-  // Keep the SERP/social description under Google's truncation point.
   return (
     <>
       <Helmet>
@@ -45,11 +34,10 @@ const MetaTags = ({
       </Helmet>
       
       {/* Structured Data */}
-      <StructuredData 
-        type={isHomePage ? 'home' : 'page'}
-        pageData={!isHomePage ? { name: title, description, url: canonicalUrl } : undefined}
-        faqs={faqs}
-      />
+      {/* The WebPage node is written by scripts/prerender.mjs from the same
+          title and description as the meta tags. Only the homepage FAQ is
+          still emitted here. */}
+      <StructuredData type={isHomePage ? 'home' : 'page'} faqs={faqs} />
     </>
   );
 };
