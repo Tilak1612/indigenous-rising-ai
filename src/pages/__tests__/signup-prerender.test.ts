@@ -1,5 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 
 /**
  * /signup must be prerendered, and must prerender as the REGISTRATION form.
@@ -57,7 +58,11 @@ describe.runIf(existsSync(built))('the built /signup is the registration form', 
 
   test('it is not the homepage fallback', () => {
     // The fallback was ~98KB of homepage markup with the homepage title.
-    expect(html).toContain('Create your account | Indigenous Rising AI');
+    // Read the expected title from the shared source rather than repeating the
+    // string: this assertion broke when titles were unified in one place, for
+    // nothing more than the capital in "Your".
+    expect(html).toContain(ROUTE_TITLES['/signup']);
+    expect(html).not.toContain(ROUTE_TITLES['/']);
     expect(html.length).toBeLessThan(60_000);
   });
 
