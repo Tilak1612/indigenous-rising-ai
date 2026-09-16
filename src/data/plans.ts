@@ -71,7 +71,10 @@ const professionalFeatures: PlanFeature[] = [
 
 const nationsFeatures: PlanFeature[] = [
   { text: 'Everything in Professional', available: true },
-  { text: 'Unlimited business entities', available: true },
+  // Unbuilt: a profile holds one business_name and nothing switches between
+  // businesses. The comparison table on the same page already says "Planned"
+  // for multi-entity support — this card contradicted it with a check mark.
+  { text: 'Unlimited business entities', available: false },
   { text: "White-label platform with your Nation's branding", available: false },
   { text: 'OCAP® data governance console', available: false },
   { text: 'Government reporting module (ISC, AANDC formats)', available: false },
