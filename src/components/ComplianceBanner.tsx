@@ -52,8 +52,12 @@ const ComplianceBanner = () => {
           {/* Floored at 12px: this carries consent and compliance wording
               (PIPEDA / CASL / AODA / OCAP) plus the Accept control, and it
               was rendering at 11px with a 1.25 line-height on phones. */}
+          {/* No "Cookies enabled." here: analytics and marketing cookies are
+              off until the visitor opts in through the cookie banner, so the
+              claim was false by default — and false after "Essential Only".
+              This notice does not record consent; the cookie banner does. */}
           <p className="text-xs sm:text-sm text-[#e8f5e9] leading-normal">
-            Cookies enabled. Built in alignment with{' '}
+            Built in alignment with{' '}
             <span className="font-semibold text-white">PIPEDA · CASL · AODA · OCAP®</span>.
             Data stored in Canada.
           </p>
@@ -71,7 +75,8 @@ const ComplianceBanner = () => {
             onClick={handleAccept}
             className="px-3 py-1 text-xs sm:text-sm font-semibold rounded bg-[#4caf50] hover:bg-[#388e3c] text-white transition-colors"
           >
-            Accept
+            {/* Was "Accept", which read as consent. It only dismisses. */}
+            Got it
           </button>
           <button
             type="button"

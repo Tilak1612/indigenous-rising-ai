@@ -114,7 +114,8 @@ export default function GettingStartedChecklist() {
     )}>
       <button 
         onClick={handleDismiss}
-        className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+        // 44px target: the bare 16px icon was the whole hit area on phones.
+        className="absolute top-2 right-2 inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors"
         aria-label="Dismiss checklist"
       >
         <X className="h-4 w-4" />

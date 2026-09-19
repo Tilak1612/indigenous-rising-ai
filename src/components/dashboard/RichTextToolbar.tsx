@@ -45,13 +45,13 @@ export function RichTextToolbar({ onFormat, className }: RichTextToolbarProps) {
   ];
 
   return (
-    <div className={cn("flex items-center gap-1 p-2 border rounded-t-lg bg-muted/30", className)}>
+    <div className={cn("flex flex-wrap items-center gap-1 p-2 border rounded-t-lg bg-muted/30", className)}>
       {tools.map((tool) => (
         <Button
           key={tool.command}
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 shrink-0 p-0"
           onClick={() => onFormat(tool.command)}
           title={tool.title}
         >
@@ -66,7 +66,7 @@ export function RichTextToolbar({ onFormat, className }: RichTextToolbarProps) {
           key={tool.command}
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 shrink-0 p-0"
           onClick={() => onFormat(tool.command)}
           title={tool.title}
         >
@@ -81,7 +81,7 @@ export function RichTextToolbar({ onFormat, className }: RichTextToolbarProps) {
           key={tool.command}
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 shrink-0 p-0"
           onClick={() => onFormat(tool.command)}
           title={tool.title}
         >
@@ -96,7 +96,7 @@ export function RichTextToolbar({ onFormat, className }: RichTextToolbarProps) {
           key={tool.command}
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0"
+          className="h-8 w-8 shrink-0 p-0"
           onClick={() => onFormat(tool.command)}
           title={tool.title}
         >

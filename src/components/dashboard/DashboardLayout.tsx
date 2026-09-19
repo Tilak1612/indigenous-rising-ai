@@ -428,10 +428,13 @@ function DashboardHeader() {
 
       <div className="flex items-center gap-3">
         {userTier === 'free' && (
-          <Button size="sm" asChild className="hidden sm:flex">
-            <Link to="/pricing">
-              <Crown className="h-4 w-4 mr-2" />
-              Upgrade
+          // Was `hidden sm:flex`: free users on phones had no upgrade entry in
+          // the header at all. Icon-only below 640px, with a 44px target and an
+          // accessible name; the text label returns from sm up.
+          <Button size="sm" asChild className="h-11 w-11 p-0 sm:h-9 sm:w-auto sm:px-3">
+            <Link to="/pricing" aria-label="Upgrade your plan">
+              <Crown className="h-4 w-4 sm:mr-2" aria-hidden="true" />
+              <span className="hidden sm:inline">Upgrade</span>
             </Link>
           </Button>
         )}
