@@ -184,6 +184,9 @@ describe('claims the product must never make', () => {
   test('unlimited matching is not promised to Growth on any surface', () => {
     expect(assistant).not.toMatch(/unlimited AI funding|unlimited matching/i);
     expect(landing).not.toMatch(/unlimited AI funding matches/i);
+    // In-app too: the matches page told free users an upgrade meant
+    // "unlimited matching"; Growth is capped at 50 a month.
+    expect(read('src/pages/dashboard/FundingMatches.tsx')).not.toMatch(/unlimited match/i);
   });
 
   test('the homepage FAQ does not name unbuilt features as paid inclusions', () => {

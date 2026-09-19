@@ -400,7 +400,7 @@ const FundingMatches: React.FC = () => {
                 </p>
               </div>
               <p className="text-xs text-muted-foreground">
-                Free plan: 3 matches per month. <Link to="/pricing" className="text-primary underline">Upgrade</Link> for unlimited matching + detailed explanations.
+                Free plan: 3 matches per month. <Link to="/pricing" className="text-primary underline">Upgrade</Link> for 50 matches a month on Growth, plus fit scores and explanations.
               </p>
             </CardContent>
           </Card>
@@ -630,7 +630,7 @@ const FundingMatches: React.FC = () => {
                       <div>
                         <h3 className="font-semibold mb-1">See why each grant fits you</h3>
                         <p className="text-sm text-muted-foreground">
-                          Growth tier (from $39/mo) unlocks AI explanations, fit scores, save-for-later, and unlimited matches.
+                          Growth tier (from $39/mo) unlocks AI explanations, fit scores, save-for-later, and 50 matches a month.
                         </p>
                       </div>
                       <ShinyButton asChild>

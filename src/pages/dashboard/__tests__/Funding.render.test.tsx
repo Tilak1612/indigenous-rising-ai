@@ -4,8 +4,9 @@ import { describe, test, expect, vi, beforeEach } from 'vitest';
 
 // Mocking auth/subscription in a unit test is standard practice — it is how a
 // protected component is tested at all, and it changes nothing in production.
+const subState = vi.hoisted(() => ({ subscribed: true }));
 vi.mock('@/hooks/useSubscription', () => ({
-  useSubscription: () => ({ subscribed: true, product_id: 'prod_x', price_id: null, subscription_end: null, isLoading: false }),
+  useSubscription: () => ({ subscribed: subState.subscribed, product_id: 'prod_x', price_id: null, subscription_end: null, isLoading: false }),
   SUBSCRIPTION_QUERY_KEY: 'subscription-status',
 }));
 vi.mock('@/hooks/useAuth', () => ({
@@ -52,7 +53,7 @@ const GRANT = {
 };
 const LOAN = { ...GRANT, id: 'g2', name: 'BDC Indigenous Entrepreneur Loan', funder: 'BDC', funding_type: 'loan', is_repayable: true };
 
-beforeEach(() => { selectMock.mockReset(); upsertMock.mockClear(); });
+beforeEach(() => { selectMock.mockReset(); upsertMock.mockClear(); subState.subscribed = true; });
 const resolves = (payload: unknown) => ({ eq: () => Promise.resolve(payload) });
 
 describe('Funding Navigator renders from the verified catalogue', () => {
@@ -80,9 +81,39 @@ describe('Funding Navigator renders from the verified catalogue', () => {
     selectMock.mockReturnValue(resolves({ data: null, error: { message: 'network down' } }));
     renderPage();
     // "no programmes" would be a lie when the truth is "we could not load them".
-    await waitFor(() => {
-      expect(screen.queryByText(/Aboriginal Business Financing Program/)).not.toBeInTheDocument();
-    });
+    // This test used to assert only that the programme name was absent — which
+    // passed while the page told the user "No matches found".
+    expect(await screen.findByRole('alert')).toHaveTextContent(/couldn.t load funding programs/i);
+    expect(screen.queryByText(/No matches found/i)).not.toBeInTheDocument();
+  });
+
+  test('while loading, it says so — never "No matches found"', async () => {
+    // Measured in a browser: every visit flashed "No matches found" for about
+    // a second before the programmes arrived.
+    selectMock.mockReturnValue({ eq: () => new Promise(() => {}) });
+    renderPage();
+    expect(await screen.findByText(/Loading funding programs/i)).toBeInTheDocument();
+    expect(screen.queryByText(/No matches found/i)).not.toBeInTheDocument();
+  });
+
+  test('"No matches found" is still shown when the catalogue really is empty', async () => {
+    selectMock.mockReturnValue(resolves({ data: [], error: null }));
+    renderPage();
+    expect(await screen.findByText(/No matches found/i)).toBeInTheDocument();
+  });
+});
+
+describe('free-plan teaser', () => {
+  test('previews real programmes and a real count, never "0+"', async () => {
+    // It read from an empty constant: no preview rows, and "Upgrade to see all
+    // 0+ funding opportunities".
+    subState.subscribed = false;
+    selectMock.mockReturnValue(resolves({ data: [GRANT, LOAN], error: null }));
+    renderPage();
+    expect(await screen.findByText(/Upgrade to see all 2 funding opportunities/)).toBeInTheDocument();
+    expect(screen.getByText(/Aboriginal Business Financing Program/)).toBeInTheDocument();
+    expect(screen.queryByText(/\b0\+/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Upgrade to Pro/)).not.toBeInTheDocument();
   });
 });
 

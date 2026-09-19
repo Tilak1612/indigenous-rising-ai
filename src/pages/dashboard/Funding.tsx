@@ -257,7 +257,7 @@ export default function Funding() {
               <Button asChild size="lg">
                 <Link to="/pricing">
                   <Sparkles className="h-5 w-5 mr-2" />
-                  Upgrade to Pro
+                  Upgrade to Growth
                 </Link>
               </Button>
             </CardContent>
@@ -270,7 +270,7 @@ export default function Funding() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {fundingData.slice(0, 2).map(opp => (
+                {opportunities.slice(0, 2).map(opp => (
                   <div key={opp.id} className="p-4 border rounded-lg blur-sm">
                     <div className="flex justify-between">
                       <h4 className="font-medium">{opp.name}</h4>
@@ -280,9 +280,14 @@ export default function Funding() {
                   </div>
                 ))}
               </div>
-              <p className="text-center text-sm text-muted-foreground mt-4">
-                Upgrade to see all {fundingData.length}+ funding opportunities
-              </p>
+              {/* fundingData is an empty constant, so this read "Upgrade to see
+                  all 0+ funding opportunities" with no preview rows. It now
+                  uses the loaded catalogue, and says nothing until it has it. */}
+              {!loading && opportunities.length > 0 && (
+                <p className="text-center text-sm text-muted-foreground mt-4">
+                  Upgrade to see all {opportunities.length} funding opportunities
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -321,7 +326,7 @@ export default function Funding() {
                 <Target className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{filteredOpportunities.length}</p>
+                <p className="text-2xl font-bold">{loading ? '—' : filteredOpportunities.length}</p>
                 <p className="text-sm text-muted-foreground">Matches Found</p>
               </div>
             </CardContent>
@@ -433,7 +438,29 @@ export default function Funding() {
 
         {/* Results */}
         <div className="space-y-4">
-          {filteredOpportunities.length === 0 ? (
+          {/* Loading and failure get their own states. Both used to fall
+              through to "No matches found": every visit flashed it for about a
+              second before the programs arrived, and a failed load said it
+              for good — telling people there was no funding when the truth was
+              that it had not loaded. */}
+          {loading ? (
+            <Card>
+              <CardContent className="p-8 text-center" role="status" aria-live="polite">
+                <Loader2 className="h-8 w-8 mx-auto text-muted-foreground mb-4 animate-spin" aria-hidden="true" />
+                <p className="text-muted-foreground">Loading funding programs…</p>
+              </CardContent>
+            </Card>
+          ) : loadError ? (
+            <Card>
+              <CardContent className="p-8 text-center" role="alert">
+                <AlertCircle className="h-12 w-12 mx-auto text-destructive mb-4" aria-hidden="true" />
+                <h3 className="font-semibold mb-2">We couldn&apos;t load funding programs</h3>
+                <p className="text-muted-foreground">
+                  This is a loading problem, not an absence of funding. Refresh the page, or try again in a few minutes.
+                </p>
+              </CardContent>
+            </Card>
+          ) : filteredOpportunities.length === 0 ? (
             <Card>
               <CardContent className="p-8 text-center">
                 <AlertCircle className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
@@ -481,7 +508,9 @@ export default function Funding() {
                           aria-label={opp.saved ? `Remove ${opp.name} from saved` : `Save ${opp.name}`}
                           aria-pressed={opp.saved}
                           title={opp.saved ? 'Remove from saved' : 'Save'}
-                          className="text-muted-foreground hover:text-primary transition-colors"
+                          // 44px target (WCAG 2.5.8 minimum is 24); the icon
+                          // alone measured 20px wide on touch screens.
+                          className="shrink-0 -m-2 inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:text-primary transition-colors"
                         >
                           {opp.saved ? (
                             <BookmarkCheck className="h-5 w-5 text-primary" />

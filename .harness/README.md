@@ -34,3 +34,25 @@ any other way:
    clean; it was measuring the unstyled page. Any sweep must first assert that
    a known utility (e.g. `.overflow-x-auto`) exists in `document.styleSheets`
    and abort otherwise.
+
+## Viewport parity sweep
+
+```bash
+npm run dev:harness                      # terminal 1
+node .harness/viewport-sweep.mjs         # terminal 2 — free, growth, enterprise
+SWEEP_ROUTES=/dashboard node .harness/viewport-sweep.mjs free   # a quick subset
+```
+
+Headless Chrome with real viewport emulation — 1280x800, 768x1024 (touch),
+375x812 (touch, mobile). For every tier and dashboard route it records visible
+controls, headings, header controls, every tab panel, the header menus and the
+sidebar (opened via its trigger on phones), then reports anything on desktop
+that is missing on a smaller width, plus overflow, off-screen controls and
+touch targets under 24px. Exits 1 on any finding.
+
+The tier comes from `localStorage['harness-tier']` (`free` | `growth` |
+`enterprise`), read by `.harness/useSubscription.tsx`.
+
+Settle on stable content, not first content: the first version captured a
+transient "No matches found" on /dashboard/funding — which was a real bug on
+every width, not a mobile one.
