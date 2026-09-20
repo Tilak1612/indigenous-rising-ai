@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import { readCampaign, saveSignupIntent, readSignupIntent, type PlanKey } from '@/lib/signup-intent';
+import { consumeAuthRedirect } from '@/lib/auth-callback';
+import { fetchEnabledProviders, PROVIDER_LABEL, type ProviderId } from '@/lib/auth-providers';
+import { setSessionScoped } from '@/lib/auth-storage';
+import { mfaRequirement, verifyMfaCode } from '@/lib/mfa';
 import { trackEvent } from '@/utils/analytics';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
@@ -95,25 +99,60 @@ export default function Auth() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  // Set when the account has a verified TOTP factor: the session is aal1 until
+  // a code is accepted, so entry is held here rather than at the dashboard.
+  const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
+  const [mfaCode, setMfaCode] = useState('');
+  // Set synchronously BEFORE a sign-in that may establish a session. Supabase
+  // issues the aal1 session the moment the password is accepted, so `user`
+  // becomes set while the factor check is still awaiting — without this the
+  // redirect below fired first and the challenge was skipped entirely.
+  const [mfaChecking, setMfaChecking] = useState(false);
+  const [providers, setProviders] = useState<Record<ProviderId, boolean>>({ google: true, azure: false });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, signOut, user } = useAuth();
   const navigate = useNavigate();
 
-  // Detect password-recovery token in URL hash (Supabase sends #access_token=...&type=recovery)
+  // Completes the OAuth return. PKCE sends the browser back with ?code=, which
+  // must be exchanged for a session; nothing did that, so Google sign-in
+  // dropped users back here still signed out. Also covers recovery links and
+  // provider cancellation (GoTrue reports both in the URL fragment).
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes('type=recovery')) {
-      setIsRecovery(true);
-    }
+    let cancelled = false;
+    // Same race on the OAuth return: the exchange creates the session.
+    if (new URLSearchParams(window.location.search).has('code')) setMfaChecking(true);
+    (async () => {
+      const result = await consumeAuthRedirect();
+      if (cancelled) return;
+      if (result.status === 'recovery') setIsRecovery(true);
+      else if (result.status === 'error') { setError(result.message); setOauthLoading(false); setMfaChecking(false); }
+      else if (result.status === 'signed-in') {
+        const mfa = await mfaRequirement();
+        if (cancelled) return;
+        if (mfa.required && mfa.factorId) setMfaFactorId(mfa.factorId);
+        else navigate('/dashboard', { replace: true });
+        setMfaChecking(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [navigate]);
+
+  // Microsoft appears only once the provider is enabled in Supabase; a button
+  // the backend cannot service would fail on click.
+  useEffect(() => {
+    let cancelled = false;
+    fetchEnabledProviders().then((p) => { if (!cancelled) setProviders(p); });
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
-    if (user && !isRecovery) {
+    if (user && !isRecovery && !mfaFactorId && !mfaChecking) {
       navigate('/dashboard');
     }
-  }, [user, navigate, isRecovery]);
+  }, [user, navigate, isRecovery, mfaFactorId, mfaChecking]);
 
   // Google is the only external provider enabled on this project. Verified
   // against the live GoTrue settings endpoint: external.google === true,
@@ -121,7 +160,7 @@ export default function Auth() {
   // than shipping one that fails on click.
   const [oauthLoading, setOauthLoading] = useState(false);
 
-  const signInWithGoogle = async () => {
+  const signInWithProvider = async (provider: ProviderId) => {
     setError('');
     setOauthLoading(true);
     try {
@@ -136,16 +175,19 @@ export default function Auth() {
       if (billingFromUrl) back.searchParams.set('billing', billingFromUrl);
       for (const [k, v] of Object.entries(campaign)) back.searchParams.set(k, v);
 
-      trackEvent('signup_oauth_started', { provider: 'google', plan: planFromUrl ?? 'none' });
+      trackEvent('signup_oauth_started', { provider, plan: planFromUrl ?? 'none' });
+
+      // Record the "Remember me" choice before leaving this origin.
+      setSessionScoped(!rememberMe);
 
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider,
         options: { redirectTo: back.toString() },
       });
       if (oauthError) throw oauthError;
       // On success the browser navigates away; nothing after this runs.
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not start Google sign-in');
+      setError(err instanceof Error ? err.message : 'Could not start sign-in');
       setOauthLoading(false);
     }
   };
@@ -159,8 +201,23 @@ export default function Auth() {
     try {
       if (isLogin) {
         const validated = loginSchema.parse({ email, password });
+        setSessionScoped(!rememberMe);
+        setMfaChecking(true);
         const { error } = await signIn(validated.email, validated.password);
-        
+
+        if (!error) {
+          // Enrolled factor: hold here until a code is accepted. Without this
+          // the session stayed at aal1 and 2FA protected nothing.
+          const mfa = await mfaRequirement();
+          if (mfa.required && mfa.factorId) {
+            setMfaFactorId(mfa.factorId);
+            setMfaChecking(false);
+            setLoading(false);
+            return;
+          }
+        }
+        setMfaChecking(false);
+
         if (error) {
           if (error.message.includes('Invalid login credentials')) {
             setError('Invalid email or password');
@@ -293,10 +350,10 @@ export default function Auth() {
               <div className="bg-card p-8 rounded-lg shadow-lg border">
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-foreground mb-2">
-                    {isRecovery ? 'Set New Password' : isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create an Account'}
+                    {mfaFactorId ? 'Two-step verification' : isRecovery ? 'Set New Password' : isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create an Account'}
                   </h1>
                   <p className="text-muted-foreground">
-                    {isRecovery ? 'Choose a new password for your account' : isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Join our community today'}
+                    {mfaFactorId ? 'Enter the 6-digit code from your authenticator app' : isRecovery ? 'Choose a new password for your account' : isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Join our community today'}
                   </p>
                 </div>
 
@@ -312,7 +369,7 @@ export default function Auth() {
                     so the profile screen does not read as an unannounced
                     second form. Registration only — there is no step 2 when
                     signing in. */}
-                {!isLogin && !isForgotPassword && !isRecovery && (
+                {!isLogin && !isForgotPassword && !isRecovery && !mfaFactorId && (
                   <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Step 1 of 2: Create your account
                   </p>
@@ -323,7 +380,65 @@ export default function Auth() {
                     sign-in — so the front door of the funnel stated no value
                     at all. Every bullet is true for a returning free user too,
                     so it is accurate in both modes. */}
-                {!isForgotPassword && !isRecovery && (
+                {mfaFactorId && (
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      setError(''); setLoading(true);
+                      const { error: mfaError } = await verifyMfaCode(mfaFactorId, mfaCode);
+                      setLoading(false);
+                      if (mfaError) { setError(mfaError); return; }
+                      navigate('/dashboard', { replace: true });
+                    }}
+                    className="space-y-4"
+                  >
+                    <div>
+                      <Label htmlFor="mfa-code" className="block text-sm font-medium text-foreground mb-1">
+                        Authentication code
+                      </Label>
+                      <Input
+                        id="mfa-code"
+                        name="one-time-code"
+                        // Lets iOS and Android offer the code from the keyboard.
+                        autoComplete="one-time-code"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength={6}
+                        autoFocus
+                        value={mfaCode}
+                        onChange={(e) => setMfaCode(e.target.value.replace(/[^0-9]/g, ''))}
+                        className="w-full px-4 py-2 text-center text-lg tracking-[0.4em]"
+                        placeholder="000000"
+                        required
+                      />
+                    </div>
+                    {error && (
+                      <Alert variant="destructive">
+                        <AlertDescription>{error}</AlertDescription>
+                      </Alert>
+                    )}
+                    <Button type="submit" className="w-full h-11" disabled={loading || mfaCode.length !== 6}>
+                      {loading ? 'Verifying…' : 'Verify and sign in'}
+                    </Button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        // Leaving the challenge must not leave a half-signed-in
+                        // aal1 session behind.
+                        await signOut();
+                        setMfaFactorId(null); setMfaCode(''); setError('');
+                      }}
+                      className="w-full text-center text-sm text-muted-foreground hover:text-foreground"
+                    >
+                      Use a different account
+                    </button>
+                  </form>
+                )}
+
+                {/* Acquisition copy belongs on sign-up. A returning user wants
+                    the form, not the pitch — especially on a phone, where this
+                    pushed the fields below the fold. */}
+                {!isLogin && !isForgotPassword && !isRecovery && !mfaFactorId && (
                   <ul className="mb-6 space-y-2 rounded-lg border border-border bg-muted/40 p-4 text-sm">
                     {[
                       '3 free funding matches every month',
@@ -336,8 +451,13 @@ export default function Auth() {
                       </li>
                     ))}
                     <li className="pt-1 text-xs text-muted-foreground">
-                      Your data is stored in Canada and you can export or delete it at any
-                      time — see{' '}
+                      {/* Verified before keeping: the database, storage and
+                          backups run in Supabase ca-central-1, and Settings has
+                          a working self-serve export. Deletion is NOT
+                          self-serve — it is actioned on request — so the old
+                          "export or delete it at any time" overstated it. */}
+                      Your data is stored in Canada. Export it yourself at any time, and ask us
+                      to delete it whenever you want — see{' '}
                       <Link to="/data-rights" className="underline">your data rights</Link>.
                     </li>
                   </ul>
@@ -418,34 +538,47 @@ export default function Auth() {
                     campaign are re-attached to the redirect URL as well as
                     sessionStorage, so the context survives the round trip
                     even in private browsing. */}
-                {!isForgotPassword && !isRecovery && (
-                  <div className="mb-5">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="w-full"
-                      onClick={signInWithGoogle}
-                      disabled={oauthLoading || loading}
-                    >
-                      <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" />
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.65l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.15-4.53H2.18v2.84A11 11 0 0 0 12 23z" />
-                        <path fill="#FBBC05" d="M5.85 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.67-2.84z" />
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.67 2.84C6.71 7.31 9.14 5.38 12 5.38z" />
-                      </svg>
-                      {oauthLoading
-                        ? 'Opening Google…'
-                        : isLogin ? 'Sign in with Google' : 'Sign up with Google'}
-                    </Button>
+                {!isForgotPassword && !isRecovery && !mfaFactorId && (
+                  <div className="mb-5 space-y-3">
+                    {(['google', 'azure'] as ProviderId[]).filter((p) => providers[p]).map((p) => (
+                      <Button
+                        key={p}
+                        type="button"
+                        variant="outline"
+                        className="w-full h-11 justify-center"
+                        onClick={() => signInWithProvider(p)}
+                        disabled={oauthLoading || loading}
+                      >
+                        {p === 'google' ? (
+                          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" />
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.65l-3.57-2.77c-.99.66-2.26 1.06-3.71 1.06-2.86 0-5.29-1.93-6.15-4.53H2.18v2.84A11 11 0 0 0 12 23z" />
+                            <path fill="#FBBC05" d="M5.85 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.67-2.84z" />
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1a11 11 0 0 0-9.82 6.05l3.67 2.84C6.71 7.31 9.14 5.38 12 5.38z" />
+                          </svg>
+                        ) : (
+                          // Microsoft's four-square mark, official colours.
+                          <svg className="mr-2 h-4 w-4" viewBox="0 0 23 23" aria-hidden="true">
+                            <path fill="#F25022" d="M1 1h10v10H1z" />
+                            <path fill="#7FBA00" d="M12 1h10v10H12z" />
+                            <path fill="#00A4EF" d="M1 12h10v10H1z" />
+                            <path fill="#FFB900" d="M12 12h10v10H12z" />
+                          </svg>
+                        )}
+                        {oauthLoading ? 'Opening…' : PROVIDER_LABEL[p]}
+                      </Button>
+                    ))}
                     <div className="my-4 flex items-center gap-3">
                       <span className="h-px flex-1 bg-border" />
-                      <span className="text-xs uppercase tracking-wide text-muted-foreground">or</span>
+                      <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                        or continue with email
+                      </span>
                       <span className="h-px flex-1 bg-border" />
                     </div>
                   </div>
                 )}
 
-                {!isForgotPassword && !isRecovery && <form onSubmit={handleSubmit}>
+                {!isForgotPassword && !isRecovery && !mfaFactorId && <form onSubmit={handleSubmit}>
                   <div className="space-y-5">
                     {!isLogin && (
                       <div>
@@ -509,6 +642,25 @@ export default function Auth() {
                             : <Eye className="h-4 w-4" aria-hidden="true" />}
                         </button>
                       </div>
+                      {isLogin && (
+                        <div className="mt-3 flex items-center justify-between gap-3">
+                          <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
+                            <Checkbox
+                              id="remember-me"
+                              checked={rememberMe}
+                              onCheckedChange={(v) => setRememberMe(v === true)}
+                            />
+                            <span>Remember me</span>
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => { setIsForgotPassword(true); setError(''); setSuccess(''); }}
+                            className="text-sm text-primary hover:text-primary/80 underline-offset-2 hover:underline"
+                          >
+                            Forgot password?
+                          </button>
+                        </div>
+                      )}
                       {!isLogin && (
                         <>
                           <p className="text-xs text-muted-foreground mt-1">
@@ -617,22 +769,11 @@ export default function Auth() {
                       .
                     </p>
 
-                    {isLogin && (
-                      <div className="text-center">
-                        <button
-                          type="button"
-                          onClick={() => { setIsForgotPassword(true); setError(''); setSuccess(''); }}
-                          className="text-sm text-primary hover:text-primary/80"
-                        >
-                          Forgot your password?
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </form>}
 
                 <div className="mt-6 text-center">
-                  {isRecovery ? null : isForgotPassword ? (
+                  {mfaFactorId ? null : isRecovery ? null : isForgotPassword ? (
                     <p className="text-sm text-muted-foreground">
                       Remember it?{' '}
                       <button
@@ -654,6 +795,12 @@ export default function Auth() {
                     </p>
                   )}
                 </div>
+
+                <p className="mt-6 text-center text-sm">
+                  <Link to="/" className="text-muted-foreground hover:text-foreground underline-offset-2 hover:underline">
+                    Back to Indigenous Rising
+                  </Link>
+                </p>
               </div>
             </div>
           </div>

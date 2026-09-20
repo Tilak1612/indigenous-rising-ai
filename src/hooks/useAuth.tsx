@@ -3,13 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import {
-  SUPABASE_STORAGE_KEY,
-  readStoredSession,
-  writeStoredSession,
-  clearStoredSession,
-  type StoredSession,
-} from '@/lib/auth-storage';
+import { SUPABASE_STORAGE_KEY, readStoredSession, writeStoredSession, clearStoredSession, type StoredSession, enforceSessionScope } from '@/lib/auth-storage';
 
 interface AuthContextType {
   user: User | null;
@@ -231,6 +225,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Hydration is async because we may need to refresh the access token
     // via REST first. We resolve `loading` only after the hydration promise
     // settles so the ProtectedRoute doesn't bounce a still-valid user to /auth.
+    // "Remember me" was unchecked and the browser has since been closed:
+    // drop the stored session before anything can hydrate from it.
+    enforceSessionScope();
+
     const hydrationPromise = hydrateFromLocalStorage();
     hydrationPromise
       .then(async (hydratedSession) => {

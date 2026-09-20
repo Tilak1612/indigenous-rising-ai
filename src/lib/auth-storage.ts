@@ -70,3 +70,42 @@ export function clearStoredSession(): void {
     console.error('[auth-storage] failed to clear session:', err);
   }
 }
+
+/**
+ * "Remember me".
+ *
+ * Supabase always persists the session to localStorage, so an unchecked
+ * "Remember me" has to be enforced here: the choice is recorded in
+ * localStorage and a marker is written to sessionStorage, which the browser
+ * discards when the browser session ends. On the next boot a stored session
+ * whose marker is gone is cleared before it is ever applied.
+ */
+const SESSION_SCOPED_KEY = 'ir-auth-session-scoped';
+const TAB_MARKER_KEY = 'ir-auth-tab';
+
+export function setSessionScoped(scoped: boolean): void {
+  try {
+    if (scoped) {
+      localStorage.setItem(SESSION_SCOPED_KEY, '1');
+      sessionStorage.setItem(TAB_MARKER_KEY, '1');
+    } else {
+      localStorage.removeItem(SESSION_SCOPED_KEY);
+      sessionStorage.removeItem(TAB_MARKER_KEY);
+    }
+  } catch {
+    // storage blocked — the session simply stays as the SDK left it
+  }
+}
+
+/** True when a session-scoped login was dropped because the browser restarted. */
+export function enforceSessionScope(): boolean {
+  try {
+    if (localStorage.getItem(SESSION_SCOPED_KEY) !== '1') return false;
+    if (sessionStorage.getItem(TAB_MARKER_KEY) === '1') return false; // same browser session
+    clearStoredSession();
+    localStorage.removeItem(SESSION_SCOPED_KEY);
+    return true;
+  } catch {
+    return false;
+  }
+}
