@@ -10,6 +10,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
+import { useMountedRef } from '@/hooks/useMountedRef';
 import { SUPABASE_URL } from '@/lib/supabase';
 import { FLAGS } from '@/lib/flags';
 import {
@@ -72,6 +73,9 @@ const ReadinessWorkspace: React.FC = () => {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [newLabel, setNewLabel] = useState('');
   const [busy, setBusy] = useState(false);
+  // The workspace loads several requests; the user can leave before they
+  // settle. Without this the state update lands on an unmounted component.
+  const mounted = useMountedRef();
 
   const load = useCallback(async () => {
     if (!user || !grantId) return;
@@ -79,6 +83,7 @@ const ReadinessWorkspace: React.FC = () => {
     setLoadError(null);
     try {
       const workspace = await openWorkspace(user.id, grantId);
+      if (!mounted.current) return;
       setApp(workspace);
 
       const [gRes, dRes, loaded] = await Promise.all([
@@ -92,17 +97,20 @@ const ReadinessWorkspace: React.FC = () => {
         ),
         listItems(workspace.id),
       ]);
-      if (gRes.ok) setGrant(((await gRes.json()) as GrantLite[])[0] ?? null);
-      if (dRes.ok) setDocs((await dRes.json()) as VaultDoc[]);
+      const grantRows = gRes.ok ? ((await gRes.json()) as GrantLite[]) : null;
+      const docRows = dRes.ok ? ((await dRes.json()) as VaultDoc[]) : null;
+      if (!mounted.current) return;
+      if (grantRows) setGrant(grantRows[0] ?? null);
+      if (docRows) setDocs(docRows);
       setItems(loaded);
     } catch (err) {
       // Surface the failure instead of rendering an empty workspace that
       // looks like "no progress yet" — that would read as data loss.
-      setLoadError(err instanceof Error ? err.message : 'Could not load this workspace');
+      if (mounted.current) setLoadError(err instanceof Error ? err.message : 'Could not load this workspace');
     } finally {
-      setLoading(false);
+      if (mounted.current) setLoading(false);
     }
-  }, [user, grantId]);
+  }, [user, grantId, mounted]);
 
   useEffect(() => { void load(); }, [load]);
 
