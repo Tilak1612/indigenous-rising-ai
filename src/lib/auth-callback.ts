@@ -46,6 +46,13 @@ function cleanUrl(): void {
   window.history.replaceState({}, '', url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : '') + '');
 }
 
+/**
+ * The SDK's session machinery is known to hang on this project — that is why
+ * detectSessionInUrl is off — so the exchange is raced against a timeout
+ * rather than left to wait forever behind a page that shows no progress.
+ */
+const EXCHANGE_TIMEOUT_MS = 15000;
+
 export async function consumeAuthRedirect(): Promise<AuthRedirectResult> {
   if (typeof window === 'undefined') return { status: 'none' };
   const query = new URLSearchParams(window.location.search);
@@ -70,8 +77,13 @@ export async function consumeAuthRedirect(): Promise<AuthRedirectResult> {
   if (!code) return { status: 'none' };
 
   try {
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const timeout = new Promise<'timeout'>((resolve) => setTimeout(() => resolve('timeout'), EXCHANGE_TIMEOUT_MS));
+    const outcome = await Promise.race([supabase.auth.exchangeCodeForSession(code), timeout]);
     cleanUrl();
+    if (outcome === 'timeout') {
+      return { status: 'error', message: 'Sign-in timed out. Please try again.' };
+    }
+    const { error } = outcome as { error: { message: string } | null };
     if (error) return { status: 'error', message: error.message };
     return { status: 'signed-in' };
   } catch (err) {

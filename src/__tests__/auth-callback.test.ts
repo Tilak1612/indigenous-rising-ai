@@ -53,6 +53,20 @@ describe('OAuth return', () => {
     expect((r as { message: string }).message).toMatch(/failed to fetch/i);
   });
 
+  test('a hanging exchange gives up instead of waiting forever', async () => {
+    // detectSessionInUrl is off precisely because this SDK's session calls can
+    // hang on this project; the page must not sit there with no progress.
+    vi.useFakeTimers();
+    exchangeCodeForSession.mockImplementation(() => new Promise(() => {}));
+    at('/auth?code=hangs');
+    const promise = consumeAuthRedirect();
+    await vi.advanceTimersByTimeAsync(15000);
+    const r = await promise;
+    vi.useRealTimers();
+    expect(r).toMatchObject({ status: 'error' });
+    expect((r as { message: string }).message).toMatch(/timed out/i);
+  });
+
   test('does nothing on a plain visit', async () => {
     await expect(consumeAuthRedirect()).resolves.toEqual({ status: 'none' });
     expect(exchangeCodeForSession).not.toHaveBeenCalled();
