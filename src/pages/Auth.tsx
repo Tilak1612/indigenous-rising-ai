@@ -350,10 +350,10 @@ export default function Auth() {
               <div className="bg-card p-8 rounded-lg shadow-lg border">
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold text-foreground mb-2">
-                    {mfaFactorId ? 'Two-step verification' : isRecovery ? 'Set New Password' : isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create an Account'}
+                    {mfaFactorId ? 'Two-step verification' : isRecovery ? 'Set New Password' : isForgotPassword ? 'Reset Password' : isLogin ? 'Welcome Back' : 'Create your free account'}
                   </h1>
                   <p className="text-muted-foreground">
-                    {mfaFactorId ? 'Enter the 6-digit code from your authenticator app' : isRecovery ? 'Choose a new password for your account' : isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Join our community today'}
+                    {mfaFactorId ? 'Enter the 6-digit code from your authenticator app' : isRecovery ? 'Choose a new password for your account' : isForgotPassword ? 'Enter your email to receive a reset link' : isLogin ? 'Sign in to your account' : 'Free to start. Your data stays in Canada.'}
                   </p>
                 </div>
 
@@ -790,7 +790,7 @@ export default function Auth() {
                         onClick={switchMode}
                         className="text-primary hover:text-primary/80 font-medium"
                       >
-                        {isLogin ? 'Sign up' : 'Sign in'}
+                        {isLogin ? 'Create your free account' : 'Sign in'}
                       </button>
                     </p>
                   )}

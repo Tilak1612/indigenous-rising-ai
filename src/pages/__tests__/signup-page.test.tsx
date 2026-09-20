@@ -88,7 +88,7 @@ describe('registration mode', () => {
 describe('the mode follows the route, not the first mount', () => {
   test('/signup renders the registration form', async () => {
     renderAt('/signup');
-    expect(await screen.findByRole('heading', { name: /create an account/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /create your free account/i })).toBeInTheDocument();
   });
 
   test('/auth renders the sign-in form', async () => {
