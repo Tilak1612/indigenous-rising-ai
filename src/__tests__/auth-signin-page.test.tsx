@@ -139,6 +139,18 @@ describe('remember me', () => {
   });
 });
 
+describe('sign-up uses the approved wording', () => {
+  test('heading and the route in from sign-in both say "Create your free account"', () => {
+    renderAt('/signup');
+    expect(screen.getByRole('heading', { name: /create your free account/i })).toBeInTheDocument();
+  });
+
+  test('sign-in points to it by name', () => {
+    renderAt('/auth');
+    expect(screen.getByRole('button', { name: /create your free account/i })).toBeInTheDocument();
+  });
+});
+
 describe('data-rights wording matches what the product actually does', () => {
   test('export is self-serve; deletion is on request', () => {
     renderAt('/signup');
