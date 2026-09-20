@@ -43,12 +43,18 @@ beforeEach(() => {
 });
 
 describe('the default /auth screen states its value', () => {
-  test('the recap renders even in sign-in mode', () => {
-    // It used to render only while registering, and /auth defaults to
-    // sign-in — so the front door of the funnel said nothing at all.
-    renderAt('/auth');
+  test('the recap renders on sign-up', () => {
+    renderAt('/signup');
     expect(screen.getByText(/3 free funding matches every month/i)).toBeInTheDocument();
     expect(screen.getByText(/No credit card required/i)).toBeInTheDocument();
+  });
+
+  test('the recap is NOT on sign-in — a returning user wants the form', () => {
+    // On a phone this pushed the email and password fields below the fold.
+    renderAt('/auth');
+    expect(screen.queryByText(/3 free funding matches every month/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/No credit card required/i)).not.toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
   });
 
   test('a Google option is offered', () => {
@@ -212,7 +218,7 @@ describe('terms and privacy consent', () => {
   test('it is not shown during password reset — no agreement is being entered', async () => {
     const user = userEvent.setup();
     renderAt('/auth');
-    await user.click(screen.getByRole('button', { name: /forgot your password/i }));
+    await user.click(screen.getByRole('button', { name: /forgot password/i }));
     expect(screen.queryByText(/By continuing, you agree to our/i)).not.toBeInTheDocument();
   });
 

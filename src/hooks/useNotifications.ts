@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { readStoredSession } from '@/lib/auth-storage';
@@ -30,9 +30,19 @@ export function useNotifications(pollMs = 60000) {
   const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
+  // The poll and the initial load are in flight across unmounts (route change,
+  // sign-out, test teardown). Without this guard the fetch resolves into a
+  // component that is gone and React updates state on a dead tree — which
+  // surfaced in CI as an unhandled "window is not defined" rejection.
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => { alive.current = false; };
+  }, []);
 
   const load = useCallback(async () => {
     if (!user) {
+      if (!alive.current) return;
       setNotifications([]);
       setLoading(false);
       return;
@@ -43,11 +53,13 @@ export function useNotifications(pollMs = 60000) {
         { headers: authHeaders() }
       );
       if (!res.ok) throw new Error('load failed');
-      setNotifications((await res.json()) as Notification[]);
+      const rows = (await res.json()) as Notification[];
+      if (!alive.current) return;
+      setNotifications(rows);
     } catch {
       // soft-fail: a transient fetch error shouldn't break the dashboard chrome
     } finally {
-      setLoading(false);
+      if (alive.current) setLoading(false);
     }
   }, [user]);
 
