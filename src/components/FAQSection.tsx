@@ -27,7 +27,7 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
     },
     {
       question: 'Is my business data stored in Canada?',
-      answer: 'Yes, absolutely. All data is stored exclusively on Canadian servers and subject to Canadian jurisdiction. We comply with PIPEDA (federal privacy law) and never transfer data outside Canada without explicit consent. This ensures your information is protected under Canadian law and Indigenous data sovereignty principles.'
+      answer: 'Yes. Your account, business plans, documents and files are stored on Canadian servers (Supabase, ca-central-1) under Canadian jurisdiction, and we comply with PIPEDA. Some processing happens with named providers outside Canada: email delivery, payments, analytics (only if you accept analytics cookies), and AI funding matching, which sends a limited profile summary to OpenAI only when you click “Find my matches”. Your identity, community, name and contact details are never sent to the AI provider. See the privacy policy for the full list.'
     },
     {
       question: 'Can I switch plans at any time?',

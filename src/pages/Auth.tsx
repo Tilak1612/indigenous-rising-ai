@@ -4,6 +4,7 @@ import { consumeAuthRedirect } from '@/lib/auth-callback';
 import { fetchEnabledProviders, PROVIDER_LABEL, type ProviderId } from '@/lib/auth-providers';
 import { setSessionScoped } from '@/lib/auth-storage';
 import { mfaRequirement, verifyMfaCode } from '@/lib/mfa';
+import { PASSWORD_MIN_LENGTH, PASSWORD_RULES, passwordMeetsPolicy, describeServerPasswordError } from '@/lib/password-policy';
 import { trackEvent } from '@/utils/analytics';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
@@ -29,7 +30,13 @@ const loginSchema = z.object({
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  // Mirrors the server policy exactly (probed against the live endpoint):
+  // length + lowercase + uppercase + digit + symbol. Asking for only 8
+  // characters here meant "password1" passed and the server rejected it after
+  // submit with its own raw string.
+  password: z.string().refine(passwordMeetsPolicy, {
+    message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters and include a lowercase letter, an uppercase letter, a number and a symbol`,
+  }),
   confirmPassword: z.string(),
   terms: z.boolean().refine(val => val === true, 'You must agree to the terms'),
 }).refine(data => data.password === data.confirmPassword, {
@@ -222,7 +229,7 @@ export default function Auth() {
           if (error.message.includes('Invalid login credentials')) {
             setError('Invalid email or password');
           } else {
-            setError(error.message);
+            setError(describeServerPasswordError(error.message));
           }
         }
       } else {
@@ -239,7 +246,7 @@ export default function Auth() {
           if (error.message.includes('already registered')) {
             setError('This email is already registered. Please sign in instead.');
           } else {
-            setError(error.message);
+            setError(describeServerPasswordError(error.message));
           }
         } else {
           setSuccess('Account created successfully! You can now sign in.');
@@ -284,7 +291,7 @@ export default function Auth() {
     try {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) {
-        setError(error.message);
+        setError(describeServerPasswordError(error.message));
       } else {
         setSuccess('Password updated successfully. You can now sign in.');
         setIsRecovery(false);
@@ -663,9 +670,21 @@ export default function Auth() {
                       )}
                       {!isLogin && (
                         <>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Password must be at least 8 characters long
-                          </p>
+                          <ul className="mt-2 space-y-1" aria-label="Password requirements">
+                            {PASSWORD_RULES.map((rule) => {
+                              const met = rule.test(password);
+                              return (
+                                <li key={rule.id} className="flex items-center gap-2 text-xs">
+                                  <Check
+                                    className={`h-3.5 w-3.5 shrink-0 ${met ? 'text-primary' : 'text-muted-foreground/40'}`}
+                                    aria-hidden="true"
+                                  />
+                                  <span className={met ? 'text-foreground' : 'text-muted-foreground'}>{rule.label}</span>
+                                  <span className="sr-only">{met ? ' — met' : ' — not yet met'}</span>
+                                </li>
+                              );
+                            })}
+                          </ul>
                           <PasswordStrength value={password} />
                           {/* Verbatim from /canadian-compliance via a shared
                               constant, so the two surfaces cannot drift. */}

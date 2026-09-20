@@ -285,22 +285,29 @@ async function callOpenAi(
   // not go to a third-party model. Identity is sent only as the coarse
   // self-declared category (and omitted entirely for prefer_not_to_say), which
   // is what program criteria are written against.
+  // EXACTLY what /privacy discloses for this feature: "territory, industry,
+  // business stage, description, and funding purpose", plus the target amount
+  // the same sentence's feature depends on. Nothing else leaves the country
+  // for this call.
+  //
+  // Removed 2026-09-20 after an audit compared this payload with the policy:
+  // business_name, bio, employees, entity_type, indigenous_ownership_pct and
+  // self_declared_identity were all being sent and none was disclosed. The
+  // last two are the identity of an Indigenous person or business going to a
+  // US processor — on a platform built around OCAP®.
+  //
+  // Nothing is lost. Identity and ownership decide ELIGIBILITY, and that is
+  // computed here in evaluateCriteria() by auditable rules; the model only
+  // writes a fit score and a sentence of explanation, which these five fields
+  // support on their own. community_name and nation were already excluded and
+  // remain so.
   const profileSummary = {
     territory: profile.territory,
     industry: profile.industry,
     business_stage: profile.business_stage,
-    business_name: profile.business_name,
     description: profile.business_description,
-    bio: profile.bio,
-    employees: profile.employees,
-    target_funding_amount_cad: profile.target_funding_amount,
     funding_purpose: profile.funding_purpose,
-    self_declared_identity:
-      profile.indigenous_identity && profile.indigenous_identity !== 'prefer_not_to_say'
-        ? profile.indigenous_identity
-        : 'not stated',
-    indigenous_ownership_pct: profile.indigenous_ownership_pct ?? 'not stated',
-    entity_type: profile.entity_type ?? 'not stated',
+    target_funding_amount_cad: profile.target_funding_amount,
   };
 
   const grantSummary = {
