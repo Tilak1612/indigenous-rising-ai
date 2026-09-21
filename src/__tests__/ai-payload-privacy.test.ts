@@ -19,7 +19,7 @@ const fn = readFileSync('supabase/functions/match-funding-opportunities/index.ts
 const policy = readFileSync('src/pages/PrivacyPolicy.tsx', 'utf8');
 
 const payload = (() => {
-  const m = /const profileSummary = \{([\s\S]*?)\n  \};/.exec(fn);
+  const m = /const profileSummary = \{([\s\S]*?)\n {2}\};/.exec(fn);
   if (!m) throw new Error('profileSummary not found in the matcher');
   return m[1];
 })();

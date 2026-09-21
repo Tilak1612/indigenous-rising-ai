@@ -13,9 +13,11 @@
  * refresh in SEO-AUDIT.md — the fix for dated content is updating it, not
  * re-dating the title.
  *
- * Guarded by src/__tests__/seo-titles.test.ts (length, uniqueness, coverage).
+ * Guarded by src/__tests__/seo-on-page.test.ts (length, uniqueness, coverage).
  */
 export const blogSeoTitles: Record<string, string> = {
+  'off-reserve-indigenous-business-funding-canada': 'Off-Reserve Indigenous Business Funding in Canada',
+  'aboriginal-entrepreneurship-program-how-to-apply': 'Aboriginal Entrepreneurship Program: How to Apply',
   'aboriginal-capital-corporations-complete-guide-canada': 'Aboriginal Capital Corporations (ACCs): A Complete Guide',
   'bc-indigenous-business-grants-loans-complete-resource': 'BC Indigenous Business Grants and Loans',
   'bookkeeping-accounting-indigenous-business-canada-2025': 'Bookkeeping for Indigenous Small Businesses in Canada',
@@ -58,10 +60,10 @@ export const blogSeoTitles: Record<string, string> = {
   'indigenous-veterans-business-support-canada-2025': 'Business Support for Indigenous Veterans in Canada',
   'indigenous-youth-entrepreneur-programs-funding-canada': 'Indigenous Youth Entrepreneur Programs and Funding',
   'inuit-business-support-funding-programs-inuit-nunangat': 'Inuit Business Support and Funding Programs',
-  'metis-specific-business-funding-economic-development-programs': 'Métis Business Funding and Development Programs',
+  'metis-specific-business-funding-economic-development-programs': 'Métis Business Grants and Funding in Canada',
   'non-repayable-indigenous-business-contributions-explained': 'Non-Repayable Indigenous Business Contributions',
-  'ontario-indigenous-business-funding-programs-grants-support': 'Ontario Indigenous Business Funding and Grants',
-  'procurement-ready-corporate-indigenous-partnership-opportunities': 'Indigenous Procurement: Getting Partnership-Ready',
+  'ontario-indigenous-business-funding-programs-grants-support': 'Indigenous Business Grants in Ontario',
+  'procurement-ready-corporate-indigenous-partnership-opportunities': 'Indigenous Procurement in Canada: PSIB and the 5% Target',
   'rural-remote-indigenous-business-funding-overcoming-distance': 'Rural and Remote Indigenous Business Funding',
   'starting-indigenous-tech-business-funding-support-2025': 'Starting an Indigenous Tech Business: Funding',
   'two-spirit-lgbtq-indigenous-entrepreneur-support-canada': 'Two-Spirit and LGBTQ+ Indigenous Entrepreneur Support',
