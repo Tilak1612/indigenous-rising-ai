@@ -44,8 +44,26 @@ const built = 'dist/signup/index.html';
 describe.runIf(existsSync(built))('the built /signup is the registration form', () => {
   const html = existsSync(built) ? readFileSync(built, 'utf8') : '';
 
+  // The heading literal lives in an inline ternary in Auth.tsx, not a shared
+  // constant. It was renamed to "Create your free account" during the auth
+  // refresh and this assertion kept the old string — it went unnoticed because
+  // this block only runs when dist/ exists. Asserting the same literal against
+  // BOTH the source and the built HTML means a future rename fails here
+  // instead of drifting in one place.
+  const SIGNUP_HEADING = 'Create your free account';
+
+  test('the heading ternary in Auth.tsx still produces it', () => {
+    // Matching the heading TERNARY, not just the string: the same literal also
+    // appears on the "switch to sign up" link lower in the file, so a plain
+    // toContain() would keep passing after the heading itself was renamed.
+    const auth = readFileSync('src/pages/Auth.tsx', 'utf8');
+    const heading = /isLogin \? 'Welcome Back' : '([^']+)'/.exec(auth);
+    expect(heading, 'the signup heading ternary was not found in Auth.tsx').not.toBeNull();
+    expect(heading![1]).toBe(SIGNUP_HEADING);
+  });
+
   test('it renders registration, not sign-in', () => {
-    expect(html).toContain('Create an Account');
+    expect(html).toContain(SIGNUP_HEADING);
     expect(html).not.toContain('Welcome Back');
   });
 
