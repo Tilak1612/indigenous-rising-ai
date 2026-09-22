@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { TwoFactorSettings } from '@/components/dashboard/TwoFactorSettings';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import GoogleCalendarCard from '@/components/integrations/GoogleCalendarCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
@@ -462,6 +463,8 @@ export default function Settings() {
                     </div>
                   </CardContent>
                 </Card>
+
+                <GoogleCalendarCard />
 
                 <Card>
                   <CardHeader>
