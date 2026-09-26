@@ -880,7 +880,7 @@ Contact your regional MNO office to discuss business development opportunities.`
     image: "/og-home.jpg",
     introduction: `Young Indigenous entrepreneurs are leading a new wave of economic development across Turtle Island. With fresh perspectives, digital fluency, and deep connections to culture and community, Indigenous youth are launching businesses that honor tradition while embracing innovation.
 
-If you're an Indigenous entrepreneur between 18 and 39, you have access to funding programs specifically designed for young business owners. From Futurpreneur Canada's Indigenous stream, which provides up to $60,000 in financing plus two years of mentorship, to youth-specific grants from regional and provincial programs, the support ecosystem for young Indigenous entrepreneurs has never been stronger.
+If you're an Indigenous entrepreneur between 18 and 39, you have access to funding programs specifically designed for young business owners. From Futurpreneur Canada's Indigenous Entrepreneur Startup Program, which provides an equity-free loan of up to $75,000 plus up to two years of mentorship, to youth-specific grants from regional and provincial programs, the support ecosystem for young Indigenous entrepreneurs has never been stronger.
 
 This guide is for you. We'll cover every major funding pathway available to Indigenous youth, explain how to access mentorship and training support, and share strategies for overcoming the unique challenges young entrepreneurs face. Your age isn't a barrier—it's an advantage that positions you for programs created specifically to support the next generation of Indigenous business leaders.`,
     sections: [
@@ -904,26 +904,25 @@ This guide is for you. We'll cover every major funding pathway available to Indi
       {
         id: "futurpreneur",
         title: "Futurpreneur Canada Indigenous Program",
-        content: `Futurpreneur offers dedicated Indigenous youth entrepreneurship support:
+        content: `Futurpreneur's Indigenous Entrepreneur Startup Program (IESP) is designed and operated by an Indigenous team. Details below are quoted from Futurpreneur's own programme page, verified on 26 September 2026; confirm current terms with Futurpreneur before applying.
 
 **Financing:**
-- Up to $20,000 from Futurpreneur
-- Up to $40,000 from BDC (partner loan)
-- Total financing up to $60,000
+- A flexible, equity-free loan of **up to $75,000** to start or buy a business
+- Open to Indigenous entrepreneurs "including those on or off reserve"
+- Conditions apply
 
 **Mentorship:**
-- Two years of one-on-one business mentoring
-- Matched with experienced entrepreneurs
-- Ongoing support through startup phase
+- Up to two years of 1:1 mentorship from an experienced business leader
+- Access to the Ohpikiwin workshop series and business planning tools
+- A national network of Indigenous entrepreneurs and community organizations
 
 **Eligibility:**
-- Ages 18-39
-- Canadian citizen or permanent resident
-- Viable business idea or operating business under 12 months
-- Indigenous identity (First Nations, Métis, Inuit)
+- Self-identify as Indigenous (First Nations, Métis, or Inuit)
+- Canadian citizen or permanent resident **aged 18-39** at the time of application
+- Business not yet operating, or operating full time for **24 months or less**
 
 **Application Process:**
-Apply online through Futurpreneur's Indigenous stream.`
+Apply through Futurpreneur's Indigenous Entrepreneur Startup Program page. Futurpreneur also partners with Indigenous financial institutions across the country, so ask which partner serves your region.`
       },
       {
         id: "federal-youth",

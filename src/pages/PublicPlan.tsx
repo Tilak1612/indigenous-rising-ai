@@ -201,7 +201,7 @@ const PublicPlan: React.FC = () => {
               Ready to Build Your Business Plan?
             </h2>
             <p className="text-muted-foreground mb-8">
-              Join thousands of Indigenous entrepreneurs who've created winning business plans.
+              Work through it section by section, at your own pace. Free to start, no credit card.
             </p>
             {user ? (
               <Button asChild size="lg">
