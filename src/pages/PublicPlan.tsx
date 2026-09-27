@@ -33,7 +33,7 @@ const planSections = [
   },
   {
     title: 'Financial Projections',
-    description: 'Build realistic financial forecasts with templates.',
+    description: 'Set out your revenue and costs, and the assumptions behind them.',
     icon: BarChart3
   },
   {
@@ -43,7 +43,7 @@ const planSections = [
   }
 ];
 
-const templates = [
+const sectors = [
   'Tourism & Cultural Experiences',
   'Arts & Crafts Retail',
   'Food & Beverage',
@@ -61,7 +61,7 @@ const PublicPlan: React.FC = () => {
     <>
       <MetaTags
         title={ROUTE_TITLES['/plan']}
-        description="Create a professional business plan with AI-powered guidance. Sector-specific templates and step-by-step assistance for Indigenous entrepreneurs."
+        description="Build a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Export it as a document or plain text. Free to start, no credit card."
       />
       
       <div className="min-h-screen bg-background">
@@ -78,11 +78,11 @@ const PublicPlan: React.FC = () => {
               <h1 className="text-4xl md:text-5xl font-display font-bold text-white">
                 Build Your{' '}
                 <span className="text-white/90">Business Plan</span>{' '}
-                with AI Guidance
+                Step by Step
               </h1>
               <p className="text-xl text-white/80 max-w-3xl mx-auto">
-                Our step-by-step business planning assistant helps you create professional, 
-                bank-ready business plans with AI copilots and sector-specific templates.
+                A guided assistant that walks you through the six sections funders ask for,
+                with prompts written for Indigenous business context — not generic templates.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 {user ? (
@@ -117,6 +117,7 @@ const PublicPlan: React.FC = () => {
               <h2 className="text-3xl font-display font-bold text-foreground mb-4">Complete Business Plan Sections</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Our guided process walks you through every section lenders and investors expect to see.
+                A plan is preparation, not an application — a funder still reviews it on their own criteria.
               </p>
             </div>
             
@@ -144,17 +145,19 @@ const PublicPlan: React.FC = () => {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl font-display font-bold text-foreground mb-6">
-                  Sector-Specific Templates
+                  Written for Indigenous business context
                 </h2>
                 <p className="text-muted-foreground mb-8">
-                  Start with a template tailored to your industry. Our templates include 
-                  industry benchmarks, sample content, and Indigenous business considerations.
+                  The same six sections work for any sector. What changes is the prompting:
+                  the questions are written for Indigenous entrepreneurs, and the plan has a
+                  Community Impact section most planning tools do not. Entrepreneurs use it
+                  across these sectors and others.
                 </p>
                 <div className="grid grid-cols-2 gap-3">
-                  {templates.map((template, index) => (
+                  {sectors.map((sector, index) => (
                     <div key={index} className="flex items-center gap-2 text-foreground">
                       <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      <span className="text-sm">{template}</span>
+                      <span className="text-sm">{sector}</span>
                     </div>
                   ))}
                 </div>
@@ -166,8 +169,8 @@ const PublicPlan: React.FC = () => {
                       <Lightbulb className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="text-foreground font-semibold">AI Copilot</h3>
-                      <p className="text-sm text-muted-foreground">Get writing assistance as you go</p>
+                      <h3 className="text-foreground font-semibold">Guided prompts</h3>
+                      <p className="text-sm text-muted-foreground">Concrete questions for every section</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
@@ -176,7 +179,7 @@ const PublicPlan: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="text-foreground font-semibold">PDF Export</h3>
-                      <p className="text-sm text-muted-foreground">Bank-ready professional format</p>
+                      <p className="text-sm text-muted-foreground">Plus Word and plain text for funder forms</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
@@ -201,7 +204,7 @@ const PublicPlan: React.FC = () => {
               Ready to Build Your Business Plan?
             </h2>
             <p className="text-muted-foreground mb-8">
-              Join thousands of Indigenous entrepreneurs who've created winning business plans.
+              Work through it section by section, at your own pace. Free to start, no credit card.
             </p>
             {user ? (
               <Button asChild size="lg">
