@@ -481,7 +481,7 @@ const LandingV2 = () => {
           <div style={{ maxWidth: 1180, margin: '0 auto', padding: '96px 24px' }}>
             <div data-reveal style={{ textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
               <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--ir-green)' }}>How it works</span>
-              <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(30px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-.02em', color: 'var(--ir-ink)', margin: '14px 0 0' }}>From idea to funded. In days, not months.</h2>
+              <h2 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(30px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-.02em', color: 'var(--ir-ink)', margin: '14px 0 0' }}>From idea to funding-ready. In days, not months.</h2>
               <p style={{ fontSize: 18, lineHeight: 1.65, color: 'var(--ir-bark)', margin: '18px auto 0', maxWidth: 560 }}>No onboarding marathon, no consultants on retainer. Four steps, then you're moving.</p>
             </div>
             <div className="ir-4col" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 26, marginTop: 58 }}>
