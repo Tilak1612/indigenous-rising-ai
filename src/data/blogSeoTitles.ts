@@ -29,7 +29,7 @@ export const blogSeoTitles: Record<string, string> = {
   'indigenous-agriculture-farming-grants-canada-2025': 'Indigenous Agriculture and Farming Grants in Canada',
   'indigenous-arts-crafts-business-guide-canada-2025': 'Starting an Indigenous Arts and Crafts Business',
   'indigenous-business-exporting-international-trade-canada-2025': 'Exporting Indigenous Products: A Trade Guide',
-  'indigenous-business-funding-alberta-complete-guide': 'Indigenous Business Funding in Alberta',
+  'indigenous-business-funding-alberta-complete-guide': 'Indigenous Business Grants and Funding in Alberta',
   'indigenous-business-grants-atlantic-canada-2025': 'Indigenous Business Grants in Atlantic Canada',
   'indigenous-business-grants-manitoba-2025': 'Indigenous Business Grants and Funding in Manitoba',
   'indigenous-business-grants-quebec-autochtones-2025': 'Indigenous Business Grants in Quebec',
