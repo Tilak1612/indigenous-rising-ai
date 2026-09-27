@@ -60,14 +60,14 @@ export const blogSeoTitles: Record<string, string> = {
   'indigenous-veterans-business-support-canada-2025': 'Business Support for Indigenous Veterans in Canada',
   'indigenous-youth-entrepreneur-programs-funding-canada': 'Indigenous Youth Entrepreneur Programs and Funding',
   'inuit-business-support-funding-programs-inuit-nunangat': 'Inuit Business Support and Funding Programs',
-  'metis-specific-business-funding-economic-development-programs': 'Métis Business Grants and Funding in Canada',
+  'metis-specific-business-funding-economic-development-programs': 'Métis Business Grants by Province in Canada',
   'non-repayable-indigenous-business-contributions-explained': 'Non-Repayable Indigenous Business Contributions',
   'ontario-indigenous-business-funding-programs-grants-support': 'Indigenous Business Grants in Ontario',
   'procurement-ready-corporate-indigenous-partnership-opportunities': 'Indigenous Procurement in Canada: PSIB and the 5% Target',
   'rural-remote-indigenous-business-funding-overcoming-distance': 'Rural and Remote Indigenous Business Funding',
   'starting-indigenous-tech-business-funding-support-2025': 'Starting an Indigenous Tech Business: Funding',
   'two-spirit-lgbtq-indigenous-entrepreneur-support-canada': 'Two-Spirit and LGBTQ+ Indigenous Entrepreneur Support',
-  'ultimate-guide-indigenous-business-grants-canada-2025': 'Indigenous Business Grants in Canada: The Complete Guide',
+  'ultimate-guide-indigenous-business-grants-canada-2025': 'How Indigenous Business Funding Works in Canada',
   'understanding-isets-aboriginal-skills-development-business-training': 'ISETS Explained: Indigenous Skills and Training Funds',
 };
 
