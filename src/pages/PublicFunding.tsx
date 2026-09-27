@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import { formatFreshness } from '@/lib/funding-freshness';
 import MetaTags from '@/components/MetaTags';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/lib/supabase';
@@ -32,6 +33,8 @@ interface Grant {
   provinces: string[];
   industries: string[];
   application_url: string;
+  last_verified: string | null;
+  verification_status: string | null;
 }
 
 const PROVINCES = [
@@ -276,6 +279,7 @@ const PublicFunding: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {filteredGrants.map((grant) => {
                   const deadline = formatDeadline(grant);
+                  const freshness = formatFreshness(grant);
                   const deadlineColor = {
                     urgent: 'bg-destructive/10 text-destructive border-destructive/30',
                     soon: 'bg-warning/10 text-warning border-warning/30',
@@ -316,7 +320,15 @@ const PublicFunding: React.FC = () => {
                           </div>
                         )}
 
-                        <Button asChild variant="outline" size="sm" className="w-full mt-auto">
+                        <p
+                          className={`text-xs mt-auto ${
+                            freshness.verified ? 'text-muted-foreground' : 'text-amber-700 dark:text-amber-500'
+                          }`}
+                        >
+                          {freshness.text}
+                        </p>
+
+                        <Button asChild variant="outline" size="sm" className="w-full">
                           <a href={grant.application_url} target="_blank" rel="noopener noreferrer">
                             Apply on funder's site
                             <ExternalLink className="w-3 h-3 ml-2" />
