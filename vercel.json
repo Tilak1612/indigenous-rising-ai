@@ -2,6 +2,17 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "indigenousrising.ai"
+        }
+      ],
+      "destination": "https://www.indigenousrising.ai/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         {
