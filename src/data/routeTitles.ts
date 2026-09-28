@@ -34,6 +34,7 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/funding': 'Find Indigenous Business Funding | Indigenous Rising AI',
   '/funding/alerts': 'Free Weekly Funding Alerts | Indigenous Rising AI',
   '/impact': 'Community Impact Tracker | Indigenous Rising AI',
+  '/indigenous-business-plan-template': 'Indigenous Business Plan Template (Free)',
   '/plan': 'Indigenous Business Plan Builder | Indigenous Rising AI',
   '/track-request': 'Track a Data Request | Indigenous Rising AI',
   '/data-rights': 'Your Data Rights | Indigenous Rising AI',
