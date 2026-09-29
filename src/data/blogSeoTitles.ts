@@ -16,6 +16,10 @@
  * Guarded by src/__tests__/seo-on-page.test.ts (length, uniqueness, coverage).
  */
 export const blogSeoTitles: Record<string, string> = {
+  'first-nations-business-funding': 'First Nations Business Funding in Canada',
+  'indigenous-business-loans-canada': 'Indigenous Business Loans in Canada',
+  'indigenous-business-funding-checklist': 'Indigenous Business Funding Checklist',
+  'futurpreneur-indigenous-entrepreneur-startup-program': 'Futurpreneur Indigenous Startup Program (IESP)',
   'off-reserve-indigenous-business-funding-canada': 'Off-Reserve Indigenous Business Funding in Canada',
   'aboriginal-entrepreneurship-program-how-to-apply': 'Aboriginal Entrepreneurship Program: How to Apply',
   'aboriginal-capital-corporations-complete-guide-canada': 'Aboriginal Capital Corporations (ACCs): A Complete Guide',
