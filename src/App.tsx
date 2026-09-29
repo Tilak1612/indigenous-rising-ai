@@ -39,6 +39,7 @@ const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const WhatIsOcap = lazy(() => import("./pages/WhatIsOcap"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -613,6 +614,14 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <Blog />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/what-is-ocap"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <WhatIsOcap />
                   </Suspense>
                 }
               />

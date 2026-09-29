@@ -18,6 +18,7 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/signup': 'Create Your Account | Indigenous Rising AI',
   '/pricing': 'Pricing: Free, Growth & Nations Plans | Indigenous Rising AI',
   '/blog': 'Indigenous Business Funding Blog | Indigenous Rising AI',
+  '/guides/what-is-ocap': 'What is OCAP®? Principles and Vendor Questions',
   '/guides/indigenous-business-grants': 'Indigenous Business Grants & Funding in Canada',
   '/demo': 'Book a Demo | Indigenous Rising AI',
   '/contact': 'Contact Us | Indigenous Rising AI',
