@@ -1346,4 +1346,54 @@ export const extraBlogPosts: BlogPost[] = [
     cta: "Indigenous Rising AI helps you build the business plan and cash flow Futurpreneur asks for, and matches your profile against verified funding programs across Canada. Free to start.",
     relatedPosts: ["53", "54", "52", "9"],
   },
+
+  {
+    id: "57",
+    slug: "first-nations-business-funding",
+    title: "First Nations Business Funding: Status, On-Reserve Lending, and Where the Money Comes From",
+    summary: "What is specific to First Nations entrepreneurs rather than Indigenous business funding in general — why on-reserve property changes how lending works, what your Nation may fund directly, and the federal route through Indigenous Financial Institutions.",
+    keywords: ["first nations business funding", "first nations business grants", "on reserve business funding", "first nations entrepreneur funding", "band funding for business"],
+    searchIntent: "Informational + Commercial",
+    category: "Identity-Specific",
+    readTime: 9,
+    publishedAt: "2026-09-28",
+    updatedAt: "2026-09-28",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
+    image: "/og-home.jpg",
+    introduction: `Most funding guides say "Indigenous" and stop there. That is accurate as far as it goes, and it hides the things that are specific to First Nations entrepreneurs.\n\nFirst Nations, Métis and Inuit are distinct Peoples with distinct institutions, and some of what shapes a First Nations business funding application — registered status, the Indian Act's effect on property, your Nation's own programs, ISETS agreement holders — has no equivalent for the other two. This guide covers what is actually different.\n\nProgram details were verified against the funders' own pages on 28 September 2026. Nation-level programs vary and are not listed here, because inventing them would be worse than omitting them. Nothing here is an eligibility decision.`,
+    sections: [
+      {
+        id: "why-lending-works-differently",
+        title: "Why lending works differently on reserve",
+        content: `This is the single most useful thing to understand, and most guides skip it.\n\nUnder the Indian Act, land on reserve is held differently from ordinary private property. In practice, a bank generally cannot take a mortgage over it and sell it on default the way it could off reserve. The collateral test that mainstream commercial lending is built on therefore fails before the conversation about your business even begins.\n\nThat is not a gap in your application. It is a structural feature of the system, and it is the reason a separate network of lenders exists.\n\n**What follows from it:**\n\n- Indigenous Financial Institutions practise *developmental lending* — assessing the business, the plan and the operator rather than only the security available.\n- Your business plan carries more weight than it would at a commercial bank, because it is doing work the collateral would otherwise do.\n- Being turned down by a mainstream bank is not a signal about your business. It is frequently a signal about the security rules that bank operates under.\n\nIf a lender has not engaged with this before, you will spend the meeting explaining it. An IFI will not need the explanation.`,
+      },
+      {
+        id: "federal-route",
+        title: "The federal route: AEP through an IFI",
+        content: `The main federal programme is the **Aboriginal Entrepreneurship Program (AEP): Access to Capital**. Per Indigenous Services Canada:\n\n- Individual Indigenous entrepreneurs: up to **$99,999** in funding assistance\n- Eligible Indigenous community businesses: up to **$250,000**\n- Delivered by **Indigenous Financial Institutions (IFIs)** and Métis Capital Corporations, administered through NACCA\n- ISC's instruction is to *contact your local IFI or MCC directly*, and its page states that *eligibility varies between IFIs and MCCs*\n\nNACCA describes the network as **more than 50 Indigenous Financial Institutions**, reporting over **54,500 business loans** disbursed.\n\nThere is no central federal application form and no national deadline. The institution serving your region makes the decision, which is why the first call matters more than the first draft.\n\nISC's eligibility wording is *Indigenous individuals, including businesses owned and controlled by Indigenous Peoples*. It does not state a status requirement or a residency requirement on that page. What the delivering institution asks for is a separate question, and the honest answer is to ask them.`,
+      },
+      {
+        id: "your-nation",
+        title: "What your own Nation may fund",
+        content: `Many First Nations operate economic development programmes of their own, through an economic development officer, a development corporation, or a Nation-owned lending arm. This is the most commonly missed source of support, and the one no national guide can list for you.\n\nWe are not going to name programmes here. There are more than 600 First Nations in Canada, their programmes differ, and a guide that invented a generic list would send people to funders that do not exist for them.\n\n**What to do instead:**\n\n1. Contact your Nation's **economic development officer** or economic development corporation.\n2. Ask three questions: does the Nation fund or guarantee business start-ups, does it have a relationship with a particular IFI, and are there supports for members living away from the community.\n3. Ask whether the Nation has its own procurement — selling to your own Nation is a legitimate and often overlooked first contract.\n\nIf you are not sure who to ask, the band office can point you to the right person. This call is usually shorter and more useful than a week of searching.`,
+      },
+      {
+        id: "status-and-residency",
+        title: "Status, residency, and what they actually affect",
+        content: `Two questions come up constantly, and they have different answers.\n\n**Does registered status matter?** For business funding, less than people expect. ISC's AEP page describes eligible recipients as Indigenous individuals and Indigenous-owned and controlled businesses; it does not set out a status test on that page. Delivering institutions ask for proof of Indigenous identity in a form they accept, which is not the same as requiring status in every case. Ask the institution what documentation they take.\n\n**Does living off reserve disqualify you?** For business programmes, generally no. Futurpreneur's Indigenous Entrepreneur Startup Program states outright that it serves Indigenous entrepreneurs *including those on or off reserve*. Most federal pages do not address residency at all, which is exactly why the question persists — silence is not a no, but it is not a yes either.\n\nWhere status and residency *do* bite is tax and property, not eligibility. Section 87 of the Indian Act and the CRA's connecting-factors test determine whether business income is exempt, and that turns on facts about where the business operates rather than on where you live. That is a separate question from funding, and worth getting advice on rather than guessing.`,
+      },
+      {
+        id: "training-funding",
+        title: "Training and skills funding is a separate stream",
+        content: `If what you need is training rather than capital, the **Indigenous Skills and Employment Training (ISET) Strategy** funds skills development through agreement holders — organisations that deliver the programme regionally, including many First Nations and tribal councils.\n\nThis is worth knowing for two reasons:\n\n- It is a different door from the IFI door. Applying to a lender for what is really a training need wastes everyone's time.\n- Some entrepreneurs need both, in sequence: the training first, the capital once the plan is stronger.\n\nAsk your Nation or tribal council who holds the ISET agreement in your region.`,
+      },
+      {
+        id: "prepare",
+        title: "What to have ready before the first call",
+        content: `Because the business plan is carrying more weight than it would at a commercial bank, it is worth more of your time:\n\n- **A business plan** with financial projections you can defend line by line, including a realistic downside case.\n- **Proof of Indigenous identity** in the form the institution accepts — ask first rather than assuming.\n- **Quotes or costings** for what the money buys. A quoted list that adds to $48,200 is stronger than a request for $50,000.\n- **Your own contribution**, and clarity about where it comes from.\n- **A community impact section** — jobs, training, local spend. Indigenous funders often ask directly, and most generic plan templates have nothing for it.\n\nYou do not need all of it to make the first call. You need enough to have a specific conversation.`,
+      },
+    ],
+    cta: "Indigenous Rising AI helps you build the business plan an Indigenous Financial Institution will read, and matches your profile against verified funding programs across Canada. Free to start, no credit card.",
+    relatedPosts: ["54", "52", "53", "9"],
+  },
 ];

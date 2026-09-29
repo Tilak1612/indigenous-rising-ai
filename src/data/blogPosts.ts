@@ -2787,7 +2787,7 @@ Métis entrepreneurs can layer Métis-specific and general Indigenous funding fo
       }
     ],
     cta: "Indigenous Rising AI helps Métis entrepreneurs find both Métis-specific and general Indigenous funding programs—search opportunities that match your business, your province and your stage. Free to start, no credit card.",
-    relatedPosts: ["1", "20", "3"]
+    relatedPosts: ["1", "20", "3", "57"]
   },
   {
     id: "20",
