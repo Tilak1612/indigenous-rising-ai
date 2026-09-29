@@ -39,6 +39,9 @@ const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const ForEconomicDevelopmentOfficers = lazy(() => import("./pages/ForEconomicDevelopmentOfficers"));
+const ForFunders = lazy(() => import("./pages/ForFunders"));
+const DataSovereignty = lazy(() => import("./pages/DataSovereignty"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -613,6 +616,30 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <Blog />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/for-economic-development-officers"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ForEconomicDevelopmentOfficers />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/for-funders"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ForFunders />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/ocap-data-sovereignty-software"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <DataSovereignty />
                   </Suspense>
                 }
               />
