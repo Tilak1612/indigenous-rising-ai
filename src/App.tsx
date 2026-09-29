@@ -39,6 +39,7 @@ const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const ComparisonPage = lazy(() => import("./pages/ComparisonPage"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -613,6 +614,22 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <Blog />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/grantcompass-alternative"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ComparisonPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/liveplan-alternative"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ComparisonPage />
                   </Suspense>
                 }
               />

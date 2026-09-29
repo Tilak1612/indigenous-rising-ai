@@ -18,6 +18,8 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/signup': 'Create Your Account | Indigenous Rising AI',
   '/pricing': 'Pricing: Free, Growth & Nations Plans | Indigenous Rising AI',
   '/blog': 'Indigenous Business Funding Blog | Indigenous Rising AI',
+  '/grantcompass-alternative': 'GrantCompass Alternative for Indigenous Business',
+  '/liveplan-alternative': 'LivePlan Alternative for Indigenous Entrepreneurs',
   '/guides/indigenous-business-grants': 'Indigenous Business Grants & Funding in Canada',
   '/demo': 'Book a Demo | Indigenous Rising AI',
   '/contact': 'Contact Us | Indigenous Rising AI',
