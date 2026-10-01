@@ -7,7 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { readStoredSession } from '@/lib/auth-storage';
 import { toast } from 'sonner';
-import { Sparkles, Send, Loader2, Bot, User as UserIcon, Info } from 'lucide-react';
+import { Send, Loader2, User as UserIcon, Info } from 'lucide-react';
+import { AssistantAvatar, AssistantFigure } from '@/components/AssistantMascot';
 
 // AI Assistant — chat backed by ai_chat_sessions / ai_chat_messages (direct-fetch,
 // owner-scoped RLS). Replies come from the ai-assistant edge function, which
@@ -163,7 +164,7 @@ export default function Assistant() {
       <div className="flex flex-col h-[calc(100vh-9rem)]">
         <div className="mb-4">
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Sparkles className="h-7 w-7 text-primary" /> AI Assistant
+            <AssistantAvatar className="h-9 w-9" /> AI Assistant
           </h1>
           <p className="text-muted-foreground mt-1">
             Ask about funding, business planning, training, and growth. Not legal or financial advice.
@@ -189,7 +190,7 @@ export default function Assistant() {
               </div>
             ) : messages.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center px-4">
-                <Bot className="h-12 w-12 text-primary/60 mb-4" />
+                <AssistantFigure className="h-36 w-auto mb-4" />
                 <p className="font-medium">How can I help today?</p>
                 <p className="text-sm text-muted-foreground mt-1 mb-5 max-w-sm">
                   Ask a question to get started. I can help you think through funding, plans, and next steps.
@@ -212,7 +213,7 @@ export default function Assistant() {
                   <div className={`h-8 w-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                     m.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted text-foreground'
                   }`}>
-                    {m.role === 'user' ? <UserIcon className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                    {m.role === 'user' ? <UserIcon className="h-4 w-4" /> : <AssistantAvatar className="h-7 w-7" />}
                   </div>
                   <div className={`rounded-2xl px-4 py-2.5 max-w-[80%] whitespace-pre-wrap text-sm leading-relaxed ${
                     m.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'
@@ -225,7 +226,7 @@ export default function Assistant() {
             {sending && (
               <div className="flex gap-3">
                 <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                  <Bot className="h-4 w-4" />
+                  <AssistantAvatar className="h-7 w-7" />
                 </div>
                 <div className="rounded-2xl px-4 py-3 bg-muted">
                   <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
