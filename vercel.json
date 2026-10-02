@@ -252,6 +252,15 @@
           "value": "noindex, nofollow"
         }
       ]
+    },
+    {
+      "source": "/stats.html",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
     }
   ]
 }

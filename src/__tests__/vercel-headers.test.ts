@@ -140,6 +140,8 @@ describe('private and client-only routes carry X-Robots-Tag noindex', () => {
     '/features/funding-matching',
     '/community/some-post-id',
     '/funding/7b366d5f-d9af-4862-95cc-a820e5e035bf',
+    // The rollup-plugin-visualizer report is emitted into dist and served.
+    '/stats.html',
   ])('%s is noindexed', (path) => {
     expect(noindexMatches(path), `${path} is not noindexed`).not.toEqual([]);
   });
@@ -192,5 +194,26 @@ describe.runIf(existsSync('dist/sitemap.xml'))('the built sitemap is untouched b
     expect(urls.length).toBeGreaterThan(20);
     const hit = urls.filter((u) => noindexMatches(u).length > 0);
     expect(hit, `sitemap URLs that would be noindexed: ${hit.join(', ')}`).toEqual([]);
+  });
+});
+
+describe('the build config does not misdescribe its own sourcemaps', () => {
+  // vite.config.ts used to say sourcemaps were "not publicly exposed". They are:
+  // `sourcemap: 'hidden'` only drops the //# sourceMappingURL comment, the .map
+  // files are still emitted and Vercel serves them (verified on production:
+  // <bundle>.js.map returned 200 with sourcesContent). That is fine for a public
+  // repo, but the comment must say so rather than imply a confidentiality the
+  // setting does not provide.
+  const cfg = readFileSync('vite.config.ts', 'utf8');
+
+  test('it does not claim the maps are private', () => {
+    expect(cfg).not.toMatch(/not publicly exposed/i);
+  });
+
+  test("while 'hidden' is in use, the comment states the maps are publicly fetchable", () => {
+    if (/sourcemap:\s*'hidden'/.test(cfg)) {
+      expect(cfg).toMatch(/publicly fetchable/i);
+      expect(cfg).toMatch(/repository is public/i);
+    }
   });
 });
