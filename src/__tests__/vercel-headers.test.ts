@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 
 /**
  * Header rules in vercel.json.
@@ -69,5 +69,128 @@ describe('the files these rules cover really are unhashed', () => {
     expect(files.length).toBeGreaterThan(0);
     const looksHashed = files.filter((f) => hashed.test(f) && !/-(?:640|1280|1920|desktop|mobile|poster)\b/.test(f));
     expect(looksHashed, `hashed names in ${dir}: ${looksHashed.join(', ')}`).toEqual([]);
+  });
+});
+
+/**
+ * noindex on client-only routes.
+ *
+ * Every client-rendered route is rewritten to /index.html, which is the
+ * PRERENDERED HOMEPAGE. Measured on production on 2026-10-02, /funding/abc123,
+ * /features/anything, /community/hello, /dashboard and /onboarding all returned
+ * 200 with the homepage <title>, `index, follow`, and a canonical pointing at
+ * "/". None has an internal link or a sitemap entry, so this is hygiene rather
+ * than a rescue — but they should not present as indexable copies of the
+ * homepage.
+ *
+ * The one thing that must never happen is noindexing a REAL page. /funding/alerts
+ * is sitemap-listed, so a blanket /funding/(.*) rule would have dropped it. The
+ * safety property asserted below is therefore the load-bearing one: no noindex
+ * source may match any public route.
+ */
+const robotsRules = vercel.headers.filter((h) =>
+  h.headers.some((x) => x.key.toLowerCase() === 'x-robots-tag'),
+);
+
+// The path-to-regexp subset vercel.json uses: literals, a trailing "(.*)", and
+// a named parameter with its own regex, e.g. ":id([0-9a-f-]{36})".
+function sourceToRegExp(source: string): RegExp {
+  let out = '';
+  let i = 0;
+  while (i < source.length) {
+    if (source.startsWith('(.*)', i)) {
+      out += '.*';
+      i += 4;
+    } else if (source[i] === ':') {
+      const m = /^:\w+\(((?:[^()\\]|\\.)*)\)/.exec(source.slice(i));
+      if (!m) throw new Error(`unsupported parameter syntax in ${source}`);
+      out += `(?:${m[1]})`;
+      i += m[0].length;
+    } else {
+      out += source[i].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      i += 1;
+    }
+  }
+  return new RegExp('^' + out + '$');
+}
+
+const noindexMatches = (path: string) =>
+  robotsRules.filter((r) => sourceToRegExp(r.source).test(path)).map((r) => r.source);
+
+describe('private and client-only routes carry X-Robots-Tag noindex', () => {
+  test('there are rules to test, or every check below is vacuous', () => {
+    expect(robotsRules.length).toBeGreaterThanOrEqual(8);
+  });
+
+  test('every rule uses exactly "noindex, nofollow"', () => {
+    for (const r of robotsRules) {
+      const v = r.headers.find((x) => x.key.toLowerCase() === 'x-robots-tag')!.value;
+      expect(v, `${r.source} has an unexpected directive`).toBe('noindex, nofollow');
+    }
+  });
+
+  test.each([
+    '/dashboard',
+    '/dashboard/funding',
+    '/dashboard/plan/anything',
+    '/admin',
+    '/admin/users',
+    '/onboarding',
+    '/unsubscribe',
+    '/features/funding-matching',
+    '/community/some-post-id',
+    '/funding/7b366d5f-d9af-4862-95cc-a820e5e035bf',
+  ])('%s is noindexed', (path) => {
+    expect(noindexMatches(path), `${path} is not noindexed`).not.toEqual([]);
+  });
+});
+
+describe('no noindex rule can ever match a real public page', () => {
+  const marketing = [...readFileSync('scripts/prerender.mjs', 'utf8').matchAll(/\{ p: '(\/[^']*)'/g)].map(
+    (m) => m[1],
+  );
+
+  test('the prerender route list was found, or this check is vacuous', () => {
+    expect(marketing.length).toBeGreaterThanOrEqual(15);
+    expect(marketing).toContain('/funding');
+  });
+
+  test.each([
+    '/',
+    '/funding',
+    '/funding/alerts',
+    '/community',
+    '/pricing',
+    '/blog',
+    '/blog/off-reserve-indigenous-business-funding-canada',
+    '/guides/indigenous-business-grants',
+  ])('%s is NOT noindexed', (path) => {
+    expect(noindexMatches(path), `${path} would be dropped from search`).toEqual([]);
+  });
+
+  test('no prerendered marketing route is matched by any noindex rule', () => {
+    const hit = marketing
+      .map((p) => [p, noindexMatches(p)] as const)
+      .filter(([, m]) => m.length > 0)
+      .map(([p, m]) => `${p} <- ${m.join(', ')}`);
+    expect(hit, `public pages would be noindexed: ${hit.join('; ')}`).toEqual([]);
+  });
+
+  test('the funding rule matches only a UUID, never a named sub-page', () => {
+    for (const named of ['alerts', 'confirm', 'unsubscribe', 'confirm-subscription']) {
+      expect(noindexMatches(`/funding/${named}`), `/funding/${named} is noindexed`).toEqual([]);
+    }
+    expect(noindexMatches('/funding/7b366d5f-d9af-4862-95cc-a820e5e035bf')).not.toEqual([]);
+  });
+});
+
+describe.runIf(existsSync('dist/sitemap.xml'))('the built sitemap is untouched by noindex rules', () => {
+  test('no sitemap URL is matched by a noindex rule', () => {
+    const urls = [...readFileSync('dist/sitemap.xml', 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+      (m) => new URL(m[1]).pathname,
+    );
+    expect(urls.length).toBeGreaterThan(20);
+    const hit = urls.filter((u) => noindexMatches(u).length > 0);
+    expect(hit, `sitemap URLs that would be noindexed: ${hit.join(', ')}`).toEqual([]);
   });
 });
