@@ -71,8 +71,12 @@ describe('the prerender emits it', () => {
 });
 
 const built = 'dist/faq/index.html';
+// CI runs the test step BEFORE the build, so dist/ does not exist there.
+// describe.runIf only skips the tests inside - the describe BODY still runs at
+// collection time, so an unguarded readFileSync here throws ENOENT and fails the
+// whole file. (funding-crawlability.test.ts had exactly this bug and failed CI.)
 describe.runIf(existsSync(built))('the built /faq carries the schema', () => {
-  const html = readFileSync(built, 'utf8');
+  const html = existsSync(built) ? readFileSync(built, 'utf8') : '';
   const nodes = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)].flatMap(
     (m) => {
       const d = JSON.parse(m[1]);
