@@ -256,7 +256,7 @@ Timelines vary from 4-6 weeks for smaller loans to 6-12 months for larger contri
       }
     ],
     cta: "Use Indigenous Rising AI to search Canada's Indigenous business funding programs and find the grants and loans that match your business vision and community goals.",
-    relatedPosts: ["2", "8", "9", "51", "52", "53"]
+    relatedPosts: ["2", "8", "9", "51", "52", "53", "54"]
   },
   {
     id: "2",
@@ -437,7 +437,7 @@ Consider other programs, smaller initial requests, or building track record befo
       }
     ],
     cta: "Indigenous Rising AI helps you discover which programs best match your business and preparation level—explore funding options tailored to where you are in your journey.",
-    relatedPosts: ["1", "12", "8", "53"]
+    relatedPosts: ["1", "12", "8", "53", "55"]
   },
   {
     id: "3",
@@ -1382,7 +1382,7 @@ Money borrowed from and repaid to IFIs stays in Indigenous communities, building
       }
     ],
     cta: "Use Indigenous Rising AI to find Indigenous financial institutions in your region—connect with community-based lenders who understand your business and cultural context.",
-    relatedPosts: ["1", "8", "2", "51", "53"]
+    relatedPosts: ["1", "8", "2", "51", "53", "54"]
   },
   {
     id: "10",
@@ -2786,7 +2786,7 @@ Métis entrepreneurs can layer Métis-specific and general Indigenous funding fo
       }
     ],
     cta: "Indigenous Rising AI helps Métis entrepreneurs find both Métis-specific and general Indigenous funding programs—search opportunities that match your business, your province and your stage. Free to start, no credit card.",
-    relatedPosts: ["1", "20", "3"]
+    relatedPosts: ["1", "20", "3", "57"]
   },
   {
     id: "20",
