@@ -78,8 +78,12 @@ describe('the prerender degrades safely rather than shipping an empty page', () 
 });
 
 const built = 'dist/funding/index.html';
+// CI runs the test step BEFORE the build, so dist/ does not exist there.
+// describe.runIf only skips the tests inside - the describe BODY still runs at
+// collection time, so an unguarded readFileSync here throws ENOENT and fails the
+// whole file. That is exactly what failed CI on this PR's first push.
 describe.runIf(existsSync(built))('the built /funding carries the inventory', () => {
-  const html = readFileSync(built, 'utf8');
+  const html = existsSync(built) ? readFileSync(built, 'utf8') : '';
   const snap = JSON.parse(readFileSync(SNAPSHOT, 'utf8'));
 
   test('programme names appear in the static HTML', () => {
