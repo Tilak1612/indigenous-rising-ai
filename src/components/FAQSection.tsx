@@ -15,7 +15,7 @@ const FAQSection = ({ includeSchema = false, maxItems }: FAQSectionProps) => {
   const faqs = [
     {
       question: 'What is OCAP® and why does it matter?',
-      answer: 'OCAP® stands for Ownership, Control, Access, and Possession. These are data governance principles that affirm First Nations control over data collection processes, and how information can be used. It ensures Indigenous communities maintain sovereignty over their own data, which is crucial for protecting cultural knowledge and maintaining self-determination in the digital age.'
+      answer: 'OCAP® stands for Ownership, Control, Access, and Possession. They are First Nations data governance principles developed and owned by the First Nations Information Governance Centre (FNIGC), affirming First Nations control over how information about them is collected, used and held. FNIGC is the authority on OCAP® and publishes its own training and materials — if you want to understand the principles properly, start there rather than with a software vendor, including us. We build around OCAP®; we are not certified against it.'
     },
     {
       question: 'Is Indigenous Rising AI only for registered Indigenous businesses?',
