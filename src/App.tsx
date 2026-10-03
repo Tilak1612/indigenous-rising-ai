@@ -45,6 +45,7 @@ const ComparisonPage = lazy(() => import("./pages/ComparisonPage"));
 const ForEconomicDevelopmentOfficers = lazy(() => import("./pages/ForEconomicDevelopmentOfficers"));
 const ForFunders = lazy(() => import("./pages/ForFunders"));
 const DataSovereignty = lazy(() => import("./pages/DataSovereignty"));
+const WhatIsOcap = lazy(() => import("./pages/WhatIsOcap"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -675,6 +676,14 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <DataSovereignty />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/what-is-ocap"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <WhatIsOcap />
                   </Suspense>
                 }
               />

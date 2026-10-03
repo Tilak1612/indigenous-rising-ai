@@ -24,6 +24,7 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/for-economic-development-officers': 'Tools for Indigenous Economic Development Officers',
   '/for-funders': 'For Funders and Indigenous Support Organizations',
   '/ocap-data-sovereignty-software': 'Indigenous Data Sovereignty and How We Handle Data',
+  '/guides/what-is-ocap': 'What is OCAP®? Principles and Vendor Questions',
   '/guides/indigenous-business-grants': 'Indigenous Business Grants & Funding in Canada',
   '/demo': 'Book a Demo | Indigenous Rising AI',
   '/contact': 'Contact Us | Indigenous Rising AI',
