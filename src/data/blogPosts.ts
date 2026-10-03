@@ -1,6 +1,7 @@
 import { extraBlogPosts, extraPostImages } from './blogPostsExtra';
 import { blogSeoTitles } from './blogSeoTitles';
 import { blogFaqs } from './blogFaqs';
+import { BLOG_SOURCES, type BlogSource } from './blogSources';
 import fundingGuidesImage from '@/assets/blog/funding-guides.jpg';
 import howToGuidesImage from '@/assets/blog/how-to-guides.jpg';
 import provincialGuidesImage from '@/assets/blog/provincial-guides.jpg';
@@ -110,6 +111,9 @@ export interface BlogPost {
   /** Optional Q&A pairs — rendered as a visible FAQ block and emitted as
    *  FAQPage schema (featured-snippet + AI-extraction lever). */
   faqs?: { question: string; answer: string }[];
+  /** Primary sources the post's figures come from. Merged from blogSources.ts,
+   *  rendered as a visible Sources section and emitted as BlogPosting.citation. */
+  sources?: BlogSource[];
 }
 
 export const blogPosts: BlogPost[] = [
@@ -2922,6 +2926,8 @@ for (const post of allPosts) {
   if (seoTitle) post.seoTitle = seoTitle;
   const faqs = blogFaqs[post.slug];
   if (faqs && faqs.length) post.faqs = faqs;
+  const sources = BLOG_SOURCES[post.slug];
+  if (sources && sources.length) post.sources = sources;
 }
 const allPostImages = { ...postImages, ...extraPostImages };
 
