@@ -16,6 +16,10 @@
  * Guarded by src/__tests__/seo-on-page.test.ts (length, uniqueness, coverage).
  */
 export const blogSeoTitles: Record<string, string> = {
+  'first-nations-business-funding': 'First Nations Business Funding in Canada',
+  'indigenous-business-loans-canada': 'Indigenous Business Loans in Canada',
+  'indigenous-business-funding-checklist': 'Indigenous Business Funding Checklist',
+  'futurpreneur-indigenous-entrepreneur-startup-program': 'Futurpreneur Indigenous Startup Program (IESP)',
   'off-reserve-indigenous-business-funding-canada': 'Off-Reserve Indigenous Business Funding in Canada',
   'aboriginal-entrepreneurship-program-how-to-apply': 'Aboriginal Entrepreneurship Program: How to Apply',
   'aboriginal-capital-corporations-complete-guide-canada': 'Aboriginal Capital Corporations (ACCs): A Complete Guide',
@@ -29,7 +33,7 @@ export const blogSeoTitles: Record<string, string> = {
   'indigenous-agriculture-farming-grants-canada-2025': 'Indigenous Agriculture and Farming Grants in Canada',
   'indigenous-arts-crafts-business-guide-canada-2025': 'Starting an Indigenous Arts and Crafts Business',
   'indigenous-business-exporting-international-trade-canada-2025': 'Exporting Indigenous Products: A Trade Guide',
-  'indigenous-business-funding-alberta-complete-guide': 'Indigenous Business Funding in Alberta',
+  'indigenous-business-funding-alberta-complete-guide': 'Indigenous Business Grants and Funding in Alberta',
   'indigenous-business-grants-atlantic-canada-2025': 'Indigenous Business Grants in Atlantic Canada',
   'indigenous-business-grants-manitoba-2025': 'Indigenous Business Grants and Funding in Manitoba',
   'indigenous-business-grants-quebec-autochtones-2025': 'Indigenous Business Grants in Quebec',
@@ -60,14 +64,14 @@ export const blogSeoTitles: Record<string, string> = {
   'indigenous-veterans-business-support-canada-2025': 'Business Support for Indigenous Veterans in Canada',
   'indigenous-youth-entrepreneur-programs-funding-canada': 'Indigenous Youth Entrepreneur Programs and Funding',
   'inuit-business-support-funding-programs-inuit-nunangat': 'Inuit Business Support and Funding Programs',
-  'metis-specific-business-funding-economic-development-programs': 'Métis Business Grants and Funding in Canada',
+  'metis-specific-business-funding-economic-development-programs': 'Métis Business Grants by Province in Canada',
   'non-repayable-indigenous-business-contributions-explained': 'Non-Repayable Indigenous Business Contributions',
   'ontario-indigenous-business-funding-programs-grants-support': 'Indigenous Business Grants in Ontario',
   'procurement-ready-corporate-indigenous-partnership-opportunities': 'Indigenous Procurement in Canada: PSIB and the 5% Target',
   'rural-remote-indigenous-business-funding-overcoming-distance': 'Rural and Remote Indigenous Business Funding',
   'starting-indigenous-tech-business-funding-support-2025': 'Starting an Indigenous Tech Business: Funding',
   'two-spirit-lgbtq-indigenous-entrepreneur-support-canada': 'Two-Spirit and LGBTQ+ Indigenous Entrepreneur Support',
-  'ultimate-guide-indigenous-business-grants-canada-2025': 'Indigenous Business Grants in Canada: The Complete Guide',
+  'ultimate-guide-indigenous-business-grants-canada-2025': 'How Indigenous Business Funding Works in Canada',
   'understanding-isets-aboriginal-skills-development-business-training': 'ISETS Explained: Indigenous Skills and Training Funds',
 };
 

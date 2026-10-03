@@ -33,10 +33,23 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
     title: 'Resources',
     links: [
       { name: 'Grants & funding hub', to: '/guides/indigenous-business-grants' },
+      { name: 'Funding: what we can verify', to: '/guides/indigenous-business-funding-statistics' },
+      { name: 'Business plan template', to: '/indigenous-business-plan-template' },
+      { name: 'What is OCAP®?', to: '/guides/what-is-ocap' },
+      { name: 'How we handle your data', to: '/ocap-data-sovereignty-software' },
       { name: 'Blog', to: '/blog' },
       { name: 'FAQ', to: '/faq' },
       { name: 'Track a request', to: '/track-request' },
       { name: 'Community', to: '/community' },
+    ],
+  },
+  {
+    title: 'Who it is for',
+    links: [
+      { name: 'Funders and support organizations', to: '/for-funders' },
+      { name: 'Economic development officers', to: '/for-economic-development-officers' },
+      { name: 'Compared with LivePlan', to: '/liveplan-alternative' },
+      { name: 'Compared with GrantCompass', to: '/grantcompass-alternative' },
     ],
   },
   {
@@ -81,7 +94,7 @@ const SOCIAL: Array<{ name: string; icon: LucideIcon; href: string }> = [];
 // Homepage-section links (#...) use a plain anchor so the browser does a real
 // navigation to the homepage and scrolls to the section; routes use SPA Link.
 // Footer links were ~20px tall — under the 44px minimum touch target, and there
-// are 25 of them (measured at 375px). The min-height applies on touch-sized
+// are 25+ of them (measured at 375px). The min-height applies on touch-sized
 // viewports only, so desktop keeps its compact density.
 const navLinkClass =
   'inline-flex items-center min-h-[44px] md:min-h-0 text-sm text-muted-foreground hover:text-foreground transition-colors';
@@ -165,7 +178,7 @@ const Footer = () => {
         <Separator className="opacity-40" />
 
         {/* Link columns */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-8">
           {SECTIONS.map((section) => (
             <div key={section.title} className="space-y-3">
               <h3 className="font-medium text-foreground text-sm">{section.title}</h3>
