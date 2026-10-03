@@ -145,6 +145,51 @@ const GrantsHub = () => {
             posts={procurement}
           />
 
+          {/* Before you apply — the three things that trip people up, and the
+              only substantive content the hub carries of its own. Kept short so
+              it orients rather than duplicating the education guide it links to. */}
+          <section className="mb-16">
+            <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+              Before you apply
+            </h2>
+            <div className="space-y-5 max-w-3xl">
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">
+                  Most of these programs have no deadline
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Every program currently listed in our Funding Navigator is rolling intake rather
+                  than a dated competition. That removes the deadline panic, but it also means
+                  nothing prompts you to act. Treat the first phone call as the deadline you set
+                  yourself.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">
+                  The institution decides, not the program name
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Federal capital under the Aboriginal Entrepreneurship Program is delivered by
+                  Indigenous Financial Institutions and Métis Capital Corporations, and Indigenous
+                  Services Canada notes that eligibility varies between them. There is no central
+                  application form. Find the institution serving your region and ask them what they
+                  need, in what order.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground mb-1">
+                  Confirm the current terms with the funder
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Amounts, eligibility and intake status change, and funder pages are not always
+                  updated the day a program does. Where we show a program we show when its details
+                  were last verified, and we link to the funder&rsquo;s own page. Nothing here is an
+                  eligibility decision — only the funder can make that.
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* FAQ — visible Q&A mirrors the FAQPage schema emitted in <head> */}
           <section id="faq" className="mb-16 scroll-mt-24">
             <h2 className="font-display text-2xl font-bold text-foreground mb-6">

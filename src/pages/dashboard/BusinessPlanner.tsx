@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import DOMPurify from 'dompurify';
+import {
+  filledSections,
+  planToHtmlDocument,
+  planToPlainText,
+  exportFilename,
+} from '@/lib/plan-export';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import { useAuth } from '@/hooks/useAuth';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
@@ -269,9 +275,48 @@ export default function BusinessPlannerPage() {
     setPreviewVersion(version);
   };
 
+  // Real output, not a toast. PDF goes through the browser's own print-to-PDF
+  // rather than bundling a PDF library into a route most users never open;
+  // Word opens the HTML document directly; the grant format is plain text
+  // because funder portals are textareas that strip markup.
   const handleExport = (format: 'pdf' | 'word' | 'grant') => {
-    toast.success(`Exporting as ${format.toUpperCase()}...`);
-    // Implement actual export logic here
+    const title = 'My Business Plan';
+    const filled = filledSections(STEPS, answers);
+    if (filled.length === 0) {
+      toast.error('Write at least one section before exporting.');
+      return;
+    }
+
+    if (format === 'pdf') {
+      const win = window.open('', '_blank');
+      if (!win) {
+        toast.error('Your browser blocked the print window. Allow pop-ups and try again.');
+        return;
+      }
+      win.document.write(planToHtmlDocument(title, STEPS, answers));
+      win.document.close();
+      win.focus();
+      win.print();
+      toast.success('Print dialog opened — choose "Save as PDF".');
+      return;
+    }
+
+    const isWord = format === 'word';
+    const body = isWord
+      ? planToHtmlDocument(title, STEPS, answers)
+      : planToPlainText(title, STEPS, answers);
+    const blob = new Blob([body], {
+      type: isWord ? 'application/msword' : 'text/plain;charset=utf-8',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = exportFilename(title, isWord ? 'doc' : 'txt');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success(isWord ? 'Downloaded as a Word document.' : 'Downloaded as plain text.');
   };
 
   const completedSteps = STEPS.filter(step => answers[step.id]?.trim().length > 0).length;
