@@ -338,21 +338,33 @@ const LandingV2 = () => {
 
         <main>
         {/* ===== HERO ===== */}
+        {/* The first viewport is deliberately NOT [data-reveal].
+            [data-reveal] starts at opacity 0 and only becomes visible after the JS
+            bundle loads, React mounts, an effect runs, an IntersectionObserver
+            fires and an 800ms transition finishes. For the hero that put the
+            headline - the LCP element - and the primary Start-free button behind
+            JavaScript. Measured on a controlled A/B (same browser, same load, 5
+            runs each), LCP median was 2152ms gated vs 1400ms ungated; first paint
+            was unaffected, so the cost was purely the headline becoming visible.
+            A CSS-only entrance animation is not an option here: the app mounts
+            with createRoot, which REPLACES the prerendered markup, so the
+            animation would play on the static copy and then replay on React's
+            copy - a visible blink. Everything below the fold keeps its reveal. */}
         <section id="top" style={{ position: 'relative', overflow: 'hidden' }}>
           <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />
           <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'radial-gradient(120% 80% at 50% 0%, rgba(250,246,239,.2) 0%, rgba(250,246,239,.7) 55%, var(--ir-cream) 100%)', pointerEvents: 'none' }} />
           <div style={{ position: 'relative', zIndex: 2, maxWidth: 1180, margin: '0 auto', padding: 'clamp(52px,9vw,88px) 24px 0', textAlign: 'center' }}>
-            <div data-reveal style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: 'rgba(62,107,79,.1)', border: '1px solid rgba(62,107,79,.22)', color: 'var(--ir-green)', fontSize: 13, fontWeight: 600, padding: '7px 15px', borderRadius: 100, marginBottom: 30 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: 'rgba(62,107,79,.1)', border: '1px solid rgba(62,107,79,.22)', color: 'var(--ir-green)', fontSize: 13, fontWeight: 600, padding: '7px 15px', borderRadius: 100, marginBottom: 30 }}>
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ir-green)' }} />
               Built around Indigenous data sovereignty
             </div>
-            <h1 data-reveal style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(34px,5vw,64px)', lineHeight: 1.08, letterSpacing: '-.025em', color: 'var(--ir-ink)', maxWidth: 860, margin: '0 auto' }}>
+            <h1 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(34px,5vw,64px)', lineHeight: 1.08, letterSpacing: '-.025em', color: 'var(--ir-ink)', maxWidth: 860, margin: '0 auto' }}>
               Get <span style={{ fontStyle: 'italic', color: '#D45B35' }}>funded.</span> Grow your business. Keep your data.
             </h1>
-            <p data-reveal style={{ fontSize: 'clamp(17px,1.6vw,21px)', lineHeight: 1.65, color: 'var(--ir-bark)', maxWidth: 620, margin: '28px auto 0' }}>
+            <p style={{ fontSize: 'clamp(17px,1.6vw,21px)', lineHeight: 1.65, color: 'var(--ir-bark)', maxWidth: 620, margin: '28px auto 0' }}>
               Find funding, build your business plan and access training — all in one place, designed around OCAP® principles and the data sovereignty of your community.
             </p>
-            <div data-reveal style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', alignItems: 'center', marginTop: 38 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', alignItems: 'center', marginTop: 38 }}>
               <LinkTo to="/signup" onClick={() => trackSignupCta('hero')} className="irv2-hov-cta-lift" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 30px', borderRadius: 12, boxShadow: '0 6px 20px rgba(18,76,59,.3)', display: 'inline-flex', alignItems: 'center', gap: 9 }}>
                 Start free account
                 <Icon icon="solar:arrow-right-linear" size={19} />
@@ -369,7 +381,7 @@ const LandingV2 = () => {
                 Book a demo
               </DemoCta>
             </div>
-            <p data-reveal style={{ marginTop: 20, fontSize: 13.5, color: 'var(--ir-stone)', display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <p style={{ marginTop: 20, fontSize: 13.5, color: 'var(--ir-stone)', display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:check-circle-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Free to start</span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:map-point-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Your data stays in Canada</span>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:lock-keyhole-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Export anytime</span>
