@@ -1815,7 +1815,7 @@ Don't hide cultural elements—feature them. Explain how these values make your 
       }
     ],
     cta: "Once your business plan is complete, use Indigenous Rising AI to find funding programs that align with your business model and community goals.",
-    relatedPosts: ["2", "1", "8"]
+    relatedPosts: ["2", "1", "8", "42"]
   },
   {
     id: "13",
@@ -1967,7 +1967,7 @@ This guide covers funding specifically for Indigenous tourism businesses. We'll 
       }
     ],
     cta: "Indigenous Rising AI helps you find tourism-specific funding programs—discover grants and loans for Indigenous cultural tourism, hospitality, and experience businesses.",
-    relatedPosts: ["1", "7", "15"]
+    relatedPosts: ["1", "7", "15", "37"]
   },
   {
     id: "14",
@@ -2089,7 +2089,7 @@ Completing training programs demonstrates commitment and builds your credibility
       }
     ],
     cta: "Indigenous Rising AI can help you find both business funding and training support—search programs that invest in your skills and your business together.",
-    relatedPosts: ["2", "12", "1"]
+    relatedPosts: ["2", "12", "1", "41"]
   },
   {
     id: "15",
@@ -2228,7 +2228,7 @@ CED and individual entrepreneurship complement each other. Community infrastruct
       }
     ],
     cta: "If you're working on community-scale economic development, Indigenous Rising AI can help you find programs supporting collective Indigenous business and nation-building projects.",
-    relatedPosts: ["1", "11", "16"]
+    relatedPosts: ["1", "11", "16", "50"]
   },
   {
     id: "16",

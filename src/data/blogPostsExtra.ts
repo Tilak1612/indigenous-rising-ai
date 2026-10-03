@@ -86,7 +86,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI helps Indigenous e-commerce entrepreneurs find funding for website development, inventory, and marketing—start your search today.",
-    relatedPosts: ["1", "10", "31"]
+    relatedPosts: ["1", "10", "31", "45"]
   },
   {
     id: "22",
@@ -130,7 +130,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI connects you with financial planning tools and funding programs—navigate your tax obligations and find support for your business growth.",
-    relatedPosts: ["9", "12", "46"]
+    relatedPosts: ["9", "12", "46", "40", "49"]
   },
   {
     id: "23",
@@ -237,7 +237,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI connects you with ACC programs and helps you prepare winning loan applications—start your funding search today.",
-    relatedPosts: ["1", "2", "12"]
+    relatedPosts: ["1", "2", "12", "42"]
   },
   {
     id: "26",
@@ -334,7 +334,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI helps Indigenous artists find grants, build business plans, and grow sustainable creative businesses—explore your funding options today.",
-    relatedPosts: ["21", "1", "7"]
+    relatedPosts: ["21", "1", "7", "37", "38"]
   },
   {
     id: "29",
@@ -368,7 +368,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI helps construction entrepreneurs find contracts, funding, and training—build your business with the right support.",
-    relatedPosts: ["1", "17", "14"]
+    relatedPosts: ["1", "17", "14", "50"]
   },
   {
     id: "30",
@@ -436,7 +436,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI offers AI-powered marketing tools and business support—grow your brand with culturally grounded strategies.",
-    relatedPosts: ["21", "28", "12"]
+    relatedPosts: ["21", "28", "12", "38"]
   },
   {
     id: "32",
@@ -591,7 +591,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI connects entrepreneurs with mentorship resources and business support—find the guidance that accelerates your journey.",
-    relatedPosts: ["14", "23", "1"]
+    relatedPosts: ["14", "23", "1", "40"]
   },
   {
     id: "37",
@@ -688,7 +688,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI is committed to accessibility—explore our WCAG-compliant platform and find disability-specific funding for your business.",
-    relatedPosts: ["1", "7", "6"]
+    relatedPosts: ["1", "7", "6", "41"]
   },
   {
     id: "40",

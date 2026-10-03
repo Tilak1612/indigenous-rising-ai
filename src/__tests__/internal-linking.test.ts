@@ -60,4 +60,14 @@ describe.runIf(built)('every sitemap page is linked from another prerendered pag
     const orphans = routes.filter((r) => r !== '/' && (inbound.get(r)?.size ?? 0) === 0);
     expect(orphans, 'in the sitemap but linked from no prerendered page').toEqual([]);
   });
+
+  // The blog index links every post, so one inbound link says nothing about
+  // whether a post is connected to the topic around it. Eight posts were in
+  // exactly that state until related-article links were added between them.
+  test('every blog post is linked from at least one page besides the blog index', () => {
+    const lonely = routes.filter(
+      (r) => r.startsWith('/blog/') && [...(inbound.get(r) ?? [])].filter((f) => f !== '/blog').length === 0,
+    );
+    expect(lonely, 'blog posts reachable only from the blog index').toEqual([]);
+  });
 });
