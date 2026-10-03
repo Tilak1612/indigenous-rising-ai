@@ -607,6 +607,8 @@ async function main() {
           logo: { '@type': 'ImageObject', url: `${BASE}/logo-icon.png`, width: 512, height: 512 },
         },
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+        // Only where the page visibly lists its sources (see the Sources section).
+        ...(Array.isArray(post.sources) && post.sources.length ? { citation: post.sources.map((s) => s.url) } : {}),
       },
       {
         '@context': 'https://schema.org',
