@@ -334,6 +334,16 @@ async function main() {
   } else {
     console.warn('[prerender] grants-hub FAQs unavailable — page ships without FAQPage');
   }
+
+  // /faq: FAQPage schema from the SAME module the page renders. It used to be
+  // injected at runtime through react-helmet, so it was absent from the static
+  // HTML - a SearchFit audit found /faq, the richest Q&A page on the site,
+  // shipped no FAQPage to any crawler that does not execute JavaScript.
+  const siteFaqs = await loadDataModule('src/data/siteFaqs.ts', 'siteFaqs');
+  if (Array.isArray(siteFaqs) && siteFaqs.length) {
+    const faqRoute = MARKETING.find((m) => m.p === '/faq');
+    if (faqRoute) faqRoute.faqs = siteFaqs.map((f) => ({ q: f.question, a: f.answer }));
+  }
   let count = 0;
   // Collected live and indexable URLs — written to dist/sitemap.xml at the end so
   // the sitemap is generated from the SAME source as the prerendered pages and can

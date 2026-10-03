@@ -22,7 +22,7 @@ import { readFileSync, readdirSync } from 'node:fs';
  * asserts that.
  */
 const explainers = [
-  'src/components/FAQSection.tsx',
+  'src/data/siteFaqs.ts',
   'src/components/resources/ResourcePreviewModal.tsx',
   'src/pages/DataSovereignty.tsx',
 ];
@@ -42,8 +42,8 @@ describe('every OCAP explanation credits FNIGC', () => {
     expect(src, `${file} explains OCAP® without naming FNIGC`).toMatch(FNIGC);
   });
 
-  test('the homepage FAQ points readers to the authority, not only at us', () => {
-    const faq = readFileSync('src/components/FAQSection.tsx', 'utf8');
+  test('the FAQ answer points readers to the authority, not only at us', () => {
+    const faq = readFileSync('src/data/siteFaqs.ts', 'utf8');
     expect(faq).toMatch(FNIGC);
     expect(faq).toMatch(/not certified/i);
   });
