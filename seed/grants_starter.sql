@@ -45,14 +45,14 @@ INSERT INTO public.grants (
 (
   'Indigenous Entrepreneur Startup Program',
   'Futurpreneur Canada',
-  'Combined startup loan and two years of one-on-one mentorship for Indigenous entrepreneurs aged 18-39 launching or growing a business in its first year of operation.',
-  20000, 60000, 'CAD',
+  'Equity-free startup loan of up to $75,000 plus up to two years of 1:1 mentorship, for Indigenous entrepreneurs aged 18-39 who are launching a business or have been operating for less than two years. Delivered by Futurpreneur''s Indigenous team.',
+  NULL, 75000, 'CAD',
   NULL, TRUE, 'Year-round applications',
   ARRAY['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'],
   ARRAY[]::TEXT[],
   ARRAY['startup','early-stage'],
-  'Indigenous applicants ages 18-39. Business must be in its first year of operation. Loan structure typically combines a Futurpreneur loan with a BDC matching loan.',
-  'https://www.futurpreneur.ca/en/indigenous-entrepreneur-startup-program/',
+  'Self-identify as Indigenous (First Nations, Metis or Inuit). Canadian citizen or permanent resident aged 18-39 at the time of application. Business not yet operating, or operating full time for 24 months or less. Conditions apply to the loan; confirm current terms with Futurpreneur before applying.',
+  'https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/',
   FALSE, NULL
 ),
 (
