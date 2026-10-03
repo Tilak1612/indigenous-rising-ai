@@ -274,6 +274,66 @@ async function getSsrRender() {
   return ssrRender;
 }
 
+/**
+ * Published funding programmes, for the /funding page's structured data and its
+ * no-JS list.
+ *
+ * /funding fetches its programmes client-side, so the prerendered HTML carried
+ * the page furniture and NOT ONE programme name. Measured against production:
+ * zero occurrences of "Futurpreneur", "Aboriginal Entrepreneurship" or "BDC" in
+ * 41KB of markup. The product's core inventory was invisible to every crawler
+ * that does not execute JavaScript, which includes most AI answer engines.
+ *
+ * Live data is fetched first so the build reflects reality. The committed
+ * snapshot is the fallback, so a missing env var or a network blip degrades to
+ * slightly older programme data instead of failing the build or silently
+ * shipping an empty page again.
+ *
+ * The anon key is the publishable one that already ships in the client bundle.
+ * Nothing secret passes through here.
+ */
+async function loadFundingPrograms() {
+  const snapshotPath = path.join(ROOT, 'scripts/data/funding-snapshot.json');
+  let fallback = [];
+  try {
+    fallback = JSON.parse(await readFile(snapshotPath, 'utf8')).rows ?? [];
+  } catch {
+    console.warn('[prerender] funding snapshot unreadable; /funding will ship without programmes');
+  }
+
+  const base = process.env.VITE_SUPABASE_URL;
+  const key = process.env.VITE_SUPABASE_ANON_KEY;
+  if (!base || !key) {
+    console.warn(`[prerender] no Supabase env; using funding snapshot (${fallback.length})`);
+    return { rows: fallback, source: 'snapshot' };
+  }
+
+  const cols = 'name,funder,description,amount_min,amount_max,amount_currency,is_recurring,recurrence_notes,provinces,application_url,last_verified';
+  try {
+    const res = await fetch(`${base}/rest/v1/grants?select=${cols}&is_published=eq.true&order=name.asc`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    const rows = await res.json();
+    if (!Array.isArray(rows) || rows.length === 0) throw new Error('empty result');
+    return { rows, source: 'live' };
+  } catch (err) {
+    console.warn(`[prerender] live funding fetch failed (${err.message}); using snapshot (${fallback.length})`);
+    return { rows: fallback, source: 'snapshot' };
+  }
+}
+
+/** "Up to $75,000" / "$20,000,000 - $250,000,000" / "Amount varies" — mirrors formatAmount on the page. */
+function fundingAmountLabel(g) {
+  const fmt = (n) => '$' + Number(n).toLocaleString('en-CA');
+  if (!g.amount_min && !g.amount_max) return 'Amount varies';
+  if (g.amount_min && g.amount_max && g.amount_min !== g.amount_max) {
+    return `${fmt(g.amount_min)} - ${fmt(g.amount_max)}`;
+  }
+  return `Up to ${fmt(g.amount_max ?? g.amount_min)}`;
+}
+
 async function writeRoute(template, route) {
   const dir = path.join(DIST, route.p.replace(/^\//, ''));
   const outFile = route.file ? path.join(DIST, route.file) : path.join(dir, 'index.html');
@@ -294,6 +354,12 @@ async function writeRoute(template, route) {
       process.exitCode = 1;
     }
   }
+  // Injected AFTER the React root closes, so hydration never sees it and can
+  // never mismatch on it. Used for the /funding no-JS programme list.
+  if (route.bodyExtra) {
+    html = html.replace('</body>', `${route.bodyExtra}\n  </body>`);
+  }
+
   await writeFile(outFile, html);
 }
 
@@ -309,6 +375,7 @@ async function main() {
   // Titles come from the same module the page components import, so the
   // static <title> and the one Helmet sets after hydration cannot drift.
   // They had, on 12 of 23 routes.
+  const funding = await loadFundingPrograms();
   const routeTitles = await loadDataModule('src/data/routeTitles.ts', 'ROUTE_TITLES');
   if (routeTitles) {
     for (const m of MARKETING) {
@@ -418,8 +485,76 @@ async function main() {
           })),
         });
       }
+      // /funding: put the actual programme inventory into the static HTML.
+      // Both the ItemList and the visible no-JS list carry last_verified, so a
+      // stale snapshot says when each programme was checked rather than
+      // implying all are current.
+      let bodyExtra;
+      if (m.p === '/funding' && funding.rows.length) {
+        jsonLd.push({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          '@id': `${BASE}/funding#programmes`,
+          name: 'Indigenous business funding programmes in Canada',
+          numberOfItems: funding.rows.length,
+          itemListElement: funding.rows.map((g, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            item: {
+              '@type': 'FinancialProduct',
+              name: g.name,
+              description: g.description || undefined,
+              provider: { '@type': 'Organization', name: g.funder },
+              url: g.application_url || undefined,
+              areaServed: Array.isArray(g.provinces) && g.provinces.length
+                ? g.provinces.map((code) => ({ '@type': 'AdministrativeArea', name: code }))
+                : undefined,
+              ...(g.amount_max
+                ? {
+                    amount: {
+                      '@type': 'MonetaryAmount',
+                      currency: g.amount_currency || 'CAD',
+                      ...(g.amount_min ? { minValue: g.amount_min } : {}),
+                      maxValue: g.amount_max,
+                    },
+                  }
+                : {}),
+            },
+          })),
+        });
+
+        const items = funding.rows
+          .map((g) => {
+            const checked = g.last_verified
+              ? `Details last verified ${esc(g.last_verified)}`
+              : 'Details not yet verified \u2014 confirm with the funder';
+            return [
+              '      <li>',
+              `        <h3>${esc(g.name)}</h3>`,
+              `        <p>${esc(g.funder)} \u2014 ${esc(fundingAmountLabel(g))}</p>`,
+              g.description ? `        <p>${esc(g.description)}</p>` : '',
+              `        <p>${checked}</p>`,
+              g.application_url
+                ? `        <p><a href="${esc(g.application_url)}" rel="nofollow noopener">Apply on the funder's site</a></p>`
+                : '',
+              '      </li>',
+            ].filter(Boolean).join('\n');
+          })
+          .join('\n');
+
+        bodyExtra = [
+          '  <noscript>',
+          '    <h2>Indigenous business funding programmes</h2>',
+          `    <p>${funding.rows.length} programmes. Amounts and eligibility are set by each funder — confirm current terms with them before applying. Nothing here is an eligibility decision.</p>`,
+          '    <ul>',
+          items,
+          '    </ul>',
+          '  </noscript>',
+        ].join('\n');
+      }
+
       await writeRoute(template, {
-        p: m.p, url, title: m.t, description: m.d, robots: m.robots,
+        p: m.p, url, title: m.t, description: m.d, robots: m.robots, bodyExtra,
         // Per-route social image. applyHead OVERWRITES og:image on every
         // route, so without this the page component's own <meta og:image>
         // is discarded at build time and every marketing page shipped
