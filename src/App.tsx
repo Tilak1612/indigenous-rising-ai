@@ -40,6 +40,7 @@ const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const PlanTemplate = lazy(() => import("./pages/PlanTemplate"));
+const FundingStatistics = lazy(() => import("./pages/FundingStatistics"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -622,6 +623,14 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <PlanTemplate />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/indigenous-business-funding-statistics"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <FundingStatistics />
                   </Suspense>
                 }
               />
