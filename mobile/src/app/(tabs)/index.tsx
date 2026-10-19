@@ -75,7 +75,7 @@ export default function HomeScreen() {
         ) : (
           upcoming.map(({ s, days }) => (
             <Link key={s.id} href={{ pathname: '/funding/[id]', params: { id: s.grant_id } }} asChild>
-              <Pressable style={[styles.deadline, { borderTopColor: t.border }]} accessibilityRole="button">
+              <Pressable style={StyleSheet.flatten([styles.deadline, { borderTopColor: t.border }])} accessibilityRole="button">
                 <View style={styles.grow}>
                   <Body numberOfLines={1}>{s.grant?.name ?? 'Programme'}</Body>
                   <Caption>{formatDeadline(s.grant?.deadline ?? null)}</Caption>
@@ -106,7 +106,8 @@ function QuickLink({ href, title, body }: { href: '/funding' | '/funding/matches
   const t = useTheme();
   return (
     <Link href={href} asChild>
-      <Pressable accessibilityRole="button" style={({ pressed }) => [styles.tile, { backgroundColor: t.surface, borderColor: t.border, opacity: pressed ? 0.85 : 1 }]}>
+      {/* Link's Slot needs a single style object, not an array or a function. */}
+      <Pressable accessibilityRole="button" style={StyleSheet.flatten([styles.tile, { backgroundColor: t.surface, borderColor: t.border }])}>
         <Title>{title}</Title>
         <Caption>{body}</Caption>
       </Pressable>

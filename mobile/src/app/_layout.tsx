@@ -1,4 +1,4 @@
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -10,25 +10,29 @@ import { useTheme } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
-/** Sends signed-out users to sign-in and signed-in users out of the auth group. */
+/**
+ * Route guard. Stack.Protected keeps the signed-out and signed-in trees from
+ * mounting at the same time, so no dashboard screen renders (or fetches)
+ * before the persisted session has been read; the splash stays up until then.
+ */
 function Gate() {
   const { session, loading } = useAuth();
-  const segments = useSegments();
-  const router = useRouter();
   const t = useTheme();
 
   useEffect(() => {
-    if (loading) return;
-    SplashScreen.hideAsync();
-    const inAuthGroup = segments[0] === '(auth)';
-    if (!session && !inAuthGroup) router.replace('/(auth)/sign-in');
-    else if (session && inAuthGroup) router.replace('/');
-  }, [loading, session, segments, router]);
+    if (!loading) SplashScreen.hideAsync();
+  }, [loading]);
+
+  if (loading) return null;
 
   return (
     <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: t.background } }}>
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="(auth)" />
+      <Stack.Protected guard={!!session}>
+        <Stack.Screen name="(tabs)" />
+      </Stack.Protected>
+      <Stack.Protected guard={!session}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
     </Stack>
   );
 }

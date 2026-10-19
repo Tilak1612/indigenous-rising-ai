@@ -51,7 +51,7 @@ export default function SavedScreen() {
               body="Save programmes from the catalogue or your matches to track their deadlines here."
               action={
                 <Link href="/funding" asChild>
-                  <Pressable accessibilityRole="button" style={[styles.chip, { backgroundColor: t.primary }]}>
+                  <Pressable accessibilityRole="button" style={StyleSheet.flatten([styles.chip, { backgroundColor: t.primary }])}>
                     <Body style={{ color: t.onPrimary, fontWeight: '600' }}>Browse funding</Body>
                   </Pressable>
                 </Link>

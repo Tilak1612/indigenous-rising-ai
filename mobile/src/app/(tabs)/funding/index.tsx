@@ -85,13 +85,17 @@ export default function FundingListScreen() {
               style={[styles.search, { color: t.text, backgroundColor: t.surface, borderColor: t.border }]}
             />
             <View style={styles.links}>
+              {/* Link asChild merges props into its child via a Slot, which
+                  cannot take an array style — flatten to one object. */}
               <Link href="/funding/matches" asChild>
-                <Pressable accessibilityRole="button" style={[styles.chip, { backgroundColor: t.primary }]}>
+                <Pressable accessibilityRole="button" style={StyleSheet.flatten([styles.chip, { backgroundColor: t.primary }])}>
                   <Body style={{ color: t.onPrimary, fontWeight: '600' }}>AI matches</Body>
                 </Pressable>
               </Link>
               <Link href="/funding/saved" asChild>
-                <Pressable accessibilityRole="button" style={[styles.chip, { backgroundColor: t.surface, borderColor: t.border, borderWidth: 1 }]}>
+                <Pressable
+                  accessibilityRole="button"
+                  style={StyleSheet.flatten([styles.chip, { backgroundColor: t.surface, borderColor: t.border, borderWidth: 1 }])}>
                   <Body style={{ fontWeight: '600' }}>Saved ({savedIds.size})</Body>
                 </Pressable>
               </Link>
