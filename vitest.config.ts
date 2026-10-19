@@ -7,6 +7,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    // Only the web app's tests. mobile/ has its own runner (jest-expo) and
+    // must not be collected here.
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
     setupFiles: ['./src/test/setup.ts'],
     // Also present on the readiness branch. Duplicated here so this PR's CI
     // is not flaky while it waits its turn: the default budget is too tight
