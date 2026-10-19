@@ -219,3 +219,34 @@ describe('claims the product must never make', () => {
     expect(read('src/components/StructuredData.tsx')).not.toMatch(/waitlisted \(not yet buyable\)/);
   });
 });
+
+/**
+ * No page may promise a funding OUTCOME or a time-to-funding.
+ *
+ * The homepage said "From idea to funded. In days, not months." Our own funding
+ * guide says timelines run "4-6 weeks for smaller loans to 6-12 months for
+ * larger contributions", and the decision is an IFI's to make, not ours. The
+ * platform genuinely does get someone funding-READY quickly; being funded is a
+ * different claim and not one this product can make.
+ */
+describe('no page promises funding, only preparation', () => {
+  const surfaces = [
+    'src/pages/LandingV2.tsx',
+    'src/pages/PublicFunding.tsx',
+    'src/pages/PublicPlan.tsx',
+    'src/pages/GrantsHub.tsx',
+  ];
+
+  test.each(surfaces)('%s does not promise a time to funding', (f) => {
+    const src = readFileSync(f, 'utf8');
+    expect(src).not.toMatch(/to funded\b/i);
+    expect(src).not.toMatch(/get(ting)? you funded/i);
+    expect(src).not.toMatch(/guaranteed funding/i);
+    expect(src).not.toMatch(/funded in (days|weeks)/i);
+  });
+
+  test('the homepage still makes the speed claim it can support', () => {
+    // Removing the outcome claim should not have removed the honest one.
+    expect(readFileSync('src/pages/LandingV2.tsx', 'utf8')).toMatch(/funding-ready/i);
+  });
+});

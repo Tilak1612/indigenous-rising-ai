@@ -1,0 +1,347 @@
+{
+  "capturedOn": "2026-10-02",
+  "rows": [
+    {
+      "name": "Aboriginal Entrepreneurship Program",
+      "funder": "Indigenous Services Canada",
+      "description": "Federal capital for Indigenous entrepreneurs, delivered by Indigenous Financial Institutions and Métis Capital Corporations. Individual Indigenous entrepreneurs may receive up to $99,999; eligible Indigenous community businesses up to $250,000. There is no deadline — applications are made to your local IFI or MCC directly.",
+      "amount_min": null,
+      "amount_max": 250000,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round intake through regional Indigenous Financial Institutions",
+      "provinces": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ],
+      "application_url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "Alberta Indigenous Opportunities Corporation Loan Guarantees",
+      "funder": "Alberta Indigenous Opportunities Corporation (AIOC)",
+      "description": "Loan guarantees that support Indigenous communities to invest in major natural resource and infrastructure projects in Alberta. Enables access to commercial financing on favourable terms.",
+      "amount_min": 20000000,
+      "amount_max": 250000000,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Project-based intake",
+      "provinces": [
+        "AB"
+      ],
+      "application_url": "https://www.theaioc.com/",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "BDC Indigenous Entrepreneur Loan",
+      "funder": "Business Development Bank of Canada",
+      "description": "Financing for Indigenous entrepreneurs to start, expand, or acquire a business. Includes flexible repayment terms and access to advisory services.",
+      "amount_min": null,
+      "amount_max": 350000,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Rolling intake",
+      "provinces": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ],
+      "application_url": "https://www.bdc.ca/en/i-am/indigenous-entrepreneur",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "CanExport SMEs",
+      "funder": "Global Affairs Canada",
+      "description": "Non-repayable funding to help Canadian small and medium businesses (including Indigenous-owned SMEs) develop new export markets. Covers up to 50 percent of eligible activities.",
+      "amount_min": 10000,
+      "amount_max": 50000,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Continuous intake",
+      "provinces": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ],
+      "application_url": "https://www.tradecommissioner.gc.ca/funding-financement/canexport/sme-pme/index.aspx",
+      "last_verified": null
+    },
+    {
+      "name": "däna Näye Ventures Business Loan",
+      "funder": "däna Näye Ventures",
+      "description": "Indigenous Financial Institution serving First Nations entrepreneurs and Indigenous-owned businesses across Yukon. Provides loans, business advisory, and development services.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round intake",
+      "provinces": [
+        "YT"
+      ],
+      "application_url": "https://danenaye.com/",
+      "last_verified": null
+    },
+    {
+      "name": "Indigenous Economic Development Fund",
+      "funder": "Government of Ontario",
+      "description": "Provincial fund supporting Indigenous economic development, business growth, and partnerships across Ontario. Includes streams for entrepreneurs, communities, and partnerships.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Annual intake periods; check program for current deadline",
+      "provinces": [
+        "ON"
+      ],
+      "application_url": "https://www.ontario.ca/page/indigenous-economic-development-fund",
+      "last_verified": null
+    },
+    {
+      "name": "Indigenous Entrepreneur Startup Program",
+      "funder": "Futurpreneur Canada",
+      "description": "Equity-free startup loan of up to $75,000 plus up to two years of 1:1 mentorship, for Indigenous entrepreneurs aged 18-39 who are launching a business or have been operating for less than two years. Delivered by Futurpreneur's Indigenous team.",
+      "amount_min": null,
+      "amount_max": 75000,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round applications",
+      "provinces": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ],
+      "application_url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
+      "last_verified": "2026-09-26"
+    },
+    {
+      "name": "Indigenous Tourism Development Fund",
+      "funder": "Indigenous Tourism Association of Canada (ITAC)",
+      "description": "Funding programs for Indigenous tourism businesses and entrepreneurs to develop, market, and grow their tourism offerings across Canada.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Multiple intakes per year",
+      "provinces": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ],
+      "application_url": "https://indigenoustourism.ca/",
+      "last_verified": null
+    },
+    {
+      "name": "Louis Riel Capital Corporation Métis Business Loan",
+      "funder": "Louis Riel Capital Corporation",
+      "description": "Métis-specific Indigenous Financial Institution providing business loans, equity contributions, and entrepreneurship support to Métis citizens of Manitoba.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round intake",
+      "provinces": [
+        "MB"
+      ],
+      "application_url": "https://lrcc.mb.ca/",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "Métis Dene Development Fund",
+      "funder": "Métis Dene Development Fund Ltd.",
+      "description": "Indigenous Financial Institution providing business loans, equity, and entrepreneurship support to Métis and Dene entrepreneurs in the Northwest Territories.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round intake",
+      "provinces": [
+        "NT"
+      ],
+      "application_url": "https://www.mddf.ca/",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "NACCA Aboriginal Business Financing Program",
+      "funder": "National Aboriginal Capital Corporations Association",
+      "description": "Network of 50+ Indigenous Financial Institutions (AFIs) across Canada offering business loans, non-repayable contributions, and developmental lending to First Nations, Métis, and Inuit entrepreneurs.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round through regional AFIs",
+      "provinces": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ],
+      "application_url": "https://nacca.ca/",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "NEDC Business Loan",
+      "funder": "Nuu-chah-nulth Economic Development Corporation",
+      "description": "Indigenous Financial Institution serving First Nations entrepreneurs and businesses on Vancouver Island and the central and north coast of British Columbia.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Rolling intake",
+      "provinces": [
+        "BC"
+      ],
+      "application_url": "https://nedc.info/",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "Nunavut Business Credit Corporation Loan",
+      "funder": "Nunavut Business Credit Corporation",
+      "description": "Territorial financial institution providing commercial loans and contract financing to small and medium businesses operating in Nunavut, including a focus on Inuit-owned enterprises.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Rolling intake",
+      "provinces": [
+        "NU"
+      ],
+      "application_url": "https://www.gov.nu.ca/eia/programs-services/nunavut-business-credit-corporation",
+      "last_verified": null
+    },
+    {
+      "name": "Saskatchewan Indian Equity Foundation Business Loan",
+      "funder": "Saskatchewan Indian Equity Foundation (SIEF)",
+      "description": "Indigenous Financial Institution providing business loans, capital, and developmental lending services to First Nations entrepreneurs across Saskatchewan.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round applications",
+      "provinces": [
+        "SK"
+      ],
+      "application_url": "https://www.sief.sk.ca/",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "SOCCA Business Loan and Mentorship",
+      "funder": "Société de crédit commercial autochtone (SOCCA)",
+      "description": "Indigenous Financial Institution serving First Nations entrepreneurs in Quebec with business loans, mentorship, and developmental lending.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Year-round intake",
+      "provinces": [
+        "QC"
+      ],
+      "application_url": "https://socca.qc.ca/",
+      "last_verified": "2026-09-28"
+    },
+    {
+      "name": "Strategic Partnerships Initiative",
+      "funder": "Indigenous Services Canada",
+      "description": "Federal program supporting multi-partner economic development initiatives that involve Indigenous communities and the private sector. Focused on key economic sectors and collaborative projects.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Project-based intake; contact regional ISC office",
+      "provinces": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT"
+      ],
+      "application_url": "https://www.sac-isc.gc.ca/eng/1331657507074/1533645155560",
+      "last_verified": null
+    },
+    {
+      "name": "Ulnooweg Indigenous Business Loan",
+      "funder": "Ulnooweg Development Group",
+      "description": "Indigenous Financial Institution serving First Nations and Indigenous-owned businesses in Atlantic Canada. Offers business loans, advisory services, and youth entrepreneurship programming.",
+      "amount_min": null,
+      "amount_max": null,
+      "amount_currency": "CAD",
+      "is_recurring": true,
+      "recurrence_notes": "Rolling intake",
+      "provinces": [
+        "NB",
+        "NS",
+        "PE",
+        "NL"
+      ],
+      "application_url": "https://ulnoowegdevelopmentgroup.ca/",
+      "last_verified": "2026-09-28"
+    }
+  ]
+}

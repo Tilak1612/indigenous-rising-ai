@@ -17,6 +17,15 @@ import { Navigate } from 'react-router-dom';
 import { truncateDescription } from '@/lib/seo';
 import { toast } from 'sonner';
 
+// 'YYYY-MM-DD' -> '28 September 2026'. Built from the parts, not new Date(str):
+// a bare ISO date parses as UTC midnight and renders as the previous day across
+// Canada.
+const formatSourceDate = (iso: string): string => {
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  return new Date(y, m - 1, d).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+};
+
 // Old blog slugs that were renamed (and were in the sitemap, soft-404'ing).
 // Handled here rather than as App-level redirect routes so it doesn't depend on
 // React Router static-vs-dynamic route ranking — when getBlogBySlug misses, we
@@ -343,6 +352,37 @@ const BlogPost = () => {
                   </details>
                 ))}
               </div>
+            </section>
+          )}
+
+          {/* Sources — the primary pages this guide's figures were read from.
+              Mirrors BlogPosting.citation in <head>. Funder pages change, so each
+              entry says when we last read it. */}
+          {post.sources && post.sources.length > 0 && (
+            <section id="sources" className="mb-12 scroll-mt-24">
+              <h2 className="text-2xl font-display font-bold mb-2">Sources</h2>
+              <p className="text-muted-foreground mb-6">
+                Where the figures and eligibility rules in this guide come from. Funders update
+                their pages, so confirm current terms with them before you apply.
+              </p>
+              <ul className="space-y-4">
+                {post.sources.map((s) => (
+                  <li key={s.url} className="rounded-lg border border-border bg-card p-5">
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener"
+                      className="font-semibold text-primary hover:underline"
+                    >
+                      {s.label}
+                    </a>
+                    <p className="mt-2 text-sm text-foreground/90 leading-relaxed">{s.supports}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Read for this guide on {formatSourceDate(s.checkedOn)}.
+                    </p>
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
 

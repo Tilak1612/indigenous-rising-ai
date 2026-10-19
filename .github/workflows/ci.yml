@@ -38,13 +38,20 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # Build BEFORE test. Some tests assert on the built output in dist/ - the
+      # prerendered HTML, the sitemap, the structured data - and are wrapped in
+      # describe.runIf(existsSync('dist/...')) so they skip when it is absent.
+      # With Test first, dist/ never existed here, so every one of them was
+      # silently SKIPPED in CI and only ran on a developer's machine. That is how
+      # the /signup heading regression sat unnoticed: its guard existed and never
+      # executed where it mattered. Running the build first makes them real gates.
+      - name: Build
+        run: npm run build
+
       # `npm test` is vitest in WATCH mode and would hang a runner forever.
       # `vitest run` is the single-shot form.
       - name: Test
         run: npx vitest run --reporter=default
-
-      - name: Build
-        run: npm run build
 
       # P0-1 gate: every sitemap URL must ship a distinct title, a complete
       # (non-truncated) description, and >=200 words of body content that does

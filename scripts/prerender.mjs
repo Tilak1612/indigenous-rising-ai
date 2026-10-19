@@ -58,6 +58,14 @@ const MARKETING = [
   { p: '/signup', t: 'Create your account | Indigenous Rising AI', d: 'Create a free Indigenous Rising AI account. Three funding matches a month, a guided business plan, and no credit card required.', robots: 'noindex, nofollow' },
   { p: '/pricing', img: '/og-pricing.jpg', t: 'Pricing: Free, Growth & Nations Plans | Indigenous Rising AI', d: 'Transparent pricing for Indigenous entrepreneurs. Start free, no credit card. Growth is $49/mo. OCAP®-aligned, with your data stored in Canada.' },
   { p: '/blog', t: 'Indigenous Business Funding Blog | Indigenous Rising AI', d: 'Guides on Indigenous business grants, funding applications and business planning for First Nations, Métis and Inuit entrepreneurs across Canada.' },
+  { p: '/indigenous-business-plan-template', t: 'Indigenous Business Plan Template (Free)', d: 'A free business plan template for Indigenous entrepreneurs in Canada: the six sections funders ask for, with the questions to answer under each.', breadcrumb: 'Business plan template' },
+  { p: '/guides/indigenous-business-funding-statistics', t: 'Indigenous Business Funding: What We Verify', d: 'What we can and cannot verify about Indigenous business funding programs in Canada, with a per-programme verification date and the reasons some could not be checked.', breadcrumb: 'Funding statistics' },
+  { p: '/grantcompass-alternative', t: 'GrantCompass Alternative for Indigenous Business', d: 'An honest comparison of Indigenous Rising AI and GrantCompass, including where GrantCompass is stronger. Facts checked against their site on 28 September 2026.', breadcrumb: 'Comparison' },
+  { p: '/liveplan-alternative', t: 'LivePlan Alternative for Indigenous Entrepreneurs', d: 'An honest comparison of Indigenous Rising AI and LivePlan, including where LivePlan is stronger. Facts checked against their site on 28 September 2026.', breadcrumb: 'Comparison' },
+  { p: '/for-economic-development-officers', t: 'Tools for Indigenous Economic Development Officers', d: 'What Indigenous Rising AI does today for economic development officers, and what is not built yet.', breadcrumb: 'EDO tools' },
+  { p: '/for-funders', t: 'For Funders and Indigenous Support Organizations', d: 'What Indigenous Rising AI does today for funders and support organizations, and the reporting that is not built yet.', breadcrumb: 'For funders' },
+  { p: '/ocap-data-sovereignty-software', t: 'Indigenous Data Sovereignty and How We Handle Data', d: 'Where data is stored, how you export it, our AI training-crawler policy, and how we describe alignment with OCAP® principles.', breadcrumb: 'Data sovereignty' },
+  { p: '/guides/what-is-ocap', t: 'What is OCAP®? Principles and Vendor Questions', d: 'What OCAP® stands for, who owns it, and the questions to ask any software vendor about your community data — with the principles pointed to their source at FNIGC.', breadcrumb: 'What is OCAP®' },
   { p: '/guides/indigenous-business-grants', t: 'Indigenous Business Grants & Funding in Canada', d: 'Indigenous business grants, loans and non-repayable funding across Canada, by province and by community, plus how to apply and get procurement-ready.', breadcrumb: 'Grants & funding' },
   { p: '/demo', t: 'Book a demo | Indigenous Rising AI', d: 'Book a 30-minute walkthrough of Indigenous Rising AI — funding matching, the business plan assistant, and the controls that decide who sees your data.', breadcrumb: 'Book a demo' },
   { p: '/contact', img: '/og-contact.jpg', t: 'Contact us | Indigenous Rising AI', d: 'Get in touch with the Indigenous Rising AI team. We reply within one business day at help@indigenousrising.ai.' },
@@ -266,6 +274,66 @@ async function getSsrRender() {
   return ssrRender;
 }
 
+/**
+ * Published funding programmes, for the /funding page's structured data and its
+ * no-JS list.
+ *
+ * /funding fetches its programmes client-side, so the prerendered HTML carried
+ * the page furniture and NOT ONE programme name. Measured against production:
+ * zero occurrences of "Futurpreneur", "Aboriginal Entrepreneurship" or "BDC" in
+ * 41KB of markup. The product's core inventory was invisible to every crawler
+ * that does not execute JavaScript, which includes most AI answer engines.
+ *
+ * Live data is fetched first so the build reflects reality. The committed
+ * snapshot is the fallback, so a missing env var or a network blip degrades to
+ * slightly older programme data instead of failing the build or silently
+ * shipping an empty page again.
+ *
+ * The anon key is the publishable one that already ships in the client bundle.
+ * Nothing secret passes through here.
+ */
+async function loadFundingPrograms() {
+  const snapshotPath = path.join(ROOT, 'scripts/data/funding-snapshot.json');
+  let fallback = [];
+  try {
+    fallback = JSON.parse(await readFile(snapshotPath, 'utf8')).rows ?? [];
+  } catch {
+    console.warn('[prerender] funding snapshot unreadable; /funding will ship without programmes');
+  }
+
+  const base = process.env.VITE_SUPABASE_URL;
+  const key = process.env.VITE_SUPABASE_ANON_KEY;
+  if (!base || !key) {
+    console.warn(`[prerender] no Supabase env; using funding snapshot (${fallback.length})`);
+    return { rows: fallback, source: 'snapshot' };
+  }
+
+  const cols = 'name,funder,description,amount_min,amount_max,amount_currency,is_recurring,recurrence_notes,provinces,application_url,last_verified';
+  try {
+    const res = await fetch(`${base}/rest/v1/grants?select=${cols}&is_published=eq.true&order=name.asc`, {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    const rows = await res.json();
+    if (!Array.isArray(rows) || rows.length === 0) throw new Error('empty result');
+    return { rows, source: 'live' };
+  } catch (err) {
+    console.warn(`[prerender] live funding fetch failed (${err.message}); using snapshot (${fallback.length})`);
+    return { rows: fallback, source: 'snapshot' };
+  }
+}
+
+/** "Up to $75,000" / "$20,000,000 - $250,000,000" / "Amount varies" — mirrors formatAmount on the page. */
+function fundingAmountLabel(g) {
+  const fmt = (n) => '$' + Number(n).toLocaleString('en-CA');
+  if (!g.amount_min && !g.amount_max) return 'Amount varies';
+  if (g.amount_min && g.amount_max && g.amount_min !== g.amount_max) {
+    return `${fmt(g.amount_min)} - ${fmt(g.amount_max)}`;
+  }
+  return `Up to ${fmt(g.amount_max ?? g.amount_min)}`;
+}
+
 async function writeRoute(template, route) {
   const dir = path.join(DIST, route.p.replace(/^\//, ''));
   const outFile = route.file ? path.join(DIST, route.file) : path.join(dir, 'index.html');
@@ -286,6 +354,12 @@ async function writeRoute(template, route) {
       process.exitCode = 1;
     }
   }
+  // Injected AFTER the React root closes, so hydration never sees it and can
+  // never mismatch on it. Used for the /funding no-JS programme list.
+  if (route.bodyExtra) {
+    html = html.replace('</body>', `${route.bodyExtra}\n  </body>`);
+  }
+
   await writeFile(outFile, html);
 }
 
@@ -301,6 +375,7 @@ async function main() {
   // Titles come from the same module the page components import, so the
   // static <title> and the one Helmet sets after hydration cannot drift.
   // They had, on 12 of 23 routes.
+  const funding = await loadFundingPrograms();
   const routeTitles = await loadDataModule('src/data/routeTitles.ts', 'ROUTE_TITLES');
   if (routeTitles) {
     for (const m of MARKETING) {
@@ -325,6 +400,16 @@ async function main() {
     if (hub) hub.faqs = hubFaqs.map((f) => ({ q: f.question, a: f.answer }));
   } else {
     console.warn('[prerender] grants-hub FAQs unavailable — page ships without FAQPage');
+  }
+
+  // /faq: FAQPage schema from the SAME module the page renders. It used to be
+  // injected at runtime through react-helmet, so it was absent from the static
+  // HTML - a SearchFit audit found /faq, the richest Q&A page on the site,
+  // shipped no FAQPage to any crawler that does not execute JavaScript.
+  const siteFaqs = await loadDataModule('src/data/siteFaqs.ts', 'siteFaqs');
+  if (Array.isArray(siteFaqs) && siteFaqs.length) {
+    const faqRoute = MARKETING.find((m) => m.p === '/faq');
+    if (faqRoute) faqRoute.faqs = siteFaqs.map((f) => ({ q: f.question, a: f.answer }));
   }
   let count = 0;
   // Collected live and indexable URLs — written to dist/sitemap.xml at the end so
@@ -400,8 +485,76 @@ async function main() {
           })),
         });
       }
+      // /funding: put the actual programme inventory into the static HTML.
+      // Both the ItemList and the visible no-JS list carry last_verified, so a
+      // stale snapshot says when each programme was checked rather than
+      // implying all are current.
+      let bodyExtra;
+      if (m.p === '/funding' && funding.rows.length) {
+        jsonLd.push({
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          '@id': `${BASE}/funding#programmes`,
+          name: 'Indigenous business funding programmes in Canada',
+          numberOfItems: funding.rows.length,
+          itemListElement: funding.rows.map((g, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            item: {
+              '@type': 'FinancialProduct',
+              name: g.name,
+              description: g.description || undefined,
+              provider: { '@type': 'Organization', name: g.funder },
+              url: g.application_url || undefined,
+              areaServed: Array.isArray(g.provinces) && g.provinces.length
+                ? g.provinces.map((code) => ({ '@type': 'AdministrativeArea', name: code }))
+                : undefined,
+              ...(g.amount_max
+                ? {
+                    amount: {
+                      '@type': 'MonetaryAmount',
+                      currency: g.amount_currency || 'CAD',
+                      ...(g.amount_min ? { minValue: g.amount_min } : {}),
+                      maxValue: g.amount_max,
+                    },
+                  }
+                : {}),
+            },
+          })),
+        });
+
+        const items = funding.rows
+          .map((g) => {
+            const checked = g.last_verified
+              ? `Details last verified ${esc(g.last_verified)}`
+              : 'Details not yet verified \u2014 confirm with the funder';
+            return [
+              '      <li>',
+              `        <h3>${esc(g.name)}</h3>`,
+              `        <p>${esc(g.funder)} \u2014 ${esc(fundingAmountLabel(g))}</p>`,
+              g.description ? `        <p>${esc(g.description)}</p>` : '',
+              `        <p>${checked}</p>`,
+              g.application_url
+                ? `        <p><a href="${esc(g.application_url)}" rel="nofollow noopener">Apply on the funder's site</a></p>`
+                : '',
+              '      </li>',
+            ].filter(Boolean).join('\n');
+          })
+          .join('\n');
+
+        bodyExtra = [
+          '  <noscript>',
+          '    <h2>Indigenous business funding programmes</h2>',
+          `    <p>${funding.rows.length} programmes. Amounts and eligibility are set by each funder — confirm current terms with them before applying. Nothing here is an eligibility decision.</p>`,
+          '    <ul>',
+          items,
+          '    </ul>',
+          '  </noscript>',
+        ].join('\n');
+      }
+
       await writeRoute(template, {
-        p: m.p, url, title: m.t, description: m.d, robots: m.robots,
+        p: m.p, url, title: m.t, description: m.d, robots: m.robots, bodyExtra,
         // Per-route social image. applyHead OVERWRITES og:image on every
         // route, so without this the page component's own <meta og:image>
         // is discarded at build time and every marketing page shipped
@@ -454,6 +607,8 @@ async function main() {
           logo: { '@type': 'ImageObject', url: `${BASE}/logo-icon.png`, width: 512, height: 512 },
         },
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+        // Only where the page visibly lists its sources (see the Sources section).
+        ...(Array.isArray(post.sources) && post.sources.length ? { citation: post.sources.map((s) => s.url) } : {}),
       },
       {
         '@context': 'https://schema.org',

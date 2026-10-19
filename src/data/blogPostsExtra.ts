@@ -86,7 +86,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI helps Indigenous e-commerce entrepreneurs find funding for website development, inventory, and marketing—start your search today.",
-    relatedPosts: ["1", "10", "31"]
+    relatedPosts: ["1", "10", "31", "45"]
   },
   {
     id: "22",
@@ -130,7 +130,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI connects you with financial planning tools and funding programs—navigate your tax obligations and find support for your business growth.",
-    relatedPosts: ["9", "12", "46"]
+    relatedPosts: ["9", "12", "46", "40", "49"]
   },
   {
     id: "23",
@@ -237,7 +237,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI connects you with ACC programs and helps you prepare winning loan applications—start your funding search today.",
-    relatedPosts: ["1", "2", "12"]
+    relatedPosts: ["1", "2", "12", "42"]
   },
   {
     id: "26",
@@ -334,7 +334,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI helps Indigenous artists find grants, build business plans, and grow sustainable creative businesses—explore your funding options today.",
-    relatedPosts: ["21", "1", "7"]
+    relatedPosts: ["21", "1", "7", "37", "38"]
   },
   {
     id: "29",
@@ -368,7 +368,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI helps construction entrepreneurs find contracts, funding, and training—build your business with the right support.",
-    relatedPosts: ["1", "17", "14"]
+    relatedPosts: ["1", "17", "14", "50"]
   },
   {
     id: "30",
@@ -436,7 +436,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI offers AI-powered marketing tools and business support—grow your brand with culturally grounded strategies.",
-    relatedPosts: ["21", "28", "12"]
+    relatedPosts: ["21", "28", "12", "38"]
   },
   {
     id: "32",
@@ -591,7 +591,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI connects entrepreneurs with mentorship resources and business support—find the guidance that accelerates your journey.",
-    relatedPosts: ["14", "23", "1"]
+    relatedPosts: ["14", "23", "1", "40"]
   },
   {
     id: "37",
@@ -688,7 +688,7 @@ export const extraBlogPosts: BlogPost[] = [
       }
     ],
     cta: "Indigenous Rising AI is committed to accessibility—explore our WCAG-compliant platform and find disability-specific funding for your business.",
-    relatedPosts: ["1", "7", "6"]
+    relatedPosts: ["1", "7", "6", "41"]
   },
   {
     id: "40",
@@ -1200,5 +1200,200 @@ export const extraBlogPosts: BlogPost[] = [
     ],
     cta: "Indigenous Rising AI helps you build the business plan an IFI will read, and matches your profile against verified funding programs across Canada. Start free — no credit card.",
     relatedPosts: ["1", "2", "52"],
+  },
+
+  {
+    id: "54",
+    slug: "indigenous-business-loans-canada",
+    title: "Indigenous Business Loans in Canada: Who Lends, How Much, and What It Costs",
+    summary: "The national picture of Indigenous business lending in one place: Indigenous Financial Institutions, the Aboriginal Entrepreneurship Program, BDC, Futurpreneur and Métis capital corporations — with each amount taken from the lender's own page.",
+    keywords: ["indigenous business loans canada", "indigenous business loans", "indigenous financial institutions loans", "BDC indigenous entrepreneur loan", "developmental lending indigenous"],
+    searchIntent: "Informational + Commercial",
+    category: "Funding Guides",
+    readTime: 10,
+    publishedAt: "2026-09-28",
+    updatedAt: "2026-09-28",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
+    image: "/og-home.jpg",
+    introduction: `Most guides to Indigenous business funding talk about grants. Most of the money is lending.\n\nThat is not a disappointment, it is the design. The Indigenous lending network exists because mainstream banks were not serving Indigenous businesses, and one structural reason sits in the Indian Act: property on reserve generally cannot be mortgaged the way off-reserve property can, so the usual collateral test fails before the conversation starts. Developmental lenders were built to assess a business on its merits instead.\n\nThis guide sets out who actually lends, how much each one states, and what it costs — each figure taken from the lender's own page and dated. Amounts and terms change; confirm with the institution before you apply. Nothing here is an eligibility decision.`,
+    sections: [
+      {
+        id: "who-lends",
+        title: "Who lends to Indigenous businesses in Canada",
+        content: `There are four routes, and they are not alternatives so much as different doors for different situations.\n\n| Lender | Stated ceiling | Best fit |\n|---|---|---|\n| Indigenous Financial Institutions (via AEP) | $99,999 individual, $250,000 community | Most Indigenous entrepreneurs, any stage |\n| BDC Indigenous Entrepreneur Loan | $350,000 | Businesses with a track record, growing or scaling |\n| Futurpreneur IESP | $75,000 | Ages 18-39, launching or under two years trading |\n| Métis capital corporations | Varies by province | Métis citizens, province-specific |\n\nVerified against each lender's own page on 28 September 2026.`,
+      },
+      {
+        id: "ifis",
+        title: "Indigenous Financial Institutions: the main route",
+        content: `Federal capital under the **Aboriginal Entrepreneurship Program (AEP)** is not disbursed by Ottawa. It is delivered by Indigenous Financial Institutions (IFIs) and Métis Capital Corporations (MCCs), administered through the National Aboriginal Capital Corporations Association (NACCA).\n\nFrom Indigenous Services Canada's own page:\n\n- Individual Indigenous entrepreneurs: up to **$99,999**\n- Eligible Indigenous community businesses: up to **$250,000**\n- The instruction is to *contact your local IFI or MCC directly*\n- ISC states plainly that *eligibility varies between IFIs and MCCs*\n\nNACCA describes the network as **more than 50 Indigenous Financial Institutions**, reporting more than **54,500 business loans** disbursed across the network.\n\nWhat this means practically: there is no central application form and no national deadline. Two entrepreneurs with similar businesses in different provinces can face different criteria, because they are dealing with different institutions. The first task is identifying the right institution and asking what they need.`,
+      },
+      {
+        id: "bdc",
+        title: "BDC Indigenous Entrepreneur Loan",
+        content: `The Business Development Bank of Canada offers the **Indigenous Entrepreneur Loan** with financing of **up to $350,000** to grow or scale a business. From BDC's own page:\n\n- Flexible repayment terms, framed as protecting cash flow\n- Preferred rates, with **no processing or annual administration fees**\n- BDC contributes annually to charitable organizations supporting Indigenous entrepreneurship\n\nThe ceiling is the highest of the four routes, and the framing is growth rather than start-up. If you are pre-revenue, start with an IFI; if you have a track record and are scaling, this is the larger cheque.`,
+      },
+      {
+        id: "futurpreneur",
+        title: "Futurpreneur, for entrepreneurs aged 18 to 39",
+        content: `Futurpreneur's Indigenous Entrepreneur Startup Program offers a **flexible, equity-free loan of up to $75,000** to start or buy a business, alongside **up to two years of 1:1 mentorship**.\n\nEligibility, in Futurpreneur's own wording:\n\n- Self-identify as Indigenous (First Nations, Métis, or Inuit)\n- Canadian citizen or permanent resident **aged 18-39** at application\n- Business not yet operating, or operating full time for **24 months or less**\n- Open to Indigenous entrepreneurs *including those on or off reserve*\n\nConditions apply to the loan. If you are outside that age range, the IFI route is the one to focus on.`,
+      },
+      {
+        id: "cost",
+        title: "What it actually costs",
+        content: `Published rates are rare in this sector, which is itself worth knowing — most institutions price per file. Two things are publishable:\n\n- BDC states **preferred rates** and **no processing or annual administration fees** on the Indigenous Entrepreneur Loan.\n- In British Columbia, the Métis Financial Corporation publishes a **7.5% starting interest rate** over a four-year term on its Sophie Morigeau Women's Entrepreneurship Program, where each loan carries a **30% grant applied at the end of the term** if all payments are made on time. Refinancing or paying off in a lump sum forfeits that grant.\n\nThat last condition is the one borrowers miss. Paying a loan off early sounds prudent and can cost you the grant, so read the term before you plan an early payoff.\n\nFor everyone else: ask for the rate, the fees, the term, and any prepayment condition on the first call, and ask for them in writing.`,
+      },
+      {
+        id: "stacking",
+        title: "Can you combine them?",
+        content: `Often, yes — this is what people mean by stacking — but it is the institutions, not you, who decide whether a stack works.\n\nSome practical points:\n\n- An IFI is usually the right first call even if you end up elsewhere, because they know what the other lenders in your region will accept.\n- Lenders want to see your own contribution. Ask each one what equity they expect before you build the number into your plan.\n- Tell each lender about the others. Discovering a second loan late reads as a problem; disclosing it early reads as planning.\n\nDo not assume the maximum from every source adds up to your budget. Ask what a realistic range looks like for a business at your stage.`,
+      },
+      {
+        id: "prepare",
+        title: "What to have ready",
+        content: `The same short list unlocks all four routes:\n\n- **A business plan** with financial projections you can defend, including a realistic downside case\n- **Proof of Indigenous identity** in the form the institution accepts\n- **Quotes or costings** for what the money will buy, rather than a round number\n- **Your own contribution**, if any, and clarity about where it comes from\n\nYou do not need perfect documents to make the first call. You need enough to have a specific conversation.`,
+      },
+    ],
+    cta: "Indigenous Rising AI matches your business profile against verified funding programs and helps you build the business plan a lender will read. Free to start, no credit card.",
+    relatedPosts: ["1", "9", "53", "52"],
+  },
+
+  {
+    id: "55",
+    slug: "indigenous-business-funding-checklist",
+    title: "The Indigenous Business Funding Checklist: 25 Steps From Idea to Application",
+    summary: "A numbered, printable checklist for preparing an Indigenous business funding application in Canada — what to do, in what order, and what to ask the institution at each stage.",
+    keywords: ["indigenous business funding checklist", "how to get funding for indigenous business in canada", "indigenous funding application checklist", "apply for indigenous business funding"],
+    searchIntent: "How-to",
+    category: "How-To Guides",
+    readTime: 9,
+    publishedAt: "2026-09-28",
+    updatedAt: "2026-09-28",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
+    image: "/og-home.jpg",
+    introduction: `Most funding advice tells you what exists. This tells you what to do next, in order.\n\nThe sequence matters more than people expect. The single most common wasted effort in Indigenous business funding is writing a full application before speaking to the institution that will assess it — because eligibility and document requirements differ between institutions, and a phone call costs nothing.\n\nTwenty-five steps, in four stages. Nothing here is an eligibility decision; the institution you apply to makes that.`,
+    sections: [
+      {
+        id: "stage-1",
+        title: "Stage 1: Before you look at programs (steps 1-6)",
+        content: `1. Write one sentence describing what the business does, for someone who has never heard of it.\n2. Decide what the money is actually for — equipment, working capital, a building, a hire. Not "growth".\n3. Put a number on it, built from quotes rather than a round figure.\n4. Work out what you can contribute yourself, and where that comes from.\n5. Check your own credit standing, before a lender does it for you.\n6. Decide whether you are looking for business capital or for income assistance. They are different systems — if you need income support, contact your provincial or territorial social services office or a Friendship Centre rather than applying for business loans.`,
+      },
+      {
+        id: "stage-2",
+        title: "Stage 2: Find the right door (steps 7-12)",
+        content: `7. Identify the Indigenous Financial Institution or Métis Capital Corporation serving your region. This is the main federal route; the money is delivered locally.\n8. If you are 18-39 and launching or under two years in, add Futurpreneur to your list.\n9. If you are established and scaling, add BDC.\n10. Check whether your Nation, Métis government, or regional Inuit organization runs its own economic development programs.\n11. Check your province — provincial Indigenous business programs exist and are often overlooked.\n12. Call the institution before writing anything. Ask three questions: does this fit what you fund, what is a realistic range for a business at my stage, and what do you need from me in what order.`,
+      },
+      {
+        id: "stage-3",
+        title: "Stage 3: Build the file (steps 13-20)",
+        content: `13. Write the business plan. This is the document that carries the decision.\n14. Build financial projections you can defend line by line.\n15. Include a realistic downside case. Funders read a lot of plans; a plan that only goes up reads as inexperience.\n16. Assemble quotes and costings for every item the money will buy.\n17. Gather proof of Indigenous identity in the form your institution accepts — status, Métis citizenship, or Inuit beneficiary documentation.\n18. Collect business registration, licences, permits and insurance, or a plan and timeline for getting them.\n19. Prepare personal and business financial statements if you have them.\n20. Write the community impact section — jobs, training, local spend, capacity. Indigenous funders often ask directly, and most generic plan templates have nothing for it.`,
+      },
+      {
+        id: "stage-4",
+        title: "Stage 4: Submit and follow through (steps 21-25)",
+        content: `21. Re-read the institution's own criteria against your file before you send it.\n22. Confirm current terms with the funder. Programme amounts and rules change, and a third-party summary can be out of date — including ours.\n23. Submit, and note the date and who you dealt with.\n24. Stay reachable. Most Indigenous business programs are rolling intake rather than dated competitions, which removes deadline pressure but also means nothing chases you. Institutions often come back with questions; a fast reply keeps your file moving.\n25. If the answer is no, ask what would make it a yes. Developmental lenders are set up to build businesses, not just to approve or decline them, and the answer to that question is usually specific.`,
+      },
+      {
+        id: "mistakes",
+        title: "Where files lose momentum",
+        content: `- **Applying to the wrong door.** Searching for a central federal application form wastes weeks. For the Aboriginal Entrepreneurship Program the decision sits with your local institution.\n- **A round number with no costings.** "I need $50,000" is weaker than a quoted list that adds up to $48,200.\n- **Treating the first call as a formality.** It is the cheapest research you will do.\n- **Going quiet.** Rolling intake means no deadline, which for some people means no momentum. Set your own.`,
+      },
+    ],
+    cta: "Indigenous Rising AI walks you through the business plan in step 13 and matches your profile against verified funding programs. Free to start, no credit card.",
+    relatedPosts: ["1", "2", "53", "54"],
+  },
+
+  {
+    id: "56",
+    slug: "futurpreneur-indigenous-entrepreneur-startup-program",
+    title: "Futurpreneur's Indigenous Entrepreneur Startup Program (IESP): Eligibility and How to Apply",
+    summary: "What Futurpreneur's IESP actually offers Indigenous entrepreneurs aged 18 to 39 — the $75,000 equity-free loan, the two-year mentorship, the full eligibility list, and the honest loan-not-grant distinction.",
+    keywords: ["futurpreneur indigenous program", "futurpreneur IESP eligibility", "indigenous entrepreneur startup program", "futurpreneur indigenous loan"],
+    searchIntent: "Navigational",
+    category: "Funding Guides",
+    readTime: 7,
+    publishedAt: "2026-09-28",
+    updatedAt: "2026-09-28",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
+    image: "/og-home.jpg",
+    introduction: `Futurpreneur's Indigenous Entrepreneur Startup Program (IESP) is one of the clearest programs in Canadian Indigenous business funding — clearer, in places, than the federal ones. It states its age range, its operating window, and its residency position outright, which is unusual.\n\nIt is also a **loan**, not a grant. Aggregator sites blur that line constantly. Knowing it up front changes how you plan.\n\nEverything below is from Futurpreneur's own program page, read on 28 September 2026. Confirm current terms with Futurpreneur before applying; nothing here is an eligibility decision.`,
+    sections: [
+      {
+        id: "what-it-offers",
+        title: "What the program offers",
+        content: `- **A flexible, equity-free loan of up to $75,000** to start or buy a business. Conditions apply.\n- **Up to two years of 1:1 mentorship** from an experienced business leader.\n- Access to Futurpreneur's **Ohpikiwin workshop series**, described as strengthening financial empowerment through an Indigenous lens, plus business planning workshops and tools.\n- A national network of Indigenous entrepreneurs, leaders and Indigenous-led community organizations.\n\n"Equity-free" is the part worth pausing on: the loan does not take a share of your business. You repay money, not ownership.`,
+      },
+      {
+        id: "eligibility",
+        title: "Who is eligible",
+        content: `Futurpreneur lists the top-level criteria as:\n\n- You **self-identify as Indigenous** (First Nations, Métis, or Inuit). Futurpreneur adds that Indigenous entrepreneurs who self-identify as members of other communities are also welcome to apply for its support.\n- You are a **Canadian citizen or permanent resident aged 18-39**. You must be within that range when you apply.\n- You are **launching a business, or have been operating for less than two years** — specifically, the business must not yet be operational or can only have been operating full time for **24 months or less**.\n\nThe program is open to Indigenous entrepreneurs **"including those on or off reserve"**. That sentence matters: most federal pages say nothing about residency, which leaves people guessing. This one answers it.`,
+      },
+      {
+        id: "loan-not-grant",
+        title: "It is a loan, not a grant",
+        content: `Search results routinely list IESP alongside grant programs. It is financing, and it is repayable.\n\nThat is not a reason to skip it. A $75,000 equity-free loan with two years of mentorship attached is a strong offer, and the mentorship is the part recipients most often name as decisive. But plan for repayment from the start, and build the repayment into the financial projections in your business plan rather than treating it as free money.\n\nIf you specifically need non-repayable money, look at the grant streams some Métis capital corporations publish, and read our guide to non-repayable contributions.`,
+      },
+      {
+        id: "how-to-apply",
+        title: "How to apply",
+        content: `1. Check the three top-level criteria above against your situation, then read Futurpreneur's full eligibility list.\n2. Sign up to be connected with a member of the IESP team, who will talk you through the loan, mentorship and resources.\n3. Prepare a **complete business plan and a 24-month cash flow**. Futurpreneur's own form notes that if those are ready, you can go straight to submission.\n4. Ask which Indigenous partner institution serves your region. Futurpreneur partners with Indigenous organizations across the country, including Alberta Indian Investment Corporation, Clarence Campeau Development Fund, Nishnawbe Aski Development Fund, Ulnooweg Development Group, Louis Riel Capital Corporation, Waubetek, Métis Financial Corporation of BC, Indian Business Corporation, Saskatchewan Indian Equity Foundation and Two Rivers Community Development Centre.\n\nThe 24-month cash flow is the requirement people underestimate. Start it early.`,
+      },
+      {
+        id: "if-not-eligible",
+        title: "If you are outside the age range",
+        content: `The age limit is firm — you must be 18 to 39 when you apply, and submit a full application before turning 40.\n\nIf you are outside it, the Indigenous Financial Institution route is the one to focus on. Under the Aboriginal Entrepreneurship Program, Indigenous Services Canada states that individual entrepreneurs may receive up to $99,999 and eligible community businesses up to $250,000, delivered by IFIs and Métis Capital Corporations, with no age restriction stated.\n\nEstablished businesses scaling up should also look at BDC's Indigenous Entrepreneur Loan, which states financing of up to $350,000.`,
+      },
+    ],
+    cta: "Indigenous Rising AI helps you build the business plan and cash flow Futurpreneur asks for, and matches your profile against verified funding programs across Canada. Free to start.",
+    relatedPosts: ["53", "54", "52", "9"],
+  },
+
+  {
+    id: "57",
+    slug: "first-nations-business-funding",
+    title: "First Nations Business Funding: Status, On-Reserve Lending, and Where the Money Comes From",
+    summary: "What is specific to First Nations entrepreneurs rather than Indigenous business funding in general — why on-reserve property changes how lending works, what your Nation may fund directly, and the federal route through Indigenous Financial Institutions.",
+    keywords: ["first nations business funding", "first nations business grants", "on reserve business funding", "first nations entrepreneur funding", "band funding for business"],
+    searchIntent: "Informational + Commercial",
+    category: "Identity-Specific",
+    readTime: 9,
+    publishedAt: "2026-09-28",
+    updatedAt: "2026-09-28",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
+    image: "/og-home.jpg",
+    introduction: `Most funding guides say "Indigenous" and stop there. That is accurate as far as it goes, and it hides the things that are specific to First Nations entrepreneurs.\n\nFirst Nations, Métis and Inuit are distinct Peoples with distinct institutions, and some of what shapes a First Nations business funding application — registered status, the Indian Act's effect on property, your Nation's own programs, ISETS agreement holders — has no equivalent for the other two. This guide covers what is actually different.\n\nProgram details were verified against the funders' own pages on 28 September 2026. Nation-level programs vary and are not listed here, because inventing them would be worse than omitting them. Nothing here is an eligibility decision.`,
+    sections: [
+      {
+        id: "why-lending-works-differently",
+        title: "Why lending works differently on reserve",
+        content: `This is the single most useful thing to understand, and most guides skip it.\n\nUnder the Indian Act, land on reserve is held differently from ordinary private property. In practice, a bank generally cannot take a mortgage over it and sell it on default the way it could off reserve. The collateral test that mainstream commercial lending is built on therefore fails before the conversation about your business even begins.\n\nThat is not a gap in your application. It is a structural feature of the system, and it is the reason a separate network of lenders exists.\n\n**What follows from it:**\n\n- Indigenous Financial Institutions practise *developmental lending* — assessing the business, the plan and the operator rather than only the security available.\n- Your business plan carries more weight than it would at a commercial bank, because it is doing work the collateral would otherwise do.\n- Being turned down by a mainstream bank is not a signal about your business. It is frequently a signal about the security rules that bank operates under.\n\nIf a lender has not engaged with this before, you will spend the meeting explaining it. An IFI will not need the explanation.`,
+      },
+      {
+        id: "federal-route",
+        title: "The federal route: AEP through an IFI",
+        content: `The main federal programme is the **Aboriginal Entrepreneurship Program (AEP): Access to Capital**. Per Indigenous Services Canada:\n\n- Individual Indigenous entrepreneurs: up to **$99,999** in funding assistance\n- Eligible Indigenous community businesses: up to **$250,000**\n- Delivered by **Indigenous Financial Institutions (IFIs)** and Métis Capital Corporations, administered through NACCA\n- ISC's instruction is to *contact your local IFI or MCC directly*, and its page states that *eligibility varies between IFIs and MCCs*\n\nNACCA describes the network as **more than 50 Indigenous Financial Institutions**, reporting over **54,500 business loans** disbursed.\n\nThere is no central federal application form and no national deadline. The institution serving your region makes the decision, which is why the first call matters more than the first draft.\n\nISC's eligibility wording is *Indigenous individuals, including businesses owned and controlled by Indigenous Peoples*. It does not state a status requirement or a residency requirement on that page. What the delivering institution asks for is a separate question, and the honest answer is to ask them.`,
+      },
+      {
+        id: "your-nation",
+        title: "What your own Nation may fund",
+        content: `Many First Nations operate economic development programmes of their own, through an economic development officer, a development corporation, or a Nation-owned lending arm. This is the most commonly missed source of support, and the one no national guide can list for you.\n\nWe are not going to name programmes here. There are more than 600 First Nations in Canada, their programmes differ, and a guide that invented a generic list would send people to funders that do not exist for them.\n\n**What to do instead:**\n\n1. Contact your Nation's **economic development officer** or economic development corporation.\n2. Ask three questions: does the Nation fund or guarantee business start-ups, does it have a relationship with a particular IFI, and are there supports for members living away from the community.\n3. Ask whether the Nation has its own procurement — selling to your own Nation is a legitimate and often overlooked first contract.\n\nIf you are not sure who to ask, the band office can point you to the right person. This call is usually shorter and more useful than a week of searching.`,
+      },
+      {
+        id: "status-and-residency",
+        title: "Status, residency, and what they actually affect",
+        content: `Two questions come up constantly, and they have different answers.\n\n**Does registered status matter?** For business funding, less than people expect. ISC's AEP page describes eligible recipients as Indigenous individuals and Indigenous-owned and controlled businesses; it does not set out a status test on that page. Delivering institutions ask for proof of Indigenous identity in a form they accept, which is not the same as requiring status in every case. Ask the institution what documentation they take.\n\n**Does living off reserve disqualify you?** For business programmes, generally no. Futurpreneur's Indigenous Entrepreneur Startup Program states outright that it serves Indigenous entrepreneurs *including those on or off reserve*. Most federal pages do not address residency at all, which is exactly why the question persists — silence is not a no, but it is not a yes either.\n\nWhere status and residency *do* bite is tax and property, not eligibility. Section 87 of the Indian Act and the CRA's connecting-factors test determine whether business income is exempt, and that turns on facts about where the business operates rather than on where you live. That is a separate question from funding, and worth getting advice on rather than guessing.`,
+      },
+      {
+        id: "training-funding",
+        title: "Training and skills funding is a separate stream",
+        content: `If what you need is training rather than capital, the **Indigenous Skills and Employment Training (ISET) Strategy** funds skills development through agreement holders — organisations that deliver the programme regionally, including many First Nations and tribal councils.\n\nThis is worth knowing for two reasons:\n\n- It is a different door from the IFI door. Applying to a lender for what is really a training need wastes everyone's time.\n- Some entrepreneurs need both, in sequence: the training first, the capital once the plan is stronger.\n\nAsk your Nation or tribal council who holds the ISET agreement in your region.`,
+      },
+      {
+        id: "prepare",
+        title: "What to have ready before the first call",
+        content: `Because the business plan is carrying more weight than it would at a commercial bank, it is worth more of your time:\n\n- **A business plan** with financial projections you can defend line by line, including a realistic downside case.\n- **Proof of Indigenous identity** in the form the institution accepts — ask first rather than assuming.\n- **Quotes or costings** for what the money buys. A quoted list that adds to $48,200 is stronger than a request for $50,000.\n- **Your own contribution**, and clarity about where it comes from.\n- **A community impact section** — jobs, training, local spend. Indigenous funders often ask directly, and most generic plan templates have nothing for it.\n\nYou do not need all of it to make the first call. You need enough to have a specific conversation.`,
+      },
+    ],
+    cta: "Indigenous Rising AI helps you build the business plan an Indigenous Financial Institution will read, and matches your profile against verified funding programs across Canada. Free to start, no credit card.",
+    relatedPosts: ["54", "52", "53", "9"],
   },
 ];

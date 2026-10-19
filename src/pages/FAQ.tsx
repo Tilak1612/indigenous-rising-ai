@@ -24,7 +24,7 @@ const FAQ = () => {
             Frequently Asked Questions — Indigenous Rising AI
           </h1>
         </div>
-        <FAQSection includeSchema />
+        <FAQSection />
       </main>
       <Footer />
     </div>

@@ -52,7 +52,14 @@ export default defineConfig(({ mode }) => {
     },
     chunkSizeWarningLimit: 1000,
     minify: 'esbuild',
-    sourcemap: 'hidden', // generate sourcemaps for error tracking (not publicly exposed)
+    // 'hidden' only omits the //# sourceMappingURL comment from each bundle. The
+    // .map files are still emitted into dist/assets and Vercel serves them, so
+    // they ARE publicly fetchable at <bundle>.js.map. That is acceptable here
+    // because the repository is public, so they disclose nothing the source does
+    // not, and it is what makes decoding a production stack trace possible
+    // (f39ff3b moved off `false` for exactly that). If the repo ever goes
+    // private, revisit this - a "hidden" map is not a private one.
+    sourcemap: 'hidden',
   },
   esbuild: {
     drop: mode === 'production' ? ['console', 'debugger'] : [],

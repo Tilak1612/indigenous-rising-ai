@@ -39,6 +39,13 @@ const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const FAQ = lazy(() => import("./pages/FAQ"));
+const PlanTemplate = lazy(() => import("./pages/PlanTemplate"));
+const FundingStatistics = lazy(() => import("./pages/FundingStatistics"));
+const ComparisonPage = lazy(() => import("./pages/ComparisonPage"));
+const ForEconomicDevelopmentOfficers = lazy(() => import("./pages/ForEconomicDevelopmentOfficers"));
+const ForFunders = lazy(() => import("./pages/ForFunders"));
+const DataSovereignty = lazy(() => import("./pages/DataSovereignty"));
+const WhatIsOcap = lazy(() => import("./pages/WhatIsOcap"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -613,6 +620,70 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <Blog />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/indigenous-business-plan-template"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <PlanTemplate />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/indigenous-business-funding-statistics"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <FundingStatistics />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/grantcompass-alternative"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ComparisonPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/liveplan-alternative"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ComparisonPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/for-economic-development-officers"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ForEconomicDevelopmentOfficers />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/for-funders"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ForFunders />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/ocap-data-sovereignty-software"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <DataSovereignty />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/what-is-ocap"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <WhatIsOcap />
                   </Suspense>
                 }
               />

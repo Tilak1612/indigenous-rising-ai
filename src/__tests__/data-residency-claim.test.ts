@@ -10,7 +10,9 @@ import { readFileSync } from 'node:fs';
  * calls api.openai.com (funding matching), api.resend.com and api.hubapi.com
  * (email), Stripe (payments) and Google Analytics — all outside Canada.
  */
-const faq = readFileSync('src/components/FAQSection.tsx', 'utf8');
+// The FAQ answers live in a data file (shared by the accordion and the FAQPage
+// schema), not in the component, so that is the file whose wording is guarded.
+const faq = readFileSync('src/data/siteFaqs.ts', 'utf8');
 const assistant = readFileSync('supabase/functions/site-assistant/index.ts', 'utf8');
 
 describe('the residency claim is accurate', () => {
