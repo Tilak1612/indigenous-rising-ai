@@ -40,6 +40,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "912c965d-d7c4-4d12-99ba-9bbb834142c5"
+      }
+    },
+    "owner": "brainfy-ai-inc"
   }
 }
