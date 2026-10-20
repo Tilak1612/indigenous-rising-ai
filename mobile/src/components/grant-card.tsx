@@ -13,7 +13,7 @@ interface Props {
 
 /**
  * One funding programme, as a scannable card: name, funder, amount, deadline,
- * type. Everything shown comes from the verified catalogue row; nothing is
+ * type. Everything shown comes from the catalogue row itself; nothing is
  * inferred, and no eligibility is implied.
  */
 export function GrantCard({ grant, saved, onToggleSave }: Props) {
