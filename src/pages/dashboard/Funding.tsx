@@ -302,7 +302,7 @@ export default function Funding() {
           <div>
             <h1 className="text-3xl font-bold">Funding Navigator</h1>
             <p className="text-muted-foreground mt-1">
-              Browse verified funding and financing programs across Canada
+              Browse funding and financing programs across Canada; each shows whether its details have been verified
             </p>
           </div>
           {/* Was a "Run AI Analysis" button that waited 2s on a setTimeout and

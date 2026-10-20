@@ -214,7 +214,7 @@ const PublicFunding: React.FC = () => {
             <div className="mb-10">
               <h2 className="text-3xl font-display font-bold text-foreground mb-3">Current funding opportunities</h2>
               <p className="text-muted-foreground">
-                Browse verified grants, loans, and programs. Filter by your province and industry below.
+                Browse grants, loans, and programs. Each one shows whether its details have been verified with the funder and when. Filter by your province and industry below.
               </p>
             </div>
 
