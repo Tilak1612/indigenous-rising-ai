@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Badge, Body, Caption, Card, Title } from '@/components/ui';
-import { daysUntil, formatAmount, formatDeadline, type Grant } from '@/lib/funding';
+import { daysUntil, formatAmount, formatDeadline, humanize, type Grant } from '@/lib/funding';
 import { Spacing, useTheme } from '@/theme';
 
 interface Props {
@@ -42,7 +42,7 @@ export function GrantCard({ grant, saved, onToggleSave }: Props) {
           </View>
           <Body>{formatAmount(grant.amount_min, grant.amount_max)}</Body>
           <View style={styles.badges}>
-            {grant.funding_type ? <Badge>{grant.funding_type}</Badge> : null}
+            {grant.funding_type ? <Badge>{humanize(grant.funding_type)}</Badge> : null}
             {grant.is_repayable === false ? <Badge tone="success">Non-repayable</Badge> : null}
             <Badge tone={closingSoon ? 'danger' : 'neutral'}>
               {closingSoon ? `Closes in ${days} day${days === 1 ? '' : 's'}` : formatDeadline(grant.deadline, grant.is_recurring)}

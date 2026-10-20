@@ -33,7 +33,6 @@ export default function HomeScreen() {
 
   const profile = home.data?.profile ?? null;
   const missing = profileMissingFields(profile);
-  const firstName = profile?.full_name?.split(' ')[0] ?? null;
   const upcoming = (home.data?.saved ?? [])
     .map((s) => ({ s, days: daysUntil(s.grant?.deadline ?? null) }))
     .filter((x) => x.days !== null && x.days >= 0 && x.days <= 60)
@@ -43,8 +42,8 @@ export default function HomeScreen() {
   return (
     <Screen refreshing={home.refreshing} onRefresh={home.reload}>
       <View>
-        <Heading>{firstName ? `Hello, ${firstName}` : 'Welcome'}</Heading>
-        <Caption>Get funded. Grow your business. Keep your data.</Caption>
+        <Heading>Welcome back</Heading>
+        <Caption>{profile?.business_name ?? 'Get funded. Grow your business. Keep your data.'}</Caption>
       </View>
 
       {home.error ? <Notice tone="danger">{home.error}</Notice> : null}
