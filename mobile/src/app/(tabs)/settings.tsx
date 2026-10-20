@@ -95,7 +95,6 @@ export default function SettingsScreen() {
         ) : (
           <Caption>Free to start. No credit card.</Caption>
         )}
-        <LinkRow label="Manage plan on the website" url={`${SITE}/dashboard/plan`} />
       </Card>
 
       <Card>

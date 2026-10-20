@@ -8,7 +8,6 @@ import { Badge, Body, Button, Caption, Card, Heading, Notice, Title } from '@/co
 import { formatAmount, formatDeadline, runMatching, type Match, type MatchOutcome } from '@/lib/funding';
 import { Spacing, useTheme } from '@/theme';
 
-const PLAN_URL = 'https://www.indigenousrising.ai/dashboard/plan';
 const PROFILE_URL = 'https://www.indigenousrising.ai/dashboard/profile';
 
 type State = { kind: 'idle' } | { kind: 'loading' } | MatchOutcome;
@@ -55,8 +54,7 @@ export default function MatchesScreen() {
         <Card>
           <Title>Monthly matches used</Title>
           <Body>{state.message}</Body>
-          <Caption>Plans and upgrades are managed on the website.</Caption>
-          <Button title="View plans on the website" variant="secondary" onPress={() => WebBrowser.openBrowserAsync(PLAN_URL)} />
+          <Caption>Your saved programmes and the catalogue stay available.</Caption>
         </Card>
       ) : null}
 

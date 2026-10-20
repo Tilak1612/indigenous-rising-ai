@@ -96,7 +96,7 @@ export default function HomeScreen() {
             </Badge>
           ) : null}
         </View>
-        <Caption>Plans are managed on the website. Funding information is decision support, not an eligibility decision.</Caption>
+        <Caption>Funding information is decision support, not an eligibility decision.</Caption>
       </Card>
     </Screen>
   );
