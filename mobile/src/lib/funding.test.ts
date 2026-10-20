@@ -1,4 +1,4 @@
-import { daysUntil, formatAmount, formatDeadline, runMatching } from './funding';
+import { daysUntil, formatAmount, formatDeadline, humanize, runMatching } from './funding';
 
 jest.mock('./api', () => ({ callFunction: jest.fn() }));
 jest.mock('./supabase', () => ({ supabase: {} }));
@@ -56,4 +56,10 @@ describe('runMatching maps the edge function response to an outcome', () => {
     callFunction.mockResolvedValue({ status: 500, data: { matches: [], error: 'boom' } });
     expect(await runMatching()).toEqual({ kind: 'error', message: 'boom' });
   });
+});
+
+describe('humanize', () => {
+  test('snake_case enum to sentence case', () => expect(humanize('loan_guarantee')).toBe('Loan guarantee'));
+  test('single word', () => expect(humanize('grant')).toBe('Grant'));
+  test('empty', () => expect(humanize(null)).toBe(''));
 });

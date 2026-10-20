@@ -7,7 +7,7 @@ import { Screen } from '@/components/screen';
 import { Badge, Body, Button, Caption, Card, EmptyState, Heading, Loading, Notice, Title } from '@/components/ui';
 import { useAsync } from '@/hooks/use-async';
 import { useAuth } from '@/hooks/use-auth';
-import { fetchGrant, fetchSavedGrantIds, formatAmount, formatDeadline, setSaved } from '@/lib/funding';
+import { fetchGrant, fetchSavedGrantIds, formatAmount, formatDeadline, humanize, setSaved } from '@/lib/funding';
 import { Spacing } from '@/theme';
 
 export default function GrantDetailScreen() {
@@ -56,10 +56,10 @@ export default function GrantDetailScreen() {
           </View>
 
           <View style={styles.badges}>
-            {g.funding_type ? <Badge>{g.funding_type}</Badge> : null}
+            {g.funding_type ? <Badge>{humanize(g.funding_type)}</Badge> : null}
             {g.is_repayable === false ? <Badge tone="success">Non-repayable</Badge> : null}
             {g.is_repayable === true ? <Badge>Repayable</Badge> : null}
-            {g.verification_status ? <Badge>{g.verification_status.replace(/_/g, ' ')}</Badge> : null}
+            {!g.last_verified && g.verification_status ? <Badge>{humanize(g.verification_status)}</Badge> : null}
           </View>
 
           <Card>
