@@ -69,6 +69,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Cookie Policy', to: '/cookies' },
       { name: 'Your data rights', to: '/data-rights' },
       { name: 'Accessibility', to: '/accessibility' },
+      { name: 'Delete your account', to: '/account-deletion' },
     ],
   },
 ];

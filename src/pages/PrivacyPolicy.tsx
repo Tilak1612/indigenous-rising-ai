@@ -217,7 +217,8 @@ const PrivacyPolicy: React.FC = () => {
             </p>
             
             <ul className="list-disc list-inside space-y-1 text-muted-foreground">
-              <li>Account information: Until account deletion plus 7 years for legal compliance</li>
+              <li>Account information: Until you delete your account. You can request deletion yourself in Settings or the app; it completes after a 30-day grace period during which you can cancel</li>
+              <li>Community posts and comments: Kept in their threads with your name replaced by &ldquo;[account removed]&rdquo; so other members&apos; conversations stay readable</li>
               <li>Payment records: 7 years as required by Canadian tax and business laws</li>
               <li>Support communications: 3 years for service improvement</li>
               <li>Analytics data: Anonymized after 2 years, aggregated data retained indefinitely</li>

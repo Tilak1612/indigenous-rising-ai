@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useSubscription } from '@/hooks/useSubscription';
 import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
 import { readStoredSession } from '@/lib/auth-storage';
+import AccountDeletionCard from '@/components/dashboard/AccountDeletionCard';
 import { toast } from 'sonner';
 import { 
   Settings as SettingsIcon, 
@@ -568,38 +569,8 @@ export default function Settings() {
                     </div>
                     <Separator />
                     <div className="flex items-center justify-between">
-                      {/* This previously rendered a full "Are you absolutely
-                          sure? This cannot be undone" confirmation whose
-                          confirm button only ever toasted "Account deletion
-                          requires contacting support" — a destructive dialog
-                          that never deleted anything. Replaced with an honest
-                          request path until self-serve deletion ships.
-
-                          The database is already prepared for it: every
-                          user-owned table carries ON DELETE CASCADE from
-                          auth.users (audit_logs is SET NULL, keeping the
-                          security trail but anonymised), so a service-role
-                          auth.admin.deleteUser() would complete cleanly. What
-                          still needs deciding before it can be self-serve is
-                          community content — community_posts and
-                          community_comments cascade today, which would tear
-                          holes in threads other people are reading; those
-                          should be anonymised to "[account removed]" rather
-                          than destroyed. */}
-                      <div>
-                        <p className="font-medium">Delete your account</p>
-                        <p className="text-sm text-muted-foreground">
-                          We&apos;ll permanently delete your account and the data attached to it.
-                          Email us and we&apos;ll action it — you&apos;ll get written confirmation
-                          when it&apos;s done. Export your data first if you want to keep a copy.
-                        </p>
-                      </div>
-                      <Button variant="outline" asChild>
-                        <a href="mailto:help@indigenousrising.ai?subject=Account%20deletion%20request">
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Request deletion
-                        </a>
-                      </Button>
+                      {/* Self-serve deletion with a 30-day grace period; see AccountDeletionCard. */}
+                      <AccountDeletionCard userId={user?.id ?? null} onRequested={() => signOut()} />
                     </div>
                   </CardContent>
                 </Card>

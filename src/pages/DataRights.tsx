@@ -23,7 +23,7 @@ const DataRights = () => {
     {
       icon: Lock,
       title: 'Right to Deletion',
-      description: 'Request deletion of your personal information, subject to legal retention requirements.'
+      description: 'Delete your account yourself from Settings or the app. Deletion completes after a 30-day grace period; payment records are kept as Canadian tax law requires.'
     },
     {
       icon: Shield,

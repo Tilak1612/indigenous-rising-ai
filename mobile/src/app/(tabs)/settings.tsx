@@ -9,7 +9,15 @@ import { Screen } from '@/components/screen';
 import { Badge, Body, Button, Caption, Card, Heading, Notice, Title } from '@/components/ui';
 import { useAsync } from '@/hooks/use-async';
 import { useAuth } from '@/hooks/use-auth';
-import { exportMyData, fetchProfile, fetchSubscription } from '@/lib/account';
+import {
+  cancelAccountDeletion,
+  exportMyData,
+  fetchProfile,
+  fetchSubscription,
+  formatDeletionDate,
+  getDeletionRequest,
+  requestAccountDeletion,
+} from '@/lib/account';
 import { Spacing, useTheme } from '@/theme';
 
 const SITE = 'https://www.indigenousrising.ai';
@@ -19,9 +27,15 @@ export default function SettingsScreen() {
   const t = useTheme();
   const userId = user?.id ?? '';
   const account = useAsync(async () => {
-    const [profile, subscription] = await Promise.all([fetchProfile(userId), fetchSubscription()]);
-    return { profile, subscription };
+    const [profile, subscription, deletion] = await Promise.all([
+      fetchProfile(userId),
+      fetchSubscription(),
+      getDeletionRequest(userId),
+    ]);
+    return { profile, subscription, deletion };
   }, [userId]);
+  const [deletionBusy, setDeletionBusy] = useState(false);
+  const [deletionError, setDeletionError] = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
 
@@ -50,24 +64,47 @@ export default function SettingsScreen() {
       { text: 'Sign out', style: 'destructive', onPress: () => signOut() },
     ]);
 
+  // Nothing is destroyed on confirm: the account is scheduled 30 days out and
+  // can be cancelled from this screen (or the website) by signing in again.
   const requestDeletion = () =>
     Alert.alert(
-      'Delete your account',
-      'We permanently delete your account and the data attached to it. Email us from this address and we action it, with written confirmation when it is done. Export your data first if you want a copy.',
+      'Delete your account?',
+      'Your account will be permanently deleted in 30 days, including your profile, plans, documents and saved funding. You can cancel by signing in before then. Payment records are kept as Canadian tax law requires; community posts stay with your name removed. Export your data first if you want a copy.',
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: 'Keep my account', style: 'cancel' },
         {
-          text: 'Email a deletion request',
+          text: 'Schedule deletion',
           style: 'destructive',
-          onPress: () =>
-            Linking.openURL(
-              `mailto:help@indigenousrising.ai?subject=${encodeURIComponent('Account deletion request')}&body=${encodeURIComponent(
-                `Please delete the account for ${user?.email ?? ''}.`,
-              )}`,
-            ),
+          onPress: async () => {
+            setDeletionBusy(true);
+            setDeletionError(null);
+            try {
+              const r = await requestAccountDeletion(userId);
+              Alert.alert('Deletion scheduled', `Your account will be deleted on ${formatDeletionDate(r.scheduled_for)}. Sign in before then to cancel.`, [
+                { text: 'OK', onPress: () => signOut() },
+              ]);
+            } catch (e) {
+              setDeletionError((e as Error).message);
+            } finally {
+              setDeletionBusy(false);
+            }
+          },
         },
       ],
     );
+
+  const cancelDeletion = async () => {
+    setDeletionBusy(true);
+    setDeletionError(null);
+    try {
+      await cancelAccountDeletion(userId);
+      await account.reload();
+    } catch (e) {
+      setDeletionError((e as Error).message);
+    } finally {
+      setDeletionBusy(false);
+    }
+  };
 
   const sub = account.data?.subscription;
   const version = Constants.expoConfig?.version ?? '';
@@ -113,11 +150,27 @@ export default function SettingsScreen() {
         <LinkRow label="FAQ" url={`${SITE}/faq`} />
       </Card>
 
+      {account.data?.deletion ? (
+        <Card>
+          <Title>Deletion scheduled</Title>
+          <Body>
+            Your account will be permanently deleted on {formatDeletionDate(account.data.deletion.scheduled_for)}. Until then everything
+            keeps working.
+          </Body>
+          {deletionError ? <Notice tone="danger">{deletionError}</Notice> : null}
+          <Button title="Cancel deletion" variant="secondary" onPress={cancelDeletion} loading={deletionBusy} />
+        </Card>
+      ) : null}
+
       <View style={styles.gapMd}>
         <Button title="Sign out" variant="secondary" onPress={confirmSignOut} />
-        <Pressable accessibilityRole="button" onPress={requestDeletion} style={styles.deleteLink}>
-          <Body style={{ color: t.danger }}>Delete your account</Body>
-        </Pressable>
+        {deletionError && !account.data?.deletion ? <Notice tone="danger">{deletionError}</Notice> : null}
+        {!account.data?.deletion ? (
+          <Pressable accessibilityRole="button" onPress={requestDeletion} disabled={deletionBusy} style={styles.deleteLink}>
+            <Body style={{ color: t.danger }}>Delete your account</Body>
+          </Pressable>
+        ) : null}
+        <LinkRow label="How account deletion works" url={`${SITE}/account-deletion`} />
       </View>
 
       <Caption style={{ textAlign: 'center' }}>

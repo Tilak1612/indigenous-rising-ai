@@ -459,12 +459,12 @@ export default function Auth() {
                     ))}
                     <li className="pt-1 text-xs text-muted-foreground">
                       {/* Verified before keeping: the database, storage and
-                          backups run in Supabase ca-central-1, and Settings has
-                          a working self-serve export. Deletion is NOT
-                          self-serve — it is actioned on request — so the old
-                          "export or delete it at any time" overstated it. */}
-                      Your data is stored in Canada. Export it yourself at any time, and ask us
-                      to delete it whenever you want — see{' '}
+                          backups run in Supabase ca-central-1; Settings has a
+                          self-serve export and, since account_deletion_requests
+                          shipped, self-serve deletion with a 30-day grace
+                          period. */}
+                      Your data is stored in Canada. Export it yourself at any time, and delete your
+                      account from Settings whenever you want — see{' '}
                       <Link to="/data-rights" className="underline">your data rights</Link>.
                     </li>
                   </ul>
