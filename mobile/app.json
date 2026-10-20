@@ -20,7 +20,11 @@
         "backgroundColor": "#F5F0E8",
         "foregroundImage": "./assets/brand/icon-transparent.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "blockedPermissions": [
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.DUMP"
+      ]
     },
     "plugins": [
       "expo-router",
