@@ -78,6 +78,42 @@ export async function fetchSubscription(): Promise<SubscriptionStatus> {
   };
 }
 
+// --- self-serve account deletion (30-day grace period) ----------------------
+
+export interface DeletionRequest {
+  requested_at: string;
+  scheduled_for: string;
+}
+
+export async function getDeletionRequest(userId: string): Promise<DeletionRequest | null> {
+  const { data, error } = await supabase
+    .from('account_deletion_requests')
+    .select('requested_at,scheduled_for')
+    .eq('user_id', userId)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return (data as DeletionRequest | null) ?? null;
+}
+
+export async function requestAccountDeletion(userId: string): Promise<DeletionRequest> {
+  const { data, error } = await supabase
+    .from('account_deletion_requests')
+    .insert({ user_id: userId, source: 'app' })
+    .select('requested_at,scheduled_for')
+    .single();
+  if (error) throw new Error(error.message);
+  return data as DeletionRequest;
+}
+
+export async function cancelAccountDeletion(userId: string): Promise<void> {
+  const { error } = await supabase.from('account_deletion_requests').delete().eq('user_id', userId);
+  if (error) throw new Error(error.message);
+}
+
+export function formatDeletionDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
 /**
  * Everything the signed-in user owns that the app can read, as one JSON
  * document. Same tables the web export covers; RLS scopes each query.

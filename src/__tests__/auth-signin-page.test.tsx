@@ -152,10 +152,11 @@ describe('sign-up uses the approved wording', () => {
 });
 
 describe('data-rights wording matches what the product actually does', () => {
-  test('export is self-serve; deletion is on request', () => {
+  test('export and deletion are both self-serve', () => {
     renderAt('/signup');
     const line = screen.getByText(/Your data is stored in Canada/i);
     expect(line).toHaveTextContent(/Export it yourself at any time/i);
+    expect(line).toHaveTextContent(/delete your account from Settings/i);
     expect(line).not.toHaveTextContent(/export or delete it at any time/i);
     expect(screen.getByRole('link', { name: /your data rights/i })).toHaveAttribute('href', '/data-rights');
   });

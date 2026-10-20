@@ -45,6 +45,7 @@ const ComparisonPage = lazy(() => import("./pages/ComparisonPage"));
 const ForEconomicDevelopmentOfficers = lazy(() => import("./pages/ForEconomicDevelopmentOfficers"));
 const ForFunders = lazy(() => import("./pages/ForFunders"));
 const DataSovereignty = lazy(() => import("./pages/DataSovereignty"));
+const AccountDeletion = lazy(() => import("./pages/AccountDeletion"));
 const WhatIsOcap = lazy(() => import("./pages/WhatIsOcap"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
@@ -668,6 +669,14 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <ForFunders />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/account-deletion"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <AccountDeletion />
                   </Suspense>
                 }
               />

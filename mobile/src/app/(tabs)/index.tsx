@@ -6,7 +6,7 @@ import { Screen } from '@/components/screen';
 import { Badge, Body, Caption, Card, Heading, Notice, Title } from '@/components/ui';
 import { useAsync } from '@/hooks/use-async';
 import { useAuth } from '@/hooks/use-auth';
-import { fetchProfile, fetchSubscription, profileMissingFields } from '@/lib/account';
+import { fetchProfile, fetchSubscription, formatDeletionDate, getDeletionRequest, profileMissingFields } from '@/lib/account';
 import { daysUntil, fetchSavedMatches, formatDeadline } from '@/lib/funding';
 import { Spacing, useTheme } from '@/theme';
 
@@ -16,12 +16,13 @@ export default function HomeScreen() {
   const userId = user?.id ?? '';
 
   const home = useAsync(async () => {
-    const [profile, subscription, saved] = await Promise.all([
+    const [profile, subscription, saved, deletion] = await Promise.all([
       fetchProfile(userId),
       fetchSubscription(),
       fetchSavedMatches(),
+      getDeletionRequest(userId),
     ]);
-    return { profile, subscription, saved };
+    return { profile, subscription, saved, deletion };
   }, [userId]);
 
   useFocusEffect(
@@ -48,6 +49,13 @@ export default function HomeScreen() {
       </View>
 
       {home.error ? <Notice tone="danger">{home.error}</Notice> : null}
+
+      {home.data?.deletion ? (
+        <Notice tone="danger">
+          Your account is scheduled for deletion on {formatDeletionDate(home.data.deletion.scheduled_for)}. To keep it, open Account
+          and choose Cancel deletion.
+        </Notice>
+      ) : null}
 
       {missing.length > 0 && !home.loading ? (
         <Notice tone="accent">
