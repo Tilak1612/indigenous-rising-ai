@@ -21,7 +21,7 @@ the web.
 Deliberately **not** in the app:
 
 - Purchasing or changing a plan. Plans are sold through Stripe on the website;
-  the app shows status and links to `/dashboard/plan`. In-app purchase would
+  the app shows plan status only and does not link to purchasing (Apple 3.1.1). In-app purchase would
   need Apple/Google products and a policy review first.
 - Self-serve account deletion. The website offers an emailed request, and the
   app does the same. **Apple (5.1.1(v)) and Google Play require in-app account
