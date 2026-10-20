@@ -2,7 +2,8 @@ import { callFunction } from './api';
 import { supabase } from './supabase';
 
 // Mirrors the columns the web Funding page selects. RLS exposes only
-// published rows, so this is the same verified catalogue the matcher uses.
+// published rows, so this is the same catalogue the matcher uses; each row carries its own
+// last_verified date and verification_status rather than a blanket claim.
 export interface Grant {
   id: string;
   name: string;
