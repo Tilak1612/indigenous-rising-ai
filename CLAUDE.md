@@ -39,6 +39,10 @@ Vercel + Speed Insights.
   `customer-portal`, `check-subscription`, `stripe-webhook`, `ai-assistant`,
   `site-assistant`
 - `seed/`, `brand/`, `tests/`, `docs/`, `.harness/`
+- `mobile/` — Expo (React Native) iOS/Android app, its own `package.json`.
+  Same Supabase project, tables and Edge Functions as the web; no duplicate
+  backend. Run its commands from inside `mobile/` (see `mobile/README.md`).
+  Plans are sold on the web only; the app shows subscription status read-only.
 
 ## Commands
 ```
