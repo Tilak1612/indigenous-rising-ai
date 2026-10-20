@@ -59,7 +59,7 @@ export default function GrantDetailScreen() {
             {g.funding_type ? <Badge>{g.funding_type}</Badge> : null}
             {g.is_repayable === false ? <Badge tone="success">Non-repayable</Badge> : null}
             {g.is_repayable === true ? <Badge>Repayable</Badge> : null}
-            {g.verification_status ? <Badge tone="primary">{g.verification_status}</Badge> : null}
+            {g.verification_status ? <Badge>{g.verification_status.replace(/_/g, ' ')}</Badge> : null}
           </View>
 
           <Card>

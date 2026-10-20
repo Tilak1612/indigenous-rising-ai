@@ -104,7 +104,7 @@ export default function FundingListScreen() {
             {grants.error ? <Notice tone="danger">Could not load programmes: {grants.error}</Notice> : null}
             {grants.data ? (
               <Caption>
-                {filtered.length} of {grants.data.length} verified programmes. Confirm current requirements with the funder before applying.
+                {filtered.length} of {grants.data.length} programmes. Where a programme shows a &ldquo;last verified&rdquo; date, its details were checked on that date; confirm current requirements with the funder before applying.
               </Caption>
             ) : null}
           </View>

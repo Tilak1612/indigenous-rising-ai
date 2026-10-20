@@ -57,7 +57,7 @@ export default function HomeScreen() {
       ) : null}
 
       <View style={styles.grid}>
-        <QuickLink href="/funding" title="Find funding" body="Browse the verified programme catalogue" />
+        <QuickLink href="/funding" title="Find funding" body="Browse the programme catalogue" />
         <QuickLink href="/funding/matches" title="My matches" body="AI matches from your business profile" />
         <QuickLink href="/funding/saved" title="Saved" body="Programmes you are tracking" />
         <QuickLink href="/plan" title="Business plan" body="Six sections, saved as you type" />
