@@ -521,6 +521,7 @@ export type Database = {
       }
       data_requests: {
         Row: {
+          assigned_to: string | null
           completed_at: string | null
           description: string | null
           email: string
@@ -536,6 +537,7 @@ export type Database = {
           verification_method: string | null
         }
         Insert: {
+          assigned_to?: string | null
           completed_at?: string | null
           description?: string | null
           email: string
@@ -551,6 +553,7 @@ export type Database = {
           verification_method?: string | null
         }
         Update: {
+          assigned_to?: string | null
           completed_at?: string | null
           description?: string | null
           email?: string
