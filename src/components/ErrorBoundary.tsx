@@ -1,3 +1,4 @@
+import { captureAppError } from "@/lib/sentry";
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from './ui/button';
@@ -26,15 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
     this.setState({ errorInfo });
-    // Send to error tracking service if available (e.g. Sentry injected on window)
-    try {
-      const anyWin = window as any;
-      if (anyWin.Sentry && typeof anyWin.Sentry.captureException === 'function') {
-        anyWin.Sentry.captureException(error, { extra: errorInfo });
-      }
-    } catch (e) {
-      // swallow reporting errors
-    }
+    captureAppError(error);
   }
 
   handleReset = () => {
