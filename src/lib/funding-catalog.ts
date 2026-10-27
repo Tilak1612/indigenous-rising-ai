@@ -432,6 +432,14 @@ export function eligibilitySummary(g: FundingProgram): string {
   return parts.length ? parts.join(' · ') : 'See eligibility on the funder\u2019s page';
 }
 
+/** Title used by the tab and by the prerender for /funding/<slug>. Always 60 chars or fewer. */
+export function programPageTitle(g: Pick<FundingProgram, 'name'>): string {
+  const suffix = ' | Indigenous Rising AI';
+  const room = 60 - suffix.length;
+  const name = g.name.length > room ? g.name.slice(0, room - 1).trimEnd() + '\u2026' : g.name;
+  return name + suffix;
+}
+
 // Type and region landing pages ---------------------------------------------
 export const TYPE_PAGES = [
   { slug: 'indigenous-business-loans', title: 'Indigenous business loans in Canada', types: ['loan', 'loan_guarantee'], intro: 'Repayable financing for Indigenous entrepreneurs: business loans, micro-loans and loan guarantees from Indigenous Financial Institutions, Métis Capital Corporations, BDC and provincial programmes.' },

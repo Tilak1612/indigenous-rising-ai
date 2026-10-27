@@ -60,21 +60,31 @@ describe('formatFreshness', () => {
   });
 });
 
-describe('the page actually renders it', () => {
-  const page = readFileSync('src/pages/PublicFunding.tsx', 'utf8');
+describe('the card actually renders it', () => {
+  // Every public surface (directory, region pages, programme pages' similar
+  // list) renders programmes through this one card, so the guard sits there.
+  const card = readFileSync('src/components/funding/FundingProgramCard.tsx', 'utf8');
+  const rowType = readFileSync('src/lib/funding-catalog.ts', 'utf8');
 
   test('every card computes and shows freshness', () => {
-    expect(page).toMatch(/const freshness = formatFreshness\(grant\)/);
-    expect(page).toMatch(/\{freshness\.text\}/);
+    expect(card).toMatch(/const freshness = formatFreshness\(program\)/);
+    expect(card).toMatch(/\{freshness\.text\}/);
   });
 
-  test('the columns it needs are part of the Grant type', () => {
-    expect(page).toMatch(/last_verified: string \| null/);
-    expect(page).toMatch(/verification_status: string \| null/);
+  test('the columns it needs are part of the row type and the selected columns', () => {
+    expect(rowType).toMatch(/last_verified: string \| null/);
+    expect(rowType).toMatch(/verification_status: string/);
+    expect(rowType).toMatch(/'last_verified', 'verification_status'/);
   });
 
   test('an unverified programme is visually distinct, not just differently worded', () => {
-    expect(page).toMatch(/freshness\.verified \?/);
-    expect(page).toMatch(/amber/);
+    expect(card).toMatch(/freshness\.verified \?/);
+    expect(card).toMatch(/amber/);
+  });
+
+  test('the directory, region and programme pages all render the shared card', () => {
+    for (const f of ['src/pages/PublicFunding.tsx', 'src/pages/FundingRegion.tsx', 'src/pages/FundingProgram.tsx']) {
+      expect(readFileSync(f, 'utf8'), f).toMatch(/<FundingProgramCard /);
+    }
   });
 });

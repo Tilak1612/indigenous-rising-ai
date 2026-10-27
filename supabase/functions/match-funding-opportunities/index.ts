@@ -49,6 +49,7 @@ interface Profile {
   indigenous_identity: string | null;
   indigenous_ownership_pct: number | null;
   entity_type: string | null;
+  year_founded: string | null;
 }
 
 interface Grant {
@@ -73,7 +74,23 @@ interface Grant {
   ownership_min_pct: number | null;
   verification_status: string;
   updated_at: string;
+  // Directory columns (migration 20261026000001).
+  slug: string;
+  source_url: string | null;
+  apply_url: string | null;
+  apply_link_type: string;
+  applicant_types: string[] | null;
+  intake_status: string;
+  entrepreneur_age_min: number | null;
+  entrepreneur_age_max: number | null;
+  business_age_max_months: number | null;
+  documents_required: string[] | null;
 }
+
+// The five states the brief asks for. Computed from the rules-based criteria
+// and the intake status, never from the model; the model only adds a fit
+// sentence to a potential match.
+type MatchState = 'potential_match' | 'needs_more_information' | 'likely_ineligible' | 'closed' | 'not_yet_open';
 
 interface LlmVerdict {
   eligibility: 'yes' | 'no' | 'maybe';
@@ -106,6 +123,17 @@ interface MatchResponse {
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
+  // Directory fields: the canonical page, the most specific official link
+  // (typed so the UI never labels a homepage "Apply"), intake and documents.
+  slug: string;
+  source_url: string | null;
+  apply_url: string | null;
+  apply_link_type: string;
+  intake_status: string;
+  state: MatchState;
+  next_step: string;
+  not_assessed: string[];
+  documents_required: string[];
 }
 
 const PROVINCE_NAME_TO_CODE: Record<string, string> = {
@@ -205,6 +233,66 @@ const IDENTITY_LABEL: Record<string, string> = {
   inuit: 'Inuit',
 };
 
+const APPLICANT_LABEL: Record<string, string> = {
+  individual: 'individual entrepreneur', business: 'business', community_business: 'community-owned business',
+  community: 'Nation or community', organization: 'Indigenous organization', nonprofit: 'not-for-profit',
+  institution: 'learning institution',
+};
+
+/** Which applicant_types values a profile's entity_type can satisfy; null when unknown. */
+function applicantKindsFor(entityType: string | null): string[] | null {
+  switch (entityType) {
+    case 'sole_proprietorship': return ['individual', 'business'];
+    case 'partnership':
+    case 'corporation':
+    case 'co_operative': return ['business', 'individual'];
+    case 'nation_owned':
+    case 'development_corporation': return ['community_business', 'community', 'organization'];
+    case 'non_profit': return ['nonprofit', 'organization'];
+    default: return null;
+  }
+}
+
+function monthsOperating(yearFounded: string | null): number | null {
+  if (!yearFounded) return null;
+  const y = Number.parseInt(yearFounded, 10);
+  if (!Number.isFinite(y) || y < 1900 || y > new Date().getUTCFullYear()) return null;
+  const now = new Date();
+  // Only the year is stored, so count from 1 July of that year: the midpoint
+  // keeps the error under six months either way.
+  return Math.max(0, (now.getUTCFullYear() - y) * 12 + (now.getUTCMonth() + 1) - 7);
+}
+
+function deriveState(grant: Grant, criteria: Criterion[], today: string): MatchState {
+  if (grant.intake_status === 'closed' || (grant.deadline && grant.deadline < today)) return 'closed';
+  if (grant.intake_status === 'not_yet_open') return 'not_yet_open';
+  if (criteria.some((c) => c.status === 'unmet')) return 'likely_ineligible';
+  if (criteria.some((c) => c.status === 'unknown')) return 'needs_more_information';
+  return 'potential_match';
+}
+
+const STATE_ORDER: Record<MatchState, number> = { potential_match: 0, needs_more_information: 1, not_yet_open: 2, likely_ineligible: 3, closed: 4 };
+
+function nextStepFor(state: MatchState, grant: Grant, criteria: Criterion[]): string {
+  const unknown = criteria.filter((c) => c.status === 'unknown').map((c) => c.label);
+  switch (state) {
+    case 'potential_match':
+      return grant.apply_link_type === 'directory'
+        ? 'Contact the Indigenous Financial Institution serving your region; it takes the application.'
+        : grant.apply_link_type === 'contact'
+          ? 'Contact the funder to confirm current terms and request an application.'
+          : 'Read the official programme page, confirm the current terms, then save this programme to start a readiness checklist.';
+    case 'needs_more_information':
+      return `Add the missing details to your profile so these can be assessed: ${unknown.join('; ')}.`;
+    case 'likely_ineligible':
+      return 'One or more stated criteria are not met. Only the funder decides eligibility; confirm with them if you think your situation differs.';
+    case 'not_yet_open':
+      return 'This intake has not opened yet. Save the programme to be told when it does.';
+    case 'closed':
+      return 'This intake is closed. Save the programme to be told when it reopens.';
+  }
+}
+
 function labelIdentities(keys: string[]): string {
   return keys.map((k) => IDENTITY_LABEL[k] ?? k).join(', ');
 }
@@ -259,6 +347,36 @@ function evaluateCriteria(profile: Profile, grant: Grant): Criterion[] {
       status = grant.identity_criteria.includes(declared) ? 'met' : 'unmet';
     }
     out.push({ label: `Open to ${labelIdentities(grant.identity_criteria)}`, status });
+  }
+
+  // Applicant type. A programme that only funds Nations, community-owned
+  // businesses or organisations must never read as a match for a sole
+  // proprietor; the entity type on the profile decides which side of that
+  // line the user is on. Entity types that are ambiguous stay 'unknown'.
+  if (grant.applicant_types && grant.applicant_types.length > 0) {
+    const kinds = applicantKindsFor(profile.entity_type);
+    out.push({
+      label: `Applicant type: ${grant.applicant_types.map((a) => APPLICANT_LABEL[a] ?? a).join(', ')}`,
+      status: !kinds ? 'unknown' : kinds.some((k) => grant.applicant_types!.includes(k)) ? 'met' : 'unmet',
+    });
+  }
+
+  // Business age (months operating), from the profile's year founded.
+  if (grant.business_age_max_months !== null && grant.business_age_max_months !== undefined) {
+    const months = monthsOperating(profile.year_founded);
+    out.push({
+      label: `Business operating ${grant.business_age_max_months} months or less`,
+      status: months === null ? 'unknown' : months <= grant.business_age_max_months ? 'met' : 'unmet',
+    });
+  }
+
+  // Entrepreneur age. The profile does not hold a date of birth (and should
+  // not need to), so this is always surfaced as "not assessed".
+  if (grant.entrepreneur_age_min != null || grant.entrepreneur_age_max != null) {
+    const range = grant.entrepreneur_age_min != null && grant.entrepreneur_age_max != null
+      ? `${grant.entrepreneur_age_min} to ${grant.entrepreneur_age_max}`
+      : grant.entrepreneur_age_min != null ? `${grant.entrepreneur_age_min} or older` : `up to ${grant.entrepreneur_age_max}`;
+    out.push({ label: `Entrepreneur aged ${range}`, status: 'unknown' });
   }
 
   // Ownership threshold
@@ -426,7 +544,7 @@ serve(async (req) => {
 
     const { data: profile, error: profileErr } = await admin
       .from('profiles')
-      .select('id, territory, industry, business_stage, business_name, business_description, bio, employees, target_funding_amount, funding_purpose, indigenous_identity, indigenous_ownership_pct, entity_type')
+      .select('id, territory, industry, business_stage, business_name, business_description, bio, employees, target_funding_amount, funding_purpose, indigenous_identity, indigenous_ownership_pct, entity_type, year_founded')
       .eq('id', userId)
       .maybeSingle();
 
@@ -508,6 +626,7 @@ serve(async (req) => {
       .from('grants')
       .select('*')
       .eq('is_published', true)
+      .neq('intake_status', 'closed')
       .or(`deadline.gte.${today},is_recurring.eq.true,deadline.is.null`);
 
     if (territoryCode) {
@@ -644,10 +763,17 @@ serve(async (req) => {
       return { grant: g, verdict };
     });
 
-    scored.sort((a, b) => b.verdict.fit_score - a.verdict.fit_score);
-    const top = scored.slice(0, topN);
+    // Rules first, model second: a potential match always outranks a record
+    // the rules say the user does not qualify for, whatever the fit score.
+    const withState = scored.map((s) => {
+      const criteria = evaluateCriteria(profile, s.grant);
+      const state = deriveState(s.grant, criteria, today);
+      return { ...s, criteria, state };
+    });
+    withState.sort((a, b) => STATE_ORDER[a.state] - STATE_ORDER[b.state] || b.verdict.fit_score - a.verdict.fit_score);
+    const top = withState.slice(0, topN);
 
-    const matches: MatchResponse[] = top.map(({ grant, verdict }) => {
+    const matches: MatchResponse[] = top.map(({ grant, verdict, criteria, state }) => {
       const base: MatchResponse = {
         grant_id: grant.id,
         name: grant.name,
@@ -660,9 +786,18 @@ serve(async (req) => {
         application_url: grant.application_url,
         funding_type: grant.funding_type,
         is_repayable: grant.is_repayable,
-        criteria: evaluateCriteria(profile, grant),
+        criteria,
         verification_status: grant.verification_status,
-        eligibility: verdict.eligibility,
+        eligibility: state === 'likely_ineligible' ? 'no' : state === 'potential_match' ? verdict.eligibility : 'maybe',
+        slug: grant.slug,
+        source_url: grant.source_url,
+        apply_url: grant.apply_url,
+        apply_link_type: grant.apply_link_type,
+        intake_status: grant.intake_status,
+        state,
+        next_step: nextStepFor(state, grant, criteria),
+        not_assessed: criteria.filter((c) => c.status === 'unknown').map((c) => c.label),
+        documents_required: grant.documents_required ?? [],
       };
       if (tier !== 'free') {
         base.fit_score = verdict.fit_score;

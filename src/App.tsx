@@ -33,7 +33,7 @@ const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const TrackRequest = lazy(() => import("./pages/TrackRequest"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Training = lazy(() => import("./pages/Training"));
-const FundingDetail = lazy(() => import("./pages/FundingDetail"));
+const FundingSlug = lazy(() => import("./pages/FundingSlug"));
 const FeatureDetail = lazy(() => import("./pages/FeatureDetail"));
 const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
@@ -262,11 +262,11 @@ export const AppTree = () => (
                   </Suspense>
                 } 
               />
-              <Route 
-                path="/funding/:id"
+              <Route
+                path="/funding/:slug"
                 element={
                   <Suspense fallback={<PageSkeleton />}>
-                    <FundingDetail />
+                    <FundingSlug />
                   </Suspense>
                 }
               />

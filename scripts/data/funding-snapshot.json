@@ -1,15 +1,22 @@
 {
-  "capturedOn": "2026-10-02",
+  "capturedOn": "2026-10-27",
   "rows": [
     {
+      "id": "7b366d5f-d9af-4862-95cc-a820e5e035bf",
+      "slug": "aboriginal-entrepreneurship-program",
       "name": "Aboriginal Entrepreneurship Program",
       "funder": "Indigenous Services Canada",
       "description": "Federal capital for Indigenous entrepreneurs, delivered by Indigenous Financial Institutions and Métis Capital Corporations. Individual Indigenous entrepreneurs may receive up to $99,999; eligible Indigenous community businesses up to $250,000. There is no deadline — applications are made to your local IFI or MCC directly.",
+      "funding_type": "contribution",
+      "is_repayable": false,
       "amount_min": null,
       "amount_max": 250000,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round intake through regional Indigenous Financial Institutions",
+      "intake_status": "rolling",
       "provinces": [
         "AB",
         "BC",
@@ -25,33 +32,164 @@
         "SK",
         "YT"
       ],
+      "industries": [],
+      "business_stages": [
+        "ideation",
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business",
+        "community_business",
+        "organization"
+      ],
+      "identity_criteria": [
+        "first_nations",
+        "inuit",
+        "metis"
+      ],
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [
+        "startup",
+        "expansion",
+        "acquisition"
+      ],
+      "eligibility_notes": "Eligible recipients are Indigenous individuals, including businesses owned and controlled by Indigenous Peoples, and Indigenous organizations and associations except those with charitable or religious purposes. Indigenous Services Canada states that eligibility varies between IFIs and MCCs — confirm with the institution serving your region.",
+      "eligibility_exclusions": "Indigenous organizations and associations with charitable or religious purposes are not eligible. Eligibility varies between IFIs and MCCs.",
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [
+        "Find the Indigenous Financial Institution or Métis Capital Corporation that serves your region",
+        "Contact the institution directly; it assesses eligibility and takes the application",
+        "The amount depends on the proposal's scope, demonstrated need and budget"
+      ],
+      "repayment_terms": null,
+      "source_url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
       "application_url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://nacca.ca/indigenous-financial-institutions-listings",
+      "apply_link_type": "directory",
+      "application_method": "through_lender",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "high",
+      "source_published_date": "2024-04-10",
+      "source_evidence": [
+        {
+          "url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
+          "field": "amount_max",
+          "quote": "Individual Indigenous entrepreneurs may receive up to $99,999 in funding assistance and eligible Indigenous community businesses may receive up to $250,000.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
+          "field": "funding_type",
+          "quote": "The AEP provides support to Indigenous small and medium-sized businesses with a non-repayable equity contribution and businesses services to start, expand or acquire a business.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
+          "field": "deadline",
+          "quote": "There is no deadline to apply.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
+          "field": "application_method",
+          "quote": "To apply for funding, please contact your local IFI or MCC directly.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236",
+          "field": "source_published_date",
+          "quote": "Date modified: 2024-04-10",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "fe1303d0-4137-410f-8ebb-5dd52830f3f0",
+      "slug": "alberta-indigenous-opportunities-corporation-loan-guarantees",
       "name": "Alberta Indigenous Opportunities Corporation Loan Guarantees",
       "funder": "Alberta Indigenous Opportunities Corporation (AIOC)",
       "description": "Loan guarantees that support Indigenous communities to invest in major natural resource and infrastructure projects in Alberta. Enables access to commercial financing on favourable terms.",
+      "funding_type": "loan_guarantee",
+      "is_repayable": true,
       "amount_min": 20000000,
       "amount_max": 250000000,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Project-based intake",
+      "intake_status": "rolling",
       "provinces": [
         "AB"
       ],
+      "industries": [
+        "Energy & Mining",
+        "Construction",
+        "Transportation"
+      ],
+      "business_stages": [
+        "established"
+      ],
+      "applicant_types": [
+        "community",
+        "community_business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "For Indigenous Nations and groups investing in natural resources, agriculture, telecommunications, transportation, tourism, healthcare or technology. AIOC states the investment value must fall between $20 million and $250 million, must demonstrate a benefit back to Alberta, and must show a high probability of meaningful cash flow to Indigenous investors. Guarantees are activated only if a loan defaults.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.theaioc.com/",
       "application_url": "https://www.theaioc.com/",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://www.theaioc.com/",
+      "apply_link_type": "contact",
+      "application_method": "contact",
+      "last_verified": "2026-09-28",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "6e08e119-55f7-46e0-9485-806ed995380b",
+      "slug": "bdc-indigenous-entrepreneur-loan",
       "name": "BDC Indigenous Entrepreneur Loan",
       "funder": "Business Development Bank of Canada",
       "description": "Financing for Indigenous entrepreneurs to start, expand, or acquire a business. Includes flexible repayment terms and access to advisory services.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": 350000,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Rolling intake",
+      "intake_status": "rolling",
       "provinces": [
         "AB",
         "BC",
@@ -67,18 +205,80 @@
         "SK",
         "YT"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": [
+        "first_nations",
+        "inuit",
+        "metis"
+      ],
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [
+        "expansion",
+        "working_capital"
+      ],
+      "eligibility_notes": "Open to First Nations, Inuit, and Métis entrepreneurs and Indigenous-owned businesses. Eligibility based on standard BDC lending criteria.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": "Flexible repayment terms, preferred rates, no processing or annual administration fees (BDC wording).",
+      "source_url": "https://www.bdc.ca/en/i-am/indigenous-entrepreneur",
       "application_url": "https://www.bdc.ca/en/i-am/indigenous-entrepreneur",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://www.bdc.ca/en/i-am/indigenous-entrepreneur",
+      "apply_link_type": "program_page",
+      "application_method": "online",
+      "last_verified": "2026-10-26",
+      "verification_status": "needs_review",
+      "verification_confidence": "high",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://www.bdc.ca/en/i-am/indigenous-entrepreneur",
+          "field": "amount_max",
+          "quote": "BDC offers the Indigenous Entrepreneur Loan with financing of up to $350,000 to grow or scale your business.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.bdc.ca/en/i-am/indigenous-entrepreneur",
+          "field": "repayment_terms",
+          "quote": "Flexible repayment terms. Preferred rates. Plus no processing or annual administration fees",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "d4ca40f3-e6bf-456e-b2ad-cda75237b927",
+      "slug": "canexport-smes",
       "name": "CanExport SMEs",
       "funder": "Global Affairs Canada",
       "description": "Non-repayable funding to help Canadian small and medium businesses (including Indigenous-owned SMEs) develop new export markets. Covers up to 50 percent of eligible activities.",
+      "funding_type": "grant",
+      "is_repayable": false,
       "amount_min": 10000,
       "amount_max": 50000,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Continuous intake",
+      "intake_status": "rolling",
       "provinces": [
         "AB",
         "BC",
@@ -94,48 +294,216 @@
         "SK",
         "YT"
       ],
+      "industries": [],
+      "business_stages": [
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "Canadian SMEs with up to 500 full-time employees and annual revenue between $100,000 and $100 million. Indigenous-owned businesses are explicitly encouraged to apply.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.tradecommissioner.gc.ca/funding-financement/canexport/sme-pme/index.aspx",
       "application_url": "https://www.tradecommissioner.gc.ca/funding-financement/canexport/sme-pme/index.aspx",
-      "last_verified": null
+      "apply_url": "https://www.tradecommissioner.gc.ca/funding-financement/canexport/sme-pme/index.aspx",
+      "apply_link_type": "program_page",
+      "application_method": "unknown",
+      "last_verified": null,
+      "verification_status": "needs_review",
+      "verification_confidence": "none",
+      "source_published_date": null,
+      "source_evidence": [],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "c4579105-4bde-4dc4-ae6c-fbd7bdf9127f",
+      "slug": "dana-naye-ventures-business-loan",
       "name": "däna Näye Ventures Business Loan",
       "funder": "däna Näye Ventures",
-      "description": "Indigenous Financial Institution serving First Nations entrepreneurs and Indigenous-owned businesses across Yukon. Provides loans, business advisory, and development services.",
+      "description": "Business loans, operating lines of credit and commercial mortgages from däna Näye Ventures' loan funds, for qualified entrepreneurs in its Yukon lending territory (the loan-funds page also names Northern BC residents). Applications are made on the downloadable form and answered within ten working days of a complete file.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round intake",
+      "intake_status": "rolling",
       "provinces": [
         "YT"
       ],
-      "application_url": "https://danenaye.com/",
-      "last_verified": null
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [
+        "startup",
+        "expansion",
+        "working_capital"
+      ],
+      "eligibility_notes": "First Nations individuals and Indigenous-owned businesses operating in Yukon Territory.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.dananaye.com/",
+      "application_url": "https://www.dananaye.com/dnv-loan-funds",
+      "apply_url": "https://www.dananaye.com/dnv-loan-funds",
+      "apply_link_type": "application_instructions",
+      "application_method": "email",
+      "last_verified": "2026-10-26",
+      "verification_status": "needs_review",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://www.dananaye.com/dnv-loan-funds",
+          "field": "description",
+          "quote": "dänä Näye Ventures administers various loan funds that are available to all qualified entrepreneurs in its lending territory (including Northern BC residents).",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.dananaye.com/dnv-loan-funds",
+          "field": "application_steps",
+          "quote": "Once all the required information has been provided and reviewed by the Financial Services Officer, a response will be provided to you within 10 working days.",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "86fe5dcf-3b4c-4f95-a56b-4a0a00eb16de",
+      "slug": "indigenous-economic-development-fund",
       "name": "Indigenous Economic Development Fund",
       "funder": "Government of Ontario",
-      "description": "Provincial fund supporting Indigenous economic development, business growth, and partnerships across Ontario. Includes streams for entrepreneurs, communities, and partnerships.",
+      "description": "Ontario's Indigenous Economic Development Fund provides grants and financing to Indigenous entrepreneurs, businesses, communities and organizations through three streams: the Economic Diversification Grant, the Business and Community Fund, and the Regional Partnership Grant. The two grant streams ran an intake from 21 October to 1 December 2025 and are closed; the Ministry page lists the next dates when an intake opens.",
+      "funding_type": "varies",
+      "is_repayable": null,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Annual intake periods; check program for current deadline",
+      "intake_status": "closed",
       "provinces": [
         "ON"
       ],
-      "application_url": "https://www.ontario.ca/page/indigenous-economic-development-fund",
-      "last_verified": null
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business",
+        "community",
+        "organization"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [
+        "startup",
+        "expansion",
+        "community_development",
+        "training"
+      ],
+      "eligibility_notes": "Indigenous businesses, communities, and organizations operating in Ontario. Specific stream eligibility varies.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.ontario.ca/page/funding-indigenous-economic-development",
+      "application_url": "https://www.ontario.ca/page/funding-indigenous-economic-development",
+      "apply_url": "https://www.ontario.ca/page/get-funding-ontario-government",
+      "apply_link_type": "application_instructions",
+      "application_method": "online",
+      "last_verified": "2026-10-26",
+      "verification_status": "needs_review",
+      "verification_confidence": "medium",
+      "source_published_date": "2026-02-12",
+      "source_evidence": [
+        {
+          "url": "https://www.ontario.ca/page/funding-indigenous-economic-development",
+          "field": "description",
+          "quote": "The Indigenous Economic Development Fund (IEDF) provides grants and financing to Indigenous entrepreneurs, businesses, communities and organizations.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.ontario.ca/page/funding-indigenous-economic-development",
+          "field": "intake_status",
+          "quote": "Economic Diversification Grant: Closed, October 21, 2025, December 1, 2025, 5 p.m. EST. Regional Partnership Grant: Closed, October 21, 2025, December 1, 2025, 5 p.m. EST",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.ontario.ca/page/funding-indigenous-economic-development",
+          "field": "source_published_date",
+          "quote": "Updated: February 12, 2026",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "fb15b27a-e623-4eb2-a86f-6f70c0521c51",
+      "slug": "indigenous-entrepreneur-startup-program",
       "name": "Indigenous Entrepreneur Startup Program",
       "funder": "Futurpreneur Canada",
       "description": "Equity-free startup loan of up to $75,000 plus up to two years of 1:1 mentorship, for Indigenous entrepreneurs aged 18-39 who are launching a business or have been operating for less than two years. Delivered by Futurpreneur's Indigenous team.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": 75000,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round applications",
+      "intake_status": "rolling",
       "provinces": [
         "AB",
         "BC",
@@ -151,18 +519,89 @@
         "SK",
         "YT"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage"
+      ],
+      "applicant_types": [
+        "individual"
+      ],
+      "identity_criteria": [
+        "first_nations",
+        "metis",
+        "inuit"
+      ],
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": 18,
+      "entrepreneur_age_max": 39,
+      "business_age_max_months": 24,
+      "revenue_max": null,
+      "program_category": [
+        "startup",
+        "acquisition"
+      ],
+      "eligibility_notes": "Self-identify as Indigenous (First Nations, Metis or Inuit). Canadian citizen or permanent resident aged 18-39 at the time of application. Business not yet operating, or operating full time for 24 months or less. Conditions apply to the loan; confirm current terms with Futurpreneur before applying.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": "Collateral-free loan; conditions apply. Up to $40,000 in follow-on financing may be available after two years of business performance.",
+      "source_url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
       "application_url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
-      "last_verified": "2026-09-26"
+      "apply_url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
+      "apply_link_type": "program_page",
+      "application_method": "online",
+      "last_verified": "2026-10-26",
+      "verification_status": "needs_review",
+      "verification_confidence": "high",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
+          "field": "amount_max",
+          "quote": "collateral-free loan financing of up to $75,000* for young Indigenous entrepreneurs (either on or off Reserve) to start, buy or grow a business. *conditions apply",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
+          "field": "entrepreneur_age",
+          "quote": "You must be a Canadian citizen or permanent resident aged 18-39",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
+          "field": "business_age_max_months",
+          "quote": "your business must not yet be operational or can only have been operating full time for 24 months or less.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/",
+          "field": "identity_criteria",
+          "quote": "You must self-identify as a member of a Canadian Indigenous community (First Nations, Métis, or Inuit)",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "df217a3f-d0f7-4eda-8031-1caff21cf9a4",
+      "slug": "indigenous-tourism-development-fund",
       "name": "Indigenous Tourism Development Fund",
       "funder": "Indigenous Tourism Association of Canada (ITAC)",
       "description": "Funding programs for Indigenous tourism businesses and entrepreneurs to develop, market, and grow their tourism offerings across Canada.",
+      "funding_type": "varies",
+      "is_repayable": null,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Multiple intakes per year",
+      "intake_status": "rolling",
       "provinces": [
         "AB",
         "BC",
@@ -178,48 +617,199 @@
         "SK",
         "YT"
       ],
+      "industries": [
+        "Hospitality & Tourism",
+        "Arts & Crafts"
+      ],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": 51,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "Indigenous-owned tourism businesses (51%+ Indigenous ownership). Membership in ITAC or affiliated regional Indigenous tourism organization typically required.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://indigenoustourism.ca/",
       "application_url": "https://indigenoustourism.ca/",
-      "last_verified": null
+      "apply_url": "https://indigenoustourism.ca/",
+      "apply_link_type": "program_page",
+      "application_method": "unknown",
+      "last_verified": null,
+      "verification_status": "unverified",
+      "verification_confidence": "none",
+      "source_published_date": null,
+      "source_evidence": [],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
-      "name": "Louis Riel Capital Corporation Métis Business Loan",
+      "id": "103d8bc3-f604-4d61-a12f-6531003470ea",
+      "slug": "louis-riel-capital-corporation-metis-business-loan",
+      "name": "Louis Riel Capital Corporation Small Business Grant & Loan Program",
       "funder": "Louis Riel Capital Corporation",
       "description": "Métis-specific Indigenous Financial Institution providing business loans, equity contributions, and entrepreneurship support to Métis citizens of Manitoba.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round intake",
+      "intake_status": "rolling",
       "provinces": [
         "MB"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": [
+        "metis"
+      ],
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "Citizens of the Manitoba Metis Federation operating or planning a business in Manitoba.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://lrcc.mb.ca/",
       "application_url": "https://lrcc.mb.ca/",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://lrcc.mb.ca/",
+      "apply_link_type": "contact",
+      "application_method": "contact",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://lrcc.mb.ca/",
+          "field": "name",
+          "quote": "Small Business Grant & Loan Program",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://lrcc.mb.ca/",
+          "field": "description",
+          "quote": "Small business loans to finance the start-up, acquisition and/or expansion of small business.",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "31531354-b21b-4c3a-ab2e-729b598201a7",
+      "slug": "metis-dene-development-fund",
       "name": "Métis Dene Development Fund",
       "funder": "Métis Dene Development Fund Ltd.",
-      "description": "Indigenous Financial Institution providing business loans, equity, and entrepreneurship support to Métis and Dene entrepreneurs in the Northwest Territories.",
+      "description": "Repayable term and working-capital loans for Indigenous entrepreneurs starting or expanding a business in the Northwest Territories, plus delivery of CanNor's Entrepreneurship and Business Development contribution program. Applications are invited year-round.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round intake",
+      "intake_status": "rolling",
       "provinces": [
         "NT"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "Métis and Dene individuals and Indigenous-owned businesses operating in the Northwest Territories.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.mddf.ca/",
       "application_url": "https://www.mddf.ca/",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://www.mddf.ca/",
+      "apply_link_type": "contact",
+      "application_method": "contact",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://www.mddf.ca/",
+          "field": "description",
+          "quote": "MDDF Repayable Term and Working Capital Loans. CanNor’s Entrepreneurship and Business Development (EBD) Contribution Program. Invite applications year round.",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "1504a4ff-aa05-4f8b-9860-e87ae5cf3fca",
+      "slug": "nacca-aboriginal-business-financing-program",
       "name": "NACCA Aboriginal Business Financing Program",
       "funder": "National Aboriginal Capital Corporations Association",
       "description": "Network of 50+ Indigenous Financial Institutions (AFIs) across Canada offering business loans, non-repayable contributions, and developmental lending to First Nations, Métis, and Inuit entrepreneurs.",
+      "funding_type": "mixed",
+      "is_repayable": null,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round through regional AFIs",
+      "intake_status": "rolling",
       "provinces": [
         "AB",
         "BC",
@@ -235,78 +825,333 @@
         "SK",
         "YT"
       ],
+      "industries": [],
+      "business_stages": [
+        "ideation",
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business",
+        "community_business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "Indigenous entrepreneurs and businesses. Specific eligibility, loan ceilings, and contribution caps vary by regional AFI.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://nacca.ca/",
       "application_url": "https://nacca.ca/",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://nacca.ca/indigenous-financial-institutions-listings",
+      "apply_link_type": "directory",
+      "application_method": "through_lender",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://nacca.ca/indigenous-financial-institutions-listings",
+          "field": "description",
+          "quote": "Indigenous Financial Institutions (IFIs) are autonomous, Indigenous-controlled, community-based financial organizations. IFIs provide developmental lending, business financing and support services to First Nations, Métis, and Inuit businesses in all provinces and territories.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://nacca.ca/indigenous-financial-institutions-listings",
+          "field": "count",
+          "quote": "Canada (51)",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "09075c32-b414-4fc3-b12f-9c851b1bcb4a",
+      "slug": "nedc-business-loan",
       "name": "NEDC Business Loan",
       "funder": "Nuu-chah-nulth Economic Development Corporation",
       "description": "Indigenous Financial Institution serving First Nations entrepreneurs and businesses on Vancouver Island and the central and north coast of British Columbia.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Rolling intake",
+      "intake_status": "rolling",
       "provinces": [
         "BC"
       ],
-      "application_url": "https://nedc.info/",
-      "last_verified": "2026-09-28"
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business",
+        "community_business"
+      ],
+      "identity_criteria": [
+        "first_nations",
+        "metis",
+        "inuit"
+      ],
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "First Nations individuals and Indigenous-owned businesses operating on Vancouver Island and BC coastal regions served by NEDC.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://nedc.info/",
+      "application_url": "https://nedc.info/financing-programs/",
+      "apply_url": "https://nedc.info/financing-programs/",
+      "apply_link_type": "application_instructions",
+      "application_method": "contact",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://nedc.info/financing-programs/",
+          "field": "eligibility",
+          "quote": "Indigenous ancestry (First Nations, Metis or Inuit) within NEDC service area.",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "9b7645f8-339e-4531-9bb5-4cbb47a6173f",
+      "slug": "nunavut-business-credit-corporation-loan",
       "name": "Nunavut Business Credit Corporation Loan",
       "funder": "Nunavut Business Credit Corporation",
       "description": "Territorial financial institution providing commercial loans and contract financing to small and medium businesses operating in Nunavut, including a focus on Inuit-owned enterprises.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Rolling intake",
+      "intake_status": "rolling",
       "provinces": [
         "NU"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "Small and medium businesses operating in Nunavut. Inuit-owned businesses are a core focus.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.gov.nu.ca/eia/programs-services/nunavut-business-credit-corporation",
       "application_url": "https://www.gov.nu.ca/eia/programs-services/nunavut-business-credit-corporation",
-      "last_verified": null
+      "apply_url": "https://www.gov.nu.ca/eia/programs-services/nunavut-business-credit-corporation",
+      "apply_link_type": "program_page",
+      "application_method": "unknown",
+      "last_verified": null,
+      "verification_status": "needs_review",
+      "verification_confidence": "none",
+      "source_published_date": null,
+      "source_evidence": [],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "ae0830a9-12b3-49f1-8e90-b0e99e03dd64",
+      "slug": "saskatchewan-indian-equity-foundation-business-loan",
       "name": "Saskatchewan Indian Equity Foundation Business Loan",
       "funder": "Saskatchewan Indian Equity Foundation (SIEF)",
       "description": "Indigenous Financial Institution providing business loans, capital, and developmental lending services to First Nations entrepreneurs across Saskatchewan.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round applications",
+      "intake_status": "rolling",
       "provinces": [
         "SK"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business",
+        "community_business"
+      ],
+      "identity_criteria": [
+        "first_nations"
+      ],
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "First Nations individuals and First Nations-owned businesses operating in Saskatchewan.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.sief.sk.ca/",
       "application_url": "https://www.sief.sk.ca/",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://www.sief.sk.ca/",
+      "apply_link_type": "contact",
+      "application_method": "contact",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://www.sief.sk.ca/",
+          "field": "description",
+          "quote": "SIEF provides commercial and agricultural lending for First Nation individuals and communities wanting to start a business, acquire a business or expand an existing business in Saskatchewan.",
+          "fetched_at": "2026-10-26"
+        },
+        {
+          "url": "https://www.sief.sk.ca/",
+          "field": "programs",
+          "quote": "The SIEF Contribution Program is a needs-based, conditional grant program for First Nation entrepreneurs and businesses.",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "d2e66304-0445-4416-8dff-5d247b0ec3e2",
+      "slug": "socca-business-loan-and-mentorship",
       "name": "SOCCA Business Loan and Mentorship",
       "funder": "Société de crédit commercial autochtone (SOCCA)",
       "description": "Indigenous Financial Institution serving First Nations entrepreneurs in Quebec with business loans, mentorship, and developmental lending.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Year-round intake",
+      "intake_status": "rolling",
       "provinces": [
         "QC"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": [
+        "first_nations"
+      ],
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "First Nations individuals and First Nations-owned businesses in Quebec, excluding the territory served by Eeyou Economic Group.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://socca.qc.ca/",
       "application_url": "https://socca.qc.ca/",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://socca.qc.ca/",
+      "apply_link_type": "contact",
+      "application_method": "contact",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "b709f9ea-07e0-4719-b5bb-64ed9a4b553a",
+      "slug": "strategic-partnerships-initiative",
       "name": "Strategic Partnerships Initiative",
       "funder": "Indigenous Services Canada",
       "description": "Federal program supporting multi-partner economic development initiatives that involve Indigenous communities and the private sector. Focused on key economic sectors and collaborative projects.",
+      "funding_type": "varies",
+      "is_repayable": null,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Project-based intake; contact regional ISC office",
+      "intake_status": "unknown",
       "provinces": [
         "AB",
         "BC",
@@ -322,26 +1167,113 @@
         "SK",
         "YT"
       ],
+      "industries": [
+        "Agriculture & Forestry",
+        "Energy & Mining",
+        "Hospitality & Tourism"
+      ],
+      "business_stages": [
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "community",
+        "organization",
+        "community_business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "Indigenous communities, organizations, and businesses participating in multi-partner economic development projects.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://www.sac-isc.gc.ca/eng/1331657507074/1533645155560",
       "application_url": "https://www.sac-isc.gc.ca/eng/1331657507074/1533645155560",
-      "last_verified": null
+      "apply_url": "https://www.sac-isc.gc.ca/eng/1331657507074/1533645155560",
+      "apply_link_type": "program_page",
+      "application_method": "unknown",
+      "last_verified": null,
+      "verification_status": "needs_review",
+      "verification_confidence": "none",
+      "source_published_date": null,
+      "source_evidence": [],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     },
     {
+      "id": "ad0165e7-2ba5-4876-88ce-ac93a4502134",
+      "slug": "ulnooweg-indigenous-business-loan",
       "name": "Ulnooweg Indigenous Business Loan",
       "funder": "Ulnooweg Development Group",
       "description": "Indigenous Financial Institution serving First Nations and Indigenous-owned businesses in Atlantic Canada. Offers business loans, advisory services, and youth entrepreneurship programming.",
+      "funding_type": "loan",
+      "is_repayable": true,
       "amount_min": null,
       "amount_max": null,
       "amount_currency": "CAD",
+      "deadline": null,
+      "opens_at": null,
       "is_recurring": true,
       "recurrence_notes": "Rolling intake",
+      "intake_status": "rolling",
       "provinces": [
         "NB",
         "NS",
         "PE",
         "NL"
       ],
+      "industries": [],
+      "business_stages": [
+        "startup",
+        "early-stage",
+        "growth",
+        "established"
+      ],
+      "applicant_types": [
+        "individual",
+        "business"
+      ],
+      "identity_criteria": null,
+      "ownership_min_pct": null,
+      "entrepreneur_age_min": null,
+      "entrepreneur_age_max": null,
+      "business_age_max_months": null,
+      "revenue_max": null,
+      "program_category": [],
+      "eligibility_notes": "First Nations individuals and Indigenous-owned businesses in New Brunswick, Nova Scotia, Prince Edward Island, and Newfoundland and Labrador.",
+      "eligibility_exclusions": null,
+      "matching_funds_required": null,
+      "matching_funds_notes": null,
+      "eligible_expenses": [],
+      "documents_required": [],
+      "application_steps": [],
+      "repayment_terms": null,
+      "source_url": "https://ulnoowegdevelopmentgroup.ca/",
       "application_url": "https://ulnoowegdevelopmentgroup.ca/",
-      "last_verified": "2026-09-28"
+      "apply_url": "https://ulnoowegdevelopmentgroup.ca/",
+      "apply_link_type": "program_page",
+      "application_method": "online",
+      "last_verified": "2026-10-26",
+      "verification_status": "unverified",
+      "verification_confidence": "medium",
+      "source_published_date": null,
+      "source_evidence": [
+        {
+          "url": "https://ulnoowegdevelopmentgroup.ca/",
+          "field": "description",
+          "quote": "We provide financing and support services for Indigenous businesses in Atlantic Canada. From business loans to non-repayable contributions, we can find the perfect fit for you and your enterprise!",
+          "fetched_at": "2026-10-26"
+        }
+      ],
+      "updated_at": "2026-04-10T06:05:41.201127+00:00"
     }
   ]
 }

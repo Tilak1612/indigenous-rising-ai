@@ -86,6 +86,21 @@ const MARKETING = [
   // a screen reader announces the same name on five different pages — and five
   // duplicate title tags for search engines.
   { p: '/funding', t: 'Find Indigenous business funding | Indigenous Rising AI', d: 'Browse real funding and financing for Indigenous entrepreneurs across Canada: grants, non-repayable contributions and loans from Indigenous institutions.' },
+  { p: '/funding/alberta', t: 'Indigenous Business Funding in Alberta', d: 'Grants, contributions and loans for First Nations and Métis entrepreneurs in Alberta, from AIIC, AIOC, PrairiesCan and national programmes, with amounts and verification dates.', breadcrumb: 'Alberta' },
+  { p: '/funding/british-columbia', t: 'Indigenous Business Funding in British Columbia', d: 'Indigenous business loans, equity contributions and grants in British Columbia: First Citizens Fund lenders, TACC, NEDC, TRICORP, Métis Financial Corporation and national programmes.', breadcrumb: 'British Columbia' },
+  { p: '/funding/manitoba', t: 'Indigenous Business Funding in Manitoba', d: 'Funding for First Nations and Métis businesses in Manitoba: First Peoples Economic Growth Fund loans and contributions, Louis Riel Capital Corporation and national programmes.', breadcrumb: 'Manitoba' },
+  { p: '/funding/new-brunswick', t: 'Indigenous Business Funding in New Brunswick', d: 'Indigenous business funding in New Brunswick: Ulnooweg loans and contributions, ACOA and the national programmes open to First Nations, Métis and Inuit entrepreneurs.', breadcrumb: 'New Brunswick' },
+  { p: '/funding/newfoundland-and-labrador', t: 'Indigenous Business Funding in Newfoundland & Labrador', d: 'Funding for Indigenous businesses in Newfoundland and Labrador, including the Nunatsiavut Business Grant, Ulnooweg financing and national programmes.', breadcrumb: 'Newfoundland and Labrador' },
+  { p: '/funding/nova-scotia', t: 'Indigenous Business Funding in Nova Scotia', d: 'Indigenous business loans and contributions in Nova Scotia: Ulnooweg Development Group, ACOA supports and the national Indigenous entrepreneurship programmes.', breadcrumb: 'Nova Scotia' },
+  { p: '/funding/northwest-territories', t: 'Indigenous Business Funding in the Northwest Territories', d: 'Business funding in the Northwest Territories for Indigenous entrepreneurs: GNWT SEED, Métis Dene Development Fund loans, CanNor delivery and national programmes.', breadcrumb: 'Northwest Territories' },
+  { p: '/funding/nunavut', t: 'Indigenous Business Funding in Nunavut', d: 'Funding for Inuit-owned businesses in Nunavut: Nunavut Business Credit Corporation, Atuqtuarvik Corporation financing and national Indigenous programmes.', breadcrumb: 'Nunavut' },
+  { p: '/funding/ontario', t: 'Indigenous Business Funding in Ontario', d: 'Indigenous business funding in Ontario: the Indigenous Economic Development Fund, NADF, Waubetek, Two Rivers and the national programmes, with intake status and dates.', breadcrumb: 'Ontario' },
+  { p: '/funding/prince-edward-island', t: 'Indigenous Business Funding in Prince Edward Island', d: 'Indigenous business funding on Prince Edward Island: Ulnooweg loans and contributions, ACOA and national programmes for First Nations, Métis and Inuit entrepreneurs.', breadcrumb: 'Prince Edward Island' },
+  { p: '/funding/quebec', t: 'Indigenous Business Funding in Quebec', d: 'Financement pour entreprises autochtones au Québec: SOCCA loans and mentorship plus the national programmes open to First Nations, Inuit and Métis entrepreneurs.', breadcrumb: 'Quebec' },
+  { p: '/funding/saskatchewan', t: 'Indigenous Business Funding in Saskatchewan', d: 'Funding for First Nations and Métis businesses in Saskatchewan: SIEF loans and contributions, Clarence Campeau Development Fund, SMEDCO, PrairiesCan and national programmes.', breadcrumb: 'Saskatchewan' },
+  { p: '/funding/yukon', t: 'Indigenous Business Funding in Yukon', d: 'Indigenous business funding in Yukon: däna Näye Ventures loan funds and the Yukon Micro Loan Program, plus national Indigenous entrepreneurship programmes.', breadcrumb: 'Yukon' },
+  { p: '/funding/indigenous-business-loans', t: 'Indigenous Business Loans in Canada | Indigenous Rising AI', d: 'Repayable financing for Indigenous entrepreneurs across Canada: business loans, micro-loans and loan guarantees from Indigenous Financial Institutions, Métis Capital Corporations, BDC and provincial programmes.', breadcrumb: 'Indigenous business loans' },
+  { p: '/funding/indigenous-business-grants', t: 'Indigenous Business Grants & Contributions in Canada', d: 'Grants and non-repayable contributions for Indigenous-owned businesses in Canada, with the equity and matching-funds rules each funder attaches, quoted from the funder and dated.', breadcrumb: 'Indigenous business grants' },
   { p: '/funding/alerts', t: 'Free weekly funding alerts | Indigenous Rising AI', d: 'A free weekly email of Indigenous business funding matched to your province and industry. CASL double opt-in, and one-click unsubscribe.' },
   { p: '/impact', t: 'Measure your community impact | Indigenous Rising AI', d: 'Coming soon: a community impact tracker for Indigenous businesses — jobs, youth programs and local spend, in a form funders recognise.' },
   { p: '/plan', t: 'Indigenous Business Plan Builder | Indigenous Rising AI', d: 'Write a funder-ready business plan section by section, with prompts grounded in Indigenous business context. Free to start, no credit card.' },
@@ -105,6 +120,7 @@ const ROUTE_NAMES = {
   '/': 'Home',
   '/guides': 'Guides',
   '/features': 'Features',
+  '/funding': 'Funding',
   '/privacy': 'Privacy Policy',
   '/terms': 'Terms of Service',
   '/cookies': 'Cookie Policy',
@@ -293,6 +309,19 @@ async function getSsrRender() {
  * The anon key is the publishable one that already ships in the client bundle.
  * Nothing secret passes through here.
  */
+const FUNDING_COLUMNS = [
+  'id', 'slug', 'name', 'funder', 'description', 'funding_type', 'is_repayable',
+  'amount_min', 'amount_max', 'amount_currency', 'deadline', 'opens_at', 'is_recurring',
+  'recurrence_notes', 'intake_status', 'provinces', 'industries', 'business_stages',
+  'applicant_types', 'identity_criteria', 'ownership_min_pct', 'entrepreneur_age_min',
+  'entrepreneur_age_max', 'business_age_max_months', 'revenue_max', 'program_category',
+  'eligibility_notes', 'eligibility_exclusions', 'matching_funds_required',
+  'matching_funds_notes', 'eligible_expenses', 'documents_required', 'application_steps',
+  'repayment_terms', 'source_url', 'application_url', 'apply_url', 'apply_link_type',
+  'application_method', 'last_verified', 'verification_status', 'verification_confidence',
+  'source_published_date', 'source_evidence', 'updated_at',
+].join(',');
+
 async function loadFundingPrograms() {
   const snapshotPath = path.join(ROOT, 'scripts/data/funding-snapshot.json');
   let fallback = [];
@@ -302,14 +331,20 @@ async function loadFundingPrograms() {
     console.warn('[prerender] funding snapshot unreadable; /funding will ship without programmes');
   }
 
-  const base = process.env.VITE_SUPABASE_URL;
-  const key = process.env.VITE_SUPABASE_ANON_KEY;
+  // The anon key is the publishable one that ships in every client bundle
+  // (src/lib/supabase.ts carries the same fallback), so a build without env
+  // vars still reads the live catalogue instead of silently shipping the
+  // snapshot.
+  const base = process.env.VITE_SUPABASE_URL || 'https://upxojfcdtmqtcvgbjsym.supabase.co';
+  const key = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVweG9qZmNkdG1xdGN2Z2Jqc3ltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5NzAwMDgsImV4cCI6MjA4NzU0NjAwOH0.tAaSqKPPy8nfj6u8lby5Fmuqdiy1CezxnSUpWfA2yP0';
   if (!base || !key) {
     console.warn(`[prerender] no Supabase env; using funding snapshot (${fallback.length})`);
     return { rows: fallback, source: 'snapshot' };
   }
 
-  const cols = 'name,funder,description,amount_min,amount_max,amount_currency,is_recurring,recurrence_notes,provinces,application_url,last_verified';
+  // Same column list as src/lib/funding-catalog.ts PROGRAM_COLUMNS, so the
+  // seeded pages render exactly what the live pages render.
+  const cols = FUNDING_COLUMNS;
   try {
     const res = await fetch(`${base}/rest/v1/grants?select=${cols}&is_published=eq.true&order=name.asc`, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
@@ -377,6 +412,14 @@ async function main() {
   // static <title> and the one Helmet sets after hydration cannot drift.
   // They had, on 12 of 23 routes.
   const funding = await loadFundingPrograms();
+  // Seed the SSR render: src/lib/funding-prerender.ts reads this so /funding,
+  // the region pages and every programme page carry real content in the
+  // static HTML. Snapshot rows without a slug cannot seed programme pages.
+  const seedRows = funding.rows.filter((r) => r.slug);
+  globalThis.__IR_FUNDING__ = { programs: seedRows };
+  if (funding.source === 'snapshot' && seedRows.length === 0) {
+    console.warn('[prerender] snapshot rows carry no slug; programme pages will not be prerendered');
+  }
   const routeTitles = await loadDataModule('src/data/routeTitles.ts', 'ROUTE_TITLES');
   if (routeTitles) {
     for (const m of MARKETING) {
@@ -640,6 +683,48 @@ async function main() {
     } catch (e) { console.warn('[prerender] blog route failed', post.slug, e.message); }
   }
 
+  // One static page per published funding programme, from the same rows that
+  // seeded /funding. Title mirrors programPageTitle() in src/pages/FundingProgram.tsx.
+  for (const g of seedRows) {
+    try {
+      const url = `${BASE}/funding/${g.slug}`;
+      const suffix = ' | Indigenous Rising AI';
+      const room = 60 - suffix.length;
+      const title = (g.name.length > room ? g.name.slice(0, room - 1).trimEnd() + '…' : g.name) + suffix;
+      const description = (g.description || '').replace(/\s+/g, ' ').trim().slice(0, 300);
+      const jsonLd = [
+        breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Funding', path: '/funding' }, { name: g.name, path: `/funding/${g.slug}` }]),
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FinancialProduct',
+          '@id': `${url}#program`,
+          name: g.name,
+          description: description || undefined,
+          url,
+          provider: { '@type': 'Organization', name: g.funder, ...(g.source_url ? { url: g.source_url } : {}) },
+          ...(g.amount_max ? { amount: { '@type': 'MonetaryAmount', currency: g.amount_currency || 'CAD', ...(g.amount_min ? { minValue: g.amount_min } : {}), maxValue: g.amount_max } } : {}),
+          areaServed: Array.isArray(g.provinces) && g.provinces.length && g.provinces.length < 13
+            ? g.provinces.map((code) => ({ '@type': 'AdministrativeArea', name: code }))
+            : { '@type': 'Country', name: 'Canada' },
+          ...(g.last_verified ? { dateModified: g.last_verified } : {}),
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          '@id': `${url}#webpage`,
+          url,
+          name: title,
+          description: description || undefined,
+          isPartOf: { '@id': `${BASE}/#website` },
+          about: { '@id': `${url}#program` },
+        },
+      ];
+      await writeRoute(template, { p: `/funding/${g.slug}`, url, title, description, jsonLd });
+      count++;
+      sitemap.push({ loc: url, title, description, ...(g.last_verified ? { lastmod: g.last_verified } : {}), changefreq: 'monthly', priority: '0.7' });
+    } catch (e) { console.warn('[prerender] funding programme route failed', g.slug, e.message); }
+  }
+
   // Real 404 page. vercel.json no longer rewrites every path to index.html, so
   // unknown URLs fall through to dist/404.html and return HTTP 404. Before,
   // every URL — /this-page-does-not-exist, /blog/not-a-real-post — returned
@@ -661,7 +746,7 @@ async function main() {
   await writeLlmsTxt(sitemap);
   await writeIndexNowManifest(sitemap);
 
-  console.log(`[prerender] wrote ${count} static route file(s) (${MARKETING.length} marketing + ${posts.length} blog).`);
+  console.log(`[prerender] wrote ${count} static route file(s) (${MARKETING.length} marketing + ${posts.length} blog + ${seedRows.length} funding programmes).`);
 }
 
 /** Coerce any date-ish value to YYYY-MM-DD, or null if unparseable. */

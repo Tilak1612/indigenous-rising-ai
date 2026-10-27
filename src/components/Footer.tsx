@@ -32,6 +32,9 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
   {
     title: 'Resources',
     links: [
+      { name: 'Funding directory', to: '/funding' },
+      { name: 'Indigenous business loans', to: '/funding/indigenous-business-loans' },
+      { name: 'Indigenous business grants', to: '/funding/indigenous-business-grants' },
       { name: 'Grants & funding hub', to: '/guides/indigenous-business-grants' },
       { name: 'Funding: what we can verify', to: '/guides/indigenous-business-funding-statistics' },
       { name: 'Business plan template', to: '/indigenous-business-plan-template' },
