@@ -16,11 +16,13 @@ describe('saved match status', () => {
   });
 
   test('the set matches the database CHECK constraint exactly', () => {
-    // Verified against production:
-    //   CHECK (status = ANY (ARRAY['interested','applied','pending',
-    //                              'awarded','declined','withdrawn']))
+    // Verified against production (migration 20261026000001):
+    //   CHECK (status IN ('interested','eligibility_review','preparing_documents',
+    //     'ready_to_apply','applied','submitted_externally','under_review',
+    //     'pending','awarded','declined','withdrawn'))
     expect([...SAVED_MATCH_STATUSES].sort()).toEqual(
-      ['applied', 'awarded', 'declined', 'interested', 'pending', 'withdrawn'],
+      ['applied', 'awarded', 'declined', 'eligibility_review', 'interested', 'pending',
+       'preparing_documents', 'ready_to_apply', 'submitted_externally', 'under_review', 'withdrawn'],
     );
   });
 });

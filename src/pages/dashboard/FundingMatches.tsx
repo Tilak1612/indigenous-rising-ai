@@ -10,6 +10,7 @@ import { DEFAULT_SAVED_STATUS } from '@/lib/funding-status';
 import { SUPABASE_STORAGE_KEY, readStoredSession } from '@/lib/auth-storage';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import OfficialLinkButton from '@/components/funding/OfficialLinkButton';
 import {
   Sparkles,
   Loader2,
@@ -48,7 +49,28 @@ interface Match {
   eligibility: 'yes' | 'no' | 'maybe';
   fit_score?: number;
   explanation?: string;
+  // Directory fields (edge function v2). Optional so an older deployed
+  // function still renders.
+  slug?: string;
+  source_url?: string | null;
+  apply_url?: string | null;
+  apply_link_type?: string;
+  intake_status?: string;
+  state?: 'potential_match' | 'needs_more_information' | 'likely_ineligible' | 'closed' | 'not_yet_open';
+  next_step?: string;
+  not_assessed?: string[];
+  documents_required?: string[];
 }
+
+// The five rules-based states. These describe the PROFILE against the
+// funder's stated rules; only the funder decides eligibility.
+const STATE_META: Record<NonNullable<Match['state']>, { label: string; className: string }> = {
+  potential_match: { label: 'Potential match', className: 'bg-primary/10 text-primary border-primary/30' },
+  needs_more_information: { label: 'Needs more information', className: 'bg-yellow-500/10 text-yellow-700 border-yellow-500/30' },
+  likely_ineligible: { label: 'Likely ineligible', className: 'text-muted-foreground' },
+  not_yet_open: { label: 'Not yet open', className: 'text-muted-foreground' },
+  closed: { label: 'Closed', className: 'text-muted-foreground' },
+};
 
 type Tier = 'free' | 'growth' | 'pro' | 'enterprise';
 
@@ -559,7 +581,11 @@ const FundingMatches: React.FC = () => {
                         </div>
                         <div className="flex flex-wrap gap-2">
                           <FundingTypeBadge fundingType={match.funding_type} isRepayable={match.is_repayable} />
-                          <EligibilityBadge eligibility={match.eligibility} />
+                          {match.state ? (
+                            <Badge variant="outline" className={STATE_META[match.state].className}>{STATE_META[match.state].label}</Badge>
+                          ) : (
+                            <EligibilityBadge eligibility={match.eligibility} />
+                          )}
                         </div>
                       </CardHeader>
 
@@ -586,6 +612,17 @@ const FundingMatches: React.FC = () => {
                           </p>
                         )}
 
+                        {match.next_step && (
+                          <p className="text-xs text-foreground/80 leading-relaxed">
+                            <span className="font-medium">Next step:</span> {match.next_step}
+                          </p>
+                        )}
+                        {match.documents_required && match.documents_required.length > 0 && (
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            <span className="font-medium text-foreground/80">Documents the funder lists:</span> {match.documents_required.join('; ')}
+                          </p>
+                        )}
+
                         <div className="flex flex-wrap gap-2 text-xs">
                           <Badge variant="outline">
                             <DollarSign className="w-3 h-3 mr-1" />
@@ -598,12 +635,15 @@ const FundingMatches: React.FC = () => {
                         </div>
 
                         <div className="flex gap-2 mt-auto pt-2">
-                          <Button asChild variant="outline" size="sm" className="flex-1">
-                            <a href={match.application_url} target="_blank" rel="noopener noreferrer">
-                              Apply
-                              <ExternalLink className="w-3 h-3 ml-2" />
-                            </a>
-                          </Button>
+                          {match.slug && (
+                            <Button asChild variant="outline" size="sm">
+                              <Link to={`/funding/${match.slug}`}>Details</Link>
+                            </Button>
+                          )}
+                          <OfficialLinkButton
+                            className="flex-1"
+                            program={{ id: match.grant_id, apply_url: match.apply_url, apply_link_type: match.apply_link_type, source_url: match.source_url, application_url: match.application_url }}
+                          />
                           {isPaid && (
                             <Button
                               variant="outline"

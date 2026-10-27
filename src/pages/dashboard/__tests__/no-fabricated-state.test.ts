@@ -49,7 +49,9 @@ describe('dashboard shows no fabricated state', () => {
     // A fit percentage with no criteria behind it is the thing that was wrong.
     expect(s).not.toMatch(/matchScore/);
     // It must read the verified catalogue, not a page-local copy.
-    expect(s).toMatch(/from\('grants'\)/);
+    // Either the supabase client query or the shared catalogue module that
+    // issues the PostgREST query against public.grants.
+    expect(s).toMatch(/from\('grants'\)|fetchPrograms\(/);
     expect(s).not.toMatch(/saved:\s*true/);
   });
 

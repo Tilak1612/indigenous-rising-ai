@@ -34,13 +34,24 @@ export default defineConfig(({ mode }) => {
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react-dom') || id.includes('react-router-dom') || id.match(/\/react\//)) {
+            // Sentry first, in its own chunk. The old react matcher
+            // (`/\/react\//`) also caught `@sentry/react`, and Rollup then split
+            // `@sentry/core` between react-vendor and form-vendor. That made
+            // react-vendor import form-vendor while form-vendor imports React
+            // from react-vendor: a chunk cycle, evaluated in the wrong order,
+            // so react-hook-form ran `React.createContext` before the React
+            // binding existed ("Cannot access 'O' before initialization") and
+            // the whole app failed to mount in production from 2026-10-25.
+            if (id.includes('/node_modules/@sentry/')) {
+              return 'sentry-vendor';
+            }
+            if (/\/node_modules\/(react|react-dom|scheduler|react-router|react-router-dom|@remix-run\/router)\//.test(id)) {
               return 'react-vendor';
             }
             if (id.includes('@radix-ui/')) {
               return 'ui-vendor';
             }
-            if (id.includes('react-hook-form') || id.includes('zod') || id.includes('@hookform')) {
+            if (id.includes('react-hook-form') || id.includes('/node_modules/zod/') || id.includes('@hookform')) {
               return 'form-vendor';
             }
             if (id.includes('@tanstack/react-query')) {

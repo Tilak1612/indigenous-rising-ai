@@ -35,6 +35,7 @@ type GrantLite = {
   funder: string;
   deadline: string | null;
   application_url: string | null;
+  documents_required?: string[] | null;
 };
 
 type VaultDoc = { id: string; name: string; category: string };
@@ -88,7 +89,7 @@ const ReadinessWorkspace: React.FC = () => {
 
       const [gRes, dRes, loaded] = await Promise.all([
         fetch(
-          `${REST}/grants?select=id,name,funder,deadline,application_url&id=eq.${grantId}`,
+          `${REST}/grants?select=id,name,funder,deadline,application_url,documents_required&id=eq.${grantId}`,
           { headers: authHeaders() },
         ),
         fetch(
@@ -149,6 +150,26 @@ const ReadinessWorkspace: React.FC = () => {
       setNewLabel('');
     } catch {
       toast.error('Could not add that item');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // The funder's own document list (from the catalogue record) becomes the
+  // starting checklist for the missing-info stage, one item per document,
+  // skipping any the user already added.
+  const seedFromFunder = async () => {
+    if (!app || !user || kind !== 'missing_info') return;
+    const docs = (grant?.documents_required ?? []).filter((d) => !stageItems.some((i) => i.label.toLowerCase() === d.toLowerCase()));
+    if (docs.length === 0) { toast.message('Nothing to add: the funder lists no further documents.'); return; }
+    setBusy(true);
+    try {
+      const created: ReadinessItem[] = [];
+      for (const [n, d] of docs.entries()) created.push(await addItem(app.id, user.id, 'missing_info', d, stageItems.length + n));
+      setItems((prev) => [...prev, ...created]);
+      toast.success(`Added ${created.length} document${created.length === 1 ? '' : 's'} from the funder's list`);
+    } catch {
+      toast.error('Could not add the funder\u2019s document list');
     } finally {
       setBusy(false);
     }
@@ -348,6 +369,11 @@ const ReadinessWorkspace: React.FC = () => {
                         <Plus className="mr-1 h-4 w-4" aria-hidden="true" /> Add
                       </Button>
                     </div>
+                    {kind === 'missing_info' && (grant?.documents_required?.length ?? 0) > 0 && (
+                      <Button type="button" variant="outline" size="sm" className="mt-2" onClick={() => void seedFromFunder()} disabled={busy}>
+                        Add the funder\u2019s document list ({grant?.documents_required?.length})
+                      </Button>
+                    )}
                   </>
                 )}
 

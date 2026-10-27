@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import OfficialLinkButton from '@/components/funding/OfficialLinkButton';
 import FundingProgramCard from '@/components/funding/FundingProgramCard';
 import { useAuth } from '@/hooks/useAuth';
+import { useSubscription } from '@/hooks/useSubscription';
 import { readStoredSession } from '@/lib/auth-storage';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '@/lib/supabase';
 import { DEFAULT_SAVED_STATUS } from '@/lib/funding-status';
@@ -44,6 +45,7 @@ function List({ items }: { items: string[] }) {
 
 export default function FundingProgramPage({ slug }: { slug: string }) {
   const { user } = useAuth();
+  const { subscribed } = useSubscription();
   const seed = useMemo(() => seededPrograms()?.find((p) => p.slug === slug) ?? null, [slug]);
   const [program, setProgram] = useState<FundingProgram | null | undefined>(seed ?? undefined);
   const [similar, setSimilar] = useState<FundingProgram[]>(() =>
@@ -257,7 +259,11 @@ export default function FundingProgramPage({ slug }: { slug: string }) {
                 <CardHeader className="pb-2"><CardTitle className="text-base">Go to the funder</CardTitle></CardHeader>
                 <CardContent className="space-y-3">
                   <OfficialLinkButton program={g} variant="default" size="default" withDescription />
-                  {user ? (
+                  {user && !subscribed ? (
+                    <Button asChild variant="outline" className="w-full">
+                      <Link to="/pricing"><Bookmark className="w-4 h-4 mr-2" aria-hidden="true" />Save (Growth plan)</Link>
+                    </Button>
+                  ) : user ? (
                     <Button variant="outline" className="w-full" onClick={toggleSave}>
                       {saved ? <BookmarkCheck className="w-4 h-4 mr-2" aria-hidden="true" /> : <Bookmark className="w-4 h-4 mr-2" aria-hidden="true" />}
                       {saved ? 'Saved' : 'Save programme'}
