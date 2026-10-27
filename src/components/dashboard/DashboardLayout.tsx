@@ -82,7 +82,11 @@ const LANG_KEY = 'preferred-language';
 
 const freeNavItems: NavItem[] = [
   { title: 'Dashboard', href: '/dashboard', icon: Home, tier: 'free' },
+  // Browsing the catalogue is a FREE feature per plans.ts ("Funding
+  // opportunity browser"); it was wrongly gated behind a subscription.
+  { title: 'Funding Navigator', href: '/dashboard/funding', icon: Target, tier: 'free' },
   { title: 'Funding Matches', href: '/dashboard/funding/matches', icon: Target, tier: 'free', badge: 'AI' },
+  { title: 'Funding Deadlines', href: '/dashboard/funding/deadlines', icon: Calendar, tier: 'free' },
   { title: 'Business Planner', href: '/dashboard/plan', icon: FileText, tier: 'free' },
   { title: 'AI Assistant', href: '/dashboard/assistant', icon: Sparkles, tier: 'free', badge: 'AI' },
   { title: 'Tasks & Deadlines', href: '/dashboard/tasks', icon: ListChecks, tier: 'free' },
@@ -93,7 +97,6 @@ const freeNavItems: NavItem[] = [
 ];
 
 const paidNavItems: NavItem[] = [
-  { title: 'Funding Navigator', href: '/dashboard/funding', icon: Target, tier: 'paid', badge: 'AI' },
   { title: 'Impact Analytics', href: '/dashboard/analytics', icon: TrendingUp, tier: 'paid' },
   { title: 'Partner Network', href: '/dashboard/network', icon: Users, tier: 'paid' },
   { title: 'Certifications', href: '/dashboard/certifications', icon: Crown, tier: 'paid' },

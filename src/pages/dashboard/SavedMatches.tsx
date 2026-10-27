@@ -38,7 +38,7 @@ import {
   Trash2,
 } from 'lucide-react';
 
-type Status = 'interested' | 'applied' | 'pending' | 'awarded' | 'declined' | 'withdrawn';
+type Status = 'interested' | 'eligibility_review' | 'preparing_documents' | 'ready_to_apply' | 'applied' | 'submitted_externally' | 'under_review' | 'pending' | 'awarded' | 'declined' | 'withdrawn';
 
 interface SavedRow {
   id: string;
@@ -59,9 +59,17 @@ interface SavedRow {
   } | null;
 }
 
+// Mirrors the CHECK constraint on funding_saved_matches.status (migration
+// 20261026000001). Stages are the user's own report of where they are; the
+// platform never claims an application was submitted on anyone's behalf.
 const STATUSES: { value: Status; label: string; color: string }[] = [
   { value: 'interested', label: 'Interested', color: 'bg-muted text-foreground' },
+  { value: 'eligibility_review', label: 'Checking eligibility', color: 'bg-muted text-foreground' },
+  { value: 'preparing_documents', label: 'Preparing documents', color: 'bg-muted text-foreground' },
+  { value: 'ready_to_apply', label: 'Ready to apply', color: 'bg-primary/10 text-primary border-primary/30' },
   { value: 'applied', label: 'Applied', color: 'bg-primary/10 text-primary border-primary/30' },
+  { value: 'submitted_externally', label: 'Submitted on the funder\u2019s site', color: 'bg-primary/10 text-primary border-primary/30' },
+  { value: 'under_review', label: 'Under review by the funder', color: 'bg-yellow-500/10 text-yellow-700 border-yellow-500/30' },
   { value: 'pending', label: 'Pending review', color: 'bg-yellow-500/10 text-yellow-700 border-yellow-500/30' },
   { value: 'awarded', label: 'Awarded', color: 'bg-success/10 text-success border-success/30' },
   { value: 'declined', label: 'Declined', color: 'bg-destructive/10 text-destructive border-destructive/30' },

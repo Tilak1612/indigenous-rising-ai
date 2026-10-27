@@ -33,7 +33,7 @@ const Unsubscribe = lazy(() => import("./pages/Unsubscribe"));
 const TrackRequest = lazy(() => import("./pages/TrackRequest"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Training = lazy(() => import("./pages/Training"));
-const FundingDetail = lazy(() => import("./pages/FundingDetail"));
+const FundingSlug = lazy(() => import("./pages/FundingSlug"));
 const FeatureDetail = lazy(() => import("./pages/FeatureDetail"));
 const OnboardingPage = lazy(() => import("./pages/Onboarding"));
 const CookiePolicy = lazy(() => import("./pages/CookiePolicy"));
@@ -74,6 +74,7 @@ const Compliance = lazy(() => import("./pages/dashboard/Compliance"));
 const DashboardFunding = lazy(() => import("./pages/dashboard/Funding"));
 const DashboardFundingMatches = lazy(() => import("./pages/dashboard/FundingMatches"));
 const DashboardSavedMatches = lazy(() => import("./pages/dashboard/SavedMatches"));
+const DashboardFundingDeadlines = lazy(() => import("./pages/dashboard/FundingDeadlines"));
 const ReadinessWorkspace = lazy(() => import("./pages/dashboard/ReadinessWorkspace"));
 const Analytics = lazy(() => import("./pages/dashboard/Analytics"));
 const Network = lazy(() => import("./pages/dashboard/Network"));
@@ -262,11 +263,11 @@ export const AppTree = () => (
                   </Suspense>
                 } 
               />
-              <Route 
-                path="/funding/:id"
+              <Route
+                path="/funding/:slug"
                 element={
                   <Suspense fallback={<PageSkeleton />}>
-                    <FundingDetail />
+                    <FundingSlug />
                   </Suspense>
                 }
               />
@@ -344,6 +345,16 @@ export const AppTree = () => (
                   <Suspense fallback={<DashboardSkeleton />}>
                     <ProtectedRoute requirePaid>
                       <DashboardSavedMatches />
+                    </ProtectedRoute>
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/dashboard/funding/deadlines"
+                element={
+                  <Suspense fallback={<DashboardSkeleton />}>
+                    <ProtectedRoute>
+                      <DashboardFundingDeadlines />
                     </ProtectedRoute>
                   </Suspense>
                 }

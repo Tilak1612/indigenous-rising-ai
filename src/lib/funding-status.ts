@@ -13,7 +13,12 @@
  */
 export const SAVED_MATCH_STATUSES = [
   'interested',
+  'eligibility_review',
+  'preparing_documents',
+  'ready_to_apply',
   'applied',
+  'submitted_externally',
+  'under_review',
   'pending',
   'awarded',
   'declined',

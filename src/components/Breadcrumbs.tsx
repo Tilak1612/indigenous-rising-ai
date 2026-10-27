@@ -23,6 +23,7 @@ const routeNames: Record<string, string> = {
   '/': 'Home',
   '/guides': 'Guides',
   '/features': 'Features',
+  '/funding': 'Funding',
   '/privacy': 'Privacy Policy',
   '/terms': 'Terms of Service',
   '/cookies': 'Cookie Policy',

@@ -126,9 +126,11 @@ describe.runIf(existsSync(built))('the built /funding carries the inventory', ()
   });
 
   test('each programme shows whether it has been verified', () => {
+    // The server-rendered cards (first page) and the no-JS inventory list both
+    // carry the freshness line, so the count is at least one per programme.
     const verified = (html.match(/Details last verified/g) ?? []).length;
     const unverified = (html.match(/Details not yet verified/g) ?? []).length;
-    expect(verified + unverified).toBe(snap.rows.length);
+    expect(verified + unverified).toBeGreaterThanOrEqual(snap.rows.length);
   });
 
   test('no amount is stated that the snapshot does not carry', () => {

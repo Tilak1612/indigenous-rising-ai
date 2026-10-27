@@ -3,11 +3,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Mail, FileText, Settings, LogOut } from 'lucide-react';
+import { Users, Mail, FileText, Settings, LogOut, Target } from 'lucide-react';
 import NewsletterManagement from '@/components/admin/NewsletterManagement';
 import DataRequestsManagement from '@/components/admin/DataRequestsManagement';
 import ContentManagement from '@/components/admin/ContentManagement';
 import TestimonialsManagement from '@/components/admin/TestimonialsManagement';
+import FundingManagement from '@/components/admin/FundingManagement';
 
 export default function Admin() {
   const { user, signOut, isAdmin } = useAuth();
@@ -48,7 +49,11 @@ export default function Admin() {
 
         <main className="container mx-auto px-4 py-8">
           <Tabs defaultValue="newsletter" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="funding">
+                <Target className="w-4 h-4 mr-2" />
+                Funding
+              </TabsTrigger>
               <TabsTrigger value="newsletter">
                 <Mail className="w-4 h-4 mr-2" />
                 Newsletter
@@ -65,6 +70,10 @@ export default function Admin() {
                 Content
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="funding">
+              <FundingManagement />
+            </TabsContent>
 
             <TabsContent value="testimonials">
               <TestimonialsManagement />

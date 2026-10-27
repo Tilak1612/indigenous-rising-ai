@@ -30,3 +30,4 @@ jobs:
           supabase functions deploy newsletter-unsubscribe --project-ref upxojfcdtmqtcvgbjsym --no-verify-jwt=false
           supabase functions deploy submit-contact --project-ref upxojfcdtmqtcvgbjsym --no-verify-jwt=false
           supabase functions deploy submit-data-request --project-ref upxojfcdtmqtcvgbjsym --no-verify-jwt=false
+          supabase functions deploy check-funding-links --project-ref upxojfcdtmqtcvgbjsym --no-verify-jwt=false

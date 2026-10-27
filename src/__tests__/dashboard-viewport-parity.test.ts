@@ -57,7 +57,7 @@ describe('touch targets measured under 24px are fixed at the source', () => {
   // (flexbox shrank the 32px buttons on a phone instead of wrapping).
   test('funding Save is 44px', () => {
     const src = read('src/pages/dashboard/Funding.tsx');
-    const btn = /aria-pressed=\{opp\.saved\}[\s\S]*?className="([^"]+)"/.exec(src)?.[1] ?? '';
+    const btn = /aria-pressed=\{savedIds\.has\(g\.id\)\}[\s\S]*?className="([^"]+)"/.exec(src)?.[1] ?? '';
     expect(btn).toMatch(/h-11 w-11/);
   });
 
