@@ -75,8 +75,8 @@ env vars, or cron changes needed.
 > Look at the site first, then innovate. Think about the user experience and think outside the box. Make one bold change that improves conversions or the look and feel, not a small tweak. Use any tool you have. You must ship a change every time.
 
 Apply this directive to authorized product-iteration work, not to every read-only
-question, audit, or instruction-maintenance task. Agent-team setup remains the
-current priority; recording this direction does not start an automatic redesign.
+question, audit, or instruction-maintenance task. Recording this direction does
+not start an automatic redesign.
 
 - Inspect the actual site and relevant user flow first, including mobile, and
   record evidence of the friction or opportunity. If access is blocked, report
