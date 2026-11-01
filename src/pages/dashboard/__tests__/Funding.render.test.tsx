@@ -10,8 +10,13 @@ vi.mock('@/hooks/useSubscription', () => ({
   useSubscription: () => ({ subscribed: subState.subscribed, product_id: 'prod_x', price_id: null, subscription_end: null, isLoading: false }),
   SUBSCRIPTION_QUERY_KEY: 'subscription-status',
 }));
+// One object for the whole file, as the real hook returns the same user from
+// context state. A fresh object per call made the page's [user] effect re-run
+// on every render: each saved-matches fetch re-rendered, re-fetched, forever,
+// which hung the vitest worker (test below pins the fetch count).
+const authState = vi.hoisted(() => ({ user: { id: 'u1', email: 'qa@example.test' }, loading: false }));
 vi.mock('@/hooks/useAuth', () => ({
-  useAuth: () => ({ user: { id: 'u1', email: 'qa@example.test' }, loading: false }),
+  useAuth: () => authState,
 }));
 vi.mock('@/components/dashboard/DashboardLayout', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
@@ -110,6 +115,13 @@ describe('Funding Navigator renders from the verified catalogue', () => {
     grantsHandler = () => json([], 0);
     renderPage();
     expect(await screen.findByText(/No programmes match those filters/i)).toBeInTheDocument();
+  });
+
+  test('saved programmes are fetched once per signed-in user, not on every render', async () => {
+    renderPage();
+    await screen.findByText(/Aboriginal Business Financing Program/);
+    await new Promise((r) => setTimeout(r, 300));
+    expect(calls.filter((c) => c.url.includes('/rest/v1/funding_saved_matches')).length).toBe(1);
   });
 });
 
