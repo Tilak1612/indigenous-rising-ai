@@ -92,6 +92,12 @@ export async function setSaved(userId: string, grantId: string, saved: boolean):
 
 // --- AI matching (match-funding-opportunities edge function) ---------------
 
+// Mirrors profileSummary in supabase/functions/match-funding-opportunities:
+// those six fields are the only profile data sent to the model. Keep the two in
+// step (funding.test.ts reads the function source to check).
+export const AI_MATCHING_DISCLOSURE =
+  'AI matching sends your territory, industry, business stage, description, funding purpose and target amount to OpenAI in the United States to write the fit score and explanation. Your name, contact details, identity and community are not sent.';
+
 export interface Criterion {
   label: string;
   met: boolean | null;

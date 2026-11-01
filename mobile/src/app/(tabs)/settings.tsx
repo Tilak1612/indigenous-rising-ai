@@ -1,9 +1,6 @@
 import Constants from 'expo-constants';
-import { File, Paths } from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
-import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
-import { Alert, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
 import { Screen } from '@/components/screen';
 import { Badge, Body, Button, Caption, Card, Heading, Notice, Title } from '@/components/ui';
@@ -11,16 +8,16 @@ import { useAsync } from '@/hooks/use-async';
 import { useAuth } from '@/hooks/use-auth';
 import {
   cancelAccountDeletion,
-  exportMyData,
   fetchProfile,
   fetchSubscription,
   formatDeletionDate,
   getDeletionRequest,
   requestAccountDeletion,
 } from '@/lib/account';
+import { shareDataExport } from '@/lib/data-export';
+import { canOpenOutgoing, openOutgoing, SITE_ORIGIN as SITE } from '@/lib/links';
+import { AI_MATCHING_DISCLOSURE } from '@/lib/funding';
 import { Spacing, useTheme } from '@/theme';
-
-const SITE = 'https://www.indigenousrising.ai';
 
 export default function SettingsScreen() {
   const { user, signOut } = useAuth();
@@ -43,14 +40,8 @@ export default function SettingsScreen() {
     setExporting(true);
     setExportError(null);
     try {
-      const json = await exportMyData(userId);
-      const file = new File(Paths.cache, `indigenous-rising-export-${new Date().toISOString().slice(0, 10)}.json`);
-      file.write(json);
-      if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(file.uri, { mimeType: 'application/json', dialogTitle: 'Export my data' });
-      } else {
-        setExportError('Sharing is not available on this device.');
-      }
+      const r = await shareDataExport(userId);
+      if (r.kind === 'unavailable') setExportError('Sharing is not available on this device.');
     } catch (e) {
       setExportError((e as Error).message);
     } finally {
@@ -117,7 +108,11 @@ export default function SettingsScreen() {
         <Title>{account.data?.profile?.full_name ?? 'Your profile'}</Title>
         <Body muted>{user?.email}</Body>
         {account.data?.profile?.business_name ? <Body>{account.data.profile.business_name}</Body> : null}
-        <LinkRow label="Edit business profile on the website" url={`${SITE}/dashboard/profile`} />
+        <LinkRow
+          label="Edit business profile on the website"
+          url={`${SITE}/dashboard/profile`}
+          unavailable="To edit your business profile, sign in at www.indigenousrising.ai with this account."
+        />
       </Card>
 
       <Card>
@@ -137,6 +132,7 @@ export default function SettingsScreen() {
       <Card>
         <Title>Your data</Title>
         <Caption>Stored in Canada. You can take a copy at any time; it includes your profile, business plans and saved funding.</Caption>
+        <Caption>{AI_MATCHING_DISCLOSURE}</Caption>
         {exportError ? <Notice tone="danger">{exportError}</Notice> : null}
         <Button title="Export my data (JSON)" variant="secondary" onPress={exportData} loading={exporting} />
         <LinkRow label="Your data rights" url={`${SITE}/data-rights`} />
@@ -181,9 +177,12 @@ export default function SettingsScreen() {
   );
 }
 
-function LinkRow({ label, url }: { label: string; url: string }) {
+// Rows whose destination the link policy refuses on this platform render as
+// plain text (or nothing) instead of a link.
+function LinkRow({ label, url, unavailable }: { label: string; url: string; unavailable?: string }) {
   const t = useTheme();
-  const open = () => (url.startsWith('mailto:') ? Linking.openURL(url) : WebBrowser.openBrowserAsync(url));
+  if (!canOpenOutgoing(url)) return unavailable ? <Caption style={{ ...styles.linkRow, borderTopColor: t.border }}>{unavailable}</Caption> : null;
+  const open = () => openOutgoing(url);
   return (
     <Pressable accessibilityRole="link" onPress={open} style={[styles.linkRow, { borderTopColor: t.border }]}>
       <Body style={{ color: t.primary }}>{label}</Body>

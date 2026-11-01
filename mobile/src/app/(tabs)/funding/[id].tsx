@@ -1,5 +1,4 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
@@ -8,6 +7,7 @@ import { Badge, Body, Button, Caption, Card, EmptyState, Heading, Loading, Notic
 import { useAsync } from '@/hooks/use-async';
 import { useAuth } from '@/hooks/use-auth';
 import { fetchGrant, fetchSavedGrantIds, formatAmount, formatDeadline, humanize, setSaved } from '@/lib/funding';
+import { canOpenOutgoing, openOutgoing } from '@/lib/links';
 import { Spacing } from '@/theme';
 
 export default function GrantDetailScreen() {
@@ -37,7 +37,9 @@ export default function GrantDetailScreen() {
   };
 
   const g = grant.data;
-  const officialUrl = g?.source_url || g?.application_url || null;
+  // Funders' own pages; the link policy only drops unusable values (non-web
+  // schemes, credentials), so a bad source_url falls back to application_url.
+  const officialUrl = [g?.source_url, g?.application_url].find((u) => canOpenOutgoing(u)) ?? null;
 
   return (
     <Screen refreshing={grant.refreshing} onRefresh={grant.reload}>
@@ -93,7 +95,7 @@ export default function GrantDetailScreen() {
 
           <View style={styles.gap}>
             {officialUrl ? (
-              <Button title="Open the official programme page" onPress={() => WebBrowser.openBrowserAsync(officialUrl)} />
+              <Button title="Open the official programme page" onPress={() => openOutgoing(officialUrl)} />
             ) : (
               <Caption>No official link is recorded for this programme yet.</Caption>
             )}

@@ -1,14 +1,14 @@
 import { Link } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Screen } from '@/components/screen';
 import { Badge, Body, Button, Caption, Card, Heading, Notice, Title } from '@/components/ui';
-import { formatAmount, formatDeadline, runMatching, type Match, type MatchOutcome } from '@/lib/funding';
+import { AI_MATCHING_DISCLOSURE, formatAmount, formatDeadline, runMatching, type Match, type MatchOutcome } from '@/lib/funding';
+import { canOpenOutgoing, openOutgoing, SITE_ORIGIN } from '@/lib/links';
 import { Spacing, useTheme } from '@/theme';
 
-const PROFILE_URL = 'https://www.indigenousrising.ai/dashboard/profile';
+const PROFILE_URL = `${SITE_ORIGIN}/dashboard/profile`;
 
 type State = { kind: 'idle' } | { kind: 'loading' } | MatchOutcome;
 
@@ -37,6 +37,7 @@ export default function MatchesScreen() {
           Matches are ranked against the business profile you entered. They are suggestions to review, not a decision on
           eligibility; the funder makes that.
         </Body>
+        <Caption>{AI_MATCHING_DISCLOSURE}</Caption>
       </View>
 
       {state.kind === 'idle' ? <Button title="Find my matches" onPress={run} /> : null}
@@ -46,7 +47,11 @@ export default function MatchesScreen() {
         <Card>
           <Title>Finish your business profile first</Title>
           <Body>Missing: {state.missing.join(', ')}.</Body>
-          <Button title="Complete profile on the website" variant="secondary" onPress={() => WebBrowser.openBrowserAsync(PROFILE_URL)} />
+          {canOpenOutgoing(PROFILE_URL) ? (
+            <Button title="Complete profile on the website" variant="secondary" onPress={() => openOutgoing(PROFILE_URL)} />
+          ) : (
+            <Caption>Sign in at www.indigenousrising.ai with this account to complete your profile.</Caption>
+          )}
         </Card>
       ) : null}
 
