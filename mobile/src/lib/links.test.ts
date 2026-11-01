@@ -1,6 +1,6 @@
 import { Linking } from 'react-native';
 
-import { canOpenOutgoing, openOutgoing, outgoingLinkDecision } from './links';
+import { canOpenOutgoing, openOutgoing, outgoingLinkDecision, siteUrl } from './links';
 
 jest.mock('expo-web-browser', () => ({ openBrowserAsync: jest.fn(async () => ({ type: 'opened' })) }));
 
@@ -23,7 +23,21 @@ const ROWS: Row[] = [
   ['upper-case host', 'https://WWW.IndigenousRising.AI/terms', OK, OK, OK],
   ['mailto support', 'mailto:help@indigenousrising.ai', OK, OK, OK],
 
-  // The concrete purchase route: dashboard pages carry Upgrade -> /pricing.
+  // Native context (?context=app): the website omits its purchase prompts.
+  ['privacy in native context', 'https://www.indigenousrising.ai/privacy?context=app', OK, OK, OK],
+  ['faq in native context', 'https://www.indigenousrising.ai/faq?context=app', OK, OK, OK],
+  ['profile in native context', 'https://www.indigenousrising.ai/dashboard/profile?context=app', OK, OK, OK],
+  ['profile in native context, trailing slash', 'https://www.indigenousrising.ai/dashboard/profile/?context=app', OK, OK, OK],
+  ['profile, context value case differs', 'https://www.indigenousrising.ai/dashboard/profile?context=APP', 'site-path', 'site-path', OK],
+  ['profile, extra query', 'https://www.indigenousrising.ai/dashboard/profile?context=app&next=/pricing', 'site-path', 'site-path', OK],
+  ['profile, context plus hash', 'https://www.indigenousrising.ai/dashboard/profile?context=app#pricing', 'site-path', 'site-path', OK],
+  ['other dashboard page in native context', 'https://www.indigenousrising.ai/dashboard/settings?context=app', 'site-path', 'site-path', OK],
+  ['pricing in native context', 'https://www.indigenousrising.ai/pricing?context=app', 'site-path', 'site-path', OK],
+  ['dot segments from profile to pricing', 'https://www.indigenousrising.ai/dashboard/profile/../../pricing?context=app', 'site-path', 'site-path', OK],
+  ['encoded profile path', 'https://www.indigenousrising.ai/dashboard/%70rofile?context=app', 'site-path', 'site-path', OK],
+  ['trailing host dot, profile in native context', 'https://www.indigenousrising.ai./dashboard/profile?context=app', OK, OK, OK],
+
+  // Without native context the full dashboard carries Upgrade -> /pricing.
   ['dashboard profile', 'https://www.indigenousrising.ai/dashboard/profile', 'site-path', 'site-path', OK],
   ['pricing', 'https://www.indigenousrising.ai/pricing', 'site-path', 'site-path', OK],
   ['home pricing anchor', 'https://www.indigenousrising.ai/#pricing', 'site-path', 'site-path', OK],
@@ -61,10 +75,16 @@ const ROWS: Row[] = [
   ['relative', '/pricing', 'unparseable', 'unparseable', 'unparseable'],
   ['empty', '', 'unparseable', 'unparseable', 'unparseable'],
 
-  // Payment processors.
+  // Our own subscription checkout (Checkout Sessions) and billing portal.
   ['stripe checkout', 'https://checkout.stripe.com/c/pay/cs_test_x', 'payment', 'payment', OK],
   ['stripe billing portal', 'https://billing.stripe.com/p/session/x', 'payment', 'payment', OK],
-  ['stripe trailing dot', 'https://buy.stripe.com./x', 'payment', 'payment', OK],
+  ['stripe checkout trailing dot', 'https://checkout.stripe.com./c/pay/x', 'payment', 'payment', OK],
+  ['stripe checkout upper case', 'https://CHECKOUT.STRIPE.COM/c/pay/x', 'payment', 'payment', OK],
+  // Other Stripe hosts are not ours (the site creates no Payment Links), so a
+  // funder's payment or donation page there is left alone.
+  ['stripe payment link', 'https://buy.stripe.com/test_x', OK, OK, OK],
+  ['stripe donation page', 'https://donate.stripe.com/x', OK, OK, OK],
+  ['stripe docs', 'https://stripe.com/en-ca/legal', OK, OK, OK],
 
   // Genuine funding and legal resources from the catalogue stay openable.
   ['ISC programme', 'https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236', OK, OK, OK],
@@ -107,6 +127,20 @@ describe('canOpenOutgoing', () => {
   test('defaults to the running platform (jest-expo runs as ios)', () => {
     expect(canOpenOutgoing('https://www.indigenousrising.ai/dashboard/profile')).toBe(false);
     expect(canOpenOutgoing('https://www.indigenousrising.ai/dashboard/profile', 'web')).toBe(true);
+    expect(canOpenOutgoing('https://www.indigenousrising.ai/dashboard/profile?context=app')).toBe(true);
+  });
+});
+
+describe('siteUrl', () => {
+  test('adds the native-context parameter', () => {
+    expect(siteUrl('/dashboard/profile')).toBe('https://www.indigenousrising.ai/dashboard/profile?context=app');
+    expect(siteUrl('/faq')).toBe('https://www.indigenousrising.ai/faq?context=app');
+  });
+  test('every page the app links is openable on native', () => {
+    for (const p of ['/dashboard/profile', '/privacy', '/terms', '/data-rights', '/faq', '/account-deletion']) {
+      expect(canOpenOutgoing(siteUrl(p), 'ios')).toBe(true);
+      expect(canOpenOutgoing(siteUrl(p), 'android')).toBe(true);
+    }
   });
 });
 
@@ -135,6 +169,11 @@ describe('openOutgoing', () => {
     await expect(openOutgoing('https://checkout.stripe.com/x', 'android')).resolves.toBe(false);
     expect(WebBrowser.openBrowserAsync).not.toHaveBeenCalled();
     expect(openURL).not.toHaveBeenCalled();
+  });
+
+  test('native opens the profile in native context', async () => {
+    await expect(openOutgoing(siteUrl('/dashboard/profile'), 'android')).resolves.toBe(true);
+    expect(WebBrowser.openBrowserAsync).toHaveBeenCalledWith('https://www.indigenousrising.ai/dashboard/profile?context=app');
   });
 
   test('web keeps the website link to the profile page', async () => {

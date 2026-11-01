@@ -4,29 +4,42 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Screen } from '@/components/screen';
 import { Badge, Body, Button, Caption, Card, Heading, Notice, Title } from '@/components/ui';
-import { AI_MATCHING_DISCLOSURE, formatAmount, formatDeadline, runMatching, type Match, type MatchOutcome } from '@/lib/funding';
-import { canOpenOutgoing, openOutgoing, SITE_ORIGIN } from '@/lib/links';
+import { useAuth } from '@/hooks/use-auth';
+import { allowAndFindMatches, declineAiMatching, findMatches, resetAiConsent, type MatchingStep } from '@/lib/ai-consent';
+import { AI_MATCHING_DISCLOSURE, AI_MATCHING_FIELDS, AI_MATCHING_PROVIDER, formatAmount, formatDeadline, type Match } from '@/lib/funding';
+import { openOutgoing, siteUrl } from '@/lib/links';
 import { Spacing, useTheme } from '@/theme';
 
-const PROFILE_URL = `${SITE_ORIGIN}/dashboard/profile`;
+// Opens in the website's native context (no dashboard chrome or upgrade prompts).
+const PROFILE_URL = siteUrl('/dashboard/profile');
 
-type State = { kind: 'idle' } | { kind: 'loading' } | MatchOutcome;
+type State = { kind: 'idle' } | { kind: 'loading' } | MatchingStep;
 
 /**
- * Runs the same match-funding-opportunities function the web dashboard calls.
+ * Runs the same match-funding-opportunities function the web dashboard calls,
+ * only after the user has allowed AI matching in the app (lib/ai-consent.ts).
  * Each run counts against the plan's monthly quota, so it is on demand and
  * never automatic.
  */
 export default function MatchesScreen() {
+  const { user } = useAuth();
+  const userId = user?.id ?? '';
   const [state, setState] = useState<State>({ kind: 'idle' });
 
-  const run = async () => {
+  const step = async (next: () => Promise<MatchingStep>) => {
     setState({ kind: 'loading' });
     try {
-      setState(await runMatching());
+      setState(await next());
     } catch (e) {
       setState({ kind: 'error', message: (e as Error).message });
     }
+  };
+  const run = () => step(() => findMatches(userId));
+  const allow = () => step(() => allowAndFindMatches(userId));
+  const decline = () => step(() => declineAiMatching(userId));
+  const withdraw = async () => {
+    await resetAiConsent(userId);
+    setState({ kind: 'idle' });
   };
 
   return (
@@ -37,21 +50,38 @@ export default function MatchesScreen() {
           Matches are ranked against the business profile you entered. They are suggestions to review, not a decision on
           eligibility; the funder makes that.
         </Body>
-        <Caption>{AI_MATCHING_DISCLOSURE}</Caption>
       </View>
 
       {state.kind === 'idle' ? <Button title="Find my matches" onPress={run} /> : null}
       {state.kind === 'loading' ? <Button title="Matching…" loading onPress={() => undefined} /> : null}
 
+      {state.kind === 'consent-required' ? (
+        <Card>
+          <Title>Allow AI matching?</Title>
+          <Body>To rank matches, these six fields from your business profile are sent to {AI_MATCHING_PROVIDER}:</Body>
+          {AI_MATCHING_FIELDS.map((f) => (
+            <Body key={f}>• {f}</Body>
+          ))}
+          <Caption>{AI_MATCHING_DISCLOSURE}</Caption>
+          <Caption>Nothing is sent unless you allow it. Browsing the catalogue and saved programmes does not use AI.</Caption>
+          <Button title="Allow and find matches" onPress={allow} />
+          <Button title="Not now" variant="secondary" onPress={decline} />
+        </Card>
+      ) : null}
+
+      {state.kind === 'declined' ? (
+        <Card>
+          <Title>AI matching is off</Title>
+          <Body>Nothing from your profile was sent. The catalogue and your saved programmes work as usual.</Body>
+          <Button title="Review AI matching" variant="secondary" onPress={withdraw} />
+        </Card>
+      ) : null}
+
       {state.kind === 'profile-incomplete' ? (
         <Card>
           <Title>Finish your business profile first</Title>
           <Body>Missing: {state.missing.join(', ')}.</Body>
-          {canOpenOutgoing(PROFILE_URL) ? (
-            <Button title="Complete profile on the website" variant="secondary" onPress={() => openOutgoing(PROFILE_URL)} />
-          ) : (
-            <Caption>Sign in at www.indigenousrising.ai with this account to complete your profile.</Caption>
-          )}
+          <Button title="Complete profile on the website" variant="secondary" onPress={() => openOutgoing(PROFILE_URL)} />
         </Card>
       ) : null}
 
@@ -85,6 +115,7 @@ export default function MatchesScreen() {
             state.data.matches.map((m) => <MatchCard key={m.grant_id} match={m} />)
           )}
           <Button title="Run again" variant="ghost" onPress={run} />
+          <Button title="Stop allowing AI matching" variant="ghost" onPress={withdraw} />
         </>
       ) : null}
     </Screen>

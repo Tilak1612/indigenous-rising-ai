@@ -5,6 +5,7 @@ import { Mail, Leaf } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { ComplianceBadge, DataResidencyNote } from '@/components/trust';
 import { BrandMark } from '@/components/BrandMark';
+import { isNativeContext } from '@/lib/native-context';
 
 // Single canonical footer used on every route (marketing + inner pages + the
 // homepage). Brand mark + wordmark lockup. Claims kept factual
@@ -12,7 +13,8 @@ import { BrandMark } from '@/components/BrandMark';
 // aligned", or unreviewed decorative Indigenous-language headers. OCAP is the
 // registered ® mark of the FNIGC.
 
-type FooterLink = { name: string; to: string };
+// nativeHide: left out in the mobile app's in-app browser (lib/native-context.ts).
+type FooterLink = { name: string; to: string; nativeHide?: boolean };
 
 const SECTIONS: { title: string; links: FooterLink[] }[] = [
   {
@@ -25,7 +27,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Free funding alerts', to: '/funding/alerts' },
       { name: 'Data sovereignty', to: '/#sovereignty' },
       { name: 'Training', to: '/training' },
-      { name: 'Pricing', to: '/pricing' },
+      { name: 'Pricing', to: '/pricing', nativeHide: true },
       { name: 'Book a demo', to: '/demo' },
     ],
   },
@@ -111,6 +113,7 @@ const NavLink = ({ to, children }: { to: string; children: React.ReactNode }) =>
   );
 
 const Footer = () => {
+  const native = isNativeContext();
   const year = new Date().getFullYear();
 
   return (
@@ -189,8 +192,10 @@ const Footer = () => {
               {/* No extra gap on mobile — the 44px link min-height provides the
                   rhythm; desktop keeps the original 2.5 spacing. */}
               <ul className="space-y-0 md:space-y-2.5">
-                {section.links.map((link) => (
-                  <li key={link.name}>
+                {section.links.filter((link) => !(link.nativeHide && native)).map((link) => (
+                  // data-native-hide also hides it in the prerendered HTML
+                  // before the app mounts (index.html + index.css).
+                  <li key={link.name} data-native-hide={link.nativeHide ? '' : undefined}>
                     <NavLink to={link.to}>{link.name}</NavLink>
                   </li>
                 ))}
