@@ -69,3 +69,40 @@ tested with two accounts; service-role key only in Edge Functions.
 ## Definition of done
 Files changed; lint + typecheck + vitest results; unverified items; migrations,
 env vars, or cron changes needed.
+
+## Product iteration directive (owner request, 2026-11-01)
+
+> Look at the site first, then innovate. Think about the user experience and think outside the box. Make one bold change that improves conversions or the look and feel, not a small tweak. Use any tool you have. You must ship a change every time.
+
+Apply this directive to authorized product-iteration work, not to every read-only
+question, audit, or instruction-maintenance task. Agent-team setup remains the
+current priority; recording this direction does not start an automatic redesign.
+
+- Inspect the actual site and relevant user flow first, including mobile, and
+  record evidence of the friction or opportunity. If access is blocked, report
+  that limitation rather than claiming the site was inspected.
+- Choose one bold, coherent, testable improvement rather than unrelated tweaks.
+  State the hypothesis, capture an available baseline, and propose a success
+  metric and validation method. Label missing analytics honestly; never invent
+  conversion lift, customers, testimonials, capabilities, or measured results.
+- Check active branches, PRs, ownership and release holds before starting. Reuse
+  matching work rather than duplicating it; do not disturb held work or unrelated
+  changes. Preserve all existing domain, privacy, security and honesty rules.
+- Validate the affected experience: accessibility (keyboard, focus, contrast,
+  reduced motion), mobile/responsive layout, relevant end-to-end flows, and
+  regressions. Run applicable repository checks; report passed, failed, skipped
+  and unverified checks separately. Never bypass a failing gate to claim success.
+- For this product-iteration directive, "ship" means a tested branch / draft-PR
+  deliverable until applicable merge/deploy approval and release gates are met.
+  This scoped boundary takes precedence over any general auto-push convention
+  for this work. Do not push directly to main, merge, enable auto-merge, deploy
+  production, or release to an app store merely to satisfy "every time".
+  If blocked, deliver the evidence and exact blocker instead of a broken change.
+- "Use any tool" means tools already authorized for this task. It does not
+  authorize new keys/accounts, paid services, third-party outreach, changes to
+  global Claude permissions/authentication, or overwriting existing instructions.
+- Preserve native companion-app payment restrictions and store-review holds.
+  No IAP additions, native purchase/billing links or purchase steering, blanket
+  Solo-plan removal, revocation of legacy entitlements/access, or app-store-policy
+  regressions. Pricing/payment/entitlement changes require their own explicit
+  authorization and applicable review; conversion goals do not override them.
