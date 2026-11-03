@@ -128,3 +128,21 @@ describe('no fabricated usage counts', () => {
     expect(read('src/pages/PublicPlan.tsx')).not.toMatch(/winning business plan/i);
   });
 });
+
+describe('the 2026-11-03 wording correction', () => {
+  const fix = read('supabase/migrations/20261103000001_iesp_collateral_free_wording.sql');
+
+  test('uses the funder page wording and keeps the figures', () => {
+    expect(fix).toMatch(/Collateral-free startup loan of up to \$75,000/);
+    expect(fix).toMatch(/18-39/);
+    expect(fix).toMatch(/24 months or less/);
+    expect(seedRow).toMatch(/Collateral-free/);
+    expect(seedRow).not.toMatch(/Equity-free/);
+  });
+
+  test('only touches the row that still carries the old wording, and leaves review to a person', () => {
+    expect(fix).toMatch(/where slug = 'indigenous-entrepreneur-startup-program'/);
+    expect(fix).toMatch(/description like 'Equity-free startup loan%'/);
+    expect(fix).not.toMatch(/verification_status\s*=/);
+  });
+});
