@@ -35,26 +35,28 @@ const ISC_AEP: BlogSource = {
   url: 'https://www.sac-isc.gc.ca/eng/1375201178602/1610797286236',
   supports:
     'The $99,999 individual and $250,000 community-business ceilings, who is eligible, that eligibility varies between IFIs and MCCs, and that applications go to your local institution. The page itself was last modified 10 April 2024.',
-  checkedOn: '2026-09-28',
+  checkedOn: '2026-11-03',
 };
 
 const FUTURPRENEUR_IESP: BlogSource = {
   label: 'Futurpreneur: Indigenous Entrepreneur Startup Program',
   url: 'https://futurpreneur.ca/en/offering/indigenous-entrepreneur-startup/',
   supports:
-    'The loan of up to $75,000, the up-to-two-years of mentorship, the age 18-39 and 24-month eligibility criteria, and that it is open to Indigenous entrepreneurs on or off reserve.',
-  checkedOn: '2026-09-28',
+    'The collateral-free loan of up to $75,000, the up to $40,000 follow-on financing with RBC Origins, the up-to-two-years of mentorship, the age 18-39 and 24-month eligibility criteria, self-identification, and that it serves entrepreneurs on or off reserve.',
+  checkedOn: '2026-11-03',
 };
 
 const NACCA: BlogSource = {
   label: 'National Aboriginal Capital Corporations Association (NACCA)',
   url: 'https://nacca.ca/',
   supports:
-    'The size of the Indigenous Financial Institution network and where to find the institution serving your region.',
-  checkedOn: '2026-09-28',
+    'The size of the Indigenous Financial Institution network (over 50 institutions, more than 54,500 business loans) and where to find the institution serving your region.',
+  checkedOn: '2026-11-03',
 };
 
 export const BLOG_SOURCES: Record<string, BlogSource[]> = {
   'off-reserve-indigenous-business-funding-canada': [ISC_AEP, FUTURPRENEUR_IESP, NACCA],
   'aboriginal-entrepreneurship-program-how-to-apply': [ISC_AEP, NACCA],
+  'indigenous-business-funding-checklist': [ISC_AEP, FUTURPRENEUR_IESP, NACCA],
+  'futurpreneur-indigenous-entrepreneur-startup-program': [FUTURPRENEUR_IESP, ISC_AEP],
 };

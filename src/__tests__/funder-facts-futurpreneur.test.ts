@@ -12,7 +12,10 @@ import { readFileSync } from 'node:fs';
  * in a browser on 2026-09-26, the page says: an equity-free loan of up to
  * $75,000; a business "not yet operational or ... operating full time for 24
  * months or less"; up to two years of 1:1 mentorship; ages 18-39. BDC is not
- * mentioned on the page at all.
+ * mentioned on the page at all. Re-read on 2026-11-03: the page now says
+ * "collateral-free loan financing of up to $75,000" and adds up to $40,000 of
+ * follow-on financing with RBC Origins (a separate offer, not a retired figure;
+ * the blog section guarded here still does not mention it).
  *
  * Both halves of this matter to an applicant:
  *   - the ceiling was understated by $15,000, and a floor was invented;

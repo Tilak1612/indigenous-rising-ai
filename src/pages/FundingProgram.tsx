@@ -22,6 +22,7 @@ import {
   fetchSimilarPrograms, fmtDate, formatAmount, fundingTypeLabel, programPageTitle, regionLabel, type FundingProgram,
 } from '@/lib/funding-catalog';
 import { seededPrograms } from '@/lib/funding-prerender';
+import { PROGRAM_GUIDES } from '@/data/programGuides';
 import { toast } from 'sonner';
 
 const SITE = 'Indigenous Rising AI';
@@ -206,6 +207,16 @@ export default function FundingProgramPage({ slug }: { slug: string }) {
                   <p className="text-muted-foreground">Application steps are on the funder&apos;s page. Use the official link on this page.</p>
                 )}
               </Section>
+
+              {(PROGRAM_GUIDES[g.slug]?.length ?? 0) > 0 && (
+                <Section title="Guides to this programme">
+                  <ul className="space-y-1">
+                    {PROGRAM_GUIDES[g.slug].map((guide) => (
+                      <li key={guide.slug}><Link to={`/blog/${guide.slug}`} className="underline text-primary">{guide.label}</Link></li>
+                    ))}
+                  </ul>
+                </Section>
+              )}
 
               {g.documents_required.length > 0 && (
                 <Section title="Documents usually required">
