@@ -487,156 +487,46 @@ Consider other programs, smaller initial requests, or building track record befo
   {
     id: "4",
     slug: "bc-indigenous-business-grants-loans-complete-resource",
-    title: "BC Indigenous Business Grants and Loans: Your Complete Resource",
-    summary: "Comprehensive guide to British Columbia's Indigenous business ecosystem, including provincial programs, All Nations Trust Company, and nation-specific funding opportunities for First Nations, Métis, and Inuit entrepreneurs in BC.",
-    keywords: [
-      "BC Indigenous business grants",
-      "British Columbia First Nations funding",
-      "Indigenous entrepreneur BC programs",
-      "BC Métis business support"
-    ],
+    title: "Indigenous Business Grants and Loans in British Columbia",
+    summary: "Which of BC's Indigenous Financial Institutions serves your area, what each one publishes about loans and grants, and which BC programmes are open or closed as of 3 November 2026. Every figure is from the lender's or funder's own page.",
+    keywords: ["BC Indigenous business grants", "Indigenous business grants BC", "aboriginal business grants BC", "British Columbia First Nations business funding", "Indigenous business loans BC", "BC Métis business funding", "New Relationship Trust equity matching"],
     searchIntent: "Navigational + Transactional",
     category: "Provincial Guides",
     readTime: 12,
     publishedAt: "2025-01-08",
-    updatedAt: "2025-01-10",
-    author: {
-      name: "Indigenous Rising AI Team",
-      role: "Community Editors"
-    },
+    updatedAt: "2026-11-03",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
     image: "/og-home.jpg",
-    introduction: `British Columbia is home to incredible Indigenous business diversity. With over 200 First Nations, each with distinct territories and economic priorities, plus growing urban Indigenous populations in Vancouver and Victoria, BC's Indigenous business community represents one of Canada's most dynamic entrepreneurial ecosystems.
-
-From the salmon fisheries of the coast to the forestry enterprises of the interior, from Indigenous-owned tech companies in Vancouver to tourism operators showcasing world-class cultural experiences, BC Indigenous businesses are leaders in their industries. Provincial reconciliation commitments have created new funding pathways, while established organizations like All Nations Trust Company provide the financial foundation for business growth.
-
-This guide covers the full spectrum of BC Indigenous business funding. We'll explain provincial programs unique to British Columbia, introduce you to key Indigenous financial institutions, and connect you to federal resources available in the province. Whether you're launching on reserve lands, in an urban center, or anywhere in between, you'll find the information you need to access funding.
-
-Let's explore the opportunities available to Indigenous entrepreneurs in Beautiful British Columbia.`,
+    introduction: "British Columbia is home to 202 First Nations, according to Indigenous Services Canada, and it has more Indigenous Financial Institutions (IFIs) than most provinces: NACCA and PacifiCan both count ten. Most of them lend only inside a defined territory, so the first question is not which programme is best but which lender covers where your business is.\n\nThis guide answers that first, then sets out the grants that sit alongside those loans, and finishes with which BC programmes are open or closed today.\n\nEvery figure below comes from the lender's or funder's own page, read on 3 November 2026; the Sources section lists them. Lenders sometimes publish different figures on different pages, and we say where. Confirm current terms with the lender before you apply. Nothing here is an eligibility decision.",
     sections: [
       {
-        id: "bc-landscape",
-        title: "British Columbia's Indigenous Business Landscape",
-        content: `BC's Indigenous business community is among Canada's most diverse and successful:
-
-**Key Facts:**
-- Over 200 First Nations across the province
-- Strong urban Indigenous business presence in Vancouver, Victoria, and regional centers
-- Industry leadership in forestry, fishing, tourism, and technology
-- Provincial reconciliation framework supporting economic participation
-
-**Key Organizations:**
-- BC Assembly of First Nations economic development
-- First Nations Summit
-- BC Indian Business and Investment Council
-- All Nations Trust Company
-- New Relationship Trust`
+        id: "ifis",
+        title: "Find the lender that covers your area",
+        content: "Each lender's own description of where it lends, with its headline figure:\n\n| Lender | Where it lends | What it publishes |\n|---|---|---|\n| All Nations Trust Company (ANTCO), Kamloops | Most of BC: the Thompson, Okanagan, North East, Kootenays, Nechako and Cariboo regions. It says it cannot serve businesses outside its area | Business loans; Business Financing Program grant up to $99,999 for individuals; First Citizens Fund 40% contribution to principal, $115,000 lifetime, 15% equity |\n| Tale'awtxw Aboriginal Capital Corporation (TACC), West Vancouver | Coast Salish territory | Contributions up to $99,999 for individuals and $250,000 for community-owned businesses, only alongside equity and a loan |\n| Tribal Resources Investment Corporation (TRICORP), Prince Rupert | Haida Gwaii to Burns Lake, and Hartley Bay to the Yukon border | Loans up to $100,000 at a fixed 8%; First Citizens Fund up to $116,725 for individuals, 40% forgivable with full repayment; programmes year-round |\n| Nuu-chah-nulth Economic Development Corporation (NEDC), Port Alberni | Vancouver Island | Commercial financing for Indigenous entrepreneurs and First Nation community-owned businesses; feasibility and business plan funding; no amounts published |\n| Stó:lō Community Futures, Chilliwack | S'ólh Téméxw, Fort Langley to Yale | Loans up to $150,000 for individuals and $500,000 for Stó:lō community-owned businesses; micro-loans up to $10,000 |\n| Interior Indigenous Community Futures, Kamloops | Thompson, Shuswap, Nicola, Fraser Canyon, Lillooet and Okanagan (as described by the Province of BC) | Business loans up to $125,000 |\n| Burns Lake Native Development Corporation | Its six member First Nations on Wet'suwet'en territory, and off-reserve members | Grant and loan assistance and business development; no amounts published |\n| Haida Gwaii Community Futures, Masset | All islanders, not only Indigenous people | Loans from $1,000 to $2,000,000 |\n| Native Fishing Association | Indigenous commercial fishers anywhere in BC | Loans up to $500,000 at 8.75% with at least 10% cash equity |\n| Aboriginal Business and Community Development Centre, Prince George | Advisory | It says it is not a lender and refers clients to IFIs; its services are free |\n\nMétis entrepreneurs anywhere in BC can also go to the **Métis Financial Corporation of BC**, which finances Métis-owned projects of $20,000 to $500,000 with at least 10% equity. Our [Métis funding guide](/blog/metis-specific-business-funding-economic-development-programs) has its rules on identification and residency.\n\nThe [Indigenous lender directory](/indigenous-financial-institutions-directory) and [NACCA's full list](https://nacca.ca/indigenous-financial-institutions-listings) have contact details.",
       },
       {
-        id: "antco",
-        title: "All Nations Trust Company",
-        content: `ANTCO is BC's primary Indigenous financial institution:
-
-**Services:**
-- Business loans for startups and expansions
-- Equipment and vehicle financing
-- Commercial mortgages
-- Lines of credit
-- Financial advisory services
-
-**Why ANTCO:**
-- Indigenous-owned and governed
-- Deep understanding of BC First Nations context
-- Relationship-based lending approach
-- Flexible collateral requirements
-
-**Getting Started:**
-Contact ANTCO's business development team to discuss your needs and explore financing options.`
+        id: "grants",
+        title: "The grants that sit alongside BC loans",
+        content: "In BC, almost every business grant for an individual entrepreneur is attached to a loan from the same lender.\n\n- **Aboriginal Entrepreneurship Program (federal).** Indigenous Services Canada says individual entrepreneurs may receive up to $99,999 and eligible community businesses up to $250,000, delivered through IFIs, with no deadline. In BC, ANTCO's Business Financing Program and TACC's and TRICORP's business equity programmes publish the same limits.\n- **New Relationship Trust Equity Matching.** NRT, a BC Indigenous-led non-profit, offers up to $7,500 for BC First Nation entrepreneurs and up to $25,000 for community businesses, only alongside a loan approved by one of its partner lenders, and continuously until funds run out. NRT names seven delivery lenders, including ANTCO, TACC, TRICORP, NEDC, Stó:lō Community Futures and the Native Fishing Association. **The lenders publish different figures:** ANTCO says up to $5,000, and TRICORP says $7,500 per individual and up to $30,000 per community. Ask your lender which amount applies. It is open to First Nations entrepreneurs, not Métis or Inuit.\n- **First Citizens Fund Business Loan Program (Province of BC).** Delivered by ANTCO with partner capital corporations. ANTCO describes it as a 40% contribution to the principal of your loan as you pay it off, with a $115,000 lifetime limit and 15% equity; TRICORP publishes a $116,725 lifetime limit for individuals.\n- **Native Fishing Association.** A grant of up to 40% to complement an approved loan, and a women's programme up to $20,000 with up to 45% as a grant.\n\nMost BC lenders ask for owner equity of 10% to 15%. Our [owner equity guide](/guides/indigenous-funding-equity-requirements) quotes TACC's and TRICORP's published rules.",
       },
       {
-        id: "bcibic",
-        title: "BC Indigenous Business and Investment Council (BCIBIC)",
-        content: `BCIBIC supports Indigenous business success across the province:
-
-**Services:**
-- Procurement readiness support
-- Corporate partnership facilitation
-- Networking and business development events
-- Training and capacity building
-
-**Procurement Opportunities:**
-BCIBIC connects Indigenous businesses with:
-- Provincial government procurement
-- Crown corporation opportunities
-- Major project procurement
-- Corporate supply chain opportunities`
+        id: "intakes",
+        title: "What is open and closed (checked 3 November 2026)",
+        content: "| Programme | Status on 3 November 2026 |\n|---|---|\n| Aboriginal Entrepreneurship Program, through IFIs | No deadline |\n| New Relationship Trust Equity Matching | Continuous until funds run out; Stó:lō Community Futures says it administers the match for fiscal 2026-2027 |\n| TRICORP programmes | Year-round |\n| BC Indigenous Clean Energy Initiative (NRT) | Closed; NRT says it will reopen in late 2026. For First Nations, tribal councils and majority community-owned entities, not individual entrepreneurs |\n| First Nations Clean Energy Business Fund (Province of BC) | The 2026 intake closed on 30 April 2026. For bands and Indigenous governing bodies |\n| ANTCO, TACC, NEDC, Native Fishing Association, Burns Lake, Haida Gwaii, MFC | No intake window published; contact the lender |",
       },
       {
-        id: "provincial-programs",
-        title: "Provincial BC Indigenous Programs",
-        content: `BC offers several Indigenous-specific funding programs:
-
-**New Relationship Trust**
-- Community economic development funding
-- Business development support
-- Capacity building grants
-
-**BC Indigenous Clean Energy Initiative**
-- Clean energy project funding
-- Renewable energy development
-- Energy efficiency programs
-
-**Tourism BC Indigenous Programs**
-- Indigenous tourism development
-- Marketing and promotion support
-- Experience development funding`
+        id: "federal",
+        title: "Federal and provincial contacts",
+        content: "- **PacifiCan** has no dedicated Indigenous fund. It says all its programmes are open to applications from Indigenous businesses and eligible organizations. Contact: PacifiCan.Indigenous-Autochtones@pacifican.gc.ca.\n- **BDC's Indigenous Entrepreneur Loan** offers financing of up to $350,000 to grow or scale a business.\n- **Futurpreneur's Indigenous Entrepreneur Startup Program** offers collateral-free loan financing of up to $75,000 for Indigenous entrepreneurs aged 18 to 39.\n- **Indigenous Tourism BC** offers destination development programmes, market readiness funding and free tourism training. It publishes no dated intake, so ask it directly.\n- The Province of BC supports the **Indigenous Business and Investment Council**, which it describes as developing strategies to increase Indigenous participation in the economy. It is an advisory council, not a funder.\n\nCommunities and Nations have a different set of federal programmes, including Indigenous Services Canada's Community Opportunity Readiness Program. Our guide to [funding for your own business or a community enterprise](/guides/choosing-funding-business-or-community) sorts them out.",
       },
       {
-        id: "federal-bc",
-        title: "Federal Programs for BC Indigenous Entrepreneurs",
-        content: `Federal agencies deliver Indigenous business programs in BC:
-
-**Pacific Economic Development Canada (PacifiCan)**
-- Indigenous economic development funding
-- Innovation and diversification support
-- Regional economic growth programs
-
-**BDC Indigenous Banking**
-- Business loans and advisory services
-- Partnership with BC Indigenous organizations
-
-**Aboriginal Entrepreneurship Program**
-- Delivered through BC AFIs
-- Business development funding
-- Training and mentorship support`
+        id: "prepare",
+        title: "Before you contact a lender",
+        content: "- Confirm the lender covers your location. ANTCO, TACC, TRICORP, NEDC and Stó:lō all lend only inside their own territories.\n- Have your equity worked out: most BC lenders publish a 10% to 15% minimum.\n- Build the plan and the numbers first: the [business plan template](/indigenous-business-plan-template), the [startup cost calculator](/tools/startup-cost-calculator) and the [cash flow forecast template](/templates/cash-flow-forecast).\n- Check what your lender asks you to attach in our [document checklist by lender](/guides/funding-document-checklist-by-lender), which includes TACC, TRICORP and NEDC.\n- See the BC programmes we track, with the date each was last checked: [British Columbia funding](/funding/british-columbia).",
       },
-      {
-        id: "industry-bc",
-        title: "Industry Opportunities in BC",
-        content: `BC's economy offers sector-specific opportunities:
-
-**Forestry:**
-- Forest tenure opportunities
-- Sustainable forestry initiatives
-- Value-added wood products
-
-**Tourism:**
-- Cultural tourism development
-- Eco-tourism opportunities
-- Destination experience development
-
-**Technology:**
-- Vancouver tech ecosystem access
-- Innovation funding
-- Digital economy programs
-
-**Clean Energy:**
-- Renewable energy projects
-- Energy efficiency
-- Climate action initiatives`
-      }
     ],
-    cta: "Discover BC Indigenous business funding opportunities through Indigenous Rising AI—search programs by location, industry, and business stage.",
-    relatedPosts: ["1", "3", "5"]
+    cta: "Indigenous Rising AI lists BC programmes with the date each was last checked against the funder, and helps you build the business plan your lender will read. Free to start, no credit card.",
+    relatedPosts: ["1", "3", "5"],
   },
   {
     id: "5",
@@ -808,135 +698,56 @@ Youth-specific Indigenous business funding through PrairiesCan, CanNor, FedNor, 
   {
     id: "7",
     slug: "funding-indigenous-women-entrepreneurs-grants-loans-resources",
-    title: "Funding for Indigenous Women Entrepreneurs: Grants, Loans & Resources",
-    summary: "Comprehensive guide addressing the unique funding landscape for Indigenous women business owners, including women-specific programs, intersectional support, and resources that honor Indigenous women's leadership in economic development.",
-    keywords: [
-      "Indigenous women entrepreneur funding",
-      "First Nations women business grants",
-      "Métis women entrepreneur support",
-      "Indigenous women-led business loans"
-    ],
+    title: "Funding for Indigenous Women Entrepreneurs: Who Delivers It and What Is Repayable",
+    summary: "Funding for Indigenous women entrepreneurs in Canada is delivered by many institutions with different terms, not as one national programme. This guide compares the delivery institutions, how much of each offer is a grant and on what condition, and what was open on 3 November 2026.",
+    keywords: ["Indigenous women business grants", "Indigenous women entrepreneur funding", "First Nations women business grants", "Métis women entrepreneur funding", "Inuit women business funding", "Indigenous Women's Entrepreneurship program", "Women Entrepreneurship Loan Fund"],
     searchIntent: "Informational + Transactional",
     category: "Audience-Specific",
-    readTime: 12,
+    readTime: 10,
     publishedAt: "2025-01-11",
-    updatedAt: "2025-01-12",
-    author: {
-      name: "Indigenous Rising AI Team",
-      role: "Community Editors"
-    },
+    updatedAt: "2026-11-03",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
     image: "/og-home.jpg",
-    introduction: `Indigenous women have always been leaders. In traditional economies, women held essential economic roles—from the skilled traders of the plains to the fisherwomen of the coasts. Today, Indigenous women entrepreneurs are continuing this legacy, building businesses that provide for families, strengthen communities, and create new pathways to prosperity.
-
-The funding landscape for Indigenous women entrepreneurs has expanded significantly. Programs now recognize that supporting Indigenous women in business isn't just good equity policy—it's smart economic development. Women-owned businesses tend to reinvest in their communities at higher rates and create employment opportunities that benefit extended family networks.
-
-This guide is specifically for Indigenous women exploring business funding. We'll cover women-specific programs, address unique barriers Indigenous women face in accessing capital, and highlight organizations led by and for Indigenous women. Whether you're balancing childcare with startup dreams, seeking to formalize a craft business, or scaling an established enterprise, you'll find resources tailored to your journey.`,
+    introduction: "There is no single national grant for Indigenous women entrepreneurs, and no uniform national amount. What exists is a set of programmes delivered by different institutions, mostly Indigenous Financial Institutions (IFIs), each setting its own limit and its own split between loan and grant.\n\nThat split is the thing to compare. Two offers of $25,000 can differ by thousands of dollars in what you repay, and some grants are only applied if every loan payment is made on time.\n\nEvery figure below comes from the delivering institution's own page, read on 3 November 2026, and the Sources section lists them. Confirm current terms with the institution before you apply. Nothing here is an eligibility decision.",
     sections: [
       {
-        id: "women-leading",
-        title: "Indigenous Women Leading Economic Change",
-        content: `Indigenous women entrepreneurs are making significant economic impact:
-
-**Current Landscape:**
-- Indigenous women-owned businesses growing faster than national average
-- Leadership in arts, crafts, wellness, professional services, and technology
-- Strong community reinvestment and employment creation
-
-**Unique Strengths:**
-- Community connection and trust relationships
-- Cultural knowledge informing business models
-- Multi-generational thinking and planning
-- Collaborative approaches to business`
+        id: "iwe",
+        title: "NACCA's Indigenous Women's Entrepreneurship program, through your IFI",
+        content: "The main Indigenous-specific route is the **Indigenous Women's Entrepreneurship (IWE) program** run by NACCA, the National Aboriginal Capital Corporations Association. NACCA says women entrepreneurs gain access to funding, training and advisory services through NACCA and its network of IFIs, including microloans. You apply through your local IFI, not to NACCA or to the federal government.\n\nNACCA does not publish a national amount. Each IFI sets its own terms. Examples published by IFIs:\n\n| IFI | Maximum | Non-repayable part | Other terms published |\n|---|---|---|---|\n| Baffin Business Development Corporation (Nunavut) | Up to $25,000 | 35% non-repayable | 65% loan at 5%; at least 5% of project costs from you; term up to 4 years; open to Inuit, First Nations and Métis women 18 and over |\n| Dehcho Business Development Centre (NWT) | Up to $25,000 | 45% of the loan is a grant | Business majority owned (over 51%) by an Indigenous woman, in the Dehcho Region |\n| Nishnawbe Aski Development Fund (Northern Ontario) | Projects up to $25,000 | 45% grant | 5% client contribution and 50% repayable loan |\n| NWT Métis-Dene Development Fund | Up to $20,000 | 45% grant | 5% equity and 50% loan |\n| Ulnooweg Development Group (Atlantic) | Up to $25,000 | None stated | Women and youth loans at 8% over up to 5 years, with 5% cash equity recommended |\n\nFind the IFI for your region in our [Indigenous lender directory](/indigenous-financial-institutions-directory) or on [NACCA's list](https://nacca.ca/indigenous-financial-institutions-listings).",
       },
       {
-        id: "women-programs",
-        title: "Women-Specific Indigenous Business Programs",
-        content: `Programs designed for Indigenous women entrepreneurs:
-
-**Federal Programs:**
-- Indigenous Women Entrepreneurship Program
-- Women Entrepreneurship Strategy Indigenous streams
-- Regional development agency women's initiatives
-
-**Provincial Programs:**
-- Province-specific women entrepreneur funding
-- Women's enterprise centers with Indigenous programs
-- Micro-lending specifically for women
-
-**How Women-Focused Programs Differ:**
-- Recognition of unique barriers
-- Flexible program delivery (childcare, scheduling)
-- Mentorship from women entrepreneurs
-- Networking with other Indigenous women in business`
+        id: "conditional",
+        title: "Grants that depend on repayment",
+        content: "Some women's programmes attach the grant to how you repay the loan. The clearest published example is the **Sophie Morigeau Women's Entrepreneurship Program** at the Métis Financial Corporation of BC, for businesses at least 51% owned by Métis women:\n\n- Projects up to $25,000.\n- Each loan carries a **30% grant applied at the end of the four-year term**, only if every payment is made on time.\n- If the loan is refinanced or paid off in a lump sum, the grant is not applied and the full amount is repayable.\n- 5% or 10% cash equity from you; starting interest rate 7.5%.\n\nMFC says it is working to relaunch its Métis women's program under a new name in 2026, so ask which version is open.\n\nOther Métis women's programmes publish their share up front instead: Apeetogosan's Métis Women Micro-Business Program in Alberta pairs a 50% loan with a 40% non-repayable subsidy on projects of $5,000 to $25,000, and Louis Riel Capital Corporation's Métis Women Entrepreneurship Program in Manitoba offers up to $40,000 as a grant and loan. The [Métis funding guide](/blog/metis-specific-business-funding-economic-development-programs) has the details.\n\nPlan for the loan payments in your cash flow either way. The [cash flow forecast template](/templates/cash-flow-forecast) shows them month by month.",
       },
       {
-        id: "intersectional",
-        title: "Intersectional Support: Programs for Indigenous Women Facing Multiple Barriers",
-        content: `Additional support for Indigenous women with intersecting needs:
-
-**Single Mothers:**
-- Programs recognizing parenting responsibilities
-- Childcare support during training
-- Flexible business development timelines
-
-**Rural and Remote:**
-- Programs addressing geographic isolation
-- Technology support for remote business operation
-- Travel support for training and networking
-
-**2SLGBTQIA+ Indigenous Women:**
-- Inclusive programs and organizations
-- Safe spaces for business development
-- Networks for 2SLGBTQIA+ Indigenous entrepreneurs`
+        id: "welf",
+        title: "Women Entrepreneurship Loan Fund: loans, not grants",
+        content: "The federal **Women Entrepreneurship Loan Fund**, part of the Women Entrepreneurship Strategy, provides loans of up to $50,000 to start or grow a business. On 3 November 2026 ISED's page said its delivery organizations are currently accepting applications, and noted a further $59 million in June 2026.\n\nFour national organizations deliver it. **NACCA delivers it in every province and territory**, which is the Indigenous route. The others are the Women's Enterprise Organizations of Canada (WEOC) and its member centres, Nventure, and Evol in Quebec. These are repayable loans with no grant portion.\n\nThe strategy's **Ecosystem Fund** is different: it funds not-for-profit organizations that support women entrepreneurs, not individual businesses. ISED's 2027 call for proposals closes on 9 November 2026.",
+      },
+      {
+        id: "centres",
+        title: "Women's enterprise centres",
+        content: "Provincial women's enterprise centres lend to all women business owners. None of the three we checked has an Indigenous-specific loan, and all three are repayable:\n\n| Centre | What it publishes |\n|---|---|\n| Alberta Women Entrepreneurs | Repayable loans up to $150,000. Its NextSteps to Success business planning series is for Indigenous women at an early stage; on 3 November 2026 its next cohort was in planning |\n| WeBC (British Columbia) | Business loans up to $150,000; loans of $50,000 or less may qualify for its Equal Access to Capital program without specific security. WeBC says it does not provide grants |\n| WeMB (Manitoba) | Loans from $5,000 to $150,000, including micro-loans of $5,000 to $25,000 |\n\nThey can be a good fit for planning support and for amounts above what IFI microloans offer.",
+      },
+      {
+        id: "other",
+        title: "Indigenous programmes open to women and men",
+        content: "These are not women-specific, but they are often the larger amounts:\n\n- **Aboriginal Entrepreneurship Program,** through IFIs: Indigenous Services Canada says individual entrepreneurs may receive up to $99,999.\n- **BDC's Indigenous Entrepreneur Loan:** financing of up to $350,000 to grow or scale a business. BDC's women's offering, Thrive, is an equity investment platform rather than a loan or grant.\n- **Futurpreneur's Indigenous Entrepreneur Startup Program:** collateral-free loan financing of up to $75,000 for Indigenous entrepreneurs aged 18 to 39, with up to two years of mentorship.",
       },
       {
         id: "networks",
-        title: "Indigenous Women's Business Networks",
-        content: `Organizations supporting Indigenous women in business:
-
-**National Organizations:**
-- Native Women's Association of Canada (NWAC)
-- Pauktuutit Inuit Women of Canada
-- Les Femmes Michif Otipemisiwak
-
-**Regional and Provincial:**
-- Provincial Indigenous women's organizations
-- Regional women's business networks
-- Urban Indigenous women's groups
-
-**Networking Opportunities:**
-- Conferences and gatherings
-- Online communities and forums
-- Mentorship matching programs`
+        title: "Networks and organizations",
+        content: "These organizations support Indigenous women in business but do not fund businesses directly:\n\n- **Pauktuutit Inuit Women of Canada** runs the Inuit Women in Business Network, with workshops and resources on finding grants.\n- **Les Femmes Michif Otipemisiwak,** the national Métis women's organization, lists economic development and entrepreneurship among its priorities.\n- **The Native Women's Association of Canada** works on entrepreneurial development, with a focus on Northern and remote communities.",
       },
       {
-        id: "industries",
-        title: "Industry Opportunities Where Indigenous Women Excel",
-        content: `Sectors with strong Indigenous women leadership:
-
-**Arts and Crafts:**
-- Traditional arts monetization
-- Contemporary Indigenous fashion
-- Craft business development
-
-**Tourism and Hospitality:**
-- Cultural tourism experiences
-- Food and culinary businesses
-- Accommodations and hospitality
-
-**Health and Wellness:**
-- Traditional medicine and wellness
-- Healthcare services
-- Mental health and counseling
-
-**Professional Services:**
-- Consulting and advisory
-- Legal and accounting services
-- Communications and marketing`
-      }
+        id: "prepare",
+        title: "Before you apply",
+        content: "- Ask the IFI three things: the maximum, the share that is non-repayable, and any condition on that share.\n- Work out your own contribution. Most of the programmes above ask for 5% to 10%; see the [owner equity guide](/guides/indigenous-funding-equity-requirements).\n- Ask before combining programmes. Each lender sets its own rules on stacking.\n- Build the plan and the numbers first: the [business plan template](/indigenous-business-plan-template) and the [startup cost calculator](/tools/startup-cost-calculator).",
+      },
     ],
-    cta: "Find funding programs on Indigenous Rising AI that recognize and support Indigenous women entrepreneurs—search by location, industry, and specific support needs.",
-    relatedPosts: ["1", "6", "13"]
+    cta: "Indigenous Rising AI helps you build the business plan and cash flow an IFI will read, and lists programmes with the date each was last checked against the funder. Free to start, no credit card.",
+    relatedPosts: ["1", "6", "13"],
   },
   {
     id: "8",
