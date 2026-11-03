@@ -65,6 +65,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Business or community funding', to: '/guides/choosing-funding-business-or-community' },
       { name: 'Documents lenders ask for', to: '/guides/funding-document-checklist-by-lender' },
       { name: 'Funding programme changes', to: '/guides/funding-program-changes' },
+      { name: 'AI data questions', to: '/guides/indigenous-business-data-sovereignty-questions' },
     ],
   },
   {

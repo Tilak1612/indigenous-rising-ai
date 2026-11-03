@@ -79,6 +79,7 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/templates/indigenous-business-plan-examples': 'Indigenous Business Plan Examples by Business Type',
   '/guides/choosing-funding-business-or-community': 'Funding for an Individual Business or a Community Enterprise',
   '/guides/funding-program-changes': 'Indigenous Business Funding Updates and Intake Changes',
+  '/guides/indigenous-business-data-sovereignty-questions': 'Questions to Ask Before Using AI for an Indigenous Business',
   '/guides/funding-document-checklist-by-lender': 'Business Funding Documents: What Indigenous Lenders Ask For',
 };
 

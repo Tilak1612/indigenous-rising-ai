@@ -126,19 +126,46 @@ const PrivacyPolicy: React.FC = () => {
 
               <div className="p-4 bg-muted rounded-lg">
                 <h3 className="font-semibold text-foreground mb-2">Third-Party Processors for AI Features</h3>
-                <p className="text-muted-foreground">
-                  When you explicitly request AI-powered features such as funding matching, we send
-                  relevant portions of your business profile (territory, industry, business stage,
-                  description, and funding purpose) to OpenAI's API (GPT-4o-mini model) to generate
-                  recommendations. This happens only when you click "Find my matches" — never passively.
-                  OpenAI does not retain data sent via their API for training purposes.
-                  No personally identifying information such as your name, email, or phone number is
-                  sent. You can read OpenAI's enterprise privacy policy at{' '}
-                  <a className="text-primary underline" href="https://openai.com/enterprise-privacy" target="_blank" rel="noopener noreferrer">
-                    openai.com/enterprise-privacy
-                  </a>
-                  .
-                </p>
+                <div className="space-y-3 text-muted-foreground">
+                  <p>
+                    We use two AI providers. Each receives only what is needed for the feature you are
+                    using, and only when you use it.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Funding matching (OpenAI).</strong> Only when you click
+                    &ldquo;Find my matches&rdquo;, we send your territory, industry, business stage, business
+                    description and funding purpose to OpenAI&apos;s API to generate recommendations. Your
+                    name, email and phone number are not sent.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Member assistant (OpenAI).</strong> When you use the
+                    assistant in your dashboard, we send your recent messages in that conversation, and a list
+                    of published funding programmes for your territory, to OpenAI&apos;s API to write the reply.
+                    We keep the conversation in your account so you can return to it; only you can see it.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Site assistant (Anthropic).</strong> When you use
+                    &ldquo;Ask Agent&rdquo; on our public pages, we send your message and the earlier messages in
+                    that chat to Anthropic&apos;s API to write the reply. We do not store these chats. Questions
+                    about accounts, billing or legal matters are answered by a set message without being sent
+                    to Anthropic.
+                  </p>
+                  <p>
+                    These AI requests are processed on each provider&apos;s servers, which may be outside Canada.
+                    Your account, business plans, documents and files remain stored in Canada. Neither provider
+                    uses data sent through its API to train its models. For how long each provider keeps it,
+                    read OpenAI&apos;s{' '}
+                    <a className="text-primary underline" href="https://openai.com/enterprise-privacy" target="_blank" rel="noopener noreferrer">
+                      enterprise privacy commitments
+                    </a>{' '}
+                    and Anthropic&apos;s{' '}
+                    <a className="text-primary underline" href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">
+                      privacy policy
+                    </a>
+                    . Please do not enter information you would not want processed outside our own systems,
+                    such as personal health or financial account details.
+                  </p>
+                </div>
               </div>
             </div>
           </Card>
