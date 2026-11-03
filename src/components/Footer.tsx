@@ -54,6 +54,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Find an Indigenous lender', to: '/indigenous-financial-institutions-directory' },
       { name: 'Owner equity and matching funds', to: '/guides/indigenous-funding-equity-requirements' },
       { name: 'Common application gaps', to: '/guides/indigenous-funding-application-mistakes' },
+      { name: 'Funding for a business plan', to: '/guides/business-plan-funding' },
       { name: 'One-page business plan', to: '/templates/one-page-business-plan' },
       { name: 'Cash flow forecast template', to: '/templates/cash-flow-forecast' },
       { name: 'Funding budget template', to: '/templates/funding-project-budget' },

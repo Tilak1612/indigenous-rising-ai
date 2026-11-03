@@ -42,6 +42,6 @@ export const BLOG_NEXT_STEPS: Record<string, NextStep[]> = {
   'aboriginal-capital-corporations-complete-guide-canada': [LENDERS, LOAN, LOANS],
   'indigenous-business-funding-checklist': [GAPS, BUDGET, CASH],
   'how-to-apply-indigenous-business-funding-step-by-step': [GAPS, BUDGET, LENDERS],
-  'how-to-write-winning-indigenous-business-plan-funding': [PLAN, ONE, IMPACT],
+  'how-to-write-winning-indigenous-business-plan-funding': [PLAN, { to: '/guides/business-plan-funding', label: 'Funding to pay for a business plan' }, ONE],
   'non-repayable-indigenous-business-contributions-explained': [EQUITY, GAP, BUDGET],
 };

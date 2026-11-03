@@ -95,6 +95,7 @@ export const RELATED = {
   cashFlow: { to: '/templates/cash-flow-forecast', label: 'Cash flow forecast template', note: 'A 12-month spreadsheet with a worked example.' },
   budgetTemplate: { to: '/templates/funding-project-budget', label: 'Funding application budget template', note: 'Costs, quotes and funding sources in one sheet.' },
   impact: { to: '/templates/community-impact-statement', label: 'Community impact statement', note: 'Document jobs, training and local benefit honestly.' },
+  planFunding: { to: '/guides/business-plan-funding', label: 'Funding for a business plan', note: 'Which lenders publish support for a consultant’s cost.' },
   planTemplate: { to: '/indigenous-business-plan-template', label: 'Business plan template', note: 'The six sections funders ask for, with a worked example.' },
   directory: { to: '/funding', label: 'Funding directory', note: 'Published programmes, each with the date it was last checked.' },
   loans: { to: '/funding/indigenous-business-loans', label: 'Indigenous business loans', note: 'Repayable programmes in the directory.' },
