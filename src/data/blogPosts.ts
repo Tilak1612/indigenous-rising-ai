@@ -757,119 +757,41 @@ BCIBIC connects Indigenous businesses with:
   {
     id: "5",
     slug: "ontario-indigenous-business-funding-programs-grants-support",
-    title: "Ontario Indigenous Business Funding: Programs, Grants & Support",
-    summary: "Detailed overview of Ontario-specific funding including Ontario Aboriginal Loan Guarantee Program, regional economic development organizations, and federal programs available to Indigenous entrepreneurs across the province.",
-    keywords: [
-      "Ontario Indigenous business funding",
-      "First Nations grants Ontario",
-      "Indigenous entrepreneur support Ontario",
-      "Métis business loans Ontario"
-    ],
+    title: "Indigenous Business Funding in Ontario: Lenders, Grants and Community Programs",
+    summary: "Ontario Indigenous business funding split the way funders split it: what an individual entrepreneur can apply for, what a First Nation or community enterprise can apply for, and which Indigenous Financial Institution serves each region. Every programme checked against the funder's own page on 3 November 2026.",
+    keywords: ["Indigenous business grants Ontario", "Ontario Indigenous business funding", "First Nations business funding Ontario", "Indigenous business loans Ontario", "Métis business loans Ontario", "Indigenous Economic Development Fund Ontario"],
     searchIntent: "Navigational + Transactional",
     category: "Provincial Guides",
     readTime: 11,
     publishedAt: "2025-01-09",
-    updatedAt: "2025-01-10",
-    author: {
-      name: "Indigenous Rising AI Team",
-      role: "Community Editors"
-    },
+    updatedAt: "2026-11-03",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
     image: "/og-home.jpg",
-    introduction: `Ontario represents the largest Indigenous business market in Canada. With First Nations communities stretching from the shores of the Great Lakes to the James Bay coast, a significant Métis population, and major urban Indigenous communities in Toronto, Ottawa, Thunder Bay, and other cities, Ontario's Indigenous entrepreneurs operate in diverse environments with equally diverse needs.
-
-The province has developed robust supports for Indigenous business, including the unique Ontario Aboriginal Loan Guarantee Program that makes traditional financing more accessible. Regional organizations like Waubetek Business Development Corporation in the north and Tecumseh Community Development Corporation in the south provide localized expertise and support.
-
-This guide covers the Ontario-specific funding landscape in detail. We'll explain provincial programs, introduce key regional organizations, and connect you to federal funding delivered through Ontario-based offices. Whether you're in a remote northern community or downtown Toronto, you'll find pathways to business funding support.`,
+    introduction: "Ontario has the largest Indigenous population of any province: 406,590 people in the 2021 census, according to Statistics Canada, including the largest First Nations and Métis populations. The funding available to Indigenous businesses there is spread across federal, provincial and Indigenous-led institutions, and most of it is aimed either at individual businesses or at communities, rarely both.\n\nSo this guide is split the same way. First, what an individual entrepreneur can apply for, starting with the Indigenous Financial Institution serving your region. Then, what a First Nation, Métis community or community-owned enterprise can apply for.\n\nEverything below was checked against each funder's own page on 3 November 2026, and the Sources section lists them. Intakes open and close, so confirm current terms with the funder before you apply. Nothing here is an eligibility decision.",
     sections: [
       {
-        id: "ontario-ecosystem",
-        title: "Ontario's Indigenous Entrepreneurship Ecosystem",
-        content: `Ontario's Indigenous business community is Canada's largest and most diverse:
-
-**Regional Considerations:**
-- Northern Ontario: Remote communities, resource-based economies
-- Southern Ontario: Urban centers, proximity to markets
-- Central Ontario: Mix of rural and urban contexts
-
-**Key Organizations:**
-- Waubetek Business Development Corporation
-- Tecumseh Community Development Corporation
-- Nishnawbe Aski Development Fund
-- Aboriginal Chambers of Commerce`
+        id: "ifis",
+        title: "Start with the Indigenous Financial Institution for your region",
+        content: "For an individual entrepreneur, the first call is usually an Indigenous Financial Institution (IFI). Federal Aboriginal Entrepreneurship Program funding is delivered through them, and Ontario's Ministry of Indigenous Affairs and First Nations Economic Reconciliation says it partners with Ontario's IFIs to deliver low-interest loans and grants. NACCA lists seven IFIs in Ontario:\n\n| IFI | Who and where it serves, in its own words | What it publishes |\n|---|---|---|\n| Nishnawbe Aski Development Fund (NADF) | First Nation communities and Indigenous entrepreneurs across Northern Ontario | Loans, microloans, grants and contributions; women's and youth programmes up to $25,000 (5% client, 45% grant, 50% loan) |\n| Waubetek Business Development Corporation | Applicant and business physically located in Northeast Ontario | Business loans with a 10% unencumbered equity contribution; women's and youth micro-loans; e-commerce grants |\n| Wakenagun Community Futures | The Mushkegowuk region, including Moose Factory, Moosonee, Attawapiskat, Fort Albany, Kashechewan and Peawanuck | Business financing and counselling; no amounts published |\n| Rainy Lake Tribal Area Business & Financial Services | Fort Frances area | Listed by NACCA and FedNor; we could not find its own site, so ask NACCA for contact details |\n| Two Rivers Community Development Centre | Six Nations, Mississaugas of the Credit, and 15 southern counties including the GTA | Loans up to $1,250,000 with at least 10% cash equity; no general grants |\n| Tecumseh Community Development Corporation | Ten First Nations in Southern Ontario | Loans, loan guarantees and equity investments; no amounts published |\n| First Nations Agriculture and Financing of Ontario | First Nations farmers and agribusiness | Farm and business financing; women's and youth programmes |\n\nMétis entrepreneurs: Two Rivers says Métis citizens will be asked to apply to the **Métis Voyageur Development Fund** (MVDF), Ontario's Métis Capital Corporation. MVDF says it can provide up to $1,500,000 in financing to businesses at least 50% owned by a Métis owner, with non-repayable support for the business plan. Our [Métis funding guide](/blog/metis-specific-business-funding-economic-development-programs) compares Métis lenders by province.\n\nThe [Indigenous lender directory](/indigenous-financial-institutions-directory) and [NACCA's full list](https://nacca.ca/indigenous-financial-institutions-listings) have contact details.",
       },
       {
-        id: "loan-guarantee",
-        title: "Ontario Aboriginal Loan Guarantee Program",
-        content: `The Ontario Aboriginal Loan Guarantee Program reduces lending risk for participating financial institutions:
-
-**How It Works:**
-- Province guarantees portion of business loans
-- Makes financing accessible for Indigenous businesses
-- Reduces collateral requirements
-
-**Eligible Lenders:**
-- Major banks and credit unions
-- Aboriginal Financial Institutions
-- Community Futures organizations
-
-**Benefits:**
-- Access to commercial lending rates
-- Larger loan amounts possible
-- Flexible terms through participating lenders`
+        id: "individual",
+        title: "If you are an individual entrepreneur",
+        content: "Beyond your IFI:\n\n- **Aboriginal Entrepreneurship Program (federal).** Indigenous Services Canada states that individual entrepreneurs may receive up to $99,999 and eligible community businesses up to $250,000. There is no deadline; you apply through your IFI or Métis Capital Corporation.\n- **FedDev Ontario (Southern Ontario).** Its Indigenous team funds Indigenous businesses, entrepreneurs and economic development corporations, for example to increase production capacity or buy equipment. FedDev says there is no deadline and no need to fill in a form before contacting the team: 1-877-553-5507, indigenous-autochtones@feddevontario.gc.ca.\n- **FedNor (Northern Ontario).** FedNor's Regional Economic Growth through Innovation (REGI) programme can help start and grow a business in the North. FedNor itself directs Indigenous funding applications to Indigenous Services Canada in Ontario and names NADF, Waubetek, Wakenagun and Rainy Lake as the Northern IFIs.\n- **Futurpreneur's Indigenous Entrepreneur Startup Program.** Collateral-free loan financing of up to $75,000 for Indigenous entrepreneurs aged 18 to 39, with up to two years of mentorship. NADF, Waubetek and Two Rivers are among its named partners.\n- **Northern Ontario Heritage Fund Corporation, Indigenous Workforce Development.** If you are hiring an Indigenous intern in Northern Ontario, NOHFC states it can fund up to 75% of the intern's salary and employer costs for a business, to a maximum of $52,500 a year. It funds wages, not start-up capital, and says funding is limited. Do not hire before approval.\n\nOntario's own Indigenous Economic Development Fund (IEDF) lists a Business and Community Fund, but its page gives no status or application route for that stream. Ask your IFI whether it is delivering provincial loans or grants this year.",
       },
       {
-        id: "fednor",
-        title: "FedNor Indigenous Business Funding",
-        content: `FedNor provides significant Indigenous business support in Northern Ontario:
-
-**Programs:**
-- Indigenous Economic Development
-- Community Economic Development
-- Innovation and Diversification
-
-**Funding Areas:**
-- Business startup and expansion
-- Community infrastructure
-- Economic development planning
-- Tourism development`
+        id: "community",
+        title: "If you are a First Nation, Métis community or community enterprise",
+        content: "Community and Nation-owned applicants have a different set of programmes. Most are not open to individual entrepreneurs.\n\n- **Ontario Indigenous Economic Development Fund.** The ministry page (updated 12 February 2026) lists three streams. The Economic Diversification Grant and Regional Partnership Grant opened on 21 October 2025 and closed on 1 December 2025. As of 3 November 2026, no IEDF stream appears on Ontario's list of open funding opportunities. Watch [Transfer Payment Ontario](https://www.ontario.ca/page/available-funding-opportunities-ontario-government) for the next intake.\n- **Indigenous Community Capital Grants Program.** Funds community capital projects, from feasibility to construction. Its page still shows an application deadline of 20 November 2025, which has passed.\n- **New Relationship Fund.** Helps Indigenous communities strengthen consultation and engagement capacity. It funds capacity, not businesses.\n- **FedNor Northern Ontario Development Program (NODP).** Invests in projects led by municipalities, First Nations and other organizations. FedNor says it currently has limited budget because of high demand, and asks you to speak to a FedNor officer before applying.\n- **Indigenous Opportunities Financing Program (IOFP),** formerly the Aboriginal Loan Guarantee Program. Since 1 October 2025 it has been run by the Building Ontario Fund. It is not a loan or grant: it guarantees loans or bonds so that entities wholly owned by Indigenous partners can buy equity in energy, resource development and critical minerals projects. It is not a small-business loan guarantee.\n- **Federal community programmes.** Indigenous Services Canada's Community Opportunity Readiness Program (CORP) funds First Nation and Inuit communities, and its Lands and Economic Development Services Program funds community economic development capacity.\n\nNot sure which path fits? Our guide to [funding for your own business or a community enterprise](/guides/choosing-funding-business-or-community) walks through it.",
       },
       {
-        id: "metis-ontario",
-        title: "Métis Nation of Ontario Economic Development",
-        content: `MNO provides dedicated support for Métis entrepreneurs:
-
-**Services:**
-- Business development programs
-- Training and skills development
-- Entrepreneurship support
-- Networking and mentorship
-
-**Accessing MNO Support:**
-Contact your regional MNO office to discuss business development opportunities.`
+        id: "prepare",
+        title: "Before you contact a funder",
+        content: "- Know which IFI's area your business is in. Several Ontario IFIs only lend inside a defined territory.\n- Have your own contribution worked out. Waubetek and Two Rivers both publish a 10% equity minimum; see our [owner equity guide](/guides/indigenous-funding-equity-requirements).\n- Build the plan and the numbers first: the [business plan template](/indigenous-business-plan-template), the [startup cost calculator](/tools/startup-cost-calculator) and the [cash flow forecast template](/templates/cash-flow-forecast).\n- Check what your lender asks you to attach in our [document checklist by lender](/guides/funding-document-checklist-by-lender), which includes Waubetek's list.\n- Use Indigenous Services Canada's [Indigenous Business Navigator](https://www.sac-isc.gc.ca/eng/1676307496843/1676307534313) if you are unsure which federal programme applies.",
       },
-      {
-        id: "urban-indigenous",
-        title: "Urban Indigenous Business Support",
-        content: `Ontario's cities offer specific resources:
-
-**Toronto:**
-- Indigenous business networks
-- Urban Aboriginal business organizations
-- Access to major markets
-
-**Ottawa:**
-- Federal procurement opportunities
-- Indigenous business associations
-- Bilingual business support
-
-**Thunder Bay:**
-- Gateway to Northern Ontario
-- Resource sector connections
-- Regional business support`
-      }
     ],
-    cta: "Search Ontario Indigenous business funding on Indigenous Rising AI—find federal, provincial, and community programs available across the province.",
-    relatedPosts: ["1", "3", "4"]
+    cta: "Indigenous Rising AI lists Ontario programmes with the date each was last checked against the funder, and helps you build the business plan your IFI will read. Free to start, no credit card.",
+    relatedPosts: ["1", "3", "4"],
   },
   {
     id: "6",
@@ -2654,145 +2576,71 @@ Some programs support transportation costs for business development activities.`
   {
     id: "19",
     slug: "metis-specific-business-funding-economic-development-programs",
-    title: "Métis Business Grants and Funding by Province: Alberta, Saskatchewan, Manitoba, Ontario and BC",
-    summary: "Which Métis lending institution serves your province, what each one actually offers, and how Métis entrepreneurs can access both Métis-specific and general Indigenous funding. Alberta, Saskatchewan, Manitoba, Ontario and BC covered separately, each checked against the institution's own site.",
-    keywords: [
-      "Métis business grants",
-      "Métis business grants Alberta",
-      "Métis business grants Saskatchewan",
-      "Métis business grants Manitoba",
-      "Métis business grants BC",
-      "Métis business funding Canada",
-      "Métis entrepreneur grants",
-      "Métis Capital Corporation loans",
-      "Métis economic development programs"
-    ],
+    title: "Métis Business Funding by Province: Lenders, Grants and ID Rules",
+    summary: "Which Métis lender serves your province, what each one publishes about loans and grants, and which Métis identification and residency it asks for. BC, Alberta, Saskatchewan, Manitoba, Ontario and the Northwest Territories, each checked against the lender's own site on 3 November 2026.",
+    keywords: ["Métis business grants", "Métis business funding", "Métis business grants Alberta", "Métis business grants Saskatchewan", "Métis business grants Manitoba", "Métis business grants BC", "Métis business funding Ontario", "Métis Capital Corporation loans", "Métis entrepreneur grants"],
     searchIntent: "Navigational + Transactional",
     category: "Identity-Specific",
-    readTime: 10,
+    readTime: 11,
     publishedAt: "2025-01-23",
-    updatedAt: "2025-01-23",
-    author: {
-      name: "Indigenous Rising AI Team",
-      role: "Community Editors"
-    },
+    updatedAt: "2026-11-03",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
     image: "/og-home.jpg",
-    introduction: `Métis entrepreneurs have access to a distinct set of funding opportunities. Provincial Métis organizations, Métis Capital Corporations, and federal programs recognizing the Métis as one of Canada's three Indigenous peoples provide dedicated support for Métis business development.
-
-Understanding the Métis-specific funding landscape is essential for Métis entrepreneurs. While general Indigenous business programs are also available, Métis-focused initiatives often provide specialized support, understand Métis community contexts, and prioritize Métis economic development priorities.
-
-This guide covers funding specifically for Métis entrepreneurs. We'll explore Métis Capital Corporations in each province, explain Métis Nation economic development programs, and help you navigate both Métis-specific and general Indigenous funding. Your Métis identity is an asset—let's help you leverage the support available for Métis business success.`,
+    introduction: "Métis business funding is delivered province by province, by a small number of Métis lenders. Each one sets its own rules on which Métis identification it accepts, where you have to live, and how much of a project it will fund with a grant.\n\nThis guide puts those rules side by side. Every figure and quote below comes from the lender's own website, read on 3 November 2026, and the Sources section lists each page. Lenders change their programmes, so confirm current terms with the lender before you apply. Nothing here is an eligibility decision; the lender makes that.\n\nOne thing to know before you start: no Métis lender publishes a stand-alone grant. Where a grant exists, it comes with a loan from the same lender.",
     sections: [
       {
-        id: "metis-context",
-        title: "Métis Business and Economic Development Context",
-        content: `Understanding the Métis economic landscape:
-
-**Métis Recognition:**
-Métis are constitutionally recognized as one of Canada's three Indigenous peoples, with distinct rights and government relationships.
-
-**Geographic Distribution:**
-Significant Métis populations in Alberta, Saskatchewan, Manitoba, Ontario, BC, and beyond—with distinct provincial contexts.
-
-**Urban and Rural:**
-Métis entrepreneurs operate in both urban centers and rural communities, often with different business contexts and opportunities.
-
-**Métis Governance:**
-Provincial Métis Nations and local governance structures support economic development priorities.`
+        id: "network",
+        title: "How the Métis lending network is organised",
+        content: "The main federal programme, the Aboriginal Entrepreneurship Program (AEP), is delivered through Indigenous Financial Institutions (IFIs) and Métis Capital Corporations (MCCs). Indigenous Services Canada states that individual entrepreneurs may receive up to **$99,999** and eligible community businesses up to **$250,000**, and that eligibility varies between institutions. You apply to the institution, not to Ottawa.\n\nISC's page names five Métis Capital Corporations:\n\n- Apeetogosan (Métis) Development Inc. in Alberta\n- SaskMétis Economic Development Corporation (SMEDCO) in Saskatchewan\n- Louis Riel Capital Corporation in Manitoba\n- Métis Voyageur Development Fund in Ontario\n- Métis Financial Corporation of BC\n\nThree other lenders also serve Métis entrepreneurs: the Clarence Campeau Development Fund (a separate Métis fund in Saskatchewan that shares offices with SMEDCO), Settlement Investment Corporation (for members of Alberta's eight Métis Settlements), and the NWT Métis-Dene Development Fund (an IFI run by a Métis and First Nation team).\n\nThere is no Métis-specific lender in Quebec, Atlantic Canada, Yukon or Nunavut. Métis entrepreneurs there can approach the IFI serving their region, listed in our [Indigenous lender directory](/indigenous-financial-institutions-directory).",
       },
       {
-        id: "capital-corporations",
-        title: "Métis Capital Corporations by province",
-        content: `Métis entrepreneurs are served by province-specific Métis lending institutions, not one national fund. Which one you deal with depends on where your business is based.\n\nEach institution below was checked against its own website on 26 September 2026. All five also appear on Futurpreneur's published list of Indigenous partner institutions. Programs and terms change, so confirm current details with the institution before you apply. Nothing here is an eligibility decision.\n\n| Province | Institution |\n|---|---|\n| Alberta | Apeetogosan (Métis) Development Inc. (AMDI) |\n| Saskatchewan | Clarence Campeau Development Fund (CCDF) |\n| Manitoba | Louis Riel Capital Corporation (LRCC) |\n| Ontario | Métis Voyageur Development Fund (MVDF) |\n| British Columbia | Métis Financial Corporation of BC (MFC) |\n\nWhat they have in common: they lend to Métis-owned and controlled businesses, they pair financing with business planning support, and they expect to know your business rather than just your credit file. What differs is the product mix, and that is worth knowing before you call.`
+        id: "by-province",
+        title: "Métis lenders by province: ID and residency",
+        content: "What each lender's own site says about the Métis identification it accepts and where you or the business must be. \"Not stated\" means the site does not say, so ask on the first call.\n\n| Province | Lender | Métis ID it asks for | Residency or location |\n|---|---|---|---|\n| BC | Métis Financial Corporation of BC | Valid Métis ID acceptable to MFC; it lists MNBC, Métis Nation of Alberta, Métis Nation Saskatchewan, MMF, MNO, NWT Métis and the Alberta Métis Settlements | Applicant a BC resident for at least 6 months; business located and registered in BC |\n| Alberta | Apeetogosan (Métis) Development Inc. | \"Proof of Métis Heritage\"; documents not stated | Applicant an Alberta resident; business located in Alberta |\n| Alberta (Settlements) | Settlement Investment Corporation | A Métis Settlement Member, or a company at least 51% owned by members | Company head office in Alberta; activity on or off the Settlements |\n| Saskatchewan | Clarence Campeau Development Fund | A valid Métis Nation–Saskatchewan registration card, or a Citizenship Registry letter with an MN-S number | Saskatchewan resident with proof; business located and registered in Saskatchewan |\n| Saskatchewan | SMEDCO | \"Of Métis ancestry\"; documents not stated | Business based in Saskatchewan |\n| Manitoba | Louis Riel Capital Corporation | At least 51% Red River Métis owned, with valid MMF Citizenship Card(s) | Those owners must live in Manitoba; business registered in Manitoba |\n| Ontario | Métis Voyageur Development Fund | MNO citizens, or registered members of the other Métis organizations MVDF lists as recognized by the Métis National Council | Business must reside or operate in Ontario |\n| NWT | Métis-Dene Development Fund | Not stated; serves Indigenous entrepreneurs | Business starting or expanding in the NWT |",
       },
       {
-        id: "metis-grants-alberta",
-        title: "Métis business grants and loans in Alberta",
-        content: `Alberta Métis entrepreneurs are served by **Apeetogosan (Métis) Development Inc. (AMDI)**, based in Edmonton.\n\nFrom AMDI's own site:\n\n- **41+ years** supporting Métis entrepreneurs\n- **$100M+** in funding provided\n- **1,500+** Métis businesses supported\n\n**What they offer**\n\n- Business funding described as *loans and grants* to start, grow and strengthen Métis businesses\n- Advisory and support services: business planning, accounting, and one-on-one guidance\n- Training and community development, including workshops and networking\n- A bursary program and an Indigenous tradeshow\n\nAMDI does not publish its loan ceilings on the site, so ask for the range that fits your stage on the first call rather than guessing at a number in your plan.\n\n**Contact:** office@amdi.co, (780) 452-7951, #302, 12308 111 Ave NW, Edmonton, AB T5M 2N4.\n\nNote that Alberta also has Settlement Investment Corporation serving the Métis Settlements. If your business is on a Settlement, ask which of the two is the right door.`
+        id: "bc",
+        title: "British Columbia: Métis Financial Corporation of BC",
+        content: "MFC finances the start-up, acquisition and expansion of Métis owned and operated businesses in BC. Its eligibility page says the business must be at least 51% Métis owned and controlled, and applicants must be 18 or older.\n\n- **Traditional Business Loan:** projects from $20,000 to $500,000, with larger projects considered case by case. Applicants contribute equity (MFC's pages give 10% as the minimum). Eligible projects may receive a grant as a component of the loan. MFC says it does not offer stand-alone grants and requires personal guarantees on all loans. Every applicant goes through its business plan process.\n- **Sophie Morigeau Women's Entrepreneurship Program (SMWEP):** projects up to $25,000, at least 51% Métis women owned. Each loan carries a 30% grant applied at the end of a four-year term, but only if every payment is on time; refinancing or paying the loan off in a lump sum means the grant is not applied. The client puts in 5% or 10% cash equity, and the starting rate is 7.5%.\n\nMFC also says it is working to relaunch its Métis women's program under a new name in 2026, with a waitlist at metiswomen@mfcbc.ca. Ask which version is open when you call.\n\nContact: 1-833-399-3926, admin@mfcbc.ca. MFC says approval can take about two months.",
       },
       {
-        id: "metis-grants-saskatchewan",
-        title: "Métis business grants and loans in Saskatchewan",
-        content: `Saskatchewan is served by the **Clarence Campeau Development Fund (CCDF)**, which supports Métis entrepreneurs and communities across the province.\n\nCCDF is the one institution in this list whose own site says plainly that it offers **both non-interest and interest-bearing loans *and* grants**. That matters: most of the Métis lending network is loan-first, so if you are specifically searching for grant money, Saskatchewan is where the published offer is broadest.\n\n**Named programs on their site**\n\n- Métis Entrepreneur Equity Program\n- Business Plan Program\n- Business Development Program\n- Major Business Development Program\n- Women’s Business Development Program\n- Youth Business Development Program\n- Community Business Development Program\n- Ocînâs (Community) Program\n- Management Skills Program and Business Support Program\n- Indigenous Youth Entrepreneurship (IYE) and Indigenous Women Entrepreneurship (IWE) programs\n\nThat is an unusually specific list, and it rewards a specific ask. Read the program names before you call and name the one you think fits.\n\n**Contact:** info@ccdf-smedco.com, toll-free 1-888-657-4870.`
+        id: "alberta",
+        title: "Alberta: Apeetogosan and Settlement Investment Corporation",
+        content: "**Apeetogosan (Métis) Development Inc. (AMDI)**, in Edmonton, publishes more detail than most lenders:\n\n- **Business loans** from $5,000 to $1 million, with a minimum 10% owner's equity. Its business loans are described as open to Métis, Inuit and Non-status entrepreneurs.\n- **Full-Time Program:** projects of $20,000 to $330,000, at least 50% loan financing, a grant of up to 30% under its Métis Entrepreneurship Assistance Program (MEAP), and 10% to 35% owner's equity.\n- **Part-Time Program:** projects of $10,000 to $50,000; 65% loan, 25% MEAP grant, 10% owner's equity; loan rate 7.5%, subject to change.\n- **Métis Women Micro-Business Program:** projects of $5,000 to $25,000; 50% loan and a 40% non-repayable subsidy; loan rate 6%, subject to change; first-time recipients only.\n\nAMDI's FAQ adds that applicants must qualify for a loan to get MEAP funding, that MEAP has a lifetime limit of $100,000 per applicant, that a minimum credit score of 690 is required, and that a decision can take 20 to 24 weeks. Contact: office@amdi.co, (780) 452-7951.\n\n**Settlement Investment Corporation (SIC)** serves the business community of the eight Métis Settlements. It lends up to $100,000 for commercial ventures and the same for agriculture, with a minimum 10% owner's equity. Its Indigenous women's program offers a $25,000 package made up of a loan, a non-repayable portion and a $1,250 cash contribution from the owner, and SIC says that program runs until 31 March 2029. Contact: 1-800-661-9902.",
       },
       {
-        id: "metis-grants-manitoba",
-        title: "Métis business grants and loans in Manitoba",
-        content: `Manitoba is served by **Louis Riel Capital Corporation (LRCC)**, a Manitoba Métis owned lending institution founded in **1992** through the economic development initiatives of the **Manitoba Métis Federation (MMF)**.\n\nLRCC describes itself as created to finance the **start-up, acquisition and/or expansion** of viable Métis owned and controlled small businesses based in Manitoba.\n\n**What they offer**\n\n- Business loans for start-up, buying an existing business, or expansion\n- Help developing the business plan itself, not just assessing one you bring\n- Business development and counselling support that continues past start-up\n\nTheir own framing is worth reading closely: they say successful businesses do not just happen, and they position the counselling as ongoing. If you want a lender who stays involved after the money lands, say so when you call.\n\n**Web:** lrcc.mb.ca`
+        id: "saskatchewan",
+        title: "Saskatchewan: SMEDCO and the Clarence Campeau Development Fund",
+        content: "Saskatchewan has two Métis lenders sharing one office and phone line (1-888-657-4870), in Saskatoon and Regina.\n\n**SMEDCO** is the federal Métis Capital Corporation. It offers secured, interest-bearing term loans to start, grow or buy a business, and a Métis Assistance Program (MAP) grant that is non-repayable and meant to help you secure other financing. No amounts or rates are published; the first step is a free consultation with a business advisor.\n\n**The Clarence Campeau Development Fund (CCDF)** says it offers interest-free and interest-bearing loans for Métis-owned businesses, and non-repayable grant programmes for Saskatchewan Métis entrepreneurs. Its programmes include the Métis Entrepreneur Equity Program, the Business Plan Program (CCDF can consider funding up to 75% of the cost of a plan), business development, women's and youth programmes, and the Ocînâs (Community) Program for Métis economic development corporations. CCDF states that its grants are not available on a stand-alone basis, and that it expects 5% to 10% equity towards the total project cost. It publishes no dollar maximums.",
       },
       {
-        id: "metis-grants-bc",
-        title: "Métis business grants and loans in British Columbia",
-        content: `BC is served by the **Métis Financial Corporation of BC (MFC)**, owned by the Métis Financial Development Society. MFC finances the start-up, acquisition and expansion of Métis owned and operated businesses based in British Columbia.\n\n**Traditional Business Loan Program** — small business loans for Métis citizens across BC, with business planning support and published eligibility criteria.\n\n**Sophie Morigeau Women’s Entrepreneurship Program (SMWEP)** — designed to reduce barriers to financing for **Métis women entrepreneurs**. MFC publishes its structure in unusual detail, so this is worth quoting exactly:\n\n- Three options, by total project cost: **$25,000**, **$20,000**, or **$15,000**\n- Each total is made up of a loan portion, a grant portion and a client equity portion\n- Each loan carries a **30% grant applied at the end of the loan term**, if eligible\n- The grant is **not stand-alone** — it must accompany an MFC loan\n- The client contributes **5% or 10% cash equity**\n- Starting interest rate **7.5%**, over a **4-year term**\n- The grant is applied only after the loan is fully repaid with all payments made on time\n- **Refinancing or a lump-sum payoff forfeits the grant**, and the full amount becomes repayable\n\nThat last condition is the one people miss. Paying the loan off early sounds prudent and costs you the grant, so model the four-year term as written before you plan an early payoff.\n\nMFC has also launched a **Métis Business Directory** for BC Métis entrepreneurs wanting visibility.\n\n**Web:** mfcbc.ca`
+        id: "manitoba",
+        title: "Manitoba: Louis Riel Capital Corporation",
+        content: "Louis Riel Capital Corporation (LRCC) was founded in 1992 through the economic development initiatives of the Manitoba Métis Federation. It says it provides commercial financing and non-repayable grants to help Red River Métis citizens start, expand or acquire businesses in Manitoba, and it helps develop the business plan.\n\n- **Business Grant & Loan Program:** projects generally above $40,000 unless an existing business is expanding; owners must put in at least 10% cash. Grant amounts are set file by file.\n- **Small Business Grant & Loan Program:** up to $40,000, made up of a loan and a grant. The grant portion is up to 40% of project costs for its youth stream (ages 18 to 29) and up to 30% for its small business and Métis Fishers & Trappers streams, with terms up to 60 months.\n- **Métis Women Entrepreneurship Program:** up to $40,000 as a grant and loan; the split is not published.\n- **Professional Loan Program:** up to $250,000 over up to 10 years, for verified Red River Métis Citizens.\n\nLRCC asks applicants to allow 6 to 8 weeks once all documents are in. Contact: 204-589-0772, info@lrcc.mb.ca.",
       },
       {
-        id: "metis-grants-ontario",
-        title: "Métis business funding in Ontario",
-        content: `Ontario is served by the **Métis Voyageur Development Fund (MVDF)**, based in Ottawa, which calls itself the financer of choice for Métis entrepreneurs in the province.\n\n**What they offer**\n\n- Preferential financing for Ontario Métis owned and controlled businesses\n- Business planning and long-term business development support\n- An e-commerce toolbox for businesses selling online\n\nMVDF describes itself as client driven rather than profit driven, and frames its support as long term rather than transaction by transaction.\n\n**Contact:** info@mvdf.ca, 1 (855) 798-0133, 315 St. Laurent Blvd., Ottawa, ON K1K 2Z5.`
+        id: "ontario",
+        title: "Ontario: Métis Voyageur Development Fund",
+        content: "The Métis Voyageur Development Fund (MVDF), in Ottawa, says it can provide up to **$1,500,000** in financing to a business or a set of related businesses, with business planning and long-term support. It gives professional help and non-repayable support for the business plan as part of a loan application.\n\nBusinesses where at least one owner is Métis and holds 50% or more of the business can apply. MVDF works out equity case by case rather than publishing a percentage, requires personal guarantees, and supports for-profit businesses only. It also offers an e-commerce toolbox. MNO appoints MVDF's board, which MVDF describes as independent of the MNO.\n\nContact: 1 (855) 798-0133, info@mvdf.ca. The Métis Nation of Ontario's Economic Development Branch also supports Métis entrepreneurs and runs a business registry for procurement.",
       },
       {
-        id: "metis-nation-programs",
-        title: "Métis Nation Economic Development Programs",
-        content: `Programs through Métis governance organizations:
-
-**Métis Nation Canada:**
-- National economic development initiatives
-- Partnership programs
-- Policy advocacy for Métis economic interests
-
-**Provincial Métis Nations:**
-- Business development programs
-- Training and skills development
-- Procurement opportunities
-- Networking and mentorship
-
-**Accessing Support:**
-Contact your provincial Métis Nation organization's economic development department.`
+        id: "nwt",
+        title: "Northwest Territories: Métis-Dene Development Fund",
+        content: "The NWT Métis-Dene Development Fund (MDDF) describes itself as a Métis and First Nation team supporting Indigenous business. It offers start-up and expansion loans up to $100,000 over up to five years, CanNor-funded contributions of up to $99,999 for expansion, capital and marketing (with 10% owner equity), and women's and youth micro-loans. Its women's micro-loans go up to $20,000, split 5% equity, 45% grant and 50% loan. MDDF does not publish which Métis identification it accepts. More NWT sources are on the [Northwest Territories funding page](/funding/northwest-territories).",
       },
       {
-        id: "accessing-general",
-        title: "Accessing General Indigenous Business Funding as Métis",
-        content: `Métis eligibility for broader Indigenous programs:
-
-**Federal Programs:**
-Most federal Indigenous business programs include Métis as eligible applicants. Programs may require Métis citizenship documentation.
-
-**Aboriginal Financial Institutions:**
-Some AFIs serve all Indigenous peoples including Métis; others are First Nations-specific. Métis Capital Corporations fill this gap.
-
-**Documentation:**
-Métis citizenship cards from provincial Métis Nations are the primary identity documentation for funding applications.
-
-**Combining Sources:**
-Métis entrepreneurs can layer Métis-specific and general Indigenous funding for larger projects.`
+        id: "grants",
+        title: "What \"Métis business grants\" means in practice",
+        content: "Search for Métis business grants and you will find lenders. That is accurate: the grant money is real, but every lender above attaches it to a loan.\n\n- The grant share is published by AMDI (up to 30% full-time, 25% part-time, 40% for its women's micro-business programme), LRCC (up to 30% or 40% on projects up to $40,000), MFC's SMWEP (30%, applied only after on-time repayment) and MDDF's women's micro-loans (45%).\n- CCDF and SMEDCO describe non-repayable grants without publishing a share.\n- AMDI caps its MEAP grant at $100,000 over a lifetime.\n\nPlan for the loan payments in your cash flow from the start. Our [owner equity guide](/guides/indigenous-funding-equity-requirements) explains how equity, grants and loans add up to a project budget.",
       },
       {
-        id: "metis-industries",
-        title: "Industry Opportunities for Métis Entrepreneurs",
-        content: `Sectors where Métis entrepreneurs thrive:
-
-**Traditional and Cultural:**
-- Métis arts and crafts
-- Cultural tourism
-- Traditional skills enterprises
-
-**Professional Services:**
-- Consulting and advisory
-- Professional services in urban centers
-
-**Resource Sector:**
-- Partnership and procurement in resource industries
-- Environmental services
-- Construction and trades
-
-**Innovation:**
-- Technology and digital businesses
-- Clean energy
-- Agriculture and food`
-      }
+        id: "general",
+        title: "Using general Indigenous funding as a Métis entrepreneur",
+        content: "Métis entrepreneurs are not limited to Métis lenders.\n\n- **AEP** through your regional institution, as above.\n- **Futurpreneur's Indigenous Entrepreneur Startup Program** offers collateral-free loan financing of up to $75,000 for Indigenous entrepreneurs aged 18 to 39, on self-identification. Among the Métis lenders, Futurpreneur names CCDF, LRCC and MFC as partners.\n- **BDC's Indigenous Entrepreneur Loan** for established businesses.\n- The **Métis National Council** has an economic development department that works with Métis governments rather than lending to individuals.\n\nEach lender decides which identification it accepts. A citizenship card from one Métis government does not automatically satisfy every lender, so use the table above and ask before you send documents. What lenders usually ask you to attach is compared in our [document checklist by lender](/guides/funding-document-checklist-by-lender).",
+      },
     ],
-    cta: "Indigenous Rising AI helps Métis entrepreneurs find both Métis-specific and general Indigenous funding programs—search opportunities that match your business, your province and your stage. Free to start, no credit card.",
-    relatedPosts: ["1", "20", "3", "57"]
+    cta: "Indigenous Rising AI helps Métis entrepreneurs build the business plan these lenders ask for, and lists Métis-serving lenders by province with their published terms. Free to start, no credit card.",
+    relatedPosts: ["1", "20", "3", "57"],
   },
   {
     id: "20",
