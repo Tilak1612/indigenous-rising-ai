@@ -54,6 +54,7 @@ const EquityRequirements = lazy(() => import("./pages/guides/EquityRequirements"
 const ApplicationGaps = lazy(() => import("./pages/guides/ApplicationGaps"));
 const TemplateResource = lazy(() => import("./pages/templates/TemplateResource"));
 const BusinessPlanFunding = lazy(() => import("./pages/guides/BusinessPlanFunding"));
+const FrenchGuide = lazy(() => import("./pages/fr/FrenchGuide"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -759,6 +760,22 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <ApplicationGaps />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/fr/financement-entreprise-autochtone"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <FrenchGuide />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/fr/plan-affaires-entreprise-autochtone"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <FrenchGuide />
                   </Suspense>
                 }
               />

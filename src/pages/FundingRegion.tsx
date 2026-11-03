@@ -124,6 +124,11 @@ export default function FundingRegionPage({ slug }: { slug: string }) {
               ))}
               <li><Link to="/funding" className="inline-block rounded-full border border-border px-3 py-1.5 text-sm hover:border-primary/40 hover:text-primary">All programmes and filters</Link></li>
             </ul>
+            {slug === 'quebec' && (
+              <p className="text-sm mt-4" lang="fr-CA">
+                <Link to="/fr/financement-entreprise-autochtone" className="font-medium text-primary underline-offset-4 hover:underline">Lire cette page en français</Link>
+              </p>
+            )}
             <p className="text-xs text-muted-foreground mt-4">Showing up to {PAGE_SIZE * 10} programmes. Amounts and eligibility come from each funder&apos;s page on the date shown; confirm current terms with the funder.</p>
           </section>
         </div>

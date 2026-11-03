@@ -112,6 +112,8 @@ const MARKETING = [
   { p: '/indigenous-financial-institutions-directory', t: 'Find an Indigenous Financial Institution by Province', d: 'Indigenous Financial Institutions, Métis capital corporations and other Indigenous lenders by province and territory, linked to their own websites.', breadcrumb: 'Indigenous lender directory' },
   { p: '/guides/indigenous-funding-equity-requirements', t: 'Owner Equity and Matching Funds for Indigenous Funding', d: 'What owner equity, eligible costs, non-repayable contributions and the funding gap mean, how they add up, and the questions to ask each funder.', breadcrumb: 'Owner equity and matching funds' },
   { p: '/guides/indigenous-funding-application-mistakes', t: 'Common Indigenous Business Funding Application Gaps', d: 'The gaps that most often delay an Indigenous business funding application, why each matters, and how to close it before you apply.', breadcrumb: 'Common application gaps' },
+  { p: '/fr/financement-entreprise-autochtone', lang: 'fr-CA', t: 'Financement pour entreprises autochtones au Canada', d: 'Subventions, contributions non remboursables et prêts pour les entrepreneurs des Premières Nations, métis et inuits, avec la date de vérification de chaque programme.', breadcrumb: 'Financement (français)' },
+  { p: '/fr/plan-affaires-entreprise-autochtone', lang: 'fr-CA', t: 'Plan d’affaires pour entreprise autochtone : modèle gratuit', d: 'Les six sections qu’un bailleur de fonds autochtone demande, avec les questions à se poser pour chacune.', breadcrumb: 'Plan d’affaires (français)' },
   { p: '/guides/business-plan-funding', t: 'Funding to Pay for an Indigenous Business Plan', d: 'Which Indigenous lenders publish support for the cost of a professional business plan, with the share, cap and conditions each one publishes.', breadcrumb: 'Funding for a business plan' },
   { p: '/templates/one-page-business-plan', t: 'One-Page Business Plan for Indigenous Entrepreneurs', d: 'A free one-page business plan template for Indigenous entrepreneurs, with eleven prompts and a worked example for a fictional business.', breadcrumb: 'One-page business plan' },
   { p: '/templates/cash-flow-forecast', t: 'Cash Flow Forecast Template for a Funding Application', d: 'A free 12-month cash flow forecast spreadsheet with built-in totals, for a business loan or funding application, plus a worked example.', breadcrumb: 'Cash flow forecast template' },
@@ -250,8 +252,13 @@ function truncateDesc(text, max = 160) {
   return base.replace(/[\s,;:–—-]+$/, '') + '.';
 }
 
-function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd, robots, noCanonical = false }) {
+function applyHead(html, { url, title, description, ogImage = OG_DEFAULT, jsonLd, robots, noCanonical = false, lang }) {
   let out = html;
+  // French routes: <html lang> and og:locale follow the page's language.
+  if (lang) {
+    out = out.replace(/<html lang="[^"]*">/i, `<html lang="${esc(lang)}">`);
+    out = out.replace(/(<meta\s+property="og:locale"\s+content=")[^"]*(")/i, `$1${esc(lang.replace('-', '_'))}$2`);
+  }
   const T = esc(title), D = esc(truncateDesc(description)), U = esc(url), I = esc(ogImage);
   out = out.replace(/<title>[\s\S]*?<\/title>/i, `<title>${T}</title>`);
   if (robots) {
@@ -536,7 +543,7 @@ async function main() {
           description: truncateDesc(m.d),
           isPartOf: { '@id': `${BASE}/#website` },
           about: { '@id': `${BASE}/#organization` },
-          inLanguage: 'en-CA',
+          inLanguage: m.lang || 'en-CA',
         });
       }
       if (Array.isArray(m.faqs) && m.faqs.length) {
@@ -619,7 +626,7 @@ async function main() {
       }
 
       await writeRoute(template, {
-        p: m.p, url, title: m.t, description: m.d, robots: m.robots, bodyExtra,
+        p: m.p, url, title: m.t, description: m.d, robots: m.robots, bodyExtra, lang: m.lang,
         // Per-route social image. applyHead OVERWRITES og:image on every
         // route, so without this the page component's own <meta og:image>
         // is discarded at build time and every marketing page shipped
