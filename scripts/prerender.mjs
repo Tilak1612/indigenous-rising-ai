@@ -464,6 +464,15 @@ async function main() {
     const faqRoute = MARKETING.find((m) => m.p === '/faq');
     if (faqRoute) faqRoute.faqs = siteFaqs.map((f) => ({ q: f.question, a: f.answer }));
   }
+  // Tools, templates and guides: FAQPage from the SAME module ResourcePage
+  // renders as a visible FAQ, so the schema never describes hidden text.
+  const resourceFaqs = await loadDataModule('src/data/resourceFaqs.ts', 'RESOURCE_FAQS');
+  if (resourceFaqs && typeof resourceFaqs === 'object') {
+    for (const m of MARKETING) {
+      const list = resourceFaqs[m.p];
+      if (Array.isArray(list) && list.length) m.faqs = list.map((f) => ({ q: f.question, a: f.answer }));
+    }
+  }
   let count = 0;
   // Collected live and indexable URLs — written to dist/sitemap.xml at the end so
   // the sitemap is generated from the SAME source as the prerendered pages and can
