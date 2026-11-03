@@ -12,7 +12,10 @@ const orgBlock = (() => {
 describe('Organization sameAs', () => {
   test('the Organization node lists only verified profiles', () => {
     expect(orgBlock, 'no Organization JSON-LD in index.html').toBeTruthy();
-    expect(orgBlock.sameAs).toEqual(['https://www.linkedin.com/company/indigenous-rising-ai/']);
+    expect(orgBlock.sameAs).toEqual([
+      'https://www.linkedin.com/company/indigenous-rising-ai/',
+      'https://www.facebook.com/people/Indigenous-Rising/61586961796822/',
+    ]);
   });
 
   test('every footer social link is also a sameAs profile, and vice versa', () => {

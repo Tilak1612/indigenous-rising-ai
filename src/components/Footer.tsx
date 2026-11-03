@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import { Link } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
-import { Mail, Leaf, Linkedin } from 'lucide-react';
+import { Mail, Leaf, Linkedin, Facebook } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { ComplianceBadge, DataResidencyNote } from '@/components/trust';
 import { BrandMark } from '@/components/BrandMark';
@@ -110,10 +110,14 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
 //
 // Verified 2 November 2026: linkedin.com/company/indigenous-rising-ai is ours
 // (supplied by the owner; the page is titled "Indigenous Rising" and links
-// indigenousrising.ai). Every entry here must also be in the Organization
+// indigenousrising.ai). Facebook, verified the same day: the owner's share link
+// resolves to "Indigenous Rising | Edmonton AB", whose description matches the
+// product; the stable /people/<id>/ address is used, not the share link.
+// Every entry here must also be in the Organization
 // sameAs in index.html; src/__tests__/organization-sameas.test.ts checks both.
 const SOCIAL: Array<{ name: string; icon: LucideIcon; href: string }> = [
   { name: 'Indigenous Rising AI on LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/indigenous-rising-ai/' },
+  { name: 'Indigenous Rising AI on Facebook', icon: Facebook, href: 'https://www.facebook.com/people/Indigenous-Rising/61586961796822/' },
 ];
 
 // Homepage-section links (#...) use a plain anchor so the browser does a real
