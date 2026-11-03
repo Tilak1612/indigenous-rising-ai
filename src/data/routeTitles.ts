@@ -21,6 +21,8 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/guides/indigenous-business-funding-statistics': 'Indigenous Business Funding: What We Verify',
   '/grantcompass-alternative': 'GrantCompass Alternative for Indigenous Business',
   '/liveplan-alternative': 'LivePlan Alternative for Indigenous Entrepreneurs',
+  '/upmetrics-alternative': 'Upmetrics Alternative for Indigenous Entrepreneurs',
+  '/fundica-alternative': 'Fundica Alternative for Indigenous Business Funding',
   '/for-economic-development-officers': 'Tools for Indigenous Economic Development Officers',
   '/for-funders': 'For Funders and Indigenous Support Organizations',
   '/ocap-data-sovereignty-software': 'Indigenous Data Sovereignty and How We Handle Data',

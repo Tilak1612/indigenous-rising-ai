@@ -2,6 +2,7 @@ import { useLocation, Link, Navigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import { ROUTE_TITLES } from '@/data/routeTitles';
 import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { comparisonBySlug } from '@/data/competitorFacts';
@@ -33,7 +34,7 @@ const ComparisonPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <MetaTags
-        title={`${c.name} Alternative for Indigenous Entrepreneurs`}
+        title={ROUTE_TITLES[pathname.replace(/\/$/, '')] ?? `${c.name} Alternative for Indigenous Entrepreneurs`}
         description={`An honest comparison of Indigenous Rising AI and ${c.name}, including where ${c.name} is stronger. Facts checked against their site on ${c.checkedOn}.`}
       />
       <Navigation />

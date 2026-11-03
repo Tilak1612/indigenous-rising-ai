@@ -68,6 +68,19 @@ describe('every comparison concedes where we are behind', () => {
     expect(gc.weAreBehind.join(' ')).toMatch(/catalogue is far larger|850/i);
   });
 
+  test('the Upmetrics page concedes price and forecasting depth', () => {
+    const up = comparisonBySlug('upmetrics')!;
+    expect(up.weAreBehind.join(' ')).toMatch(/cheaper/i);
+    expect(JSON.stringify(up)).toMatch(/roadmap, not live/i);
+  });
+
+  test('the Fundica page concedes catalogue size and the certification we do not hold', () => {
+    const fu = comparisonBySlug('fundica')!;
+    const behind = fu.weAreBehind.join(' ');
+    expect(behind).toMatch(/catalogue is far larger/i);
+    expect(behind).toMatch(/do not claim any security certification/i);
+  });
+
   test('projection templates are described as roadmap, matching the homepage', () => {
     const lp = comparisonBySlug('liveplan')!;
     expect(JSON.stringify(lp)).toMatch(/roadmap, not live/i);
@@ -88,6 +101,8 @@ describe('the page resolves its competitor from the path', () => {
     for (const [path, slug] of [
       ['/grantcompass-alternative', 'grantcompass'],
       ['/liveplan-alternative', 'liveplan'],
+      ['/upmetrics-alternative', 'upmetrics'],
+      ['/fundica-alternative', 'fundica'],
     ]) {
       const derived = path.replace(/^\//, '').replace(/-alternative\/?$/, '');
       expect(derived).toBe(slug);
@@ -102,7 +117,7 @@ describe('the page resolves its competitor from the path', () => {
 });
 
 describe('both routes are registered', () => {
-  test.each(['/grantcompass-alternative', '/liveplan-alternative'])('%s is wired', (slug) => {
+  test.each(['/grantcompass-alternative', '/liveplan-alternative', '/upmetrics-alternative', '/fundica-alternative'])('%s is wired', (slug) => {
     for (const f of ['src/App.tsx', 'src/data/routeTitles.ts', 'scripts/prerender.mjs']) {
       expect(readFileSync(f, 'utf8'), `${f} missing ${slug}`).toContain(slug);
     }
