@@ -32,3 +32,42 @@ verify_jwt = true
 
 [functions.stripe-webhook]
 verify_jwt = false
+
+# Cron-called functions. pg_cron sends the vault secret (a plain string, not a
+# JWT) as the bearer token, and each function checks it against CRON_SECRET
+# itself. With the gateway JWT check on, the call is rejected before the
+# function runs: send-funding-digest returned 401 UNAUTHORIZED_INVALID_JWT_FORMAT
+# on 2026-10-30. Keep these false so a deploy cannot flip them back.
+[functions.send-funding-digest]
+verify_jwt = false
+
+[functions.check-funding-freshness]
+verify_jwt = false
+
+[functions.check-funding-links]
+verify_jwt = false
+
+# Public marketing chat. The widget sends the anon key as a bearer token, so the
+# gateway check passes; pinned so behaviour does not depend on the CLI default.
+[functions.site-assistant]
+verify_jwt = true
+
+# Dashboard chat and matcher: require a signed-in user's token.
+[functions.ai-assistant]
+verify_jwt = true
+
+[functions.match-funding-opportunities]
+verify_jwt = true
+
+# Public forms, deployed with the gateway check off. Pinned to match.
+[functions.confirm-funding-alert-subscription]
+verify_jwt = false
+
+[functions.submit-career-application]
+verify_jwt = false
+
+[functions.subscribe-funding-alerts]
+verify_jwt = false
+
+[functions.unsubscribe-funding-alerts]
+verify_jwt = false
