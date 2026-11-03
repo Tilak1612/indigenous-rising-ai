@@ -433,11 +433,15 @@ export function eligibilitySummary(g: FundingProgram): string {
 }
 
 /** Title used by the tab and by the prerender for /funding/<slug>. Always 60 chars or fewer. */
+// Drop the site suffix before cutting the programme name: a full name ranks
+// and reads better than "Indigenous Entrepreneur Startup Prog… | Site". Names
+// still over 60 characters are cut at a word boundary.
 export function programPageTitle(g: Pick<FundingProgram, 'name'>): string {
   const suffix = ' | Indigenous Rising AI';
-  const room = 60 - suffix.length;
-  const name = g.name.length > room ? g.name.slice(0, room - 1).trimEnd() + '\u2026' : g.name;
-  return name + suffix;
+  if (g.name.length + suffix.length <= 60) return g.name + suffix;
+  if (g.name.length <= 60) return g.name;
+  const cut = g.name.slice(0, 59);
+  return cut.slice(0, cut.lastIndexOf(' ') > 30 ? cut.lastIndexOf(' ') : 59).trimEnd() + '\u2026';
 }
 
 // Type and region landing pages ---------------------------------------------

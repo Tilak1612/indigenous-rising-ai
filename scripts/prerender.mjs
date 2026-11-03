@@ -719,8 +719,10 @@ async function main() {
     try {
       const url = `${BASE}/funding/${g.slug}`;
       const suffix = ' | Indigenous Rising AI';
-      const room = 60 - suffix.length;
-      const title = (g.name.length > room ? g.name.slice(0, room - 1).trimEnd() + '…' : g.name) + suffix;
+      const cut = g.name.slice(0, 59);
+      const title = g.name.length + suffix.length <= 60 ? g.name + suffix
+        : g.name.length <= 60 ? g.name
+        : cut.slice(0, cut.lastIndexOf(' ') > 30 ? cut.lastIndexOf(' ') : 59).trimEnd() + '…';
       const description = (g.description || '').replace(/\s+/g, ' ').trim().slice(0, 300);
       const jsonLd = [
         breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Funding', path: '/funding' }, { name: g.name, path: `/funding/${g.slug}` }]),
