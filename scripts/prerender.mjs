@@ -62,6 +62,8 @@ const MARKETING = [
   { p: '/guides/indigenous-business-funding-statistics', t: 'Indigenous Business Funding: What We Verify', d: 'What we can and cannot verify about Indigenous business funding programs in Canada, with a per-programme verification date and the reasons some could not be checked.', breadcrumb: 'Funding statistics' },
   { p: '/grantcompass-alternative', t: 'GrantCompass Alternative for Indigenous Business', d: 'An honest comparison of Indigenous Rising AI and GrantCompass, including where GrantCompass is stronger. Facts checked against their site on 28 September 2026.', breadcrumb: 'Comparison' },
   { p: '/liveplan-alternative', t: 'LivePlan Alternative for Indigenous Entrepreneurs', d: 'An honest comparison of Indigenous Rising AI and LivePlan, including where LivePlan is stronger. Facts checked against their site on 28 September 2026.', breadcrumb: 'Comparison' },
+  { p: '/upmetrics-alternative', t: 'Upmetrics Alternative for Indigenous Entrepreneurs', d: 'An honest comparison of Indigenous Rising AI and Upmetrics, including where Upmetrics is stronger. Facts checked against their site on 2 November 2026.', breadcrumb: 'Comparison' },
+  { p: '/fundica-alternative', t: 'Fundica Alternative for Indigenous Business Funding', d: 'An honest comparison of Indigenous Rising AI and Fundica, including where Fundica is stronger. Facts checked against their site on 2 November 2026.', breadcrumb: 'Comparison' },
   { p: '/for-economic-development-officers', t: 'Tools for Indigenous Economic Development Officers', d: 'What Indigenous Rising AI does today for economic development officers, and what is not built yet.', breadcrumb: 'EDO tools' },
   { p: '/for-funders', t: 'For Funders and Indigenous Support Organizations', d: 'What Indigenous Rising AI does today for funders and support organizations, and the reporting that is not built yet.', breadcrumb: 'For funders' },
   { p: '/account-deletion', t: 'Delete Your Account | Indigenous Rising AI', d: 'How to delete your Indigenous Rising AI account from Settings or the app, what is deleted after the 30-day grace period, and what is kept for Canadian tax law.', breadcrumb: 'Delete your account' },
@@ -463,6 +465,15 @@ async function main() {
   if (Array.isArray(siteFaqs) && siteFaqs.length) {
     const faqRoute = MARKETING.find((m) => m.p === '/faq');
     if (faqRoute) faqRoute.faqs = siteFaqs.map((f) => ({ q: f.question, a: f.answer }));
+  }
+  // Tools, templates and guides: FAQPage from the SAME module ResourcePage
+  // renders as a visible FAQ, so the schema never describes hidden text.
+  const resourceFaqs = await loadDataModule('src/data/resourceFaqs.ts', 'RESOURCE_FAQS');
+  if (resourceFaqs && typeof resourceFaqs === 'object') {
+    for (const m of MARKETING) {
+      const list = resourceFaqs[m.p];
+      if (Array.isArray(list) && list.length) m.faqs = list.map((f) => ({ q: f.question, a: f.answer }));
+    }
   }
   let count = 0;
   // Collected live and indexable URLs — written to dist/sitemap.xml at the end so

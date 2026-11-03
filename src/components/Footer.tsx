@@ -67,6 +67,8 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Economic development officers', to: '/for-economic-development-officers' },
       { name: 'Compared with LivePlan', to: '/liveplan-alternative' },
       { name: 'Compared with GrantCompass', to: '/grantcompass-alternative' },
+      { name: 'Compared with Fundica', to: '/fundica-alternative' },
+      { name: 'Compared with Upmetrics', to: '/upmetrics-alternative' },
     ],
   },
   {

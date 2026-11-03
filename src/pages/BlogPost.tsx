@@ -11,6 +11,7 @@ import {
   ArrowRight, ChevronUp, Facebook, Twitter, Linkedin, Link as LinkIcon
 } from 'lucide-react';
 import { getBlogBySlug, getRelatedPosts, getPostImage } from '@/data/blogPosts';
+import { BLOG_NEXT_STEPS } from '@/data/blogNextSteps';
 import { pageTitle } from '@/data/blogSeoTitles';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -408,6 +409,23 @@ const BlogPost = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Next steps: the pages that now own this post's intent */}
+          {(BLOG_NEXT_STEPS[post.slug]?.length ?? 0) > 0 && (
+            <section className="mb-12 rounded-2xl border border-border p-6" aria-labelledby="next-steps-heading">
+              <h2 id="next-steps-heading" className="text-xl font-display font-bold mb-2">Next steps</h2>
+              <p className="text-sm text-muted-foreground mb-4">Programme details change, so confirm them on the funder&apos;s own page before you apply.</p>
+              <ul className="grid sm:grid-cols-2 gap-2">
+                {BLOG_NEXT_STEPS[post.slug].map((s) => (
+                  <li key={s.to}>
+                    <Link to={s.to} className="flex min-h-[44px] items-center gap-2 font-medium text-primary underline-offset-4 hover:underline">
+                      {s.label} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {/* Keywords */}
           <div className="mb-12">
