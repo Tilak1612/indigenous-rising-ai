@@ -38,6 +38,8 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Grants & funding hub', to: '/guides/indigenous-business-grants' },
       { name: 'Funding: what we can verify', to: '/guides/indigenous-business-funding-statistics' },
       { name: 'Business plan template', to: '/indigenous-business-plan-template' },
+      { name: 'Financement (en français)', to: '/fr/financement-entreprise-autochtone' },
+      { name: 'Plan d’affaires (en français)', to: '/fr/plan-affaires-entreprise-autochtone' },
       { name: 'What is OCAP®?', to: '/guides/what-is-ocap' },
       { name: 'How we handle your data', to: '/ocap-data-sovereignty-software' },
       { name: 'Blog', to: '/blog' },

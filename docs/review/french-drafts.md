@@ -5,7 +5,9 @@ entreprise autochtone, financement entreprise autochtone, plan d'affaires
 entreprise autochtone, prêt entreprise autochtone, subvention entrepreneur
 autochtone Québec) and says they need **native-language validation and a
 supported localized product journey** before publishing. These are drafts for
-a native French speaker to correct. Nothing here is live.
+a native French speaker to correct.
+
+**Status (2 November 2026):** published as written on the owner's go-ahead ("go ahead"), without a native-speaker review. A native speaker's corrections are still welcome and can be applied directly to `src/pages/fr/FrenchGuide.tsx`.
 
 **Constraint to keep:** the product itself (sign-up, dashboard, plan builder)
 is English-first. Each draft says so plainly rather than implying a French
@@ -78,4 +80,4 @@ actuellement en anglais.
       autochtones").
 - [ ] The English-only note is acceptable, or a French product journey is
       planned first.
-- [ ] Approved by: ________ Date: ________
+- [x] Approved by: the owner ("go ahead", publish as written), 2026-11-02. Native-speaker review not yet done.

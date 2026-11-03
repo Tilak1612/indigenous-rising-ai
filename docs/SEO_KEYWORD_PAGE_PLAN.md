@@ -21,6 +21,7 @@ limits.
 | cash flow forecast template, indigenous business cash flow template | `/templates/cash-flow-forecast` | New. Working spreadsheet with formulas. |
 | community impact statement business plan, indigenous business plan community impact | `/templates/community-impact-statement` | New. Evidence and projection kept apart. |
 | indigenous business plan template, indigenous business plan example | `/indigenous-business-plan-template` | Refreshed: title, and a worked example for one fictional business that the four templates share. |
+| subvention / financement entreprise autochtone, plan affaires entreprise autochtone | `/fr/financement-entreprise-autochtone`, `/fr/plan-affaires-entreprise-autochtone` | Published from the drafts on the owner's go-ahead, without native review yet. Both say the product itself is in English. |
 | indigenous business plan funding, business plan grant indigenous | `/guides/business-plan-funding` | Six institutions' published terms, each quoted from its own page on 2 November 2026. States that 75 percent is not a general rule. |
 | fundica alternative indigenous business, upmetrics alternative indigenous entrepreneurs | `/fundica-alternative`, `/upmetrics-alternative` | Added in the follow-up. Facts read from each competitor's own site on 2 November 2026; each page concedes where they are stronger first. |
 | indigenous business funding yukon / nwt, inuit business funding nunavut, province terms | `/funding/<province>` | Already owned by the 13 region pages, so no duplicate guides were added. |
@@ -46,7 +47,6 @@ type pages ("Before you apply") and the plan template.
 | Plan item | Why it waits |
 |---|---|
 | Separate Yukon, NWT, Nunavut, New Brunswick, Nova Scotia guides | Region pages already exist at `/funding/<province>`. The plan says to split only with distinct local sources and search evidence. |
-| French pages | Needs native-language validation and a localized product journey. |
 | Full rewrites of the Alberta, BC, Ontario, women and Métis blog guides | Each needs programme-by-programme re-verification. Done now: 18 explainers carry a "Next steps" block linking to the owner page (province directory, lender directory, calculator or template). Titles were left alone to avoid colliding with the `/funding/<province>` owners. |
 | More programme profiles (NRT, TACC, AIIC, NADF, Métis lenders) | 23 researched records are unpublished pending owner review in `/admin`. Publishing them adds their pages automatically. |
 
