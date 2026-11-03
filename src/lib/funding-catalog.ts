@@ -326,8 +326,8 @@ export interface ProgramsPage {
   total: number;
 }
 
-export async function fetchPrograms(f: FilterState, signal?: AbortSignal): Promise<ProgramsPage> {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/grants?${buildProgramsQuery(f)}`, {
+export async function fetchPrograms(f: FilterState, signal?: AbortSignal, opts: { pageSize?: number } = {}): Promise<ProgramsPage> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/grants?${buildProgramsQuery(f, { pageSize: opts.pageSize })}`, {
     headers: { ...restHeaders(), Prefer: 'count=exact' },
     signal,
   });

@@ -13,6 +13,7 @@ export type SignupCtaPlacement =
   | 'nav_mobile'
   | 'landing_nav'
   | 'hero'
+  | 'hero_finder'
   | 'pricing_card'
   | 'footer_cta';
 
