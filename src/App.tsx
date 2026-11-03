@@ -47,6 +47,12 @@ const ForFunders = lazy(() => import("./pages/ForFunders"));
 const DataSovereignty = lazy(() => import("./pages/DataSovereignty"));
 const AccountDeletion = lazy(() => import("./pages/AccountDeletion"));
 const WhatIsOcap = lazy(() => import("./pages/WhatIsOcap"));
+const LoanCalculator = lazy(() => import("./pages/tools/LoanCalculator"));
+const StartupCostCalculator = lazy(() => import("./pages/tools/StartupCostCalculator"));
+const LenderDirectory = lazy(() => import("./pages/LenderDirectory"));
+const EquityRequirements = lazy(() => import("./pages/guides/EquityRequirements"));
+const ApplicationGaps = lazy(() => import("./pages/guides/ApplicationGaps"));
+const TemplateResource = lazy(() => import("./pages/templates/TemplateResource"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -696,6 +702,78 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <DataSovereignty />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tools/business-loan-calculator"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <LoanCalculator />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/tools/startup-cost-calculator"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <StartupCostCalculator />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/indigenous-financial-institutions-directory"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <LenderDirectory />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/indigenous-funding-equity-requirements"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <EquityRequirements />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/indigenous-funding-application-mistakes"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ApplicationGaps />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/templates/one-page-business-plan"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <TemplateResource />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/templates/cash-flow-forecast"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <TemplateResource />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/templates/funding-project-budget"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <TemplateResource />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/templates/community-impact-statement"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <TemplateResource />
                   </Suspense>
                 }
               />

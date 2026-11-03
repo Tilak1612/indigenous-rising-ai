@@ -99,7 +99,7 @@ serve(async (req) => {
     if (source) targets.push({ kind: "source", url: source });
     if (g.apply_url && g.apply_url !== source) targets.push({ kind: "apply", url: g.apply_url });
 
-    let deadKinds: string[] = [];
+    const deadKinds: string[] = [];
     for (const t of targets) {
       if (budget-- <= 0) break;
       const r = await checkUrl(t.url);

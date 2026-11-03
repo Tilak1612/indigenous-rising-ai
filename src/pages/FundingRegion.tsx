@@ -101,6 +101,16 @@ export default function FundingRegionPage({ slug }: { slug: string }) {
             </section>
           )}
 
+          <section className="mb-10 rounded-2xl border border-border bg-muted/30 p-6" aria-labelledby="prepare-heading">
+            <h2 id="prepare-heading" className="font-display text-xl font-semibold text-foreground mb-3">Before you apply</h2>
+            <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+              <li><Link to="/indigenous-financial-institutions-directory" className="flex min-h-[44px] items-center font-medium text-primary underline-offset-4 hover:underline">Find the lender that serves your area</Link></li>
+              <li><Link to="/tools/startup-cost-calculator" className="flex min-h-[44px] items-center font-medium text-primary underline-offset-4 hover:underline">Work out your funding gap</Link></li>
+              <li><Link to="/tools/business-loan-calculator" className="flex min-h-[44px] items-center font-medium text-primary underline-offset-4 hover:underline">Estimate a loan payment</Link></li>
+              <li><Link to="/guides/indigenous-funding-equity-requirements" className="flex min-h-[44px] items-center font-medium text-primary underline-offset-4 hover:underline">Understand owner equity</Link></li>
+            </ul>
+          </section>
+
           <section className="border-t border-border pt-8" aria-labelledby="other-regions">
             <h2 id="other-regions" className="font-display text-xl font-semibold text-foreground mb-3">{province ? 'Other provinces and territories' : 'Browse by province or territory'}</h2>
             <ul className="flex flex-wrap gap-2 mb-4">

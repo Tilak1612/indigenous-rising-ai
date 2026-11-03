@@ -54,13 +54,23 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/funding/quebec': 'Indigenous Business Funding in Quebec',
   '/funding/saskatchewan': 'Indigenous Business Funding in Saskatchewan',
   '/funding/yukon': 'Indigenous Business Funding in Yukon',
-  '/funding/indigenous-business-loans': 'Indigenous Business Loans in Canada | Indigenous Rising AI',
-  '/funding/indigenous-business-grants': 'Indigenous Business Grants & Contributions in Canada',
+  '/funding/indigenous-business-loans': 'Indigenous Business Loans in Canada: Compare Lenders',
+  '/funding/indigenous-business-grants': 'Indigenous Business Grants and Contributions in Canada',
   '/impact': 'Community Impact Tracker | Indigenous Rising AI',
-  '/indigenous-business-plan-template': 'Indigenous Business Plan Template (Free)',
+  '/indigenous-business-plan-template': 'Free Indigenous Business Plan Template and Example',
   '/plan': 'Indigenous Business Plan Builder | Indigenous Rising AI',
   '/track-request': 'Track a Data Request | Indigenous Rising AI',
   '/data-rights': 'Your Data Rights | Indigenous Rising AI',
+  // Preparation tools, templates and guides from the keyword and page plan.
+  '/tools/business-loan-calculator': 'Business Loan Calculator for Indigenous Entrepreneurs',
+  '/tools/startup-cost-calculator': 'Startup Cost Calculator and Funding Gap Budget',
+  '/indigenous-financial-institutions-directory': 'Find an Indigenous Financial Institution by Province',
+  '/guides/indigenous-funding-equity-requirements': 'Owner Equity and Matching Funds for Indigenous Funding',
+  '/guides/indigenous-funding-application-mistakes': 'Common Indigenous Business Funding Application Gaps',
+  '/templates/one-page-business-plan': 'One-Page Business Plan for Indigenous Entrepreneurs',
+  '/templates/cash-flow-forecast': 'Cash Flow Forecast Template for a Funding Application',
+  '/templates/funding-project-budget': 'Funding Application Budget Template and Example',
+  '/templates/community-impact-statement': 'Community Impact Statement Template for a Business Plan',
 };
 
 /** The title for a route, or undefined for routes that are not prerendered. */
