@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import MetaTags from '@/components/MetaTags';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { ROUTE_TITLES } from '@/data/routeTitles';
+import { RESOURCE_FAQS } from '@/data/resourceFaqs';
 
 export interface RelatedLink { to: string; label: string; note: string }
 
@@ -41,6 +42,24 @@ export function ResourcePage({
             <div className="text-lg text-muted-foreground leading-relaxed max-w-3xl space-y-3">{intro}</div>
           </header>
           {children}
+          {(RESOURCE_FAQS[route]?.length ?? 0) > 0 && (
+            // Native <details>: answers stay in the DOM when collapsed, so the
+            // question markup the prerender writes matches visible content.
+            <section className="mt-14" aria-labelledby="faq-heading">
+              <h2 id="faq-heading" className="font-display text-2xl font-bold text-foreground mb-4">Questions people ask</h2>
+              <div className="divide-y divide-border rounded-xl border border-border">
+                {RESOURCE_FAQS[route].map((f) => (
+                  <details key={f.question} className="group p-5">
+                    <summary className="cursor-pointer list-none font-semibold text-foreground min-h-[44px] flex items-center justify-between gap-4">
+                      {f.question}
+                      <span aria-hidden="true" className="text-primary transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                    </summary>
+                    <p className="text-muted-foreground leading-relaxed mt-2">{f.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          )}
           {related.length > 0 && (
             <section className="mt-14 border-t border-border pt-8" aria-labelledby="related-heading">
               <h2 id="related-heading" className="font-display text-2xl font-bold text-foreground mb-4">Keep preparing</h2>

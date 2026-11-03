@@ -1,0 +1,63 @@
+/**
+ * Questions and answers for the preparation tools, templates and guides.
+ *
+ * One source, two readers: ResourcePage renders them as a visible FAQ, and
+ * scripts/prerender.mjs emits the same text as FAQPage JSON-LD in the static
+ * HTML, so the schema always matches what a visitor can read. Every answer
+ * restates something the page itself says. None adds a fact the page does not
+ * carry, and none states a funder's rule. Guarded by
+ * src/data/__tests__/resourceFaqs.test.ts.
+ */
+export interface ResourceFaq { question: string; answer: string }
+
+export const RESOURCE_FAQS: Record<string, ResourceFaq[]> = {
+  '/tools/business-loan-calculator': [
+    { question: 'Is the loan calculator result a quote from a lender?', answer: 'No. It is arithmetic from the amount, rate and term you enter. A lender sets the real rate, fees and conditions after reviewing your application, and Indigenous Rising AI does not lend money or decide who qualifies.' },
+    { question: 'Why does the calculator not suggest an interest rate?', answer: 'Rates depend on the lender, the business and the loan, so any default rate would be a guess presented as a fact. Use the rate a lender quoted you, or try a few rates to see the range.' },
+    { question: 'How is the payment worked out?', answer: 'It assumes an ordinary blended loan where every payment is the same amount. The annual rate is divided by the number of payments in a year, and the payment is the standard amortization amount. At a zero rate the payment is the amount divided by the number of payments.' },
+    { question: 'What can make a real loan payment different from the estimate?', answer: 'Fees, a different compounding period, interest-only months, a variable rate, a final balloon payment, or a non-repayable contribution paired with the loan that lowers what you borrow.' },
+  ],
+  '/tools/startup-cost-calculator': [
+    { question: 'What is a funding gap?', answer: 'It is the total project cost, including the working capital you choose to hold, minus the money you already have or expect. It is the amount you are asking a lender or funder to help close.' },
+    { question: 'Does the calculator know which costs a funder will pay for?', answer: 'No. Nothing in it decides which costs are eligible. Each funder publishes its own eligible costs, and some only count costs incurred after they approve your application.' },
+    { question: 'How many months of working capital should I include?', answer: 'The calculator starts at three months only as a starting point. It is not a rule any funder sets, so ask the institution you are applying to what it expects.' },
+    { question: 'Is my budget saved or sent anywhere?', answer: 'No. The budget stays in your browser tab and is not sent to Indigenous Rising AI or saved to an account. You can download it as a spreadsheet.' },
+  ],
+  '/indigenous-financial-institutions-directory': [
+    { question: 'Is this the full list of Indigenous Financial Institutions?', answer: 'No. It lists the institutions in our funding catalogue. The National Aboriginal Capital Corporations Association (NACCA) publishes the listing of every Indigenous Financial Institution in its network, and the page links to it first.' },
+    { question: 'How do I know which lender serves my community?', answer: 'Filter by province or territory, then contact the institution and ask whether it serves your community and your kind of business. Service areas overlap in some regions and are tightly defined in others.' },
+    { question: 'Who can borrow from these institutions?', answer: 'Some serve First Nations entrepreneurs, some serve Métis entrepreneurs, and some serve all Indigenous applicants in their area. Eligibility, including which identification is accepted, is set by each institution.' },
+    { question: 'What should I ask a lender before preparing an application?', answer: 'Whether it serves your community and business, which of its loans or contributions fit your project, and what it needs to see first. Many ask for a business plan and a project budget.' },
+  ],
+  '/guides/indigenous-funding-equity-requirements': [
+    { question: 'What is owner equity in a funding application?', answer: 'Your own contribution to the project, usually cash and sometimes assets you already own and put into the business. Whether in-kind or borrowed money counts is a question for each funder.' },
+    { question: 'What is a non-repayable contribution?', answer: 'Money you do not pay back if you meet the agreement’s conditions. It is often a share of eligible costs, often capped, and often conditional on a loan or owner equity covering the rest.' },
+    { question: 'Can I spend money on the project before the funder approves it?', answer: 'Some programmes only count costs incurred after an agreement is signed. If you must commit early, ask the funder in writing whether that cost can still be included.' },
+    { question: 'How much of the project must I pay for myself?', answer: 'It depends on the funder. Ask what share must be your own money and whether it must be cash. The guide shows the arithmetic with made-up numbers, not any programme’s ratio.' },
+  ],
+  '/guides/indigenous-funding-application-mistakes': [
+    { question: 'Why do Indigenous business funding applications get delayed?', answer: 'Usually because something is missing rather than wrong with the idea: a plan that skips the funder’s questions, costs without quotes, no cash flow forecast, or an application sent to a lender that does not serve the area.' },
+    { question: 'In what order should I prepare a funding application?', answer: 'Contact the institution first, then write the plan, then build the budget and cash flow from the plan, then gather quotes and proof of your own contribution.' },
+    { question: 'What should I do if my application is declined?', answer: 'Ask the funder what would change their answer. It is the quickest way to learn which gap to close before you apply again.' },
+  ],
+  '/templates/one-page-business-plan': [
+    { question: 'What is a one-page business plan for?', answer: 'It is the short version of your business in eleven answers. It is what you bring to a first conversation with a lender or an economic development officer, and the outline you expand into a full plan later.' },
+    { question: 'Is the worked example a real business?', answer: 'No. Riverbend Books & Payroll is a fictional business. Its numbers are made up to show how the template works and are not benchmarks.' },
+    { question: 'Do I need an account to download the template?', answer: 'No. The template and the worked example are free and download without an account. The files are made in your browser.' },
+  ],
+  '/templates/cash-flow-forecast': [
+    { question: 'Why do lenders ask for a cash flow forecast?', answer: 'A business can be profitable over a year and still run out of cash in a single month. The forecast shows the money coming in and going out each month, including the loan payment.' },
+    { question: 'Does the template calculate the totals for me?', answer: 'Yes. The spreadsheet has the totals, net cash flow and closing cash built in as formulas, and each month opens with the previous month’s closing cash. It opens in Excel, Google Sheets or LibreOffice.' },
+    { question: 'What should I do if a month closes below zero?', answer: 'Plan for it before you apply: hold more working capital, reduce the loan payment, or lower costs in that month.' },
+  ],
+  '/templates/funding-project-budget': [
+    { question: 'What goes in a funding application budget?', answer: 'Every cost of the project, the quote each amount comes from, whether the funder counts it as eligible, and which source pays for it: owner equity, a loan, a grant or contribution, or something else.' },
+    { question: 'Do I need quotes for every cost?', answer: 'Attach quotes for equipment, renovation and vehicles, and mark anything else as an estimate. Ask the funder which lines need quotes.' },
+    { question: 'Should the budget include a contingency?', answer: 'A small contingency line is common. Its size is your decision unless the funder sets one.' },
+  ],
+  '/templates/community-impact-statement': [
+    { question: 'What is a community impact statement?', answer: 'The part of a business plan that explains how the business will benefit the community, in a form a reviewer can check: what is true now, what is planned, and how you will measure it.' },
+    { question: 'How do I write about community priorities?', answer: 'Only describe priorities your community has stated, say where they were stated, and speak with the people the statement is about before you write about them.' },
+    { question: 'Should I separate projections from evidence?', answer: 'Yes. Mark every line as already true or as a plan. A reviewer trusts a short, honest statement more than a long list of hopes.' },
+  ],
+};
