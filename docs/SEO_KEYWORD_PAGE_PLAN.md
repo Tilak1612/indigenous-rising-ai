@@ -15,7 +15,7 @@ limits.
 | indigenous financial institutions (near me), indigenous lenders by province, nacca funding | `/indigenous-financial-institutions-directory` | New. 22 lenders from the catalogue, NACCA linked first as the full list. |
 | business loan calculator | `/tools/business-loan-calculator` | New. User-entered rate only, zero-rate and ordinary amortization tested. |
 | indigenous startup cost calculator, grant budget template canada, indigenous funding application budget | `/tools/startup-cost-calculator` and `/templates/funding-project-budget` | New. Calculator for working out the gap, spreadsheet for the application. |
-| indigenous business grant matching funds, owner equity requirements | `/guides/indigenous-funding-equity-requirements` | New. Teaches terms and arithmetic. No lender ratio is asserted (see deferred). |
+| indigenous business grant matching funds, owner equity requirements | `/guides/indigenous-funding-equity-requirements` | Teaches terms and arithmetic, plus five lenders' published equity rules, approved by the owner on PR #275 and quoted from each lender's page. |
 | indigenous business funding application rejected | `/guides/indigenous-funding-application-mistakes` | New. Neutral gaps, no invented rejection statistics. |
 | one page business plan template | `/templates/one-page-business-plan` | New. |
 | cash flow forecast template, indigenous business cash flow template | `/templates/cash-flow-forecast` | New. Working spreadsheet with formulas. |
@@ -45,7 +45,6 @@ type pages ("Before you apply") and the plan template.
 
 | Plan item | Why it waits |
 |---|---|
-| Lender-specific equity ratios on the equity guide | The plan requires human review of each lender example. The guide links each lender instead. |
 | Separate Yukon, NWT, Nunavut, New Brunswick, Nova Scotia guides | Region pages already exist at `/funding/<province>`. The plan says to split only with distinct local sources and search evidence. |
 | French pages | Needs native-language validation and a localized product journey. |
 | Full rewrites of the Alberta, BC, Ontario, women and Métis blog guides | Each needs programme-by-programme re-verification. Done now: 18 explainers carry a "Next steps" block linking to the owner page (province directory, lender directory, calculator or template). Titles were left alone to avoid colliding with the `/funding/<province>` owners. |

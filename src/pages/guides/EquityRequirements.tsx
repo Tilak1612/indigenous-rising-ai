@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
 import { ResourcePage, RELATED } from '@/components/resources/ResourcePage';
+import { LENDER_EQUITY_RULES, LENDER_EQUITY_CHECKED } from '@/data/lenderEquity';
+import { fmtDate } from '@/lib/funding-catalog';
 
 const ROUTE = '/guides/indigenous-funding-equity-requirements';
 
@@ -76,6 +79,27 @@ export default function EquityRequirements() {
           contribution, the loan line would change. That is why you work the numbers out with the real rule
           from the funder, not from an example. Try your own figures in the{' '}
           <Link to={RELATED.budget.to} className="text-primary font-medium">funding gap calculator</Link>.
+        </p>
+      </section>
+
+      <section className="mb-12" aria-labelledby="published-heading">
+        <h2 id="published-heading" className="font-display text-2xl font-bold text-foreground mb-2">What some lenders actually publish</h2>
+        <p className="text-sm text-muted-foreground mb-4">Read from each lender&apos;s own page on {fmtDate(LENDER_EQUITY_CHECKED)}.</p>
+        <ul className="space-y-4">
+          {LENDER_EQUITY_RULES.map((r) => (
+            <li key={r.lender} className="rounded-xl border border-border p-5">
+              <h3 className="font-semibold text-foreground">{r.lender} <span className="font-normal text-muted-foreground">({r.region})</span></h3>
+              <p className="text-muted-foreground leading-relaxed mt-1">{r.summary}</p>
+              <blockquote className="mt-2 border-l-2 border-primary/40 pl-3 text-sm italic text-muted-foreground">&ldquo;{r.quote}&rdquo;</blockquote>
+              <a href={r.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 min-h-[44px] text-sm font-medium text-primary">
+                Read the lender&apos;s page <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 text-sm text-muted-foreground">
+          These are each lender&apos;s own rules on the date shown. Other lenders set different ones, so confirm
+          with the institution that serves you.
         </p>
       </section>
 
