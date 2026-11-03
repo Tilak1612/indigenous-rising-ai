@@ -18,16 +18,8 @@ import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { truncateDescription } from '@/lib/seo';
 import { parseBlock, parseInline } from '@/lib/blogBlocks';
+import { formatPostDate as formatSourceDate } from '@/lib/blogDates';
 import { toast } from 'sonner';
-
-// 'YYYY-MM-DD' -> '28 September 2026'. Built from the parts, not new Date(str):
-// a bare ISO date parses as UTC midnight and renders as the previous day across
-// Canada.
-const formatSourceDate = (iso: string): string => {
-  const [y, m, d] = iso.split('-').map(Number);
-  if (!y || !m || !d) return iso;
-  return new Date(y, m - 1, d).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
-};
 
 // Old blog slugs that were renamed (and were in the sitemap, soft-404'ing).
 // Handled here rather than as App-level redirect routes so it doesn't depend on
