@@ -72,6 +72,7 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/templates/one-page-business-plan': 'One-Page Business Plan for Indigenous Entrepreneurs',
   '/templates/cash-flow-forecast': 'Cash Flow Forecast Template for a Funding Application',
   '/templates/funding-project-budget': 'Funding Application Budget Template and Example',
+  '/guides/business-plan-funding': 'Funding to Pay for an Indigenous Business Plan',
   '/templates/community-impact-statement': 'Community Impact Statement Template for a Business Plan',
 };
 

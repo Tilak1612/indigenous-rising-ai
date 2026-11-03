@@ -53,6 +53,7 @@ const LenderDirectory = lazy(() => import("./pages/LenderDirectory"));
 const EquityRequirements = lazy(() => import("./pages/guides/EquityRequirements"));
 const ApplicationGaps = lazy(() => import("./pages/guides/ApplicationGaps"));
 const TemplateResource = lazy(() => import("./pages/templates/TemplateResource"));
+const BusinessPlanFunding = lazy(() => import("./pages/guides/BusinessPlanFunding"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const SiteAssistant = lazy(() => import("./components/marketing/SiteAssistant"));
@@ -758,6 +759,14 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <ApplicationGaps />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/business-plan-funding"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <BusinessPlanFunding />
                   </Suspense>
                 }
               />

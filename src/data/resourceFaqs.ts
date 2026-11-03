@@ -40,6 +40,11 @@ export const RESOURCE_FAQS: Record<string, ResourceFaq[]> = {
     { question: 'In what order should I prepare a funding application?', answer: 'Contact the institution first, then write the plan, then build the budget and cash flow from the plan, then gather quotes and proof of your own contribution.' },
     { question: 'What should I do if my application is declined?', answer: 'Ask the funder what would change their answer. It is the quickest way to learn which gap to close before you apply again.' },
   ],
+  '/guides/business-plan-funding': [
+    { question: 'Will a funder pay 75 percent of my business plan?', answer: 'Not as a general rule. Two institutions publish up to 75 percent: the First Peoples Economic Growth Fund in Manitoba, capped at $20,000, and the Clarence Campeau Development Fund in Saskatchewan, which says it can consider that share. Other institutions publish no percentage.' },
+    { question: 'Can I hire the consultant before the funding is approved?', answer: 'Wait for written approval. The Manitoba fund states that funding must be approved before the consultant starts, and other institutions may only count costs they approved first.' },
+    { question: 'Does business plan funding pay for my own time?', answer: 'The programmes listed pay toward a professional consultant’s work, not the owner’s own time. Ask the institution what it counts before you plan around it.' },
+  ],
   '/templates/one-page-business-plan': [
     { question: 'What is a one-page business plan for?', answer: 'It is the short version of your business in eleven answers. It is what you bring to a first conversation with a lender or an economic development officer, and the outline you expand into a full plan later.' },
     { question: 'Is the worked example a real business?', answer: 'No. Riverbend Books & Payroll is a fictional business. Its numbers are made up to show how the template works and are not benchmarks.' },

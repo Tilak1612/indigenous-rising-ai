@@ -147,6 +147,10 @@ const PlanTemplate = () => {
               <Link to="/guides/indigenous-business-grants" className="text-primary font-medium">
                 start with the funding guides
               </Link>
+              . Some lenders also{' '}
+              <Link to="/guides/business-plan-funding" className="text-primary font-medium">
+                pay part of a consultant&apos;s cost
+              </Link>
               . Before you submit, check it against the{' '}
               <Link to="/guides/indigenous-funding-application-mistakes" className="text-primary font-medium">
                 common application gaps
