@@ -91,11 +91,11 @@ const MARKETING = [
   { p: '/funding/alberta', t: 'Indigenous Business Funding in Alberta', d: 'Grants, contributions and loans for First Nations and Métis entrepreneurs in Alberta, from AIIC, AIOC, PrairiesCan and national programmes, with amounts and verification dates.', breadcrumb: 'Alberta' },
   { p: '/funding/british-columbia', t: 'Indigenous Business Funding in British Columbia', d: 'Indigenous business loans, equity contributions and grants in British Columbia: First Citizens Fund lenders, TACC, NEDC, TRICORP, Métis Financial Corporation and national programmes.', breadcrumb: 'British Columbia' },
   { p: '/funding/manitoba', t: 'Indigenous Business Funding in Manitoba', d: 'Funding for First Nations and Métis businesses in Manitoba: First Peoples Economic Growth Fund loans and contributions, Louis Riel Capital Corporation and national programmes.', breadcrumb: 'Manitoba' },
-  { p: '/funding/new-brunswick', t: 'Indigenous Business Funding in New Brunswick', d: 'Indigenous business funding in New Brunswick: Ulnooweg loans and contributions, ACOA and the national programmes open to First Nations, Métis and Inuit entrepreneurs.', breadcrumb: 'New Brunswick' },
+  { p: '/funding/new-brunswick', t: 'Indigenous Business Funding in New Brunswick', d: 'Indigenous business funding in New Brunswick: the JEDI Aboriginal Development Fund, the provincial Indigenous agriculture programme, Ulnooweg loans, ACOA and national programmes.', breadcrumb: 'New Brunswick' },
   { p: '/funding/newfoundland-and-labrador', t: 'Indigenous Business Funding in Newfoundland & Labrador', d: 'Funding for Indigenous businesses in Newfoundland and Labrador, including the Nunatsiavut Business Grant, Ulnooweg financing and national programmes.', breadcrumb: 'Newfoundland and Labrador' },
-  { p: '/funding/nova-scotia', t: 'Indigenous Business Funding in Nova Scotia', d: 'Indigenous business loans and contributions in Nova Scotia: Ulnooweg Development Group, ACOA supports and the national Indigenous entrepreneurship programmes.', breadcrumb: 'Nova Scotia' },
-  { p: '/funding/northwest-territories', t: 'Indigenous Business Funding in the Northwest Territories', d: 'Business funding in the Northwest Territories for Indigenous entrepreneurs: GNWT SEED, Métis Dene Development Fund loans, CanNor delivery and national programmes.', breadcrumb: 'Northwest Territories' },
-  { p: '/funding/nunavut', t: 'Indigenous Business Funding in Nunavut', d: 'Funding for Inuit-owned businesses in Nunavut: Nunavut Business Credit Corporation, Atuqtuarvik Corporation financing and national Indigenous programmes.', breadcrumb: 'Nunavut' },
+  { p: '/funding/nova-scotia', t: 'Indigenous Business Funding in Nova Scotia', d: 'Indigenous business funding in Nova Scotia: Ulnooweg loans and contributions, METS self-employment support, NSCC and Invest Nova Scotia programmes, ACOA and national programmes.', breadcrumb: 'Nova Scotia' },
+  { p: '/funding/northwest-territories', t: 'Indigenous Business Funding in the Northwest Territories', d: 'Indigenous business funding in the Northwest Territories: Métis-Dene Development Fund, Dehcho and Akaitcho lenders, Prosper NWT, GNWT SEED, CanNor and national programmes.', breadcrumb: 'Northwest Territories' },
+  { p: '/funding/nunavut', t: 'Indigenous Business Funding in Nunavut', d: 'Funding for Inuit businesses in Nunavut by region: Atuqtuarvik, Kakivak, the Kivalliq and Kitikmeot Inuit associations, community lenders, NBCC and national programmes.', breadcrumb: 'Nunavut' },
   { p: '/funding/ontario', t: 'Indigenous Business Funding in Ontario', d: 'Indigenous business funding in Ontario: the Indigenous Economic Development Fund, NADF, Waubetek, Two Rivers and the national programmes, with intake status and dates.', breadcrumb: 'Ontario' },
   { p: '/funding/prince-edward-island', t: 'Indigenous Business Funding in Prince Edward Island', d: 'Indigenous business funding on Prince Edward Island: Ulnooweg loans and contributions, ACOA and national programmes for First Nations, Métis and Inuit entrepreneurs.', breadcrumb: 'Prince Edward Island' },
   { p: '/funding/quebec', t: 'Indigenous Business Funding in Quebec', d: 'Financement pour entreprises autochtones au Québec: SOCCA loans and mentorship plus the national programmes open to First Nations, Inuit and Métis entrepreneurs.', breadcrumb: 'Quebec' },
@@ -119,6 +119,9 @@ const MARKETING = [
   { p: '/templates/cash-flow-forecast', t: 'Cash Flow Forecast Template for a Funding Application', d: 'A free 12-month cash flow forecast spreadsheet with built-in totals, for a business loan or funding application, plus a worked example.', breadcrumb: 'Cash flow forecast template' },
   { p: '/templates/funding-project-budget', t: 'Funding Application Budget Template and Example', d: 'A free funding application budget spreadsheet: costs, quotes, eligibility and funding sources per line, with the unfunded amount worked out.', breadcrumb: 'Funding application budget template' },
   { p: '/templates/community-impact-statement', t: 'Community Impact Statement Template for a Business Plan', d: 'A free template for the community impact section of a business plan: jobs, training, local purchasing and how you will measure them.', breadcrumb: 'Community impact statement' },
+  { p: '/templates/indigenous-business-plan-examples', t: 'Indigenous Business Plan Examples by Business Type', d: 'Three fictional Indigenous business plan examples, for services, tourism and retail, in the same six sections funders ask for, with each funding mix shown.', breadcrumb: 'Business plan examples' },
+  { p: '/guides/choosing-funding-business-or-community', t: 'Funding for an Individual Business or a Community Enterprise', d: 'Which Indigenous funding programmes fit an entrepreneur, a First Nation or Inuit community, or a support organization, quoted from each programme page.', breadcrumb: 'Business or community funding' },
+  { p: '/guides/funding-document-checklist-by-lender', t: 'Business Funding Documents: What Indigenous Lenders Ask For', d: 'The application documents ten Indigenous lenders publish, side by side and in their own words: ID, equity proof, business plan, cash flow, quotes and more.', breadcrumb: 'Documents lenders ask for' },
   { p: '/data-rights', img: '/og-data-rights.jpg', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
 ];
 
@@ -717,8 +720,10 @@ async function main() {
     try {
       const url = `${BASE}/funding/${g.slug}`;
       const suffix = ' | Indigenous Rising AI';
-      const room = 60 - suffix.length;
-      const title = (g.name.length > room ? g.name.slice(0, room - 1).trimEnd() + '…' : g.name) + suffix;
+      const cut = g.name.slice(0, 59);
+      const title = g.name.length + suffix.length <= 60 ? g.name + suffix
+        : g.name.length <= 60 ? g.name
+        : cut.slice(0, cut.lastIndexOf(' ') > 30 ? cut.lastIndexOf(' ') : 59).trimEnd() + '…';
       const description = (g.description || '').replace(/\s+/g, ' ').trim().slice(0, 300);
       const jsonLd = [
         breadcrumbJsonLd([{ name: 'Home', path: '/' }, { name: 'Funding', path: '/funding' }, { name: g.name, path: `/funding/${g.slug}` }]),

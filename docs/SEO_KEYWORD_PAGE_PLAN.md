@@ -25,6 +25,10 @@ limits.
 | indigenous business plan funding, business plan grant indigenous | `/guides/business-plan-funding` | Six institutions' published terms, each quoted from its own page on 2 November 2026. States that 75 percent is not a general rule. |
 | fundica alternative indigenous business, upmetrics alternative indigenous entrepreneurs | `/fundica-alternative`, `/upmetrics-alternative` | Added in the follow-up. Facts read from each competitor's own site on 2 November 2026; each page concedes where they are stronger first. |
 | indigenous business funding yukon / nwt, inuit business funding nunavut, province terms | `/funding/<province>` | Already owned by the 13 region pages, so no duplicate guides were added. |
+| indigenous business plan example | `/templates/indigenous-business-plan-examples` | Three fictional plans (services, tourism, retail) in the six sections. |
+| indigenous community business funding vs entrepreneur grants | `/guides/choosing-funding-business-or-community` | Applicant-first decision guide quoting the AEP, CORP and LEDSP pages (3 Nov 2026). |
+| indigenous business loan documents | `/guides/funding-document-checklist-by-lender` | Ten lenders' published document lists in a matrix and in their own words. |
+| Yukon, NWT, Nunavut, New Brunswick, Nova Scotia local sources | `/funding/<province>` "Local lenders and supports" | Source-reviewed on 3 Nov 2026 and added to the region pages rather than as competing guides. |
 
 AEO: each of the nine tools, templates and guides carries three or four visible questions and answers, emitted as FAQPage JSON-LD from the same module (`src/data/resourceFaqs.ts`).
 
@@ -46,7 +50,10 @@ type pages ("Before you apply") and the plan template.
 
 | Plan item | Why it waits |
 |---|---|
-| Separate Yukon, NWT, Nunavut, New Brunswick, Nova Scotia guides | Region pages already exist at `/funding/<province>`. The plan says to split only with distinct local sources and search evidence. |
+| Separate Yukon, NWT, Nunavut, New Brunswick, Nova Scotia guides | The source review is done, and its findings are on the region pages. A separate URL would compete with `/funding/<province>` for the same searches; split only if Search Console shows the region page failing a distinct query. |
+| `/guides/indigenous-business-data-sovereignty-questions` | The privacy policy names OpenAI only for funding matching, while the member assistant (OpenAI) and site assistant (Anthropic) also process messages. The privacy wording must be updated by the owner first. |
+| `/for-indigenous-business-advisors` | The plan says to build it only after advisor interviews show a need distinct from EDOs. |
+| `/guides/funding-program-changes` | Needs an ongoing verification owner for a dated change log. |
 | Full rewrites of the Alberta, BC, Ontario, women and Métis blog guides | Each needs programme-by-programme re-verification. Done now: 18 explainers carry a "Next steps" block linking to the owner page (province directory, lender directory, calculator or template). Titles were left alone to avoid colliding with the `/funding/<province>` owners. |
 | More programme profiles (NRT, TACC, AIIC, NADF, Métis lenders) | 23 researched records are unpublished pending owner review in `/admin`. Publishing them adds their pages automatically. |
 

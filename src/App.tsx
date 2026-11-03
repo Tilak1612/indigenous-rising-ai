@@ -53,6 +53,9 @@ const LenderDirectory = lazy(() => import("./pages/LenderDirectory"));
 const EquityRequirements = lazy(() => import("./pages/guides/EquityRequirements"));
 const ApplicationGaps = lazy(() => import("./pages/guides/ApplicationGaps"));
 const TemplateResource = lazy(() => import("./pages/templates/TemplateResource"));
+const PlanExamples = lazy(() => import("./pages/templates/PlanExamples"));
+const ChoosingFunding = lazy(() => import("./pages/guides/ChoosingFunding"));
+const LenderDocuments = lazy(() => import("./pages/guides/LenderDocuments"));
 const BusinessPlanFunding = lazy(() => import("./pages/guides/BusinessPlanFunding"));
 const FrenchGuide = lazy(() => import("./pages/fr/FrenchGuide"));
 const Blog = lazy(() => import("./pages/Blog"));
@@ -816,6 +819,30 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <TemplateResource />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/templates/indigenous-business-plan-examples"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <PlanExamples />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/choosing-funding-business-or-community"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ChoosingFunding />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/funding-document-checklist-by-lender"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <LenderDocuments />
                   </Suspense>
                 }
               />
