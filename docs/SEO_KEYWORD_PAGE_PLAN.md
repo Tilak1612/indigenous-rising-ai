@@ -48,7 +48,7 @@ type pages ("Before you apply") and the plan template.
 | `/guides/business-plan-funding` | Requires verifying each programme's business-plan support terms first. |
 | Separate Yukon, NWT, Nunavut, New Brunswick, Nova Scotia guides | Region pages already exist at `/funding/<province>`. The plan says to split only with distinct local sources and search evidence. |
 | French pages | Needs native-language validation and a localized product journey. |
-| Blog refreshes for Alberta, BC, Ontario, women, Métis guides | Each needs programme-by-programme re-verification; titles were left alone to avoid colliding with the `/funding/<province>` owners. |
+| Full rewrites of the Alberta, BC, Ontario, women and Métis blog guides | Each needs programme-by-programme re-verification. Done now: 18 explainers carry a "Next steps" block linking to the owner page (province directory, lender directory, calculator or template). Titles were left alone to avoid colliding with the `/funding/<province>` owners. |
 | More programme profiles (NRT, TACC, AIIC, NADF, Métis lenders) | 23 researched records are unpublished pending owner review in `/admin`. Publishing them adds their pages automatically. |
 
 ## Measurement
