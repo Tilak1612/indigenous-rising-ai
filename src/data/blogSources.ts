@@ -84,7 +84,7 @@ const ONTARIO_SOURCES: BlogSource[] = [
   src('NOHFC: Indigenous Workforce Development Program', 'https://nohfc.ca/public-program/indigenous-workforce-development-program/', 'The 75% and $52,500 business intern limits and that funding is limited.'),
   src('Nishnawbe Aski Development Fund', 'https://www.nadf.org/indigenous-women', 'Its Northern Ontario service area and the $25,000 women\u2019s and youth programmes split 5% client, 45% grant, 50% loan.'),
   src('Waubetek Business Development Corporation: application process', 'https://www.waubetek.com/application-process', 'The Northeast Ontario location rule and the 10% unencumbered equity contribution.'),
-  src('Wakenagun Community Futures Development Corporation', 'https://wakenagun.ca/', 'The Mushkegowuk communities it serves.'),
+  src('Wakenagun Community Futures Development Corporation', 'https://wakenagun.ca/', 'The Mushkegowuk communities it serves, from Fort Severn to Chapleau Cree.'),
   src('Two Rivers Community Development Centre: FAQs', 'https://tworivers.ca/faqs/', 'Its service area, loans up to $1,250,000, 10% cash equity, no general grants, and the referral of Métis citizens to MVDF.'),
   src('Tecumseh Community Development Corporation', 'https://www.tcdc.on.ca/', 'The ten Southern Ontario First Nations it serves and the forms of assistance it offers.'),
   src('First Nations Agriculture and Financing of Ontario', 'https://www.firstnationsag.ca/', 'Its farm and business financing and women\u2019s and youth programmes.'),
@@ -94,7 +94,7 @@ const ONTARIO_SOURCES: BlogSource[] = [
 ];
 
 const ALBERTA_SOURCES: BlogSource[] = [
-  src('NACCA: Indigenous Financial Institutions listings', 'https://nacca.ca/indigenous-financial-institutions-listings', 'The four Alberta IFIs NACCA lists.'),
+  src('NACCA: Indigenous Financial Institutions listings', 'https://nacca.ca/indigenous-financial-institutions-listings', 'The four Alberta Indigenous Financial Institutions NACCA lists in its directory.'),
   src('Alberta Indian Investment Corporation: financial services', 'https://aiicbusiness.org/financial-services/', 'Who AIIC lends to, the Status and one-year Alberta residency rule, own equity, loan terms and excluded ventures.'),
   src('Alberta Indian Investment Corporation: SEAP grant', 'https://aiicbusiness.org/grants/', 'The SEAP grant up to $99,999, the 30% and 40% shares, about 10% cash equity and that the grant is not stand-alone.'),
   src('Indigenous Business Corporation', 'https://www.ibcorp.ca/', 'Its Treaty 6, 7 and 8 service area and development lending to First Nations businesses and individuals.'),
@@ -114,7 +114,7 @@ const ALBERTA_SOURCES: BlogSource[] = [
 ];
 
 const BC_SOURCES: BlogSource[] = [
-  src('Indigenous Services Canada: British Columbia region', 'https://www.sac-isc.gc.ca/eng/1100100021003/1612465942223', 'That BC is home to 202 First Nations.'),
+  src('Indigenous Services Canada: British Columbia region', 'https://www.sac-isc.gc.ca/eng/1100100021003/1612465942223', 'That BC is home to 202 First Nations, about a third of all First Nations in Canada.'),
   src('PacifiCan: Indigenous economic development', 'https://www.canada.ca/en/pacific-economic-development/indigenous-economic-development.html', 'Ten IFIs across BC, and that all PacifiCan programmes are open to Indigenous applicants.'),
   src('All Nations Trust Company: service area', 'https://www.antco.ca/about-us/service-area/', 'ANTCO\u2019s six service regions and that it cannot serve businesses outside them.'),
   src('All Nations Trust Company: entrepreneurs', 'https://www.antco.ca/entrepreneurs/', 'The Business Financing Program, the NRT grant figure ANTCO publishes, and the First Citizens Fund terms.'),
@@ -148,18 +148,18 @@ const WOMEN_SOURCES: BlogSource[] = [
   src('Ulnooweg Development Group: business funding', 'https://ulnoowegdevelopmentgroup.ca/entrepreneurship/business-funding/', 'Women and youth loans up to $25,000 at 8% over up to 5 years.'),
   src('Métis Financial Corporation of BC: Sophie Morigeau Women\u2019s Entrepreneurship Program', 'https://mfcbc.ca/services/smwep-program/', 'The 30% grant applied after on-time repayment, its loss on refinancing, equity, rate and the 2026 relaunch notice.'),
   src('Apeetogosan (Métis) Development Inc.: business financing', 'https://www.apeetogosan.com/business-financing', 'The Métis Women Micro-Business Program split.'),
-  src('Louis Riel Capital Corporation: Métis Women Entrepreneurship Program', 'https://www.lrcc.mb.ca/metis-women-entrepreneurship-program', 'Up to $40,000 as a grant and loan.'),
+  src('Louis Riel Capital Corporation: Métis Women Entrepreneurship Program', 'https://www.lrcc.mb.ca/metis-women-entrepreneurship-program', 'Financing of up to $40,000 made up of a grant and a loan, with no split published.'),
   src('ISED: Women Entrepreneurship Loan Fund', 'https://ised-isde.canada.ca/site/ised/en/node/440', 'Loans up to $50,000, the delivery organizations by province, that they were accepting applications, and the June 2026 funding.'),
   src('ISED: WES Ecosystem Fund', 'https://ised-isde.canada.ca/site/ised/en/programs-and-initiatives/women-entrepreneurship-strategy/wes-ecosystem-fund', 'That it funds not-for-profit organizations and that the 2027 call closes on 9 November 2026.'),
-  src('Alberta Women Entrepreneurs: loans', 'https://www.awebusiness.com/loans', 'Repayable loans up to $150,000.'),
+  src('Alberta Women Entrepreneurs: loans', 'https://www.awebusiness.com/loans', 'Repayable loans of up to $150,000 for majority women-owned businesses, with no grant.'),
   src('Alberta Women Entrepreneurs: NextSteps to Success', 'https://www.awebusiness.com/nextstep', 'The planning series for Indigenous women and its cohort status.'),
   src('WeBC: business loans for women', 'https://we-bc.ca/programs-services/loans/business-loans-for-women/', 'Loans up to $150,000, Equal Access to Capital, and that WeBC does not provide grants.'),
   src('WeMB: loans', 'https://www.wemb.ca/financing/loans', 'Loans from $5,000 to $150,000 and micro-loans.'),
   src('BDC: Indigenous entrepreneurs', 'https://www.bdc.ca/en/i-am/indigenous-entrepreneur', 'The Indigenous Entrepreneur Loan of up to $350,000.'),
-  src('BDC: Thrive platform', 'https://www.bdc.ca/en/bdc-capital/venture-capital/funds/thrive-platform', 'That Thrive is an investment platform.'),
+  src('BDC: Thrive platform', 'https://www.bdc.ca/en/bdc-capital/venture-capital/funds/thrive-platform', 'That Thrive is a venture investment platform for women-led companies, not a loan or grant.'),
   src('Pauktuutit Inuit Women of Canada: resources', 'https://pauktuutit.ca/resources', 'The Inuit Women in Business Network and its workshops.'),
   src('Les Femmes Michif Otipemisiwak: economic prosperity', 'https://metiswomen.org/priority/economic-prosperity-housing-and-education/', 'Its economic development and entrepreneurship priority.'),
-  src('Native Women\u2019s Association of Canada: social and economic development', 'https://nwac.ca/academics-policy/policy-development/social-economic-development/', 'Its entrepreneurial development focus.'),
+  src('Native Women\u2019s Association of Canada: social and economic development', 'https://nwac.ca/academics-policy/policy-development/social-economic-development/', 'Its work on entrepreneurial development, with a focus on Northern and remote communities.'),
   ISC_AEP,
   FUTURPRENEUR_IESP,
 ];

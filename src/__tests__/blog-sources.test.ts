@@ -35,6 +35,16 @@ const PRIMARY_HOSTS = [
   'clarencecampeau.com',
   'lrcc.mb.ca',
   'mvdf.ca',
+  // Added 2026-11-03 for the Alberta, BC, Ontario, women and Métis guides. Each
+  // is the lender, funder, government or organization describing itself.
+  'aiicbusiness.org', 'ibcorp.ca', 't7edc.com', 'settlementinvestcorp.com', 'ccdf-smedco.com', 'mddf.ca',
+  'alberta.ca', 'theaioc.com', 'atb.com', 'msgc.ca',
+  'statcan.gc.ca', 'ontario.ca', 'buildingonfund.ca', 'nohfc.ca', 'nadf.org', 'waubetek.com', 'wakenagun.ca',
+  'tworivers.ca', 'tcdc.on.ca', 'firstnationsag.ca',
+  'gov.bc.ca', 'antco.ca', 'tacc.ca', 'tricorp.ca', 'nedc.info', 'stolocf.ca', 'blndc.ca', 'haidagwaiifutures.ca',
+  'shoal.ca', 'abdc.bc.ca', 'newrelationshiptrust.ca', 'indigenousbc.com',
+  'baffinbdc.ca', 'dcbdc.ca', 'ulnoowegdevelopmentgroup.ca', 'awebusiness.com', 'we-bc.ca', 'wemb.ca',
+  'pauktuutit.ca', 'metiswomen.org', 'nwac.ca',
 ];
 const hostOf = (u: string) => new URL(u).hostname.replace(/^www\./, '');
 
@@ -116,8 +126,12 @@ describe('the page and the schema agree', () => {
   });
 
   test('the dates are formatted from parts, so they cannot slip a day', () => {
-    expect(page).toMatch(/new Date\(y, m - 1, d\)/);
+    // The formatter moved to src/lib/blogDates.ts so the blog index shares it.
+    const dates = readFileSync('src/lib/blogDates.ts', 'utf8');
+    expect(dates).toMatch(/new Date\(y, m - 1, d\)/);
+    expect(page).toMatch(/from '@\/lib\/blogDates'/);
     expect(page).not.toMatch(/new Date\(s\.checkedOn\)/);
+    expect(page).not.toMatch(/new Date\(dateStr\)/);
   });
 
   test('external citations open safely', () => {
