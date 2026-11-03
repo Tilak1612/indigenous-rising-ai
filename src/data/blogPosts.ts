@@ -198,21 +198,19 @@ ISC administers the Aboriginal Entrepreneurship Program, which provides:
 - **PacifiCan** (BC): Pacific region Indigenous business support
 
 **Business Development Bank of Canada (BDC)**
-BDC's Indigenous Banking team provides loans and consulting services specifically designed for Indigenous entrepreneurs, with flexible terms that account for unique business circumstances.`
+BDC's Indigenous Entrepreneur Loan offers financing of up to $350,000 to grow or scale a business.`
       },
       {
         id: "provincial-funding",
         title: "Provincial and Territorial Indigenous Business Grants",
         content: `Each province and territory offers Indigenous-specific business funding that complements federal programs:
 
-**Key Provincial Programs:**
-- Alberta Indigenous Business Investment Fund
-- BC New Relationship Trust
-- Ontario Aboriginal Loan Guarantee Program
-- Quebec Indigenous Business Support
-- Manitoba Aboriginal Business Development Fund
+**Examples, checked against each funder's page on 3 November 2026:**
+- Alberta's Aboriginal Business Investment Fund: grants of $150,000 to $750,000 for community-owned businesses only; the 2026-27 intake is closed
+- BC's New Relationship Trust equity matching: up to $7,500 for First Nation entrepreneurs, alongside an approved loan
+- Ontario's Indigenous Opportunities Financing Program (formerly the Aboriginal Loan Guarantee Program): loan guarantees for Indigenous-owned entities buying equity in energy and resource projects, not small-business loans
 
-Provincial programs often focus on industries important to regional economies and can be combined with federal funding for larger projects. Check your province's economic development ministry for current programs.`
+Many provincial programmes are open only to Nations and community-owned businesses, and intakes open and close. Our province pages list what we track, with the date each was checked: [Alberta](/funding/alberta), [British Columbia](/funding/british-columbia), [Ontario](/funding/ontario), [Manitoba](/funding/manitoba) and [Quebec](/funding/quebec).`
       },
       {
         id: "indigenous-financial-institutions",
@@ -992,16 +990,17 @@ Money borrowed from and repaid to IFIs stays in Indigenous communities, building
 
 **By Region:**
 - Atlantic: Ulnooweg Development Group
-- Quebec: Entreprises autochtones du Québec
+- Quebec: Société de crédit commercial autochtone (SOCCA)
 - Ontario: Waubetek, Tecumseh CDC, others
-- Prairies: Indian Business Corporation, Settlement Investment Corporation
+- Prairies: Indigenous Business Corporation, Alberta Indian Investment Corporation, Settlement Investment Corporation (Métis Settlement members)
 - BC: All Nations Trust Company, Tribal Resources Investment Corporation
 
-**Métis Capital Corporations:**
-- Alberta: Apeetogosan, Settlement Investment Corporation
+**Métis Capital Corporations (as named by Indigenous Services Canada):**
+- Alberta: Apeetogosan (Métis) Development Inc.
 - Saskatchewan: SaskMétis Economic Development Corporation
 - Manitoba: Louis Riel Capital Corporation
-- Ontario: Métis Voyageur Development Fund`
+- Ontario: Métis Voyageur Development Fund
+- British Columbia: Métis Financial Corporation of BC`
       }
     ],
     cta: "Use Indigenous Rising AI to find Indigenous financial institutions in your region—connect with community-based lenders who understand your business and cultural context.",
