@@ -47,6 +47,20 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
     ],
   },
   {
+    title: 'Tools & templates',
+    links: [
+      { name: 'Business loan calculator', to: '/tools/business-loan-calculator' },
+      { name: 'Startup cost calculator', to: '/tools/startup-cost-calculator' },
+      { name: 'Find an Indigenous lender', to: '/indigenous-financial-institutions-directory' },
+      { name: 'Owner equity and matching funds', to: '/guides/indigenous-funding-equity-requirements' },
+      { name: 'Common application gaps', to: '/guides/indigenous-funding-application-mistakes' },
+      { name: 'One-page business plan', to: '/templates/one-page-business-plan' },
+      { name: 'Cash flow forecast template', to: '/templates/cash-flow-forecast' },
+      { name: 'Funding budget template', to: '/templates/funding-project-budget' },
+      { name: 'Community impact statement', to: '/templates/community-impact-statement' },
+    ],
+  },
+  {
     title: 'Who it is for',
     links: [
       { name: 'Funders and support organizations', to: '/for-funders' },
@@ -182,7 +196,7 @@ const Footer = () => {
         <Separator className="opacity-40" />
 
         {/* Link columns */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           {SECTIONS.map((section) => (
             <div key={section.title} className="space-y-3">
               <h3 className="font-medium text-foreground text-sm">{section.title}</h3>

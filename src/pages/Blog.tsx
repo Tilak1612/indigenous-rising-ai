@@ -285,13 +285,13 @@ const Blog = () => {
               Ready to Find Your Funding?
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-              Use Indigenous Rising AI to search hundreds of business funding programs 
-              and find the grants and loans that match your business vision.
+              Browse the Indigenous business funding directory. Every programme shows what the funder
+              publishes and the date we last checked it against the funder&apos;s own page.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg">
-                <Link to="/auth">
-                  Start Your Search
+                <Link to="/funding">
+                  Browse the Directory
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>

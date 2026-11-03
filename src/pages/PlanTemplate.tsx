@@ -6,6 +6,7 @@ import MetaTags from '../components/MetaTags';
 import Breadcrumbs from '../components/Breadcrumbs';
 import { ROUTE_TITLES } from '@/data/routeTitles';
 import { PLAN_TEMPLATE, templateAsText, TEMPLATE_FILENAME } from '@/data/planTemplate';
+import { EXAMPLE_BUSINESS, FICTIONAL_NOTE, PLAN_EXAMPLE } from '@/data/resourceTemplates';
 
 /**
  * Free Indigenous business plan template.
@@ -42,7 +43,7 @@ const PlanTemplate = () => {
 
           <header className="mb-10">
             <h1 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4">
-              Free Indigenous business plan template
+              Free Indigenous business plan template and worked example
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Six sections, and the questions a funder actually asks under each one. This is the
@@ -101,6 +102,29 @@ const PlanTemplate = () => {
             </ol>
           </section>
 
+          <section className="mb-12 rounded-2xl border-2 border-border p-6" aria-labelledby="example-heading">
+            <h2 id="example-heading" className="font-display text-2xl font-bold text-foreground mb-2">
+              Worked example: {EXAMPLE_BUSINESS} (fictional)
+            </h2>
+            <p className="text-sm font-medium text-muted-foreground mb-6">{FICTIONAL_NOTE}</p>
+            <dl className="space-y-5">
+              {PLAN_TEMPLATE.map((s, i) => (
+                <div key={s.id}>
+                  <dt className="font-semibold text-foreground">{i + 1}. {s.title}</dt>
+                  <dd className="text-muted-foreground leading-relaxed mt-1">{PLAN_EXAMPLE[s.id]}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-6 text-sm text-muted-foreground">
+              The same business is used in the{' '}
+              <Link to="/templates/one-page-business-plan" className="text-primary font-medium">one-page plan</Link>,{' '}
+              <Link to="/templates/funding-project-budget" className="text-primary font-medium">project budget</Link>,{' '}
+              <Link to="/templates/cash-flow-forecast" className="text-primary font-medium">cash flow forecast</Link> and{' '}
+              <Link to="/templates/community-impact-statement" className="text-primary font-medium">community impact statement</Link>{' '}
+              templates, so you can see one plan from start to finish.
+            </p>
+          </section>
+
           <section className="mb-12 rounded-2xl border border-border p-6 bg-muted/30">
             <h2 className="font-display text-2xl font-bold text-foreground mb-3">
               Before you send it
@@ -116,8 +140,16 @@ const PlanTemplate = () => {
             </ul>
             <p className="mt-4 text-sm text-muted-foreground">
               Not sure which institution serves you?{' '}
+              <Link to="/indigenous-financial-institutions-directory" className="text-primary font-medium">
+                Find an Indigenous lender by province
+              </Link>
+              , or{' '}
               <Link to="/guides/indigenous-business-grants" className="text-primary font-medium">
-                Start with the funding guides
+                start with the funding guides
+              </Link>
+              . Before you submit, check it against the{' '}
+              <Link to="/guides/indigenous-funding-application-mistakes" className="text-primary font-medium">
+                common application gaps
               </Link>
               .
             </p>

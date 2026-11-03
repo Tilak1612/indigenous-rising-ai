@@ -241,7 +241,7 @@ There are over 50 AFIs across Canada, including Aboriginal Capital Corporations,
 Many programs target specific sectors like tourism, clean energy, technology, or natural resources. Industry-specific programs often offer larger funding amounts and specialized support.
 
 **Use Indigenous Rising AI**
-Our funding navigator searches across hundreds of programs to match your business profile with available opportunities. Filter by location, industry, business stage, and funding type to find your best options.`
+The funding directory lists Indigenous business programmes with what each funder publishes and the date it was last checked. Filter by province, applicant type, purpose and funding type, then confirm the details with the funder.`
       },
       {
         id: "common-questions",
@@ -287,7 +287,7 @@ Timelines vary from 4-6 weeks for smaller loans to 6-12 months for larger contri
 
 Here's the truth: the application process is absolutely learnable. Indigenous entrepreneurs secure funding every day, and with the right preparation and understanding, you can too. This guide breaks down the entire process into manageable steps, from gathering your first document to celebrating your approval.
 
-We've worked with hundreds of Indigenous entrepreneurs through their funding journeys, and we know what works. More importantly, we know where people commonly get stuck—and how to avoid those pitfalls. Whether you're applying for your first small grant or preparing a major funding request, this step-by-step guide will give you the confidence and clarity to move forward.
+Funders publish what they need to see, and most applications that stall are missing something from that list rather than failing on the idea. This guide follows those published requirements, step by step. Whether you're applying for your first small grant or preparing a major funding request, this step-by-step guide will give you the confidence and clarity to move forward.
 
 The key to a successful application isn't perfection—it's preparation. By understanding what funders look for, organizing your documents thoughtfully, and presenting your business vision clearly, you position yourself for success. Let's walk through exactly how to do that.`,
     sections: [
