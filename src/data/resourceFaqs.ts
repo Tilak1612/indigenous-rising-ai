@@ -70,6 +70,11 @@ export const RESOURCE_FAQS: Record<string, ResourceFaq[]> = {
     { question: 'Why does the tourism example hold money back after the season?', answer: 'Its revenue arrives in four months, but loan payments continue all year. The plan sets aside a reserve from the season to make the payments in the months with no trips.' },
     { question: 'Can I copy an example into my own plan?', answer: 'Copy the structure, not the answers. A funder reads a plan to see whether you understand your own customers, costs and risks, so write each section from your own evidence.' },
   ],
+  '/guides/indigenous-business-data-sovereignty-questions': [
+    { question: 'Does Indigenous Rising send my information to an AI company?', answer: 'Only when you use an AI feature. Funding matching and the member assistant send limited information to OpenAI, and the public Ask Agent sends your chat messages to Anthropic. Funding matching does not send your name, contact details, identity or community; the assistants send what you type in the chat. Neither provider uses this data to train its models.' },
+    { question: 'Is my data processed in Canada?', answer: 'Your account, business plans, documents and files are stored in Canada. AI requests are processed on each provider\u2019s servers, which may be outside Canada.' },
+    { question: 'What should I not type into an AI tool?', answer: 'Anything you would not want processed outside the tool\u2019s own systems, such as personal health or financial account details, and any community information your community has not agreed to share.' },
+  ],
   '/guides/funding-program-changes': [
     { question: 'Is the Aboriginal Business Investment Fund open?', answer: 'Not on 3 November 2026. Alberta says the 2026-27 intake is closed and that information on the 2027-28 intake is expected in spring 2027. It funds Indigenous communities and the businesses they own, not individual entrepreneurs.' },
     { question: 'What happened to the Ontario Aboriginal Loan Guarantee Program?', answer: 'Ontario renamed it the Indigenous Opportunities Financing Program and moved it to the Building Ontario Fund, which became administrator on 1 October 2025. It backs loans or bonds that Indigenous-owned entities use to buy equity in energy, resource and critical minerals projects, and is not a loan or grant itself.' },

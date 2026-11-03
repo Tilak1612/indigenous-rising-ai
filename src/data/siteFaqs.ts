@@ -30,7 +30,7 @@ export const siteFaqs: { question: string; answer: string }[] = [
   },
   {
     question: 'Is my business data stored in Canada?',
-    answer: 'Yes. Your account, business plans, documents and files are stored on Canadian servers (Supabase, ca-central-1) under Canadian jurisdiction, and we comply with PIPEDA. Some processing happens with named providers outside Canada: email delivery, payments, analytics (only if you accept analytics cookies), and AI funding matching, which sends a limited profile summary to OpenAI only when you click “Find my matches”. Your identity, community, name and contact details are never sent to the AI provider. See the privacy policy for the full list.'
+    answer: 'Yes. Your account, business plans, documents and files are stored on Canadian servers (Supabase, ca-central-1) under Canadian jurisdiction, and we comply with PIPEDA. Some processing happens with named providers outside Canada: email delivery, payments, analytics (only if you accept analytics cookies), and AI features: funding matching sends a limited profile summary to OpenAI only when you click “Find my matches”, the member assistant sends your chat messages to OpenAI, and the public Ask Agent sends visitor messages to Anthropic. For funding matching, your identity, community, name and contact details are never sent to the AI provider; the assistants send only what you type in the chat. Neither provider uses this data to train its models. See the privacy policy for the full list.'
   },
   {
     question: 'Can I switch plans at any time?',

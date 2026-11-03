@@ -56,6 +56,7 @@ const TemplateResource = lazy(() => import("./pages/templates/TemplateResource")
 const PlanExamples = lazy(() => import("./pages/templates/PlanExamples"));
 const ChoosingFunding = lazy(() => import("./pages/guides/ChoosingFunding"));
 const FundingChanges = lazy(() => import("./pages/guides/FundingChanges"));
+const AiDataQuestions = lazy(() => import("./pages/guides/AiDataQuestions"));
 const LenderDocuments = lazy(() => import("./pages/guides/LenderDocuments"));
 const BusinessPlanFunding = lazy(() => import("./pages/guides/BusinessPlanFunding"));
 const FrenchGuide = lazy(() => import("./pages/fr/FrenchGuide"));
@@ -828,6 +829,14 @@ export const AppTree = () => (
                 element={
                   <Suspense fallback={<PageSkeleton />}>
                     <PlanExamples />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/guides/indigenous-business-data-sovereignty-questions"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <AiDataQuestions />
                   </Suspense>
                 }
               />

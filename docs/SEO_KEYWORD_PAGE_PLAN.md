@@ -47,6 +47,7 @@ type pages ("Before you apply") and the plan template.
 | Blog index and posts | Cards and posts show "Reviewed <date>" only where a post was re-reviewed; dates no longer shift a day in Canadian time zones. The 2025 titles stay, because they are true for posts not yet reviewed. |
 | BC rendering check | The prerendered page had 926 words in `<main>`; it renders. Separately, every post's numbered lists, bold text and leading bullets rendered as raw markdown; fixed in `src/lib/blogBlocks.ts`. |
 | Search Console baseline | `docs/seo-reports/gsc-baseline-2026-11-03.md`. |
+| `/guides/indigenous-business-data-sovereignty-questions` | Built on 3 Nov 2026 after the owner approved the AI processor wording, which shipped in the privacy policy the same day. Lists the three AI features, their providers and what each sends; says AI requests may be processed outside Canada. |
 | `/guides/funding-program-changes` | Built on 3 Nov 2026 with the owner as maintainer: eleven dated programme changes, each linked to the funder's page, plus corrections to our own pages. Data in `src/data/fundingChanges.ts`; add entries newest first. |
 
 ## Accuracy fixes from the plan
@@ -64,7 +65,6 @@ type pages ("Before you apply") and the plan template.
 | Plan item | Why it waits |
 |---|---|
 | Separate Yukon, NWT, Nunavut, New Brunswick, Nova Scotia guides | The source review is done, and its findings are on the region pages. A separate URL would compete with `/funding/<province>` for the same searches; split only if Search Console shows the region page failing a distinct query. |
-| `/guides/indigenous-business-data-sovereignty-questions` | The privacy policy names OpenAI only for funding matching, while the member assistant (OpenAI) and site assistant (Anthropic) also process messages. Draft policy wording and the guide outline are in `docs/review/privacy-ai-processors.md`, awaiting the owner's approval and answers on processing location and retention. |
 | `/for-indigenous-business-advisors` | The plan says to build it only after advisor interviews show a need distinct from EDOs. The owner confirmed on 3 Nov 2026 that no interviews have happened, so it stays unbuilt. |
 | More programme profiles (NRT, TACC, AIIC, NADF, Métis lenders) | 23 researched records are unpublished pending owner review in `/admin`. Publishing them adds their pages automatically. |
 

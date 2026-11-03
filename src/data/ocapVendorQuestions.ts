@@ -41,7 +41,7 @@ export const VENDOR_QUESTIONS: VendorQuestion[] = [
     watchFor:
       'Answers about "your data is secure" that never address training. Ask specifically: is it used to train models, by you or by any provider you send it to?',
     ourAnswer:
-      'Our robots.txt blocks model-training crawlers including GPTBot, CCBot and Google-Extended, so our public content is not offered for training. For data you enter, ask us directly about each AI provider we send it to — that is a fair question and the answer should be in writing.',
+      'Our robots.txt blocks model-training crawlers including GPTBot, CCBot and Google-Extended, so our public content is not offered for training. For data you enter, our privacy policy names each AI provider (OpenAI and Anthropic), what each receives, and that neither uses it to train models. Those requests may be processed outside Canada; your account, plans and documents stay stored in Canada.',
   },
   {
     question: 'Who inside the company can see my data, and is that logged?',

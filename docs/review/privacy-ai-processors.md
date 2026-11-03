@@ -1,9 +1,11 @@
 # Review packet: AI processors in the privacy policy, and the data sovereignty questions guide
 
-Status: **draft for owner approval. Nothing here is live.** The owner chose
-"draft wording for review" on 3 November 2026. The privacy policy is not
-edited until the wording below is approved, per the rule that privacy wording
-changes only on explicit instruction.
+Status: **approved by the owner on 3 November 2026** ("Approved as written").
+Answers to section 4: AI requests are described as processed on each provider's
+servers, which may be outside Canada (both functions call the providers' global
+endpoints; the owner chose this over a Canada claim the code does not support);
+neither provider uses API data for training, and retention is left to each
+provider's linked terms. Shipped with /guides/indigenous-business-data-sovereignty-questions.
 
 ## 1. What the code does today (read from the repo, 3 Nov 2026)
 
