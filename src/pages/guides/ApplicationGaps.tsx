@@ -99,7 +99,9 @@ export default function ApplicationGaps() {
           plan, then gather quotes and proof of your contribution. Applying in that order means each document
           is built on the one before it, and the funder can tell you early if something is out of scope. The{' '}
           <Link to="/blog/indigenous-business-funding-checklist" className="text-primary font-medium">funding checklist article</Link>{' '}
-          lists the documents most applications ask for.
+          lists the documents most applications ask for, and{' '}
+          <Link to="/guides/funding-document-checklist-by-lender" className="text-primary font-medium">what different lenders ask for</Link>{' '}
+          compares ten lenders&apos; own lists.
         </p>
         <p>
           If an application is declined, ask the funder what would change their answer. It is the quickest

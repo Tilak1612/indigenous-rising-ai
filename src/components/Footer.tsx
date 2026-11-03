@@ -63,6 +63,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Community impact statement', to: '/templates/community-impact-statement' },
       { name: 'Business plan examples', to: '/templates/indigenous-business-plan-examples' },
       { name: 'Business or community funding', to: '/guides/choosing-funding-business-or-community' },
+      { name: 'Documents lenders ask for', to: '/guides/funding-document-checklist-by-lender' },
     ],
   },
   {

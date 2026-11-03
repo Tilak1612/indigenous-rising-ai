@@ -10,6 +10,8 @@ import {
   EMPTY_FILTERS, PAGE_SIZE, PROVINCES, TYPE_PAGES, fetchPrograms, provinceBySlug, typePageBySlug, type FundingProgram,
 } from '@/lib/funding-catalog';
 import { seededPrograms } from '@/lib/funding-prerender';
+import { LocalSupports } from '@/components/funding/LocalSupports';
+import { REGIONAL_SUPPORTS } from '@/data/regionalSupports';
 
 /**
  * Region and type landing pages: /funding/<province-slug> and
@@ -89,6 +91,7 @@ export default function FundingRegionPage({ slug }: { slug: string }) {
               <div className="grid md:grid-cols-2 gap-6">{regional.map((g) => <FundingProgramCard key={g.id} program={g} />)}</div>
             </section>
           )}
+          {province && REGIONAL_SUPPORTS[slug] && <LocalSupports regionName={province.name} section={REGIONAL_SUPPORTS[slug]} />}
           {province && national.length > 0 && (
             <section className="mb-10" aria-labelledby="national-heading">
               <h2 id="national-heading" className="font-display text-2xl font-semibold text-foreground mb-4">National programmes that also apply in {province.name}</h2>

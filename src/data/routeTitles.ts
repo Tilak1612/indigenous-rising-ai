@@ -78,6 +78,7 @@ export const ROUTE_TITLES: Record<string, string> = {
   '/templates/community-impact-statement': 'Community Impact Statement Template for a Business Plan',
   '/templates/indigenous-business-plan-examples': 'Indigenous Business Plan Examples by Business Type',
   '/guides/choosing-funding-business-or-community': 'Funding for an Individual Business or a Community Enterprise',
+  '/guides/funding-document-checklist-by-lender': 'Business Funding Documents: What Indigenous Lenders Ask For',
 };
 
 /** The title for a route, or undefined for routes that are not prerendered. */
