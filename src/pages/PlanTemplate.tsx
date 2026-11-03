@@ -121,7 +121,9 @@ const PlanTemplate = () => {
               <Link to="/templates/funding-project-budget" className="text-primary font-medium">project budget</Link>,{' '}
               <Link to="/templates/cash-flow-forecast" className="text-primary font-medium">cash flow forecast</Link> and{' '}
               <Link to="/templates/community-impact-statement" className="text-primary font-medium">community impact statement</Link>{' '}
-              templates, so you can see one plan from start to finish.
+              templates, so you can see one plan from start to finish. For a tourism business and a retail store written in
+              the same six sections, see the{' '}
+              <Link to="/templates/indigenous-business-plan-examples" className="text-primary font-medium">business plan examples</Link>.
             </p>
           </section>
 

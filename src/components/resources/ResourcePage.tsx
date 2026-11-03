@@ -98,5 +98,7 @@ export const RELATED = {
   planFunding: { to: '/guides/business-plan-funding', label: 'Funding for a business plan', note: 'Which lenders publish support for a consultant’s cost.' },
   planTemplate: { to: '/indigenous-business-plan-template', label: 'Business plan template', note: 'The six sections funders ask for, with a worked example.' },
   directory: { to: '/funding', label: 'Funding directory', note: 'Published programmes, each with the date it was last checked.' },
+  examples: { to: '/templates/indigenous-business-plan-examples', label: 'Business plan examples', note: 'Three fictional plans, for services, tourism and retail.' },
+  choosing: { to: '/guides/choosing-funding-business-or-community', label: 'Business or community funding?', note: 'Which programme family fits who is applying.' },
   loans: { to: '/funding/indigenous-business-loans', label: 'Indigenous business loans', note: 'Repayable programmes in the directory.' },
 } satisfies Record<string, RelatedLink>;

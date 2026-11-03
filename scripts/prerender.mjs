@@ -119,6 +119,8 @@ const MARKETING = [
   { p: '/templates/cash-flow-forecast', t: 'Cash Flow Forecast Template for a Funding Application', d: 'A free 12-month cash flow forecast spreadsheet with built-in totals, for a business loan or funding application, plus a worked example.', breadcrumb: 'Cash flow forecast template' },
   { p: '/templates/funding-project-budget', t: 'Funding Application Budget Template and Example', d: 'A free funding application budget spreadsheet: costs, quotes, eligibility and funding sources per line, with the unfunded amount worked out.', breadcrumb: 'Funding application budget template' },
   { p: '/templates/community-impact-statement', t: 'Community Impact Statement Template for a Business Plan', d: 'A free template for the community impact section of a business plan: jobs, training, local purchasing and how you will measure them.', breadcrumb: 'Community impact statement' },
+  { p: '/templates/indigenous-business-plan-examples', t: 'Indigenous Business Plan Examples by Business Type', d: 'Three fictional Indigenous business plan examples, for services, tourism and retail, in the same six sections funders ask for, with each funding mix shown.', breadcrumb: 'Business plan examples' },
+  { p: '/guides/choosing-funding-business-or-community', t: 'Funding for an Individual Business or a Community Enterprise', d: 'Which Indigenous funding programmes fit an entrepreneur, a First Nation or Inuit community, or a support organization, quoted from each programme page.', breadcrumb: 'Business or community funding' },
   { p: '/data-rights', img: '/og-data-rights.jpg', t: 'Your data rights | Indigenous Rising AI', d: 'Access, export, correct, or delete your data at any time — OCAP® Possession in practice. Submit and track a data request.' },
 ];
 

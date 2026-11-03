@@ -61,6 +61,8 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
       { name: 'Cash flow forecast template', to: '/templates/cash-flow-forecast' },
       { name: 'Funding budget template', to: '/templates/funding-project-budget' },
       { name: 'Community impact statement', to: '/templates/community-impact-statement' },
+      { name: 'Business plan examples', to: '/templates/indigenous-business-plan-examples' },
+      { name: 'Business or community funding', to: '/guides/choosing-funding-business-or-community' },
     ],
   },
   {

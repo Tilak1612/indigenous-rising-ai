@@ -65,4 +65,14 @@ export const RESOURCE_FAQS: Record<string, ResourceFaq[]> = {
     { question: 'How do I write about community priorities?', answer: 'Only describe priorities your community has stated, say where they were stated, and speak with the people the statement is about before you write about them.' },
     { question: 'Should I separate projections from evidence?', answer: 'Yes. Mark every line as already true or as a plan. A reviewer trusts a short, honest statement more than a long list of hopes.' },
   ],
+  '/templates/indigenous-business-plan-examples': [
+    { question: 'Are these real business plans?', answer: 'No. All three businesses are fictional. Their names, numbers and conversations are made up to show how the six-section plan works, and are not benchmarks for what a business like yours will cost or earn.' },
+    { question: 'Why does the tourism example hold money back after the season?', answer: 'Its revenue arrives in four months, but loan payments continue all year. The plan sets aside a reserve from the season to make the payments in the months with no trips.' },
+    { question: 'Can I copy an example into my own plan?', answer: 'Copy the structure, not the answers. A funder reads a plan to see whether you understand your own customers, costs and risks, so write each section from your own evidence.' },
+  ],
+  '/guides/choosing-funding-business-or-community': [
+    { question: 'Where does an individual Indigenous entrepreneur apply for the Aboriginal Entrepreneurship Program?', answer: 'Through the Indigenous Financial Institution or Métis Capital Corporation that serves them. The programme page says individual Indigenous entrepreneurs may receive up to $99,999 and eligible Indigenous community businesses up to $250,000, and that there is no deadline to apply.' },
+    { question: 'Who can apply to the Community Opportunity Readiness Program?', answer: 'Its guidelines name First Nation and Inuit communities and their governments, including tribal councils, located in the provinces. They also ask the applicant to contribute at least 10% in cash.' },
+    { question: 'Can a Métis community apply to these community programmes?', answer: 'The two community programmes on this page name First Nation and Inuit communities as applicants. Métis entrepreneurs reach the Access to Capital stream through Métis Capital Corporations, and Métis governments should ask Indigenous Services Canada which programmes apply to them.' },
+  ],
 };

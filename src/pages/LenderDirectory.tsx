@@ -41,7 +41,7 @@ export default function LenderDirectory() {
           </p>
         </>
       }
-      related={[RELATED.loanCalculator, RELATED.equity, RELATED.loans, RELATED.planTemplate]}
+      related={[RELATED.loanCalculator, RELATED.equity, RELATED.loans, RELATED.choosing]}
     >
       <section className="mb-8 rounded-2xl border-2 border-primary/30 bg-primary/5 p-6" aria-labelledby="authority-heading">
         <h2 id="authority-heading" className="font-display text-xl font-bold text-foreground mb-2">This is not the full list</h2>
