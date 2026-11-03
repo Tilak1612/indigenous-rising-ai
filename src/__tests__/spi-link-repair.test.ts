@@ -10,8 +10,9 @@ const sql = readFileSync('supabase/migrations/20261103000002_spi_source_link_rep
 
 describe('SPI link repair', () => {
   test('points every link at the current ISC page', () => {
-    const body = sql.slice(sql.indexOf('update'));
-    expect(body.match(/1330016561558\/1594122175203/g)?.length).toBe(3);
+    for (const field of ['source_url', 'application_url', 'apply_url']) {
+      expect(sql).toMatch(new RegExp(`\\n  ${field} = 'https://www\\.sac-isc\\.gc\\.ca/eng/1330016561558/1594122175203'`));
+    }
   });
 
   test('says recipients cannot apply directly, and routes to the Secretariat', () => {
