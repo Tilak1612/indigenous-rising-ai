@@ -45,7 +45,7 @@ INSERT INTO public.grants (
 (
   'Indigenous Entrepreneur Startup Program',
   'Futurpreneur Canada',
-  'Equity-free startup loan of up to $75,000 plus up to two years of 1:1 mentorship, for Indigenous entrepreneurs aged 18-39 who are launching a business or have been operating for less than two years. Delivered by Futurpreneur''s Indigenous team.',
+  'Collateral-free startup loan of up to $75,000 plus up to two years of 1:1 mentorship, for Indigenous entrepreneurs aged 18-39 who are launching a business or have been operating for less than two years. Delivered by Futurpreneur''s Indigenous team.',
   NULL, 75000, 'CAD',
   NULL, TRUE, 'Year-round applications',
   ARRAY['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'],

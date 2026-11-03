@@ -8,7 +8,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { 
   ArrowLeft, Calendar, Clock, User, Share2, BookOpen,
-  ArrowRight, ChevronUp, Facebook, Twitter, Linkedin, Link as LinkIcon
+  ArrowRight, ChevronUp, Facebook, Twitter, Linkedin, Link as LinkIcon,
+  Printer, RefreshCw
 } from 'lucide-react';
 import { getBlogBySlug, getRelatedPosts, getPostImage } from '@/data/blogPosts';
 import { BLOG_NEXT_STEPS } from '@/data/blogNextSteps';
@@ -16,16 +17,9 @@ import { pageTitle } from '@/data/blogSeoTitles';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { truncateDescription } from '@/lib/seo';
+import { parseBlock, parseInline } from '@/lib/blogBlocks';
+import { formatPostDate as formatSourceDate } from '@/lib/blogDates';
 import { toast } from 'sonner';
-
-// 'YYYY-MM-DD' -> '28 September 2026'. Built from the parts, not new Date(str):
-// a bare ISO date parses as UTC midnight and renders as the previous day across
-// Canada.
-const formatSourceDate = (iso: string): string => {
-  const [y, m, d] = iso.split('-').map(Number);
-  if (!y || !m || !d) return iso;
-  return new Date(y, m - 1, d).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
-};
 
 // Old blog slugs that were renamed (and were in the sitemap, soft-404'ing).
 // Handled here rather than as App-level redirect routes so it doesn't depend on
@@ -38,36 +32,80 @@ const LEGACY_SLUG_REDIRECTS: Record<string, string> = {
   'how-to-apply-indigenous-business-funding-canada': 'how-to-apply-indigenous-business-funding-step-by-step',
 };
 
-// Renders inline [text](url) markdown links within blog body text. Internal
-// links (starting with "/") use SPA navigation; external links open in a new
-// tab with safe rel. Text without link syntax is returned unchanged, so
-// existing posts (which use none) render identically.
-const LINK_RE = /\[([^\]]+)\]\((https?:\/\/[^)\s]+|\/[^)\s]+)\)/g;
-const renderInline = (text: string): string | Array<string | JSX.Element> => {
-  if (!text.includes('](')) return text;
-  const nodes: Array<string | JSX.Element> = [];
-  let last = 0;
-  let key = 0;
-  let m: RegExpExecArray | null;
-  LINK_RE.lastIndex = 0;
-  while ((m = LINK_RE.exec(text)) !== null) {
-    if (m.index > last) nodes.push(text.slice(last, m.index));
-    const [full, label, url] = m;
-    nodes.push(
-      url.startsWith('/') ? (
-        <Link key={key++} to={url} className="text-primary underline underline-offset-2 hover:text-primary/80">
-          {label}
-        </Link>
-      ) : (
-        <a key={key++} href={url} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
-          {label}
-        </a>
-      )
+// Renders the inline markdown in post bodies: [text](url) links, **bold** and
+// *italic*. Internal links (starting with "/") use SPA navigation; external
+// links open in a new tab with safe rel.
+const renderInline = (text: string): Array<string | JSX.Element> =>
+  parseInline(text).map((r, i) => {
+    if (r.kind === 'text') return r.text;
+    if (r.kind === 'bold') return <strong key={i} className="font-semibold text-foreground">{renderInline(r.text)}</strong>;
+    if (r.kind === 'italic') return <em key={i}>{r.text}</em>;
+    return r.url.startsWith('/') ? (
+      <Link key={i} to={r.url} className="text-primary underline underline-offset-2 hover:text-primary/80">
+        {r.text}
+      </Link>
+    ) : (
+      <a key={i} href={r.url} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
+        {r.text}
+      </a>
     );
-    last = m.index + full.length;
+  });
+
+const renderBlock = (para: string, key: number, printable: boolean): JSX.Element => {
+  const b = parseBlock(para);
+  if (b.kind === 'heading') {
+    return (
+      <div key={key} className="mb-4">
+        <h3 className="text-lg font-semibold text-foreground mb-2">{b.title}</h3>
+        {b.text && <p className="text-foreground/90">{renderInline(b.text)}</p>}
+      </div>
+    );
   }
-  if (last < text.length) nodes.push(text.slice(last));
-  return nodes;
+  if (b.kind === 'list') {
+    const ListTag = b.ordered ? 'ol' : 'ul';
+    return (
+      <div key={key} className="mb-4">
+        {b.intro && <p className="text-foreground/90 mb-2">{renderInline(b.intro)}</p>}
+        <ListTag start={b.ordered ? b.start : undefined} className={`${b.ordered ? 'list-decimal' : 'list-disc'} pl-6 space-y-1`}>
+          {b.items.map((item, j) => (
+            <li key={j} className="text-foreground/90">
+              {printable && <span aria-hidden="true" className="hidden print:inline-block w-3.5 h-3.5 border border-foreground mr-2 align-middle" />}
+              {renderInline(item)}
+            </li>
+          ))}
+        </ListTag>
+      </div>
+    );
+  }
+  if (b.kind === 'table') {
+    return (
+      <div key={key} className="mb-6 overflow-x-auto not-prose">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr>
+              {b.header.map((h, j) => (
+                <th key={j} scope="col" className="text-left font-semibold border-b border-border p-2 align-bottom">{renderInline(h)}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {b.rows.map((row, j) => (
+              <tr key={j} className="border-b border-border/60">
+                {row.map((c, k) => (
+                  <td key={k} className="p-2 align-top text-foreground/90">{renderInline(c)}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  return (
+    <p key={key} className="text-foreground/90 leading-relaxed mb-4">
+      {renderInline(b.text)}
+    </p>
+  );
 };
 
 const BlogPost = () => {
@@ -118,13 +156,9 @@ const BlogPost = () => {
     );
   }
 
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('en-CA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
+  const formatDate = formatSourceDate;
+  // Shown only when the post was substantively reviewed after publication.
+  const reviewedOn = post.updatedAt > post.publishedAt ? post.updatedAt : null;
 
   const BASE_URL = 'https://www.indigenousrising.ai';
   const shareUrl = `${BASE_URL}/blog/${post.slug}`;
@@ -171,14 +205,16 @@ const BlogPost = () => {
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        <div className="bg-gradient-to-b from-primary/90 to-primary">
-          <Navigation />
+        <div className="bg-gradient-to-b from-primary/90 to-primary print:bg-none">
+          <div className="print:hidden">
+            <Navigation />
+          </div>
           
           <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-32 pb-16">
             <Button
               variant="ghost"
               size="sm"
-              className="text-white/80 hover:text-white mb-6"
+              className="text-white/80 hover:text-white mb-6 print:hidden"
               onClick={() => navigate('/blog')}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -189,15 +225,15 @@ const BlogPost = () => {
               {post.category}
             </Badge>
             
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-6">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-6 print:text-black">
               {post.title}
             </h1>
             
-            <p className="text-lg text-white/80 mb-8">
+            <p className="text-lg text-white/80 mb-8 print:text-black">
               {post.summary}
             </p>
             
-            <div className="flex flex-wrap items-center gap-6 text-sm text-white/70">
+            <div className="flex flex-wrap items-center gap-6 text-sm text-white/70 print:text-black">
               <span className="flex items-center gap-2">
                 <User className="w-4 h-4" />
                 {post.author.name}
@@ -206,6 +242,12 @@ const BlogPost = () => {
                 <Calendar className="w-4 h-4" />
                 {formatDate(post.publishedAt)}
               </span>
+              {reviewedOn && (
+                <span className="flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4" />
+                  Reviewed {formatDate(reviewedOn)}
+                </span>
+              )}
               <span className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
                 {post.readTime} min read
@@ -215,7 +257,7 @@ const BlogPost = () => {
         </div>
 
         {/* Hero image — was previously only emitted in OG/meta, not visible */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 print:hidden">
           <img
             src={getPostImage(post.id)}
             alt={post.title}
@@ -228,7 +270,7 @@ const BlogPost = () => {
 
         <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
           {/* Share Bar */}
-          <div className="flex items-center gap-4 mb-8 pb-8 border-b">
+          <div className="flex flex-wrap items-center gap-4 mb-8 pb-8 border-b print:hidden">
             <span className="text-sm text-muted-foreground flex items-center gap-2">
               <Share2 className="w-4 h-4" />
               Share:
@@ -267,10 +309,16 @@ const BlogPost = () => {
                 <LinkIcon className="w-4 h-4" />
               </Button>
             </div>
+            {post.printable && (
+              <Button variant="outline" size="sm" className="sm:ml-auto" onClick={() => window.print()}>
+                <Printer className="w-4 h-4 mr-2" />
+                Print this checklist
+              </Button>
+            )}
           </div>
 
           {/* Table of Contents */}
-          <Card className="mb-8 bg-muted/30">
+          <Card className="mb-8 bg-muted/30 print:hidden">
             <CardContent className="p-6">
               <h2 className="font-semibold mb-4">In This Article</h2>
               <nav className="space-y-2">
@@ -289,11 +337,7 @@ const BlogPost = () => {
 
           {/* Introduction */}
           <article className="prose prose-lg max-w-none mb-12">
-            {post.introduction.split('\n\n').map((para, i) => (
-              <p key={i} className="text-foreground/90 leading-relaxed">
-                {para}
-              </p>
-            ))}
+            {post.introduction.split('\n\n').map((para, i) => renderBlock(para, i, false))}
           </article>
 
           {/* Sections */}
@@ -301,39 +345,7 @@ const BlogPost = () => {
             <section key={section.id} id={section.id} className="mb-12 scroll-mt-24">
               <h2 className="text-2xl font-display font-bold mb-6">{section.title}</h2>
               <div className="prose prose-lg max-w-none">
-                {section.content.split('\n\n').map((para, i) => {
-                  // Handle bold headers
-                  if (para.startsWith('**') && para.includes(':**')) {
-                    const [header, ...rest] = para.split(':**');
-                    return (
-                      <div key={i} className="mb-4">
-                        <h3 className="text-lg font-semibold text-foreground mb-2">
-                          {header.replace(/\*\*/g, '')}
-                        </h3>
-                        <p className="text-foreground/90">{renderInline(rest.join(':**'))}</p>
-                      </div>
-                    );
-                  }
-                  // Handle lists
-                  if (para.includes('\n- ')) {
-                    const [intro, ...items] = para.split('\n- ');
-                    return (
-                      <div key={i} className="mb-4">
-                        {intro && <p className="text-foreground/90 mb-2">{intro}</p>}
-                        <ul className="list-disc pl-6 space-y-1">
-                          {items.map((item, j) => (
-                            <li key={j} className="text-foreground/90">{renderInline(item)}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  }
-                  return (
-                    <p key={i} className="text-foreground/90 leading-relaxed mb-4">
-                      {renderInline(para)}
-                    </p>
-                  );
-                })}
+                {section.content.split('\n\n').map((para, i) => renderBlock(para, i, !!post.printable))}
               </div>
             </section>
           ))}
@@ -388,7 +400,7 @@ const BlogPost = () => {
           )}
 
           {/* CTA */}
-          <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 mb-12">
+          <Card className="bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20 mb-12 print:hidden">
             <CardContent className="p-8 text-center">
               <h3 className="text-xl font-display font-bold mb-4">
                 Ready to Find Your Funding?
@@ -412,7 +424,7 @@ const BlogPost = () => {
 
           {/* Next steps: the pages that now own this post's intent */}
           {(BLOG_NEXT_STEPS[post.slug]?.length ?? 0) > 0 && (
-            <section className="mb-12 rounded-2xl border border-border p-6" aria-labelledby="next-steps-heading">
+            <section className="mb-12 rounded-2xl border border-border p-6 print:hidden" aria-labelledby="next-steps-heading">
               <h2 id="next-steps-heading" className="text-xl font-display font-bold mb-2">Next steps</h2>
               <p className="text-sm text-muted-foreground mb-4">Programme details change, so confirm them on the funder&apos;s own page before you apply.</p>
               <ul className="grid sm:grid-cols-2 gap-2">
@@ -428,7 +440,7 @@ const BlogPost = () => {
           )}
 
           {/* Keywords */}
-          <div className="mb-12">
+          <div className="mb-12 print:hidden">
             <h3 className="text-sm font-medium text-muted-foreground mb-3">Related Topics</h3>
             <div className="flex flex-wrap gap-2">
               {post.keywords.map((keyword, i) => (
@@ -439,11 +451,11 @@ const BlogPost = () => {
             </div>
           </div>
 
-          <Separator className="my-12" />
+          <Separator className="my-12 print:hidden" />
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
-            <div>
+            <div className="print:hidden">
               <h2 className="text-2xl font-display font-bold mb-6">Related Articles</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {relatedPosts.map((relatedPost) => (
@@ -487,7 +499,9 @@ const BlogPost = () => {
           </Button>
         )}
 
-        <Footer />
+        <div className="print:hidden">
+          <Footer />
+        </div>
       </div>
     </>
   );

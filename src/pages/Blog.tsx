@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { postDateLabel } from '@/lib/blogDates';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Navigation from '@/components/Navigation';
@@ -41,13 +42,6 @@ const Blog = () => {
 
   const featuredPost = getAllPosts()[0];
 
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('en-CA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
 
   return (
     <>
@@ -169,7 +163,7 @@ const Blog = () => {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {formatDate(featuredPost.publishedAt)}
+                        {postDateLabel(featuredPost)}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
@@ -220,7 +214,7 @@ const Blog = () => {
                       </p>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-muted-foreground">
-                          {formatDate(post.publishedAt)}
+                          {postDateLabel(post)}
                         </span>
                         <span className="text-primary text-sm font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                           Read More

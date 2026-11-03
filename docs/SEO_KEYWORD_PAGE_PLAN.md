@@ -36,6 +36,18 @@ Every new page is prerendered, in the sitemap and llms.txt, linked from the
 footer's "Tools & templates" column, and linked in context from the region and
 type pages ("Before you apply") and the plan template.
 
+## P0 refreshes (3 November 2026)
+
+| Plan item | What changed |
+|---|---|
+| Alberta, BC, Ontario, women and Métis guides | Rewritten programme by programme from each funder's own page, read 3 Nov 2026, with a visible Sources list (74 URLs, all returning 200). Each separates individual from community applicants. Removed programmes that do not exist as described (an "Alberta Indigenous Business Investment Fund", a PrairiesCan Indigenous women's programme, the Ontario loan guarantee described as a small-business guarantee, "BC Indian Business and Investment Council" services). Added IFI service-area tables, dated intake status, a Métis ID and residency table, and a women's comparison of grant shares by institution. |
+| Funding checklist post | Print button with tick boxes, and each step links to the tool or official list that does it. |
+| AEP and IESP programme pages | Each links to its how-to article and back. Futurpreneur re-read: "collateral-free", not "equity-free"; the IESP record, seed and every blog mention now match. |
+| EDO page | Adds the live, free handouts (checklist, sample plans, document matrix, calculator). Roadmap section unchanged. |
+| Blog index and posts | Cards and posts show "Reviewed <date>" only where a post was re-reviewed; dates no longer shift a day in Canadian time zones. The 2025 titles stay, because they are true for posts not yet reviewed. |
+| BC rendering check | The prerendered page had 926 words in `<main>`; it renders. Separately, every post's numbered lists, bold text and leading bullets rendered as raw markdown; fixed in `src/lib/blogBlocks.ts`. |
+| Search Console baseline | `docs/seo-reports/gsc-baseline-2026-11-03.md`. |
+
 ## Accuracy fixes from the plan
 
 - The blog index and two posts claimed the directory searches "hundreds of
@@ -54,7 +66,6 @@ type pages ("Before you apply") and the plan template.
 | `/guides/indigenous-business-data-sovereignty-questions` | The privacy policy names OpenAI only for funding matching, while the member assistant (OpenAI) and site assistant (Anthropic) also process messages. The privacy wording must be updated by the owner first. |
 | `/for-indigenous-business-advisors` | The plan says to build it only after advisor interviews show a need distinct from EDOs. |
 | `/guides/funding-program-changes` | Needs an ongoing verification owner for a dated change log. |
-| Full rewrites of the Alberta, BC, Ontario, women and Métis blog guides | Each needs programme-by-programme re-verification. Done now: 18 explainers carry a "Next steps" block linking to the owner page (province directory, lender directory, calculator or template). Titles were left alone to avoid colliding with the `/funding/<province>` owners. |
 | More programme profiles (NRT, TACC, AIIC, NADF, Métis lenders) | 23 researched records are unpublished pending owner review in `/admin`. Publishing them adds their pages automatically. |
 
 ## Measurement

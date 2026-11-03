@@ -42,7 +42,7 @@ export const LENDER_TYPE_LABELS: Record<LenderType, string> = {
 
 export const LENDERS: Lender[] = [
   { slug: 'aiic', name: 'Alberta Indian Investment Corporation', type: 'ifi', regions: ['AB'], website: 'https://aiicbusiness.org/' },
-  { slug: 'antco', name: 'All Nations Trust Company', type: 'ifi', regions: ['BC'], website: 'https://www.antco.ca/' },
+  { slug: 'antco', name: 'All Nations Trust Company', type: 'ifi', regions: ['BC'], website: 'https://www.antco.ca/', area: 'Most of BC: the Thompson, Okanagan, North East, Kootenays, Nechako and Cariboo regions.' },
   { slug: 'ccdf', name: 'Clarence Campeau Development Fund', type: 'ifi', regions: ['SK'], website: 'https://www.clarencecampeau.com/', area: 'A Métis development fund in Saskatchewan.' },
   {
     slug: 'dana-naye-ventures', name: 'däna Näye Ventures', type: 'ifi', regions: ['YT'], website: 'https://www.dananaye.com/',
@@ -70,7 +70,7 @@ export const LENDERS: Lender[] = [
   },
   { slug: 'tacc', name: "Tale'awtxw Aboriginal Capital Corporation", type: 'ifi', regions: ['BC'], website: 'https://www.tacc.ca/', area: 'Coast Salish territory.' },
   { slug: 'tricorp', name: 'Tribal Resources Investment Corporation', type: 'ifi', regions: ['BC'], website: 'https://www.tricorp.ca/', area: 'Northwestern British Columbia.' },
-  { slug: 'two-rivers', name: 'Two Rivers Community Development Centre', type: 'ifi', regions: ['ON'], website: 'https://www.tworivers.ca/', area: 'The Six Nations and Mississaugas of the Credit area.' },
+  { slug: 'two-rivers', name: 'Two Rivers Community Development Centre', type: 'ifi', regions: ['ON'], website: 'https://www.tworivers.ca/', area: 'Six Nations, the Mississaugas of the Credit, and 15 southern Ontario counties including the GTA.' },
   {
     slug: 'ulnooweg', name: 'Ulnooweg Development Group', type: 'ifi', regions: ['NB', 'NS', 'PE', 'NL'], website: 'https://ulnoowegdevelopmentgroup.ca/',
     programme: { slug: 'ulnooweg-indigenous-business-loan', name: 'Ulnooweg Indigenous Business Loan' },
