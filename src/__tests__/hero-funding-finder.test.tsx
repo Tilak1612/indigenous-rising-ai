@@ -55,7 +55,7 @@ describe('hero funding finder', () => {
     mount();
     await screen.findByText('Aboriginal Entrepreneurship Program');
     expect(decodeURIComponent(calls[0])).toContain('intake_status=in.(open,rolling)');
-    expect(decodeURIComponent(calls[0])).toContain('limit=3');
+    expect(decodeURIComponent(calls[0])).toContain('limit=12');
   });
 
   test('changing the province re-queries and carries the answer into the directory link', async () => {
@@ -64,6 +64,9 @@ describe('hero funding finder', () => {
     fireEvent.change(screen.getByLabelText('Where is the business?'), { target: { value: 'MB' } });
     await waitFor(() => expect(decodeURIComponent(calls.at(-1) ?? '')).toContain('provinces=ov.{"MB"}'));
     expect(await screen.findByText('FPEGF Entrepreneur Loan Program')).toBeInTheDocument();
+    // The Manitoba-delivered programme ranks above the national one.
+    const names = screen.getAllByRole('link', { name: /^View / }).map((l) => l.getAttribute('aria-label'));
+    expect(names[0]).toBe('View FPEGF Entrepreneur Loan Program');
     expect(screen.getByRole('link', { name: /See all 2 programmes for Manitoba/ })).toHaveAttribute('href', expect.stringContaining('province=MB'));
   });
 

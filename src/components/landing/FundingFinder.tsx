@@ -29,6 +29,17 @@ import { seededPrograms } from '@/lib/funding-prerender';
 const APPLICANT_OPTIONS = ['individual', 'community_business', 'community', 'organization'] as const;
 const PURPOSE_OPTIONS = ['startup', 'expansion', 'acquisition', 'working_capital', 'equipment', 'export', 'women', 'youth'] as const;
 const SHOW = 3;
+// Fetch a page, then rank in the browser: a programme delivered in the chosen
+// province outranks a national one, and a recently read record outranks a
+// stale one. PostgREST cannot order by "how regional" a row is.
+const FETCH = 12;
+
+function rank(rows: FundingProgram[], province: string): FundingProgram[] {
+  const regional = (g: FundingProgram) => (province && g.provinces.length < 13 ? 1 : 0);
+  return [...rows]
+    .sort((a, b) => regional(b) - regional(a) || (b.last_verified ?? '').localeCompare(a.last_verified ?? '') || a.name.localeCompare(b.name))
+    .slice(0, SHOW);
+}
 
 const S = {
   select: {
@@ -75,9 +86,9 @@ export default function FundingFinder() {
     const ac = new AbortController();
     setLoading(true);
     setError(false);
-    fetchPrograms(filters, ac.signal, { pageSize: SHOW })
+    fetchPrograms(filters, ac.signal, { pageSize: FETCH })
       .then((d) => {
-        setRows(d.rows);
+        setRows(rank(d.rows, province));
         setTotal(d.total);
         setLoading(false);
         if (touched.current) {
