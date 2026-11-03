@@ -448,157 +448,41 @@ Consider other programs, smaller initial requests, or building track record befo
   {
     id: "3",
     slug: "indigenous-business-funding-alberta-complete-guide",
-    title: "Indigenous Business Funding in Alberta: Complete Provincial Guide",
-    summary: "Province-specific resource covering Alberta Indigenous Business Investment Fund, ATB Indigenous Banking, and federal programs accessible to Alberta-based First Nations, Métis, and Inuit entrepreneurs and communities.",
-    keywords: [
-      "Indigenous business funding Alberta",
-      "Alberta First Nations grants",
-      "Métis business support Alberta",
-      "Indigenous entrepreneur loans Alberta"
-    ],
+    title: "Indigenous Business Funding in Alberta: Lenders, Grants and Community Programs",
+    summary: "Alberta Indigenous business funding, split by who can apply: the First Nations, Métis and Settlement lenders an individual entrepreneur can go to, and the provincial and federal programmes open only to Nations and community-owned businesses. Each checked against the funder's own page on 3 November 2026.",
+    keywords: ["Indigenous business funding Alberta", "Indigenous business grants Alberta", "Aboriginal business grants Alberta", "Alberta First Nations business loans", "Métis business funding Alberta", "Aboriginal Business Investment Fund"],
     searchIntent: "Navigational + Transactional",
     category: "Provincial Guides",
-    readTime: 11,
+    readTime: 12,
     publishedAt: "2025-01-07",
-    updatedAt: "2025-01-10",
-    author: {
-      name: "Indigenous Rising AI Team",
-      role: "Community Editors"
-    },
+    updatedAt: "2026-11-03",
+    author: { name: "Indigenous Rising AI Team", role: "Community Editors" },
     image: "/og-home.jpg",
-    introduction: `Alberta's Indigenous business community is thriving. From energy sector partnerships that are reshaping how major projects work with First Nations, to urban Métis entrepreneurs innovating in technology and professional services, Indigenous business in Alberta represents billions in economic activity and growing opportunity.
-
-But navigating funding in Alberta means understanding both provincial programs unique to the region and federal programs delivered through Alberta-based offices. With treaty territories spanning the province, Métis Settlements with distinct governance, and urban Indigenous populations in Calgary and Edmonton, the funding landscape reflects Alberta's unique Indigenous context.
-
-This guide covers everything an Alberta-based Indigenous entrepreneur needs to know about accessing funding. We'll walk through provincial programs like the Alberta Indigenous Business Investment Fund, explain how to work with ATB Financial's Indigenous banking team, and connect you to federal resources delivered through PrairiesCan and Indigenous Services Canada.
-
-Whether you're launching a startup, scaling an existing operation, or exploring major project partnerships, understanding your Alberta-specific options is essential. Let's explore what's available and how to access it.`,
+    introduction: "The most common mistake with Alberta Indigenous business funding is applying to a programme that was never open to you. Several of Alberta's best-known programmes, including the Aboriginal Business Investment Fund and the Alberta Indigenous Opportunities Corporation, fund Nations and community-owned businesses only. An individual entrepreneur's route runs through a small set of Indigenous lenders instead.\n\nThis guide is split that way. First, what an individual entrepreneur can apply for. Then, what a First Nation, Métis Settlement or community-owned business can apply for.\n\nEvery programme below was checked against the funder's own page on 3 November 2026, and the Sources section lists them. Intakes open and close, so confirm current terms with the funder before you apply. Nothing here is an eligibility decision.",
     sections: [
       {
-        id: "alberta-ecosystem",
-        title: "Alberta's Indigenous Business Ecosystem",
-        content: `Alberta has a robust Indigenous business ecosystem built over decades of economic development:
-
-**Key Organizations:**
-- Alberta Indigenous Opportunities Corporation (AIOC)
-- Indian Business Corporation (IBC)
-- Settlement Investment Corporation (SIC)
-- Treaty 6, 7, and 8 economic development organizations
-- Alberta Native Friendship Centre Association
-
-**Industry Strengths:**
-- Energy sector partnerships and services
-- Construction and infrastructure
-- Professional services
-- Tourism and hospitality
-- Technology and innovation`
+        id: "individual",
+        title: "If you are an individual entrepreneur",
+        content: "Start with the lender that matches who you are. NACCA lists four Indigenous Financial Institutions in Alberta (AIIC, Indigenous Business Corporation, Settlement Investment Corporation and Community Futures Treaty Seven), and Apeetogosan serves Métis entrepreneurs.\n\n| Lender | Who it serves | What it publishes |\n|---|---|---|\n| Alberta Indian Investment Corporation (AIIC) | Status First Nations people resident in Alberta for at least a year | Business loans, generally up to 5 years, with your own equity; the SEAP grant up to $99,999 with about 10% cash and a loan; women's and youth micro-loans up to $25,000. It does not finance farming or ranching |\n| Indigenous Business Corporation (IBC), Calgary | First Nations businesses and individuals in Treaty 6, 7 and 8 areas | Development lending, including agriculture, its founding mandate; no amounts published |\n| Community Futures Treaty Seven | Members of the Treaty 7 Nations | Business plan development and loan financing; no amounts published |\n| Apeetogosan (Métis) Development Inc. | Métis entrepreneurs; its business loans also name Inuit and Non-status entrepreneurs | Loans from $5,000 to $1 million with at least 10% owner equity; grants of up to 30% on full-time projects |\n| Settlement Investment Corporation | Members of the eight Métis Settlements | Loans up to $100,000 with at least 10% owner equity; a women's micro-loan package running to 31 March 2029 |\n\n**AIIC's Status Entrepreneur Assistance Program (SEAP)** is the clearest grant for an individual First Nations entrepreneur in Alberta. AIIC says it covers up to 30% of eligible costs for an expansion and up to 40% for a start-up, to a maximum of $99,999, and that the grant is not stand-alone: a loan and about 10% cash equity are required. Contact: 1.888.308.6789, info@aiicbusiness.org.\n\n**Apeetogosan** publishes its programme mix: a Full-Time Program for projects of $20,000 to $330,000 with up to 30% grant, a Part-Time Program for $10,000 to $50,000 with 25% grant, and a Métis Women Micro-Business Program for $5,000 to $25,000 with a 40% non-repayable subsidy. Its grant needs a loan, has a $100,000 lifetime limit and requires a credit score of at least 690. Our [Métis funding guide](/blog/metis-specific-business-funding-economic-development-programs) has the detail.\n\nBeyond those lenders:\n\n- **Aboriginal Entrepreneurship Program (federal).** Indigenous Services Canada states individual entrepreneurs may receive up to $99,999, delivered through Indigenous Financial Institutions and Métis Capital Corporations, with no deadline.\n- **Futurpreneur's Indigenous Entrepreneur Startup Program.** Collateral-free loan financing of up to $75,000 for Indigenous entrepreneurs aged 18 to 39. AIIC is among its named partners.\n- **BDC's Indigenous Entrepreneur Loan.** Financing of up to $350,000 to grow or scale a business.\n- **ATB Financial.** ATB has an Indigenous Financial Services team; it does not publish an Indigenous-specific loan product. Contact: indigenousrelations@atb.com.\n\nSee the programmes we track for individuals in Alberta: [Alberta funding for individual entrepreneurs](/funding?province=AB&applicant=individual).",
       },
       {
-        id: "aibif",
-        title: "Alberta Indigenous Business Investment Fund (AIBIF)",
-        content: `The AIBIF is a key provincial program for Indigenous entrepreneurs:
-
-**What It Offers:**
-- Funding for business startup, expansion, and equipment
-- Support for Indigenous-majority owned businesses
-- Funding for businesses serving Indigenous communities
-
-**Eligibility:**
-- Indigenous majority ownership (51% or more)
-- Operating or planning to operate in Alberta
-- Viable business plan demonstrating need
-
-**Application Process:**
-- Submit through Alberta Indigenous Relations
-- Include business plan and financial projections
-- Provide proof of Indigenous ownership`
+        id: "community",
+        title: "If you are a Nation, Métis Settlement or community-owned business",
+        content: "These programmes are not open to individual entrepreneurs.\n\n- **Aboriginal Business Investment Fund (ABIF), Government of Alberta.** Grants of $150,000 to $750,000 for capital costs such as equipment and buildings, for Indigenous communities and businesses they own and control (51% or more). Alberta says individual entrepreneurs and sole proprietors are not eligible, and that the **2026-27 intake is closed**. Contact: ir.economicdevelopment@gov.ab.ca.\n- **Indigenous Reconciliation Initiative, Economic Stream.** Up to $100,000 for feasibility studies, opportunity assessments and business plans for community-owned economic development projects, with no applicant contribution required. Its **2026-27 intake is also closed**. Contact: ir.reconciliation@gov.ab.ca.\n- **Alberta Indigenous Opportunities Corporation (AIOC).** Loan guarantees from $20 million to $250 million for Indigenous Nations and groups approved by ministerial order, to take ownership in major projects. AIOC states plainly that it is not available to private, Indigenous-owned businesses.\n- **PrairiesCan's Alberta Indigenous Clean Energy Initiative.** For First Nations, Métis Settlements, Métis and non-status communities and their community-owned businesses. PrairiesCan says no forms are needed to start a conversation.\n- **Federal community programmes.** Indigenous Services Canada's Community Opportunity Readiness Program funds First Nation and Inuit communities, with a minimum 10% cash contribution, and its Lands and Economic Development Services Program funds community economic development capacity.\n\nThe Métis Settlements General Council lists an economic development contact (ecdev@msgc.ca) but publishes no business funding programme of its own. The Otipemisiwak Métis Government (formerly the Métis Nation of Alberta) runs MétisWorks, a directory of Métis-owned businesses operated by Apeetogosan.\n\nSee the community programmes we track: [Alberta funding for Nations and community businesses](/funding?province=AB&applicant=community,community_business). Not sure which side you are on? Our guide to [funding for your own business or a community enterprise](/guides/choosing-funding-business-or-community) walks through it.",
       },
       {
-        id: "atb-indigenous",
-        title: "ATB Financial Indigenous Banking",
-        content: `ATB Financial, Alberta's largest provincial financial institution, offers dedicated Indigenous banking services:
-
-**Services Available:**
-- Business loans with competitive rates
-- Operating lines of credit
-- Equipment financing
-- Commercial mortgages
-- Cash management services
-
-**Why ATB Works for Indigenous Business:**
-- Dedicated Indigenous banking specialists
-- Understanding of on-reserve lending complexities
-- Relationships with band councils and communities
-- Flexible approach to collateral
-
-**Getting Started:**
-Contact ATB's Indigenous Banking team directly to discuss your business needs.`
+        id: "equity",
+        title: "Owner equity: what Alberta lenders publish",
+        content: "Most Alberta lenders expect you to put some of your own money in.\n\n- Apeetogosan and Settlement Investment Corporation both publish a 10% minimum owner's equity on loans. SIC accepts collateral at 115% if cash is not available.\n- AIIC's SEAP grant asks for about 10% cash; its loans ask for your own equity without publishing a percentage. Its women's and youth micro-loans ask for 0 to 10%.\n- ABIF and the Reconciliation Initiative's economic stream require no applicant contribution, but Alberta says strong ABIF applications show a balanced mix of own-source equity, commercial financing and other funding.\n\nOur [owner equity guide](/guides/indigenous-funding-equity-requirements) explains how equity, grants and loans add up to a project budget, and the [startup cost calculator](/tools/startup-cost-calculator) works out the gap.",
       },
       {
-        id: "federal-alberta",
-        title: "Federal Programs Available to Alberta Indigenous Entrepreneurs",
-        content: `Several federal agencies deliver Indigenous business programs in Alberta:
-
-**PrairiesCan (formerly WD)**
-- Indigenous Women Entrepreneurship Program
-- Community Economic Development and Diversification
-- Regional Economic Growth through Innovation
-
-**Business Development Bank of Canada**
-- Indigenous Business Loans
-- Advisory services
-- Partnership with Alberta AFIs
-
-**Indigenous Services Canada**
-- Aboriginal Entrepreneurship Program delivered through Alberta AFIs
-- Community economic development funding`
+        id: "prepare",
+        title: "Before you contact a funder",
+        content: "- Decide whether the applicant is you or a community-owned entity. That one choice rules out half the programmes above.\n- Check the lender's own identity and residency rules. AIIC asks for Status and a year's residence in Alberta; Apeetogosan for proof of Métis heritage and Alberta residence; SIC for Settlement membership.\n- Build the plan and the numbers first: the [business plan template](/indigenous-business-plan-template) and the [cash flow forecast template](/templates/cash-flow-forecast).\n- Check what each lender asks you to attach in our [document checklist by lender](/guides/funding-document-checklist-by-lender), which includes AIIC's and Apeetogosan's lists.\n- For community projects, have a Band Council Resolution or Board Motion ready: ABIF asks for one.",
       },
-      {
-        id: "metis-alberta",
-        title: "Métis-Specific Funding in Alberta",
-        content: `Alberta has significant Métis-specific business support:
-
-**Métis Nation of Alberta Economic Development**
-- Business development services
-- Training and skills programs
-- Entrepreneurship support
-
-**Métis Settlements General Council**
-- Settlement-specific economic development
-- Land-based business opportunities
-- Infrastructure development
-
-**Settlement Investment Corporation**
-- Loans for Métis Settlement businesses
-- Investment in Settlement economic projects`
-      },
-      {
-        id: "industry-specific-alberta",
-        title: "Industry-Specific Opportunities in Alberta",
-        content: `Alberta's economy creates unique opportunities:
-
-**Energy Sector:**
-- Indigenous procurement requirements on major projects
-- Partnership opportunities with energy companies
-- Environmental monitoring and services
-
-**Agriculture:**
-- Indigenous agriculture development funding
-- Food processing and value-added opportunities
-
-**Tourism:**
-- Indigenous tourism development grants
-- Cultural tourism support
-- Infrastructure funding for tourism businesses
-
-**Technology:**
-- Calgary and Edmonton tech ecosystem access
-- Innovation funding programs
-- Digital economy support`
-      }
     ],
-    cta: "Use Indigenous Rising AI to search all Alberta Indigenous business funding programs in one place—compare federal, provincial, and community options for your business.",
-    relatedPosts: ["1", "4", "5"]
+    cta: "Indigenous Rising AI lists Alberta programmes by who can apply, with the date each was last checked against the funder, and helps you build the business plan your lender will read. Free to start, no credit card.",
+    relatedPosts: ["1", "4", "5"],
   },
   {
     id: "4",

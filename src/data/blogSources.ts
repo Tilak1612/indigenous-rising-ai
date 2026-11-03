@@ -93,6 +93,26 @@ const ONTARIO_SOURCES: BlogSource[] = [
   FUTURPRENEUR_IESP,
 ];
 
+const ALBERTA_SOURCES: BlogSource[] = [
+  src('NACCA: Indigenous Financial Institutions listings', 'https://nacca.ca/indigenous-financial-institutions-listings', 'The four Alberta IFIs NACCA lists.'),
+  src('Alberta Indian Investment Corporation: financial services', 'https://aiicbusiness.org/financial-services/', 'Who AIIC lends to, the Status and one-year Alberta residency rule, own equity, loan terms and excluded ventures.'),
+  src('Alberta Indian Investment Corporation: SEAP grant', 'https://aiicbusiness.org/grants/', 'The SEAP grant up to $99,999, the 30% and 40% shares, about 10% cash equity and that the grant is not stand-alone.'),
+  src('Indigenous Business Corporation', 'https://www.ibcorp.ca/', 'Its Treaty 6, 7 and 8 service area and development lending to First Nations businesses and individuals.'),
+  src('Community Futures Treaty Seven: lending services', 'https://t7edc.com/business-development/lending-services/', 'Business plan development and loan financing for Treaty 7 members.'),
+  src('Apeetogosan (Métis) Development Inc.: business financing', 'https://www.apeetogosan.com/business-financing', 'Loan range, 10% owner equity and the Full-Time, Part-Time and Métis Women Micro-Business programmes.'),
+  src('Apeetogosan (Métis) Development Inc.: FAQs', 'https://www.apeetogosan.com/faqs', 'The $100,000 MEAP lifetime limit, the loan requirement and the 690 credit score.'),
+  src('Settlement Investment Corporation: application kit', 'https://settlementinvestcorp.com/appilcation-kit/', 'Settlement membership, the $100,000 limit and 10% equity or 115% collateral.'),
+  src('Government of Alberta: Aboriginal Business Investment Fund', 'https://www.alberta.ca/aboriginal-business-investment-fund', 'Community-only eligibility, the $150,000 to $750,000 grant range, the 51% community ownership rule and the closed 2026-27 intake.'),
+  src('Government of Alberta: Indigenous Reconciliation Initiative, Economic Stream', 'https://www.alberta.ca/indigenous-reconciliation-initiative-economic-stream', 'Up to $100,000 for community feasibility studies and business plans, and the closed 2026-27 intake.'),
+  src('Alberta Indigenous Opportunities Corporation: loan guarantees', 'https://theaioc.com/indigenous-groups/loan-guarantees/', 'The $20 million to $250 million range and that it is not available to private Indigenous-owned businesses.'),
+  src('PrairiesCan: Alberta Indigenous Clean Energy Initiative', 'https://www.canada.ca/en/prairies-economic-development/services/funding/alberta-indigenous-clean-energy-initiative.html', 'Eligible community applicants and that no forms are needed to start.'),
+  src('ATB Financial: Indigenous relations', 'https://www.atb.com/company/community/inclusion-reconciliation/indigenous-relations/', 'ATB\u2019s Indigenous Financial Services team and contact address.'),
+  src('Metis Settlements General Council: economic development', 'https://www.msgc.ca/economic-development', 'Its economic development contact; no funding programme is published.'),
+  src('BDC: Indigenous entrepreneurs', 'https://www.bdc.ca/en/i-am/indigenous-entrepreneur', 'The Indigenous Entrepreneur Loan of up to $350,000.'),
+  ISC_AEP,
+  FUTURPRENEUR_IESP,
+];
+
 export const BLOG_SOURCES: Record<string, BlogSource[]> = {
   'off-reserve-indigenous-business-funding-canada': [ISC_AEP, FUTURPRENEUR_IESP, NACCA],
   'aboriginal-entrepreneurship-program-how-to-apply': [ISC_AEP, NACCA],
@@ -100,4 +120,5 @@ export const BLOG_SOURCES: Record<string, BlogSource[]> = {
   'futurpreneur-indigenous-entrepreneur-startup-program': [FUTURPRENEUR_IESP, ISC_AEP],
   'metis-specific-business-funding-economic-development-programs': METIS_SOURCES,
   'ontario-indigenous-business-funding-programs-grants-support': ONTARIO_SOURCES,
+  'indigenous-business-funding-alberta-complete-guide': ALBERTA_SOURCES,
 };
