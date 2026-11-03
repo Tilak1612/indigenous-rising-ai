@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import { Link } from 'react-router-dom';
 import NewsletterSignup from './NewsletterSignup';
-import { Mail, Leaf } from 'lucide-react';
+import { Mail, Leaf, Linkedin } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { ComplianceBadge, DataResidencyNote } from '@/components/trust';
 import { BrandMark } from '@/components/BrandMark';
@@ -94,8 +94,7 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
   },
 ];
 
-// Social accounts. EMPTY ON PURPOSE — do not re-add a handle that has not been
-// verified as belonging to Indigenous Rising AI.
+// Social accounts. Only handles verified as belonging to Indigenous Rising AI.
 //
 // The three previous entries pointed at accounts we do not own:
 //   twitter.com/indigenous_ai        → does not exist (404)
@@ -107,10 +106,15 @@ const SECTIONS: { title: string; links: FooterLink[] }[] = [
 //                                        History, Mysteries"
 //
 // Publishing those implied both a social presence we do not have and an
-// affiliation with an unrelated Indigenous organization. The block below
-// renders nothing while this list is empty, so real handles can be dropped in
-// here later with no other change.
-const SOCIAL: Array<{ name: string; icon: LucideIcon; href: string }> = [];
+// affiliation with an unrelated Indigenous organization.
+//
+// Verified 2 November 2026: linkedin.com/company/indigenous-rising-ai is ours
+// (supplied by the owner; the page is titled "Indigenous Rising" and links
+// indigenousrising.ai). Every entry here must also be in the Organization
+// sameAs in index.html; src/__tests__/organization-sameas.test.ts checks both.
+const SOCIAL: Array<{ name: string; icon: LucideIcon; href: string }> = [
+  { name: 'Indigenous Rising AI on LinkedIn', icon: Linkedin, href: 'https://www.linkedin.com/company/indigenous-rising-ai/' },
+];
 
 // Homepage-section links (#...) use a plain anchor so the browser does a real
 // navigation to the homepage and scrolls to the section; routes use SPA Link.
