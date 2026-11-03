@@ -1,16 +1,25 @@
 """Generate the site's Open Graph images from the brand system only:
 Warm Cream ground, the brand mark, Forest Green / Ink type, a Legacy Gold rule.
-No photography, no cultural motifs, no flags. Usage: make-og.py <out_dir> <font.ttf|ttc> [font_index]"""
+No photography, no cultural motifs, no flags. Usage: make-og.py <out_dir> <font.ttf|ttc> [font_index] [weight]
+
+Brand font: Manrope (brand spec 108), bundled at scripts/fonts/Manrope[wght].ttf (licence: scripts/fonts/Manrope-OFL.txt)
+under the SIL Open Font License. It is a variable font, so pass a weight:
+  python3 scripts/make-og-images.py public "scripts/fonts/Manrope[wght].ttf" 0 800"""
 import sys
 from PIL import Image, ImageDraw, ImageFont
 out, font_path = sys.argv[1], sys.argv[2]
 idx = int(sys.argv[3]) if len(sys.argv) > 3 else 0
+weight = int(sys.argv[4]) if len(sys.argv) > 4 else None
 W, H = 1200, 630
 CREAM, FOREST, GOLD, INK, MUTED = '#F5F0E8', '#124C3B', '#D79A27', '#111111', '#5B5F5A'
 mark = Image.open('public/logo-icon.png').convert('RGBA')
 def font(size, index=idx):
-    try: return ImageFont.truetype(font_path, size, index=index)
-    except Exception: return ImageFont.truetype(font_path, size)
+    try: f = ImageFont.truetype(font_path, size, index=index)
+    except Exception: f = ImageFont.truetype(font_path, size)
+    if weight is not None:
+        try: f.set_variation_by_axes([weight])  # variable fonts only
+        except Exception: pass
+    return f
 PAGES = {
  'og-home':        ('Funding · Planning · Training · Growth', 'Get funded.\nGrow your business.\nKeep your data.', 'For Indigenous entrepreneurs and Nations in Canada'),
  'og-pricing':     ('Pricing', 'Free to start.\nNo credit card.', 'Growth $49/mo · Nations & organizations: custom'),
