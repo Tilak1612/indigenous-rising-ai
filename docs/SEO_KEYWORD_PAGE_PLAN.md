@@ -21,7 +21,10 @@ limits.
 | cash flow forecast template, indigenous business cash flow template | `/templates/cash-flow-forecast` | New. Working spreadsheet with formulas. |
 | community impact statement business plan, indigenous business plan community impact | `/templates/community-impact-statement` | New. Evidence and projection kept apart. |
 | indigenous business plan template, indigenous business plan example | `/indigenous-business-plan-template` | Refreshed: title, and a worked example for one fictional business that the four templates share. |
+| fundica alternative indigenous business, upmetrics alternative indigenous entrepreneurs | `/fundica-alternative`, `/upmetrics-alternative` | Added in the follow-up. Facts read from each competitor's own site on 2 November 2026; each page concedes where they are stronger first. |
 | indigenous business funding yukon / nwt, inuit business funding nunavut, province terms | `/funding/<province>` | Already owned by the 13 region pages, so no duplicate guides were added. |
+
+AEO: each of the nine tools, templates and guides carries three or four visible questions and answers, emitted as FAQPage JSON-LD from the same module (`src/data/resourceFaqs.ts`).
 
 Every new page is prerendered, in the sitemap and llms.txt, linked from the
 footer's "Tools & templates" column, and linked in context from the region and
@@ -44,7 +47,6 @@ type pages ("Before you apply") and the plan template.
 | Lender-specific equity ratios on the equity guide | The plan requires human review of each lender example. The guide links each lender instead. |
 | `/guides/business-plan-funding` | Requires verifying each programme's business-plan support terms first. |
 | Separate Yukon, NWT, Nunavut, New Brunswick, Nova Scotia guides | Region pages already exist at `/funding/<province>`. The plan says to split only with distinct local sources and search evidence. |
-| Fundica and Upmetrics comparisons | P2, needs competitor feature verification. |
 | French pages | Needs native-language validation and a localized product journey. |
 | Blog refreshes for Alberta, BC, Ontario, women, Métis guides | Each needs programme-by-programme re-verification; titles were left alone to avoid colliding with the `/funding/<province>` owners. |
 | More programme profiles (NRT, TACC, AIIC, NADF, Métis lenders) | 23 researched records are unpublished pending owner review in `/admin`. Publishing them adds their pages automatically. |

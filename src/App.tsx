@@ -674,6 +674,22 @@ export const AppTree = () => (
                 }
               />
               <Route
+                path="/upmetrics-alternative"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ComparisonPage />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/fundica-alternative"
+                element={
+                  <Suspense fallback={<PageSkeleton />}>
+                    <ComparisonPage />
+                  </Suspense>
+                }
+              />
+              <Route
                 path="/for-economic-development-officers"
                 element={
                   <Suspense fallback={<PageSkeleton />}>
