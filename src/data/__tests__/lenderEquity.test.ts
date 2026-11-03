@@ -6,8 +6,8 @@ const page = readFileSync('src/pages/guides/EquityRequirements.tsx', 'utf8');
 const packet = readFileSync('docs/review/lender-equity-figures.md', 'utf8');
 
 describe('published lender equity rules', () => {
-  test('exactly the five approved rows, each sourced and dated', () => {
-    expect(LENDER_EQUITY_RULES).toHaveLength(5);
+  test('only the approved rows, each sourced and dated', () => {
+    expect(LENDER_EQUITY_RULES.map((r) => r.lender)).toEqual(['First Peoples Economic Growth Fund', 'Waubetek Business Development Corporation']);
     for (const r of LENDER_EQUITY_RULES) {
       expect(r.url, r.lender).toMatch(/^https:\/\//);
       expect(r.checkedOn).toMatch(/^2026-\d\d-\d\d$/);
@@ -18,6 +18,14 @@ describe('published lender equity rules', () => {
   test('every quote appears verbatim in the approved review packet', () => {
     const flat = packet.replace(/\s+/g, ' ');
     for (const r of LENDER_EQUITY_RULES) expect(flat, r.lender).toContain(r.quote);
+  });
+
+  test('only rows ticked in the packet are published', () => {
+    for (const r of LENDER_EQUITY_RULES) {
+      const row = packet.split('\n').find((l) => l.includes(r.lender.split(',')[0].split(' Business Development')[0]));
+      expect(row, r.lender).toMatch(/^\| ☑ \|/);
+    }
+    expect(packet.match(/^\| ☑ \|/gm)).toHaveLength(LENDER_EQUITY_RULES.length);
   });
 
   test('every percentage in the published copy is in the approved packet', () => {

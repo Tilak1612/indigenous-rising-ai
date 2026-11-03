@@ -1,8 +1,10 @@
 /**
  * Published equity rules shown on /guides/indigenous-funding-equity-requirements.
  *
- * Approved by the owner on PR #275 ("Approved: all lender equity rows"),
- * from docs/review/lender-equity-figures.md. Each `summary` is the approved
+ * Approved by the owner on PR #275. Two comments were posted; the later and
+ * narrower one is applied: "Approved rows: First Peoples Economic Growth
+ * Fund, Waubetek. Publish only these." The other three rows in
+ * docs/review/lender-equity-figures.md stay unpublished until approved. Each `summary` is the approved
  * copy; each `quote` is verbatim from the lender's page on `checkedOn`. These
  * are each lender's own rules, never a rule for all lenders.
  *
@@ -34,30 +36,6 @@ export const LENDER_EQUITY_RULES: LenderEquityRule[] = [
     summary: 'A 10% unencumbered equity contribution from the applicant.',
     quote: '10% Unencumbered Equity Contribution from applicant',
     url: 'https://www.waubetek.com/',
-    checkedOn: '2026-11-02',
-  },
-  {
-    lender: 'Alberta Indian Investment Corporation',
-    region: 'Alberta',
-    summary: 'Your own equity as a portion of the total financing, with no percentage published.',
-    quote: 'contribute their own equity as a portion of the total financing of the business',
-    url: 'https://aiicbusiness.org/financial-services/',
-    checkedOn: '2026-11-02',
-  },
-  {
-    lender: "Tale'awtxw Aboriginal Capital Corporation",
-    region: 'Coast Salish territory, British Columbia',
-    summary: 'Its funding supplements your equity and financing and cannot be applied for on its own.',
-    quote: 'All funding programs are intended to supplement the applicant equity and finance portions of a business opportunity and cannot be applied for on a standalone basis.',
-    url: 'https://www.tacc.ca/funding/',
-    checkedOn: '2026-11-02',
-  },
-  {
-    lender: 'Clarence Campeau Development Fund',
-    region: 'Saskatchewan (Métis)',
-    summary: 'Its equity grant needs an approved loan and is not available on its own.',
-    quote: 'The applicant must be approved for the loan request to be eligible for a non-repayable grant.',
-    url: 'https://www.clarencecampeau.com/programs/',
     checkedOn: '2026-11-02',
   },
 ];
