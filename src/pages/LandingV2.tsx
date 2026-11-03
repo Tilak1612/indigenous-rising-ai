@@ -3,6 +3,7 @@ import AmbientVideo from '@/components/media/AmbientVideo';
 import { signupHref } from '@/lib/signup-intent';
 import { trackSignupCta } from '@/lib/conversion-events';
 import DemoCta from '@/components/DemoCta';
+import FundingFinder from '@/components/landing/FundingFinder';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
@@ -414,33 +415,17 @@ const LandingV2 = () => {
                 <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#D9694A' }} />
                 <span style={{ width: 11, height: 11, borderRadius: '50%', background: 'var(--ir-amber)' }} />
                 <span style={{ width: 11, height: 11, borderRadius: '50%', background: 'var(--ir-sage)' }} />
-                <span style={{ marginLeft: 14, fontSize: 12.5, color: 'var(--ir-stone)' }}>app.indigenousrising.ai / funding</span>
+                <span style={{ marginLeft: 14, fontSize: 12.5, color: 'var(--ir-stone)' }}>indigenousrising.ai / funding</span>
               </div>
-              {/* A REAL screenshot of /funding, inside the browser frame above.
-                  What stood here was a hand-built mock whose match scores —
-                  94%, 88%, 81% — were invented and attached to real programme
-                  names. That is a fabricated business result on the most-seen
-                  surface of the site, and no amount of styling makes it true.
-                  This is the actual product with actual programmes and actual
-                  amounts, captured from production.
-
-                  Art-directed: the 1280-wide capture is unreadable on a phone,
-                  so below 768px a tighter 640 crop is served instead of
-                  shrinking the whole thing to illegibility. */}
-              <picture>
-                <source media="(max-width: 767px)" type="image/webp" srcSet="/img/shot-funding-640.webp" />
-                <source type="image/avif" srcSet="/img/shot-funding-1280.avif" />
-                <source type="image/webp" srcSet="/img/shot-funding-1280.webp" />
-                <img
-                  src="/img/shot-funding-1280.jpg"
-                  alt="The funding page of Indigenous Rising AI, listing current programmes with their funder, amount range and intake status."
-                  width={1280}
-                  height={860}
-                  loading="lazy"
-                  decoding="async"
-                  style={{ display: 'block', width: '100%', height: 'auto', borderTop: '1px solid rgba(74,56,38,.08)' }}
-                />
-              </picture>
+              {/* The product itself, inside the browser frame above: a live
+                  three-question funding finder backed by the public catalogue.
+                  What stood here first was a hand-built mock with invented
+                  match scores (94%, 88%, 81%), then a static screenshot of the
+                  real page. A visitor could look at the product; now they use
+                  it, and their answers carry into /funding and the signup CTA.
+                  Every number shown is the catalogue's — count, amounts,
+                  intake, verification date — never a fabricated result. */}
+              <FundingFinder />
             </div>
             </div>
             <div style={{ height: 90 }} />

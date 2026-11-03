@@ -67,28 +67,27 @@ describe('sovereignty background imagery', () => {
   });
 });
 
-describe('the hero product mockup shows the real product', () => {
-  test('a real screenshot replaced the hand-built mock', () => {
-    // What stood here invented match scores — 94%, 88%, 81% — and attached
-    // them to real programme names. A fabricated business result on the
-    // most-seen surface of the site.
-    expect(page).toMatch(/shot-funding-1280\.(avif|webp|jpg)/);
+describe('the hero product frame holds the real product', () => {
+  test('the live funding finder replaced the screenshot, and no invented score came back', () => {
+    // What stood here first invented match scores — 94%, 88%, 81% — and
+    // attached them to real programme names; then a static screenshot of
+    // the real page. Now the frame holds the product itself: a finder that
+    // reads the public catalogue, so every number is the database's.
+    expect(page).toMatch(/<FundingFinder \/>/);
+    expect(page).not.toMatch(/shot-funding-1280/);
     expect(page, 'invented match scores are back').not.toMatch(/pct: '\d+%'/);
     expect(page, 'an invented programme count is back')
       .not.toMatch(/\d+ programs match your profile/);
   });
 
-  test('the screenshot is described, not decorative', () => {
-    // It carries information (what the product actually looks like), so
-    // unlike the backdrops it needs real alt text.
-    const block = page.slice(page.indexOf('shot-funding-640'), page.indexOf('shot-funding-640') + 1400);
-    expect(block).toMatch(/alt="The funding page of Indigenous Rising AI[^"]+"/);
-    expect(block).not.toMatch(/alt=""/);
-  });
-
-  test('a tighter crop is served on phones rather than shrinking it', () => {
-    // A 1280-wide screenshot scaled into a 320px column is unreadable.
-    expect(page).toMatch(/media="\(max-width: 767px\)"[\s\S]{0,120}shot-funding-640\.webp/);
+  test('the finder reads the catalogue and never asserts eligibility', () => {
+    const finder = readFileSync('src/components/landing/FundingFinder.tsx', 'utf8');
+    expect(finder).toMatch(/fetchPrograms\(/);
+    expect(finder).toMatch(/formatFreshness\(/);
+    expect(finder).toMatch(/Only the funder decides eligibility/);
+    expect(finder).not.toMatch(/\d+%\s*match/i);
+    // The frame label must not claim a hosted app that does not exist.
+    expect(page).not.toMatch(/app\.indigenousrising\.ai/);
   });
 });
 
