@@ -101,5 +101,6 @@ export const RELATED = {
   examples: { to: '/templates/indigenous-business-plan-examples', label: 'Business plan examples', note: 'Three fictional plans, for services, tourism and retail.' },
   choosing: { to: '/guides/choosing-funding-business-or-community', label: 'Business or community funding?', note: 'Which programme family fits who is applying.' },
   documents: { to: '/guides/funding-document-checklist-by-lender', label: 'Documents lenders ask for', note: 'Ten lenders’ document lists, side by side.' },
+  changes: { to: '/guides/funding-program-changes', label: 'Funding programme changes', note: 'Dated intake openings, closings and renamed programmes.' },
   loans: { to: '/funding/indigenous-business-loans', label: 'Indigenous business loans', note: 'Repayable programmes in the directory.' },
 } satisfies Record<string, RelatedLink>;
