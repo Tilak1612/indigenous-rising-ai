@@ -7,7 +7,13 @@ const packet = readFileSync('docs/review/lender-equity-figures.md', 'utf8');
 
 describe('published lender equity rules', () => {
   test('only the approved rows, each sourced and dated', () => {
-    expect(LENDER_EQUITY_RULES.map((r) => r.lender)).toEqual(['First Peoples Economic Growth Fund', 'Waubetek Business Development Corporation']);
+    expect(LENDER_EQUITY_RULES.map((r) => r.lender)).toEqual([
+      'First Peoples Economic Growth Fund',
+      'Waubetek Business Development Corporation',
+      'Alberta Indian Investment Corporation',
+      "Tale'awtxw Aboriginal Capital Corporation",
+      'Clarence Campeau Development Fund',
+    ]);
     for (const r of LENDER_EQUITY_RULES) {
       expect(r.url, r.lender).toMatch(/^https:\/\//);
       expect(r.checkedOn).toMatch(/^2026-\d\d-\d\d$/);
