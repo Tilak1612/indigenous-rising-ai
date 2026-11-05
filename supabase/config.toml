@@ -71,3 +71,8 @@ verify_jwt = false
 
 [functions.unsubscribe-funding-alerts]
 verify_jwt = false
+
+# Resend cannot send a Supabase JWT; the Svix signature (RESEND_WEBHOOK_SECRET)
+# authenticates every request in code.
+[functions.resend-webhook]
+verify_jwt = false
