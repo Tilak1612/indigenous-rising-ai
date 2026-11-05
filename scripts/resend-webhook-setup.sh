@@ -17,7 +17,9 @@
 # account-wide. This script only ever reads the webhook list, and only ever
 # creates the one endpoint below, after confirmation and only if no endpoint
 # with that URL exists. It never edits or deletes any webhook.
-set -euo pipefail
+set -Eeuo pipefail
+# Never exit silently: say where it stopped (no variable values are printed).
+trap 'printf "error: stopped at line %s (exit %s)\n" "$LINENO" "$?" >&2' ERR
 
 PROJECT_REF="upxojfcdtmqtcvgbjsym"
 SUPABASE_URL="https://${PROJECT_REF}.supabase.co"
