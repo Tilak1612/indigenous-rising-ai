@@ -92,6 +92,28 @@ export async function setSaved(userId: string, grantId: string, saved: boolean):
 
 // --- AI matching (match-funding-opportunities edge function) ---------------
 
+// Mirrors profileSummary in supabase/functions/match-funding-opportunities:
+// the only profile data the function sends to the model, in that order.
+// funding.test.ts reads the function source to keep the two in step.
+export const AI_MATCHING_FIELDS = [
+  'Territory',
+  'Industry',
+  'Business stage',
+  'Business description',
+  'Funding purpose',
+  'Target funding amount',
+] as const;
+
+export const AI_MATCHING_PROVIDER = "OpenAI's API (api.openai.com)";
+
+// Free text is sent as written; the function does no redaction. Where OpenAI
+// processes requests has not been confirmed, so no region is claimed.
+export const AI_MATCHING_DISCLOSURE =
+  `AI matching sends six fields from your business profile to ${AI_MATCHING_PROVIDER}: territory, industry, business stage, business description, funding purpose and target funding amount. ` +
+  'Your name, contact details, Indigenous identity, community and Nation fields are not sent. ' +
+  'The business description and funding purpose are sent exactly as you wrote them, so do not put names, contact details or other private identifiers in them. ' +
+  'OpenAI may process it outside Canada; we have not confirmed where.';
+
 export interface Criterion {
   label: string;
   met: boolean | null;

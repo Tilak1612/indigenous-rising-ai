@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
+import NativeContextLayout from '@/components/dashboard/NativeContextLayout';
+import { isNativeContext } from '@/lib/native-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -420,12 +422,15 @@ export default function Profile() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
+  // Opened from the mobile app: same form and save, without the dashboard chrome.
+  const Layout = isNativeContext() ? NativeContextLayout : DashboardLayout;
+
   const displayName = profileData.firstName && profileData.lastName 
     ? `${profileData.firstName} ${profileData.lastName}`
     : user?.email?.split('@')[0] || 'User';
 
   return (
-    <DashboardLayout>
+    <Layout>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Profile</h1>
@@ -1013,6 +1018,6 @@ export default function Profile() {
           </div>
         </div>
       </div>
-    </DashboardLayout>
+    </Layout>
   );
 }

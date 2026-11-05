@@ -694,3 +694,8 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(0 0% 64%);
 }
+
+/* Mobile app in-app browser: see src/lib/native-context.ts and index.html. */
+html[data-native-context] [data-native-hide] {
+  display: none !important;
+}
