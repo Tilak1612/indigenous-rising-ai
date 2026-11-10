@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { readCampaign, saveSignupIntent, readSignupIntent, type PlanKey } from '@/lib/signup-intent';
 import { consumeAuthRedirect } from '@/lib/auth-callback';
+import { postAuthPath } from '@/lib/native-context';
 import { fetchEnabledProviders, PROVIDER_LABEL, type ProviderId } from '@/lib/auth-providers';
 import { setSessionScoped } from '@/lib/auth-storage';
 import { mfaRequirement, verifyMfaCode } from '@/lib/mfa';
@@ -140,7 +141,7 @@ export default function Auth() {
         const mfa = await mfaRequirement();
         if (cancelled) return;
         if (mfa.required && mfa.factorId) setMfaFactorId(mfa.factorId);
-        else navigate('/dashboard', { replace: true });
+        else navigate(postAuthPath(), { replace: true });
         setMfaChecking(false);
       }
     })();
@@ -157,7 +158,7 @@ export default function Auth() {
 
   useEffect(() => {
     if (user && !isRecovery && !mfaFactorId && !mfaChecking) {
-      navigate('/dashboard');
+      navigate(postAuthPath());
     }
   }, [user, navigate, isRecovery, mfaFactorId, mfaChecking]);
 
@@ -395,7 +396,7 @@ export default function Auth() {
                       const { error: mfaError } = await verifyMfaCode(mfaFactorId, mfaCode);
                       setLoading(false);
                       if (mfaError) { setError(mfaError); return; }
-                      navigate('/dashboard', { replace: true });
+                      navigate(postAuthPath(), { replace: true });
                     }}
                     className="space-y-4"
                   >

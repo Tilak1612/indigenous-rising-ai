@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import DemoCta from '@/components/DemoCta';
 import { signupHref } from '@/lib/signup-intent';
 import { trackSignupCta } from '@/lib/conversion-events';
+import { isNativeContext } from '@/lib/native-context';
 import { Menu, X, Users, TrendingUp, Target, Award, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -24,11 +25,14 @@ const Navigation = () => {
 
   // Homepage (LandingV2) section IDs/vocabulary so the anchors resolve. Off the
   // homepage these navigate to /#section; on it they smooth-scroll.
+  // In the mobile app's in-app browser the Pricing anchor is left out (see
+  // lib/native-context.ts); everywhere else the nav is unchanged.
+  const native = isNativeContext();
   const navItems = [
     { name: 'Platform', href: '#platform', icon: Target },
     { name: 'How it works', href: '#how', icon: TrendingUp },
     { name: 'Sovereignty', href: '#sovereignty', icon: Users },
-    { name: 'Pricing', href: '#pricing', icon: Award },
+    ...(native ? [] : [{ name: 'Pricing', href: '#pricing', icon: Award }]),
     { name: 'FAQ', href: '#faq', icon: BookOpen },
   ];
 
@@ -62,6 +66,7 @@ const Navigation = () => {
               <a
                 key={item.name}
                 href={item.href}
+                data-native-hide={item.href === '#pricing' ? '' : undefined}
                 className="text-sm font-medium text-[#111111]/80 hover:text-[#124C3B] transition whitespace-nowrap"
                 onClick={(e) => { e.preventDefault(); handleAnchor(item.href); }}
               >
@@ -144,6 +149,7 @@ const Navigation = () => {
               <a
                 key={item.name}
                 href={item.href}
+                data-native-hide={item.href === '#pricing' ? '' : undefined}
                 onClick={(e) => { e.preventDefault(); handleAnchor(item.href); }}
                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-[#111111]/80 hover:text-[#111111] hover:bg-[#3D3A34]/5 transition"
               >

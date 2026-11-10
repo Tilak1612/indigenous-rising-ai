@@ -125,6 +125,11 @@
          Manrope, so it was a render-blocking request for an unused family. -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+    <!-- Mobile app in-app browser (?context=app, kept for the tab in
+         sessionStorage): mark <html> before first paint so prerendered purchase
+         links tagged data-native-hide stay hidden until React omits them.
+         See src/lib/native-context.ts. -->
+    <script>try{if(new URLSearchParams(location.search).get('context')==='app'||sessionStorage.getItem('ira.nativeContext')==='1')document.documentElement.setAttribute('data-native-context','')}catch(e){}</script>
   </head>
 
   <body>

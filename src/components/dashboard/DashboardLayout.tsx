@@ -67,6 +67,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { isNativeContext } from '@/lib/native-context';
 
 type SubscriptionTier = 'free' | 'paid' | 'enterprise';
 
@@ -207,6 +208,8 @@ function UpgradeDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  // Read here, not passed down, so every opener of the dialog gets the same treatment.
+  const native = isNativeContext();
   if (!item) return null;
   const isEnterprise = item.tier === 'enterprise';
   const planName = isEnterprise ? 'Gimishoomis (Enterprise)' : 'Ogichidaakwe (Growth — from $39/mo CAD)';
@@ -224,21 +227,25 @@ function UpgradeDialog({
             <div>
               <DialogTitle>{item.title} is locked</DialogTitle>
               <DialogDescription className="mt-1">
-                Upgrade to the {planName} plan to unlock this feature.
+                {native
+                  ? `${item.title} is not included in your current plan.`
+                  : `Upgrade to the ${planName} plan to unlock this feature.`}
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
         <DialogFooter className="gap-2 sm:gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Maybe later
+            {native ? 'Close' : 'Maybe later'}
           </Button>
-          <Button asChild>
-            <Link to={ctaHref} onClick={() => onOpenChange(false)}>
-              <Crown className="h-4 w-4 mr-2" />
-              {ctaText}
-            </Link>
-          </Button>
+          {native ? null : (
+            <Button asChild>
+              <Link to={ctaHref} onClick={() => onOpenChange(false)}>
+                <Crown className="h-4 w-4 mr-2" />
+                {ctaText}
+              </Link>
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -252,6 +259,7 @@ function DashboardSidebar() {
   const userTier = getTierFromSubscription(subscribed, product_id, price_id);
   const [upgradeItem, setUpgradeItem] = useState<NavItem | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const native = isNativeContext();
 
   useEffect(() => {
     if (!user) return;
@@ -312,7 +320,7 @@ function DashboardSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2">
             Pro Features
-            {userTier === 'free' && (
+            {userTier === 'free' && !native && (
               <Badge variant="outline" className="text-xs">Upgrade</Badge>
             )}
           </SidebarGroupLabel>
@@ -335,7 +343,7 @@ function DashboardSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="flex items-center gap-2">
             Enterprise
-            {userTier !== 'enterprise' && (
+            {userTier !== 'enterprise' && !native && (
               <Badge variant="outline" className="text-xs">Contact Us</Badge>
             )}
           </SidebarGroupLabel>
@@ -430,7 +438,8 @@ function DashboardHeader() {
       </div>
 
       <div className="flex items-center gap-3">
-        {userTier === 'free' && (
+        {userTier === 'free' && !isNativeContext() && (
+          // Hidden in the mobile app's in-app browser (lib/native-context.ts).
           // Was `hidden sm:flex`: free users on phones had no upgrade entry in
           // the header at all. Icon-only below 640px, with a 44px target and an
           // accessible name; the text label returns from sm up.
