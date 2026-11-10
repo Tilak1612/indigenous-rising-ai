@@ -72,6 +72,9 @@ export default defineConfig(({ mode }) => {
     // private, revisit this - a "hidden" map is not a private one.
     sourcemap: 'hidden',
   },
+  // Vite 8 no longer ships esbuild. Minify stays on esbuild, and `drop` stays
+  // here, so production builds still strip console and debugger. esbuild is a
+  // direct devDependency because scripts/prerender.mjs imports it as well.
   esbuild: {
     drop: mode === 'production' ? ['console', 'debugger'] : [],
   },

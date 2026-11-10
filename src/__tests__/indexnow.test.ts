@@ -3,7 +3,6 @@ import { readFileSync, existsSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-// @ts-expect-error — plain ESM script, no type declarations
 import { INDEXNOW_KEY, HOST, contentHash, diffManifests, buildPayload, classifyResponse } from '../../scripts/indexnow.mjs';
 
 const page = (body: string, extra = '') =>
@@ -176,7 +175,7 @@ describe('wiring', () => {
     const wf = readFileSync('.github/workflows/indexnow.yml', 'utf8');
     const steps = wf.replace(/^\s*#.*$/gm, '');
     expect(steps).not.toMatch(/actions\/cache/);
-    expect(steps).toMatch(/uses: actions\/upload-artifact@v4[\s\S]*?name: indexnow-manifest/);
+    expect(steps).toMatch(/uses: actions\/upload-artifact@v7[\s\S]*?name: indexnow-manifest/);
     expect(steps).toMatch(/actions\/artifacts\?name=indexnow-manifest/);
     expect(steps).toMatch(/actions: read/);
     expect(steps).toMatch(/--on-missing baseline/);

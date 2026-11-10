@@ -1,6 +1,5 @@
 import { describe, test, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-// @ts-expect-error — plain ESM build script, no type declarations
 import { buildLlmsTxt } from '../../scripts/llms-txt.mjs';
 import { PLANS, PLAN_FEATURES } from '@/data/plans';
 import { liveFeatureList, PRODUCT_DEFINITION, PRODUCT_AUDIENCE } from '@/data/entityFacts';

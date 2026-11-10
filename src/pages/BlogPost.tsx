@@ -14,7 +14,7 @@ import {
 import { getBlogBySlug, getRelatedPosts, getPostImage } from '@/data/blogPosts';
 import { BLOG_NEXT_STEPS } from '@/data/blogNextSteps';
 import { pageTitle } from '@/data/blogSeoTitles';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
 import { truncateDescription } from '@/lib/seo';
 import { parseBlock, parseInline } from '@/lib/blogBlocks';

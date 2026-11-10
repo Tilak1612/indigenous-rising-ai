@@ -40,6 +40,6 @@ export function render(url: string): Promise<{ html: string; helmet: HelmetServe
   // Suspense, so it emitted the loading skeleton (4 words) instead of the page.
   // renderToHtml uses renderToPipeableStream and waits for onAllReady, which is
   // what actually gets the page's content into the HTML. It also strips the NUL
-  // bytes React 18.3.1 inserts at buffer boundaries (see render-stream.ts).
+  // bytes a streaming renderer can insert at buffer boundaries (see render-stream.ts).
   return renderToHtml(tree, { label: url }).then((html) => ({ html, helmet: helmetContext.helmet }));
 }

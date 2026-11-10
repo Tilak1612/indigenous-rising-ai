@@ -1,3 +1,4 @@
+import { type JSX } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
