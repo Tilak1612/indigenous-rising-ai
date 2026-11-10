@@ -65,7 +65,7 @@ jobs:
 
       - name: Save manifest for the next deploy
         if: steps.promote.outputs.saved == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: indexnow-manifest
           path: .indexnow/prev.json

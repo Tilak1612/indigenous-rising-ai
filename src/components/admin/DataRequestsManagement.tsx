@@ -89,14 +89,12 @@ export default function DataRequestsManagement() {
 
   const updateStatus = async (id: string, status: string) => {
     try {
-      const updates: Record<string, unknown> = { status };
-      if (status === 'completed') {
-        updates.completed_at = new Date().toISOString();
-      }
-
       const { error } = await supabase
         .from('data_requests')
-        .update(updates)
+        .update({
+          status,
+          ...(status === 'completed' ? { completed_at: new Date().toISOString() } : {}),
+        })
         .eq('id', id);
 
       if (error) throw error;

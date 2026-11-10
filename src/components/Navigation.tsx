@@ -126,11 +126,9 @@ const Navigation = () => {
           the transition — `display:none` would kill the animation. */}
       <div
         id="mobile-navigation"
-        // React 18 drops unknown BOOLEAN attributes, so inert={true} never
-        // reached the DOM — measured: inert:false on a closed menu with all
-        // six links still tabbable. An empty string renders the attribute.
-        // (React 19 supports inert natively; this project is on 18.3.1.)
-        {...(!isOpen ? { inert: '' as unknown as boolean } : {})}
+        // React 19 renders boolean `inert` on the DOM. An empty string is
+        // treated as false, which would leave the closed menu in the tab order.
+        inert={!isOpen}
         aria-hidden={!isOpen}
         className={cn(
           "lg:hidden overflow-hidden border-t border-[#3D3A34]/10 bg-[#F5F0E8] transition-all duration-300 ease-in-out",

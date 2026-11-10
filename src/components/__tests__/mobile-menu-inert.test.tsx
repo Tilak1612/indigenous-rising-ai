@@ -27,17 +27,14 @@ describe('closed mobile menu is inert', () => {
   test('the panel receives inert when closed', () => {
     expect(nav, 'the mobile panel never sets inert').toMatch(/inert/);
     // Applied only while closed — an always-inert menu could never be used.
-    expect(nav).toMatch(/!isOpen \? \{ inert/);
+    expect(nav).toMatch(/inert=\{!isOpen\}/);
   });
 
-  test('it uses the string form React 18 actually renders', () => {
-    // React 18 DROPS unknown boolean attributes: inert={true} never reached
-    // the DOM. Measured: inert:false on a closed menu with six tabbable
-    // links. An empty string renders the attribute. React 19 supports it
-    // natively — revisit when this project upgrades.
-    expect(nav).toMatch(/inert: '' as unknown as boolean/);
-    expect(nav, 'the boolean form is silently dropped by React 18')
-      .not.toMatch(/inert=\{!isOpen\}/);
+  test('it uses the boolean form React 19 actually renders', () => {
+    // React 19 treats an empty-string boolean attribute as false. The React 18
+    // workaround (`inert: ''`) would leave the closed menu focusable.
+    expect(nav).toMatch(/inert=\{!isOpen\}/);
+    expect(nav).not.toMatch(/inert:\s*''/);
   });
 
   test('it is also hidden from assistive tech when closed', () => {

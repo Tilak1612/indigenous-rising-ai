@@ -211,7 +211,7 @@ export default function Settings() {
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Record<string, string> = {};
-        error.errors.forEach(err => {
+        error.issues.forEach(err => {
           if (err.path[0]) errors[err.path[0] as string] = err.message;
         });
         setPasswordErrors(errors);
@@ -331,7 +331,10 @@ export default function Settings() {
       const [profileResult, subscriptionResult, ...ownedResults] = await Promise.all([
         supabase.from('profiles').select('id, email, full_name, created_at, updated_at').eq('id', uid).single(),
         supabase.from('subscriptions').select('stripe_product_id, status, current_period_start, current_period_end, cancel_at_period_end, created_at').eq('user_id', uid).maybeSingle(),
-        ...OWNED.map(([table, col]) => supabase.from(table).select('*').eq(col, uid)),
+        // `as never`: supabase-js infers `.eq` from the union of every table,
+        // and no single column name is shared by all of them. The value passed
+        // is still the pair's own column (`user_id` or `owner_id`).
+        ...OWNED.map(([table, col]) => supabase.from(table).select('*').eq(col as never, uid)),
       ]);
 
       // Report per-table failures rather than silently shipping a short export
