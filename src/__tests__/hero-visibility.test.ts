@@ -26,10 +26,11 @@ import { readFileSync, existsSync } from 'node:fs';
  */
 const landing = readFileSync('src/pages/LandingV2.tsx', 'utf8');
 
-// The hero text block: from the top section to the product-mock wrapper, which
-// sits below the headline and CTAs and stays revealed.
+// The whole hero section: headline, buttons and, since the finder-first
+// layout, the live funding finder too. All of it is in the first viewport, so
+// none of it may wait for JavaScript.
 const start = landing.indexOf('<section id="top"');
-const end = landing.indexOf('{/* Hero product mock');
+const end = landing.indexOf('{/* ===== WHO IT HELPS');
 const hero = start > -1 && end > start ? landing.slice(start, end) : '';
 
 describe('the first viewport does not depend on JavaScript to be visible', () => {
@@ -45,6 +46,8 @@ describe('the first viewport does not depend on JavaScript to be visible', () =>
   test.each([
     ['the H1', /<h1\b[^>]*>/],
     ['the signup CTA', /trackSignupCta\('hero'\)/],
+    ['the live funding finder', /<FundingFinder \/>/],
+    ['the demo CTA', /placement="hero"/],
   ])('%s is in the hero block', (_name, re) => {
     expect(re.test(hero)).toBe(true);
   });
