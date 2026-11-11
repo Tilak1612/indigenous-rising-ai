@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import AmbientVideo from '@/components/media/AmbientVideo';
 import { signupHref } from '@/lib/signup-intent';
 import { trackSignupCta } from '@/lib/conversion-events';
 import DemoCta from '@/components/DemoCta';
@@ -350,85 +349,70 @@ const LandingV2 = () => {
             A CSS-only entrance animation is not an option here: the app mounts
             with createRoot, which REPLACES the prerendered markup, so the
             animation would play on the static copy and then replay on React's
-            copy - a visible blink. Everything below the fold keeps its reveal. */}
+            copy - a visible blink. Everything below the fold keeps its reveal.
+
+            Finder-first layout. The live funding finder is the product a visitor
+            can use without an account, so it sits IN the first viewport: beside
+            the promise on wide screens, straight after the headline on phones
+            (grid areas in landing-v2.css reorder it above the buttons). It was
+            below the fold inside a mock browser frame, which read as a
+            screenshot, and behind [data-reveal], so it is ungated now too. One
+            primary action (Start free account) and one secondary (Book a demo)
+            replace the three competing buttons; Platform stays in the nav. */}
         <section id="top" style={{ position: 'relative', overflow: 'hidden' }}>
           <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />
           <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'radial-gradient(120% 80% at 50% 0%, rgba(250,246,239,.2) 0%, rgba(250,246,239,.7) 55%, var(--ir-cream) 100%)', pointerEvents: 'none' }} />
-          <div style={{ position: 'relative', zIndex: 2, maxWidth: 1180, margin: '0 auto', padding: 'clamp(52px,9vw,88px) 24px 0', textAlign: 'center' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: 'rgba(62,107,79,.1)', border: '1px solid rgba(62,107,79,.22)', color: 'var(--ir-green)', fontSize: 13, fontWeight: 600, padding: '7px 15px', borderRadius: 100, marginBottom: 30 }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ir-green)' }} />
-              Built around Indigenous data sovereignty
-            </div>
-            <h1 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(34px,5vw,64px)', lineHeight: 1.08, letterSpacing: '-.025em', color: 'var(--ir-ink)', maxWidth: 860, margin: '0 auto' }}>
-              Get <span style={{ fontStyle: 'italic', color: '#D45B35' }}>funded.</span> Grow your business. Keep your data.
-            </h1>
-            <p style={{ fontSize: 'clamp(17px,1.6vw,21px)', lineHeight: 1.65, color: 'var(--ir-bark)', maxWidth: 620, margin: '28px auto 0' }}>
-              Find funding, build your business plan and access training — all in one place, designed around OCAP® principles and the data sovereignty of your community.
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', alignItems: 'center', marginTop: 38 }}>
-              <LinkTo to="/signup" onClick={() => trackSignupCta('hero')} className="irv2-hov-cta-lift" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 30px', borderRadius: 12, boxShadow: '0 6px 20px rgba(18,76,59,.3)', display: 'inline-flex', alignItems: 'center', gap: 9 }}>
-                Start free account
-                <Icon icon="solar:arrow-right-linear" size={19} />
-              </LinkTo>
-              <a href="#platform" className="irv2-hov-link" style={{ color: 'var(--ir-ink)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 14px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                See the platform
-                <Icon icon="solar:play-circle-linear" size={19} />
-              </a>
-              <DemoCta
-                placement="hero"
-                className="irv2-hov-link"
-                style={{ color: 'var(--ir-green)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '16px 14px', display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(18,76,59,.28)', borderRadius: 12 }}
-              >
-                Book a demo
-              </DemoCta>
-            </div>
-            <p style={{ marginTop: 20, fontSize: 13.5, color: 'var(--ir-stone)', display: 'flex', gap: 18, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:check-circle-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Free to start</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:map-point-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Your data stays in Canada</span>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:lock-keyhole-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Export anytime</span>
-            </p>
-
-            {/* Hero product mock, seated on a slow timber loop.
-                The motion is atmosphere only: it sits BEHIND the browser
-                frame and never under the headline or the screenshot, so
-                nothing readable moves. AmbientVideo does not render a
-                <video> at all under reduced motion, below 768px, on
-                Save-Data, or before it scrolls into view — it shows the
-                poster instead, so a phone never spends the 120KB. */}
-            <div data-reveal style={{ position: 'relative', marginTop: 64, maxWidth: 1060, marginLeft: 'auto', marginRight: 'auto' }}>
-              <AmbientVideo
-                webm="/video/hero-ambient.webm"
-                mp4="/video/hero-ambient.mp4"
-                poster="/video/hero-ambient-poster.jpg"
-                posterAvif="/video/hero-ambient-poster.avif"
-                posterWebp="/video/hero-ambient-poster.webp"
-                style={{
-                  position: 'absolute', inset: '-6% -3%', borderRadius: 28,
-                  overflow: 'hidden', opacity: 0.28, filter: 'saturate(.85)',
-                  // Fades out at the edges so it reads as depth, not a panel.
-                  maskImage: 'radial-gradient(120% 90% at 50% 45%, #000 55%, transparent 100%)',
-                  WebkitMaskImage: 'radial-gradient(120% 90% at 50% 45%, #000 55%, transparent 100%)',
-                }}
-              />
-            <div style={{ position: 'relative', maxWidth: 980, marginLeft: 'auto', marginRight: 'auto', background: 'var(--ir-paper)', border: '1px solid rgba(74,56,38,.1)', borderRadius: 20, boxShadow: '0 30px 80px -30px rgba(44,30,18,.35)', overflow: 'hidden', textAlign: 'left' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '14px 18px', borderBottom: '1px solid rgba(74,56,38,.08)', background: 'var(--ir-linen)' }}>
-                <span style={{ width: 11, height: 11, borderRadius: '50%', background: '#D9694A' }} />
-                <span style={{ width: 11, height: 11, borderRadius: '50%', background: 'var(--ir-amber)' }} />
-                <span style={{ width: 11, height: 11, borderRadius: '50%', background: 'var(--ir-sage)' }} />
-                <span style={{ marginLeft: 14, fontSize: 12.5, color: 'var(--ir-stone)' }}>indigenousrising.ai / funding</span>
+          <div className="ir-hero-grid" style={{ position: 'relative', zIndex: 2, maxWidth: 1180, margin: '0 auto', padding: 'clamp(28px,5vw,64px) 24px clamp(56px,7vw,96px)' }}>
+            <div className="ir-hero-copy">
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: 'rgba(62,107,79,.1)', border: '1px solid rgba(62,107,79,.22)', color: 'var(--ir-green)', fontSize: 13, fontWeight: 600, padding: '7px 15px', borderRadius: 100, marginBottom: 'clamp(18px,2.4vw,26px)' }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ir-green)' }} />
+                Built around Indigenous data sovereignty
               </div>
-              {/* The product itself, inside the browser frame above: a live
-                  three-question funding finder backed by the public catalogue.
-                  What stood here first was a hand-built mock with invented
-                  match scores (94%, 88%, 81%), then a static screenshot of the
-                  real page. A visitor could look at the product; now they use
-                  it, and their answers carry into /funding and the signup CTA.
-                  Every number shown is the catalogue's — count, amounts,
-                  intake, verification date — never a fabricated result. */}
-              <FundingFinder />
+              <h1 style={{ ...FONT_HEAD, fontWeight: 500, fontSize: 'clamp(34px,4.4vw,60px)', lineHeight: 1.06, letterSpacing: '-.025em', color: 'var(--ir-ink)', margin: 0 }}>
+                Get <span style={{ fontStyle: 'italic', color: '#D45B35' }}>funded.</span> Grow your business. Keep your data.
+              </h1>
+              <p style={{ fontSize: 'clamp(16.5px,1.45vw,19px)', lineHeight: 1.6, color: 'var(--ir-bark)', maxWidth: 520, margin: 'clamp(16px,2vw,22px) 0 0' }}>
+                Answer three questions to see programmes accepting applications now, with each funder&apos;s own amounts and the date we last checked.
+              </p>
             </div>
+
+            <div className="ir-hero-finder">
+              <div style={{ background: 'var(--ir-paper)', border: '1px solid rgba(74,56,38,.12)', borderRadius: 20, boxShadow: '0 30px 80px -30px rgba(44,30,18,.38), 0 2px 6px rgba(44,30,18,.06)', overflow: 'hidden', textAlign: 'left' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '11px 18px', background: 'var(--ir-linen)', borderBottom: '1px solid rgba(74,56,38,.08)', fontSize: 12.5, fontWeight: 600, color: 'var(--ir-umber)' }}>
+                  <span aria-hidden="true" className="ir-live-dot" />
+                  Funding finder
+                  <span style={{ marginLeft: 'auto', fontWeight: 500, color: 'var(--ir-stone)' }}>Public directory</span>
+                </div>
+                {/* The product itself: a live three-question funding finder backed
+                    by the public catalogue. What stood here first was a hand-built
+                    mock with invented match scores (94%, 88%, 81%), then a static
+                    screenshot of the real page. Every number shown is the
+                    catalogue's — count, amounts, intake, verification date — never
+                    a fabricated result. */}
+                <FundingFinder />
+              </div>
             </div>
-            <div style={{ height: 90 }} />
+
+            <div className="ir-hero-actions">
+              <div className="ir-hero-buttons" style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
+                <LinkTo to="/signup" onClick={() => trackSignupCta('hero')} className="irv2-hov-cta-lift" style={{ background: 'var(--ir-green)', color: 'var(--ir-cream)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '15px 26px', borderRadius: 12, boxShadow: '0 6px 20px rgba(18,76,59,.3)', display: 'inline-flex', alignItems: 'center', gap: 9, minHeight: 48 }}>
+                  Start free account
+                  <Icon icon="solar:arrow-right-linear" size={19} />
+                </LinkTo>
+                <DemoCta
+                  placement="hero"
+                  className="irv2-hov-link"
+                  style={{ color: 'var(--ir-green)', textDecoration: 'none', fontSize: 16, fontWeight: 600, padding: '14px 18px', display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(18,76,59,.28)', borderRadius: 12, minHeight: 48 }}
+                >
+                  Book a demo
+                </DemoCta>
+              </div>
+              <p className="ir-hero-trust" style={{ margin: '16px 0 0', fontSize: 13.5, color: 'var(--ir-stone)', display: 'flex', gap: '8px 18px', flexWrap: 'wrap' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:check-circle-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Free to start</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:map-point-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Your data stays in Canada</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}><Icon icon="solar:lock-keyhole-bold" size={15} style={{ color: 'var(--ir-green)' }} /> Export anytime</span>
+              </p>
+            </div>
           </div>
         </section>
 
